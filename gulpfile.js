@@ -88,13 +88,23 @@ gulp.task('buildindex', function(){
 
     var destination = config.buildDir;
 
-    var ignorepath = ['/'+config.buildDir,'/'+config.distDir]
+    var ignorepath = ['/'+config.buildDir,'/'+config.distDir];
     var indexfile  = config.clientFiles.index;
     var target = gulp.src(indexfile);
     var source = gulp.src(options,{read:false});
 
-    return target.pipe(inject(source,{read:false}))
-        .pipe(gulp.dest(destination));
+    return target.pipe(inject(source, {
+      transform: function (filepath) {
+        if (filepath.slice(-4) === '.css') {
+            return '<link rel="stylesheet" href="/litewait' + filepath + '">';
+        } else {
+            return '<script src="/litewait' + filepath + '"></script>';
+        }
+        // Use the default transform as fallback: 
+        return inject.transform.apply(inject.transform, arguments);
+      }
+    }
+  )).pipe(gulp.dest(destination));
 
     // return gulp.src(options,{read:false})
     //            .pipe(inject(indexfile,{ ignorePath: ignorepath}))
