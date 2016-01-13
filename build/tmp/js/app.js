@@ -3008,6 +3008,64 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
         }
 	}
 })(angular);
+/*
+ *
+ */
+;(function(angular) {
+	'use strict';
+
+	angular.module('litewait.ui').controller('myOrderCtrl', myOrderCtrl);
+
+	myOrderCtrl.$inject = ['$scope', 'authentication'];
+
+	function myOrderCtrl($scope, authentication) {
+		console.log(authentication);
+		// TODO: Need to change things dynamically
+	}
+
+
+})(angular);
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('order', {
+                abstract: true
+            })
+            .state('order.myorder', {
+            	url: "/myorder",
+                views: {
+                    "@": {
+                        templateUrl: "orders/myorder.html",
+                        controller: "myOrderCtrl"
+                    }
+                },
+                resolve: {
+                    authentication: function (AuthService, $q, $timeout) {
+                        var deferred = $q.defer();
+                        
+                        var handler = $timeout(function() {
+                            var auth = AuthService.isAuthenticated();
+                            if (auth) {
+                                deferred.resolve(true);
+                            } else {
+                                deferred.reject(true);
+                            }
+                            $timeout.cancel(handler);
+                        }, 0);
+                        
+                        return deferred.promise;
+                    }
+                }
+            });
+    }
+})(angular);
 /**
  *
  */
@@ -3405,64 +3463,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     "@": {
                         templateUrl: "user/ch-pwd.html",
                         controller: "chpwdCtrl"
-                    }
-                },
-                resolve: {
-                    authentication: function (AuthService, $q, $timeout) {
-                        var deferred = $q.defer();
-                        
-                        var handler = $timeout(function() {
-                            var auth = AuthService.isAuthenticated();
-                            if (auth) {
-                                deferred.resolve(true);
-                            } else {
-                                deferred.reject(true);
-                            }
-                            $timeout.cancel(handler);
-                        }, 0);
-                        
-                        return deferred.promise;
-                    }
-                }
-            });
-    }
-})(angular);
-/*
- *
- */
-;(function(angular) {
-	'use strict';
-
-	angular.module('litewait.ui').controller('myOrderCtrl', myOrderCtrl);
-
-	myOrderCtrl.$inject = ['$scope', 'authentication'];
-
-	function myOrderCtrl($scope, authentication) {
-		console.log(authentication);
-		// TODO: Need to change things dynamically
-	}
-
-
-})(angular);
-
-;(function(angular) {
-    'use strict';
-
-    angular.module('litewait').config(config);
-
-    config.$inject = ['$stateProvider'];
-
-    function config($stateProvider) {
-        $stateProvider
-            .state('order', {
-                abstract: true
-            })
-            .state('order.myorder', {
-            	url: "/myorder",
-                views: {
-                    "@": {
-                        templateUrl: "orders/myorder.html",
-                        controller: "myOrderCtrl"
                     }
                 },
                 resolve: {
