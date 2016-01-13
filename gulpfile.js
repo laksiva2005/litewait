@@ -68,22 +68,27 @@ gulp.task('buildimg',function(){
 
 gulp.task('buildhtml2js', function() {
  return gulp.src(config.clientFiles.templates)
-        .pipe(html2js({
-          outputModuleName: 'litewait',
-          useStrict: true
+        .pipe(ngHtml2Js({
+            moduleName: pkg.name + ".ui"
+            //,prefix: "/partials"
         }))
+        /*.pipe(html2js({
+          outputModuleName: 'litewait',
+          useStrict: true,
+          base: '/test/'
+        }))*/
         .pipe(concat('partials.js'))
         .pipe(gulp.dest(config.buildDir + '/js'));
-})
+});
 
 
 gulp.task('buildindex', function(){
     var options = [
-       config.buildDir +'/css/vendor.css', 
-       config.buildDir +'/css/app.css',
-       config.buildDir +'/js/vendor.js', 
-       config.buildDir + '/js/partials.js',
-       config.buildDir +'/js/app.js'      
+      config.buildDir +'/css/vendor.css', 
+      config.buildDir +'/css/app.css',
+      config.buildDir +'/js/vendor.js', 
+      config.buildDir +'/js/app.js',
+      config.buildDir + '/js/partials.js',
     ];
 
     var destination = config.buildDir;

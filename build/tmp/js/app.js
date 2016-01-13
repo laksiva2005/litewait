@@ -2760,20 +2760,728 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 ;(function(angular){
 	'use strict';	
 
-	angular.module('litewait', ['ui.router']);
+	angular.module('litewait.services', []);
+	angular.module('litewait.directives', []);
+	angular.module('litewait.ui', ['ui.bootstrap', 'litewait.directives']);
+	angular.module('litewait', ['ui.router', 'litewait.services', 'litewait.ui']);
 
 })(angular);
 
+/**
+ * 
+ */
+(function () {
+    "use strict";
+    var app = angular.module('litewait');
 
-'use strict';
+    var apiBase = '/api/v1/rest';
 
-angular.module('litewait')
-    .config(function ($stateProvider) {
-        $stateProvider
-            .state('home', {
-                url: "/home",
-                templateUrl: "home/home.html"
-            });
+    app.value('RouteConfig', {
+        base: '/',
+        apiBase: apiBase,
+        properties: {
+            all: ''
+        }
     });
 
+    app.run(function($rootScope, $state) {
+        $rootScope.$on('$stateChangeError', function (_0, _1, _2, _3, _4, error) {
+            if (error) {
+                $state.go('home');
+            }
+        });
+    });
 
+    app.config(function ($httpProvider) {
+      $httpProvider.useApplyAsync(true);
+    });
+
+})();
+
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('home', {
+            	url: "",
+                views: {
+                    "@": {
+                        templateUrl: "home/home.html",
+                        controller: "homeCtrl"
+                    }
+                }
+            });
+    }
+})(angular);
+/*
+ *
+ */
+;(function (angular) {
+    angular.module('litewait.directives').directive('slideToggle', function() {  
+        return {
+            restrict: 'A',      
+            scope:{
+                isOpen: "=slideToggle"
+            },  
+            link: function(scope, element, attr) {
+                var slideDuration = parseInt(attr.slideToggleDuration, 10) || 200;      
+                scope.$watch('isOpen', function(newVal,oldVal){
+                    if(newVal !== oldVal){ 
+                        element.stop().slideToggle(slideDuration);
+                    }
+                });
+            }
+        };  
+    });
+})(angular);
+/*
+ *
+ */
+;(function (angular) {
+	'use strict';
+	angular.module('litewait.ui').controller('homeCtrl', homeCtrl);
+
+	homeCtrl.$inject = ['$scope'];
+
+	function homeCtrl($scope) {
+		$scope.myInterval = 1000;
+  		$scope.noWrapSlides = false;
+		$scope.slides = [{
+			active: true,
+			id: 0,
+			data:[
+			{
+				image: 'img/feature-location-1.jpg',
+				text: 'Los Angeles; California Dummy text for testing',
+				offerText: '25% Off'
+			},
+			{
+				image: 'img/feature-location-2.jpg',
+				text: 'Los Angeles; California Dummy text for testing',
+				offerText: '25% Off'
+			},
+			{
+				image: 'img/feature-location-1.jpg',
+				text: 'Los Angeles; California Dummy text for testing',
+				offerText: '25% Off'
+			},
+			{
+				image: 'img/feature-location-2.jpg',
+				text: 'Los Angeles; California Dummy text for testing',
+				offerText: '25% Off'
+			}]
+			
+		},
+		{
+			active: false,
+			id: 2,
+			data:[
+			{
+				image: 'img/feature-location-2.jpg',
+				text: 'Los Angeles; California Dummy text for testing',
+				offerText: '25% Off'
+			},
+			{
+				image: 'img/feature-location-1.jpg',
+				text: 'Los Angeles; California Dummy text for testing',
+				offerText: '25% Off'
+			},
+			{
+				image: 'img/feature-location-2.jpg',
+				text: 'Los Angeles; California Dummy text for testing',
+				offerText: '25% Off'
+			},
+			{
+				image: 'img/feature-location-1.jpg',
+				text: 'Los Angeles; California Dummy text for testing',
+				offerText: '25% Off'
+			}]
+			
+		},
+		{
+			active: false,
+			id: 1,
+			data:[
+			{
+				image: 'img/feature-location-1.jpg',
+				text: 'Los Angeles; California Dummy text for testing',
+				offerText: '25% Off'
+			},
+			{
+				image: 'img/feature-location-2.jpg',
+				text: 'Los Angeles; California Dummy text for testing',
+				offerText: '25% Off'
+			},
+			{
+				image: 'img/feature-location-1.jpg',
+				text: 'Los Angeles; California Dummy text for testing',
+				offerText: '25% Off'
+			},
+			{
+				image: 'img/feature-location-2.jpg',
+				text: 'Los Angeles; California Dummy text for testing',
+				offerText: '25% Off'
+			}]
+			
+		}];
+	}
+})(angular);
+/*
+ *
+ */
+;(function(angular) {
+	'use strict';
+
+	angular.module('litewait.ui').controller('navbarCtrl', navbarCtrl);
+
+	navbarCtrl.$inject = ['$scope', '$q', '$state', '$uibModal', 'User', 'AuthService', 'PubSub'];
+
+	function navbarCtrl($scope, $q, $state, $uibModal, User, AuthService, PubSub) {
+		$scope.user = User;
+		$scope.auth = AuthService;
+		$scope.notifyToggle = false;
+		$scope.signin = true;
+
+		$scope.openUserModal = openUserModal;
+		$scope.openSignUpModal = openSignUpModal;
+		$scope.logout = logout;
+		$scope.go = go;
+
+		function openUserModal() {
+			$scope.signin = true;
+			userModal();
+		}
+
+		function openSignUpModal() {
+			$scope.signin = false;
+			userModal();
+		}
+
+		function logout() {
+        	AuthService.logout().then(function() {
+        		$state.go('home');
+        	}, function() {
+
+        	});
+        }
+
+        function go(state) {
+        	$state.go(state);
+        }
+
+		function userModal() {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'userModal.html',
+                backdrop: 'static',
+                size: 'lg',
+                windowClass: 'signin-modal',
+                keyboard: false,
+                scope: $scope,
+                controller: function($scope, $uibModalInstance, PubSub, AuthService) {
+                    $scope.modalProps = {};
+                    $scope.modalProps.signin = $scope.$parent.signin;
+                    $scope.modalProps.username = '';
+                    $scope.modalProps.password = '';
+                    $scope.modalProps.login = login;
+                    $scope.modalProps.logout = logout;
+
+                    function login() {
+                    	AuthService.login($scope.modalProps.username, $scope.modalProps.password).then(function(data) {
+                    		console.log(data);
+                    		$scope.modalProps.close();
+                    	}, function(error) {
+
+                    	});
+                    }
+
+                    $scope.modalProps.close = function() {
+                        $uibModalInstance.close();
+                    };
+                }
+            });
+        }
+	}
+})(angular);
+/*
+ *
+ */
+;(function(angular) {
+	'use strict';
+
+	angular.module('litewait.ui').controller('myOrderCtrl', myOrderCtrl);
+
+	myOrderCtrl.$inject = ['$scope', 'authentication'];
+
+	function myOrderCtrl($scope, authentication) {
+		console.log(authentication);
+		// TODO: Need to change things dynamically
+	}
+
+
+})(angular);
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('order', {
+                abstract: true
+            })
+            .state('order.myorder', {
+            	url: "/myorder",
+                views: {
+                    "@": {
+                        templateUrl: "orders/myorder.html",
+                        controller: "myOrderCtrl"
+                    }
+                },
+                resolve: {
+                    authentication: function (AuthService, $q, $timeout) {
+                        var deferred = $q.defer();
+                        
+                        var handler = $timeout(function() {
+                            var auth = AuthService.isAuthenticated();
+                            if (auth) {
+                                deferred.resolve(true);
+                            } else {
+                                deferred.reject(true);
+                            }
+                            $timeout.cancel(handler);
+                        }, 0);
+                        
+                        return deferred.promise;
+                    }
+                }
+            });
+    }
+})(angular);
+/**
+ *
+ */
+;(function(angular){
+
+    'use strict';
+
+    angular.module('litewait.services')
+        .constant('AUTH_EVENTS', {
+            loginSuccess: 'auth:login-success',
+            loginFailed: 'auth:login-failed',
+            logoutSuccess: 'auth:logout-success',
+            sessionTimeout: 'auth:session-timeout',
+            notAuthenticated: 'auth:not-authenticated',
+            notAuthorized: 'auth:not-authorized'
+        })
+        .factory('User', User)
+        .config(config)
+        .factory('AuthInterceptor', AuthInterceptor)
+        .provider('AuthService', AuthService);
+
+    config.$inject = ['$httpProvider'];
+    AuthInterceptor.$inject = ['$rootScope', '$q', 'AUTH_EVENTS'];
+
+    function User () {
+
+        var sessionUser = {
+            id: 0,
+            isLoggedIn: false,
+            username: '',
+            role: null,
+            name: 'User',
+            data: {}
+        };
+
+
+        sessionUser.assign = function(user) {
+            if (user) {
+                angular.extend(sessionUser, user);
+            } else {
+                sessionUser.clear();
+            }
+        };
+
+        sessionUser.clear = function() {
+            sessionUser.id = 0;
+            sessionUser.name = 'User';
+            sessionUser.role = '';
+            sessionUser.username = '';
+            sessionUser.isLoggedIn = false;
+            sessionUser.data = {};
+        };
+
+        return sessionUser;
+    }
+
+    function config($httpProvider) {
+        $httpProvider.interceptors.push([
+            '$injector',
+            function($injector) {
+                return $injector.get('AuthInterceptor');
+            }
+        ]);
+    }
+
+    function AuthInterceptor($rootScope, $q, AUTH_EVENTS) {
+        return {
+            responseError: function(response) {
+                if (response.status === 401) {
+                    $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, response);
+                }
+                if (response.status === 403) {
+                    $rootScope.$broadcast(AUTH_EVENTS.notAuthorized, response);
+                }
+                if (response.status === 419 || response.status === 440) {
+                    $rootScope.$broadcast(AUTH_EVENTS.sessionTimeout, response);
+                }
+                return $q.reject(response);
+            }
+        };
+    }
+
+    function AuthService () {
+
+        var API_KEY_HEADER = 'X-Auth-Token',
+            AUTH_ENDPOINT = '/login',
+            WHOAMI_ENDPOINT = '/auth',
+            REGISTER_ENDPOINT = '/user',
+            LOGOUT_ENDPOINT = '/logout';
+
+        this.$get = [
+            '$q', '$rootScope', '$http', 'User', 'RouteConfig', 'AUTH_EVENTS',
+
+            function($q, $rootScope, $http, User, RouteConfig, AUTH_EVENTS) {
+
+                var TOKEN_KEY = 'AUTH:TOKEN';
+                var session = window.sessionStorage;
+
+                var getUrl = function(path) {
+                    return RouteConfig.apiBase + path;
+                };
+
+                var removeTokenHeader = function() {
+                    if ($http.defaults.headers.common[API_KEY_HEADER]) {
+                        delete $http.defaults.headers.common[API_KEY_HEADER];
+                    }
+                };
+
+                var raise = function(evt, data) {
+                    $rootScope.$broadcast(evt, data);
+                };
+
+                var setToken = function(token) {
+                    if (token) {
+                        session.setItem(TOKEN_KEY, token);
+                        setTokenInHeader(token);
+                    } else {
+                        session.removeItem(TOKEN_KEY);
+                        removeTokenHeader();
+                    }
+                };
+
+
+                var getToken = function() {
+                    return session.getItem(TOKEN_KEY);
+                };
+
+                var reloadUser = function(token) {
+                    var deferred = $q.defer(),
+                        authUrl = getUrl(WHOAMI_ENDPOINT);
+
+                    var data = {};
+                    deferred.resolve(User);
+
+                    /*
+                    $http({
+                        method: 'GET',
+                        url: authUrl,
+                        data: data
+                    }).success(function(data) {
+                        data.isLoggedIn = true;
+                        User.assign(data);
+                        setToken(token);
+                        deferred.resolve(User);
+                    }).error(function(reason) {
+                        // clear user, clear token
+                        setToken(null);
+                        User.clear();
+                        deferred.reject(reason);
+                    });
+                    */
+                    return deferred.promise;
+                };
+
+                var setTokenInHeader = function(token) {
+                    token = token || getToken();
+                    if (token) {
+                        $http.defaults.headers.common[API_KEY_HEADER] = token;
+                        if (!User.isLoggedIn) {
+                            reloadUser(token);
+                        }
+                    }
+                };
+
+                // If the browser reloads, reset auth token in header if user was logged in before the reload
+                setTokenInHeader();
+
+                var service = {
+                    API_KEY_HEADER: API_KEY_HEADER,
+                    isAuthenticated: function() {
+                        return !!service.getAuthToken();
+                    },
+                    register: function(user) {
+                        var params = user ? {
+                                params: user
+                            } : {},
+                            endpoint = getUrl(REGISTER_ENDPOINT);
+
+                        return $http.post(endpoint, params).success(function(res) {
+                            // Think this is wrong. We're not actually logged in
+                            User.assign(res);
+                            return res;
+                        });
+                    },
+                    login: function(username, password) {
+                        var authUrl = getUrl(AUTH_ENDPOINT),
+                            params = {
+                                user: username,
+                                user_password: password
+                            },
+                            deferred = $q.defer();
+
+                        var token = 'test-token';
+                        var data = {
+                            id: 1,
+                            isLoggedIn: true,
+                            username: username,
+                            role: 'consumer',
+                            name: 'John Doe',
+                            data: {}
+                        };
+                            
+                        User.assign(data);
+                        setToken('secret token');
+                        raise(AUTH_EVENTS.loginSuccess, User);
+                        deferred.resolve(User);
+
+                        return deferred.promise;
+
+                        /*return $http({
+                            method: 'POST',
+                            url: authUrl,
+                            data: params
+                        }).success(function(data, status, headers) {
+                            var token = headers(API_KEY_HEADER);
+                            data.isLoggedIn = true;
+                            User.assign(data);
+                            setToken(token);
+                            raise(AUTH_EVENTS.loginSuccess, User);
+                            deferred.resolve(User);
+                        }).error(function(reason) {
+                            setToken(null);
+                            User.clear();
+                            raise(AUTH_EVENTS.loginFailure, params);
+                            deferred.reject(reason);
+                        });*/
+                    },
+                    logout: function() {
+                        var endpoint = getUrl(LOGOUT_ENDPOINT);
+                        var deferred = $q.defer();
+
+                        var saveUser = _.clone(User);
+
+                        setToken(null);
+                        User.clear();
+                        raise(AUTH_EVENTS.logoutSuccess, saveUser);
+                        deferred.resolve(true);
+
+                        return deferred.promise;
+
+                        /*return $http.post(endpoint).success(function() {
+                            var saveUser = _.clone(User);
+                            setToken(null);
+                            User.clear();
+                            raise(AUTH_EVENTS.logoutSuccess, saveUser);
+                            return true;
+                        });*/
+                    },
+                    getAuthToken: function() {
+                        return getToken();
+                    }
+                };
+
+                return service;
+            }
+
+        ];
+
+    }
+
+})(angular);
+/**
+ *
+ */
+;(function (angular) {
+    'use strict';
+    angular.module('litewait.services').factory('PubSub', PubSub);
+
+    PubSub.$inject = ['$q', '$rootScope'];
+
+    function PubSub($q, $rootScope) {
+
+        return {
+
+            publish: function(name, args) {
+
+                if (!$rootScope.$$listeners[name]) {
+                    return $q.when([]);
+                }
+                
+                var deferred = [];
+                for (var i = 0; i < $rootScope.$$listeners[name].length; i++) {
+                    deferred.push($q.defer());
+                }
+                
+                var eventArgs = {
+                    args: args,
+                    reject: function(a) {
+                        deferred.pop().reject(a);
+                    },
+                    resolve: function(a) {
+                        deferred.pop().resolve(a);
+                    }
+                };
+
+                $rootScope.$emit(name, eventArgs);
+
+                var promises = _.map(deferred, function(p) {
+                    return p.promise;
+                });
+                return promises;
+            },
+
+            subscribe: function(name, callback, context) {
+                var unsubscribeFn  =  $rootScope.$on(name, callback),
+                    result = unsubscribeFn;
+
+                if (context && angular.isFunction(context.$on)){
+                    context.$on('$destroy', function(){
+                        unsubscribeFn();
+                    });
+                    result = function(){};
+                }
+                return result;
+            },
+
+            unsubscribe: function(handle) {
+                if (angular.isFunction(handle)) {
+                    handle();
+                }
+            }
+        };
+    }
+})(angular);
+
+
+
+/*
+ *
+ */
+;(function(angular) {
+	'use strict';
+	angular.module('litewait.ui').controller('chpwdCtrl', chpwdCtrl);
+
+	chpwdCtrl.$inject = ['$scope', 'authentication'];
+
+	function chpwdCtrl($scope, authentication) {
+		
+	}
+})(angular);
+/*
+ *
+ */
+;(function(angular) {
+	'use strict';
+	angular.module('litewait.ui').controller('profileCtrl', profileCtrl);
+
+	profileCtrl.$inject = ['$scope', 'authentication'];
+
+	function profileCtrl($scope, authentication) {
+		
+	}
+})(angular);
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('user', {
+                abstract: true
+            })
+            .state('user.profile', {
+            	url: "/profile",
+                views: {
+                    "@": {
+                        templateUrl: "user/profile.html",
+                        controller: "profileCtrl"
+                    }
+                },
+                resolve: {
+                    authentication: function (AuthService, $q, $timeout) {
+                        var deferred = $q.defer();
+                        
+                        var handler = $timeout(function() {
+                            var auth = AuthService.isAuthenticated();
+                            if (auth) {
+                                deferred.resolve(true);
+                            } else {
+                                deferred.reject(true);
+                            }
+                            $timeout.cancel(handler);
+                        }, 0);
+                        
+                        return deferred.promise;
+                    }
+                }
+            }).state('user.chpwd', {
+                url: "/change-password",
+                views: {
+                    "@": {
+                        templateUrl: "user/ch-pwd.html",
+                        controller: "chpwdCtrl"
+                    }
+                },
+                resolve: {
+                    authentication: function (AuthService, $q, $timeout) {
+                        var deferred = $q.defer();
+                        
+                        var handler = $timeout(function() {
+                            var auth = AuthService.isAuthenticated();
+                            if (auth) {
+                                deferred.resolve(true);
+                            } else {
+                                deferred.reject(true);
+                            }
+                            $timeout.cancel(handler);
+                        }, 0);
+                        
+                        return deferred.promise;
+                    }
+                }
+            });
+    }
+})(angular);
