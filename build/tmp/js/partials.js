@@ -166,111 +166,6 @@ try {
   module = angular.module('litewait.ui', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('orders/myorder.html',
-    '<div class="container my-order-wrap">\n' +
-    '         \n' +
-    '   <div class="col-md-12 my-order">\n' +
-    '   	<h1>My Orders</h1>\n' +
-    '      <div class="row">\n' +
-    '         <div class="col-md-3">\n' +
-    '            <div class="filter">\n' +
-    '               <ul>\n' +
-    '                  <li>\n' +
-    '                     <label>Filters</label>\n' +
-    '                  </li>\n' +
-    '                  <li>\n' +
-    '                     <label>Status</label>\n' +
-    '                     <div class="form-group">\n' +
-    '                        <div class="checkbox">\n' +
-    '                           <label>\n' +
-    '                           <input type="checkbox" value="">\n' +
-    '                           In-progress</label>\n' +
-    '                        </div>\n' +
-    '                        <div class="checkbox">\n' +
-    '                           <label>\n' +
-    '                           <input type="checkbox" value="">\n' +
-    '                           Ready for pick-up</label>\n' +
-    '                        </div>\n' +
-    '                        <div class="checkbox">\n' +
-    '                           <label>\n' +
-    '                           <input type="checkbox" value="">\n' +
-    '                           Complete</label>\n' +
-    '                        </div>\n' +
-    '                        \n' +
-    '                     </div>\n' +
-    '                  </li>\n' +
-    '               </ul>\n' +
-    '            </div>\n' +
-    '         </div>\n' +
-    '         <div class="col-md-9 order-status">\n' +
-    '            <div class="table-responsive">\n' +
-    '               \n' +
-    '\n' +
-    '                     <table class="table">\n' +
-    '                        <thead>\n' +
-    '                           <tr>\n' +
-    '                              <th>Date / Time</th>\n' +
-    '                              <th>Order ID</th>\n' +
-    '                              <th>Merchant</th>\n' +
-    '                              <th>Order Status</th>\n' +
-    '                              <th>&nbsp;</th>\n' +
-    '                           </tr>\n' +
-    '                        </thead>\n' +
-    '                        <tbody>\n' +
-    '                           <tr>\n' +
-    '                              <td>10/26/2015 12:30 PM </td>\n' +
-    '                              <td><a class="orderid" href="shopping-cart-summary.html">4269-2215</a></td>\n' +
-    '                              <td><a href="shop-detail-menu.html" class="merchant">Charlie\'s Sandwich Shoppe</a></td>\n' +
-    '                              <td class="inprogress"> In progress</td>\n' +
-    '                              <td>&nbsp;</td>\n' +
-    '                           </tr>\n' +
-    '                           <tr>\n' +
-    '                              <td>10/26/2015 12:30 PM </td>\n' +
-    '                              <td><a class="orderid" href="shopping-cart-summary.html">4269-2215</a></td>\n' +
-    '                              <td><a href="shop-detail-menu.html" class="merchant">Charlie\'s Sandwich Shoppe</a></td>\n' +
-    '                              <td class="ready-pickup"> Ready for pick-up</td>\n' +
-    '                              <td>&nbsp;</td>\n' +
-    '                           </tr>\n' +
-    '                           <tr>\n' +
-    '                              <td>10/26/2015 12:30 PM </td>\n' +
-    '                              <td><a class="orderid" href="shopping-cart-summary.html">4269-2215</a></td>\n' +
-    '                              <td><a href="shop-detail-menu.html" class="merchant">Charlie\'s Sandwich Shoppe</a></td>\n' +
-    '                              <td class="complete"> Completed</td>\n' +
-    '                              <td>&nbsp;</td>\n' +
-    '                           </tr>\n' +
-    '                           <tr>\n' +
-    '                              <td>10/26/2015 12:30 PM </td>\n' +
-    '                              <td><a class="orderid" href="shopping-cart-summary.html">4269-2215</a></td>\n' +
-    '                              <td><a href="shop-detail-menu.html" class="merchant">Charlie\'s Sandwich Shoppe</a></td>\n' +
-    '                              <td class="complete"> Completed</td>\n' +
-    '                              <td>&nbsp;</td>\n' +
-    '                           </tr>\n' +
-    '                           <tr>\n' +
-    '                              <td>10/26/2015 12:30 PM </td>\n' +
-    '                              <td><a class="orderid" href="shopping-cart-summary.html">4269-2215</a></td>\n' +
-    '                              <td><a href="shop-detail-menu.html" class="merchant">Charlie\'s Sandwich Shoppe</a></td>\n' +
-    '                              <td class="complete"> Completed</td>\n' +
-    '                              <td>&nbsp;</td>\n' +
-    '                           </tr>\n' +
-    '                        </tbody>\n' +
-    '                     </table>\n' +
-    '\n' +
-    '            </div>\n' +
-    '         </div>\n' +
-    '         <div class="clearfix"></div>\n' +
-    '      </div>\n' +
-    '   </div>\n' +
-    '</div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
   $templateCache.put('user/ch-pwd.html',
     '<div class="container change-password">\n' +
     '<h1>Change Password</h1>\n' +
@@ -431,6 +326,111 @@ module.run(['$templateCache', function($templateCache) {
     '               </div>\n' +
     '            </div>\n' +
     '   \n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('orders/myorder.html',
+    '<div class="container my-order-wrap">\n' +
+    '         \n' +
+    '   <div class="col-md-12 my-order">\n' +
+    '   	<h1>My Orders</h1>\n' +
+    '      <div class="row">\n' +
+    '         <div class="col-md-3">\n' +
+    '            <div class="filter">\n' +
+    '               <ul>\n' +
+    '                  <li>\n' +
+    '                     <label>Filters</label>\n' +
+    '                  </li>\n' +
+    '                  <li>\n' +
+    '                     <label>Status</label>\n' +
+    '                     <div class="form-group">\n' +
+    '                        <div class="checkbox">\n' +
+    '                           <label>\n' +
+    '                           <input type="checkbox" value="">\n' +
+    '                           In-progress</label>\n' +
+    '                        </div>\n' +
+    '                        <div class="checkbox">\n' +
+    '                           <label>\n' +
+    '                           <input type="checkbox" value="">\n' +
+    '                           Ready for pick-up</label>\n' +
+    '                        </div>\n' +
+    '                        <div class="checkbox">\n' +
+    '                           <label>\n' +
+    '                           <input type="checkbox" value="">\n' +
+    '                           Complete</label>\n' +
+    '                        </div>\n' +
+    '                        \n' +
+    '                     </div>\n' +
+    '                  </li>\n' +
+    '               </ul>\n' +
+    '            </div>\n' +
+    '         </div>\n' +
+    '         <div class="col-md-9 order-status">\n' +
+    '            <div class="table-responsive">\n' +
+    '               \n' +
+    '\n' +
+    '                     <table class="table">\n' +
+    '                        <thead>\n' +
+    '                           <tr>\n' +
+    '                              <th>Date / Time</th>\n' +
+    '                              <th>Order ID</th>\n' +
+    '                              <th>Merchant</th>\n' +
+    '                              <th>Order Status</th>\n' +
+    '                              <th>&nbsp;</th>\n' +
+    '                           </tr>\n' +
+    '                        </thead>\n' +
+    '                        <tbody>\n' +
+    '                           <tr>\n' +
+    '                              <td>10/26/2015 12:30 PM </td>\n' +
+    '                              <td><a class="orderid" href="shopping-cart-summary.html">4269-2215</a></td>\n' +
+    '                              <td><a href="shop-detail-menu.html" class="merchant">Charlie\'s Sandwich Shoppe</a></td>\n' +
+    '                              <td class="inprogress"> In progress</td>\n' +
+    '                              <td>&nbsp;</td>\n' +
+    '                           </tr>\n' +
+    '                           <tr>\n' +
+    '                              <td>10/26/2015 12:30 PM </td>\n' +
+    '                              <td><a class="orderid" href="shopping-cart-summary.html">4269-2215</a></td>\n' +
+    '                              <td><a href="shop-detail-menu.html" class="merchant">Charlie\'s Sandwich Shoppe</a></td>\n' +
+    '                              <td class="ready-pickup"> Ready for pick-up</td>\n' +
+    '                              <td>&nbsp;</td>\n' +
+    '                           </tr>\n' +
+    '                           <tr>\n' +
+    '                              <td>10/26/2015 12:30 PM </td>\n' +
+    '                              <td><a class="orderid" href="shopping-cart-summary.html">4269-2215</a></td>\n' +
+    '                              <td><a href="shop-detail-menu.html" class="merchant">Charlie\'s Sandwich Shoppe</a></td>\n' +
+    '                              <td class="complete"> Completed</td>\n' +
+    '                              <td>&nbsp;</td>\n' +
+    '                           </tr>\n' +
+    '                           <tr>\n' +
+    '                              <td>10/26/2015 12:30 PM </td>\n' +
+    '                              <td><a class="orderid" href="shopping-cart-summary.html">4269-2215</a></td>\n' +
+    '                              <td><a href="shop-detail-menu.html" class="merchant">Charlie\'s Sandwich Shoppe</a></td>\n' +
+    '                              <td class="complete"> Completed</td>\n' +
+    '                              <td>&nbsp;</td>\n' +
+    '                           </tr>\n' +
+    '                           <tr>\n' +
+    '                              <td>10/26/2015 12:30 PM </td>\n' +
+    '                              <td><a class="orderid" href="shopping-cart-summary.html">4269-2215</a></td>\n' +
+    '                              <td><a href="shop-detail-menu.html" class="merchant">Charlie\'s Sandwich Shoppe</a></td>\n' +
+    '                              <td class="complete"> Completed</td>\n' +
+    '                              <td>&nbsp;</td>\n' +
+    '                           </tr>\n' +
+    '                        </tbody>\n' +
+    '                     </table>\n' +
+    '\n' +
+    '            </div>\n' +
+    '         </div>\n' +
+    '         <div class="clearfix"></div>\n' +
+    '      </div>\n' +
+    '   </div>\n' +
     '</div>');
 }]);
 })();
