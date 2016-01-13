@@ -2823,27 +2823,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
  *
  */
 ;(function (angular) {
-    angular.module('litewait.directives').directive('slideToggle', function() {  
-        return {
-            restrict: 'A',      
-            scope:{
-                isOpen: "=slideToggle"
-            },  
-            link: function(scope, element, attr) {
-                var slideDuration = parseInt(attr.slideToggleDuration, 10) || 200;      
-                scope.$watch('isOpen', function(newVal,oldVal){
-                    if(newVal !== oldVal){ 
-                        element.stop().slideToggle(slideDuration);
-                    }
-                });
-            }
-        };  
-    });
-})(angular);
-/*
- *
- */
-;(function (angular) {
 	'use strict';
 	angular.module('litewait.ui').controller('homeCtrl', homeCtrl);
 
@@ -2931,6 +2910,27 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			
 		}];
 	}
+})(angular);
+/*
+ *
+ */
+;(function (angular) {
+    angular.module('litewait.directives').directive('slideToggle', function() {  
+        return {
+            restrict: 'A',      
+            scope:{
+                isOpen: "=slideToggle"
+            },  
+            link: function(scope, element, attr) {
+                var slideDuration = parseInt(attr.slideToggleDuration, 10) || 200;      
+                scope.$watch('isOpen', function(newVal,oldVal){
+                    if(newVal !== oldVal){ 
+                        element.stop().slideToggle(slideDuration);
+                    }
+                });
+            }
+        };  
+    });
 })(angular);
 /*
  *
@@ -3044,6 +3044,98 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     "@": {
                         templateUrl: "orders/myorder.html",
                         controller: "myOrderCtrl"
+                    }
+                },
+                resolve: {
+                    authentication: function (AuthService, $q, $timeout) {
+                        var deferred = $q.defer();
+                        
+                        var handler = $timeout(function() {
+                            var auth = AuthService.isAuthenticated();
+                            if (auth) {
+                                deferred.resolve(true);
+                            } else {
+                                deferred.reject(true);
+                            }
+                            $timeout.cancel(handler);
+                        }, 0);
+                        
+                        return deferred.promise;
+                    }
+                }
+            });
+    }
+})(angular);
+/*
+ *
+ */
+;(function(angular) {
+	'use strict';
+	angular.module('litewait.ui').controller('chpwdCtrl', chpwdCtrl);
+
+	chpwdCtrl.$inject = ['$scope', 'authentication'];
+
+	function chpwdCtrl($scope, authentication) {
+		
+	}
+})(angular);
+/*
+ *
+ */
+;(function(angular) {
+	'use strict';
+	angular.module('litewait.ui').controller('profileCtrl', profileCtrl);
+
+	profileCtrl.$inject = ['$scope', 'authentication'];
+
+	function profileCtrl($scope, authentication) {
+		
+	}
+})(angular);
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('user', {
+                abstract: true
+            })
+            .state('user.profile', {
+            	url: "/profile",
+                views: {
+                    "@": {
+                        templateUrl: "user/profile.html",
+                        controller: "profileCtrl"
+                    }
+                },
+                resolve: {
+                    authentication: function (AuthService, $q, $timeout) {
+                        var deferred = $q.defer();
+                        
+                        var handler = $timeout(function() {
+                            var auth = AuthService.isAuthenticated();
+                            if (auth) {
+                                deferred.resolve(true);
+                            } else {
+                                deferred.reject(true);
+                            }
+                            $timeout.cancel(handler);
+                        }, 0);
+                        
+                        return deferred.promise;
+                    }
+                }
+            }).state('user.chpwd', {
+                url: "/change-password",
+                views: {
+                    "@": {
+                        templateUrl: "user/ch-pwd.html",
+                        controller: "chpwdCtrl"
                     }
                 },
                 resolve: {
@@ -3392,96 +3484,3 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 })(angular);
 
 
-
-/*
- *
- */
-;(function(angular) {
-	'use strict';
-	angular.module('litewait.ui').controller('chpwdCtrl', chpwdCtrl);
-
-	chpwdCtrl.$inject = ['$scope', 'authentication'];
-
-	function chpwdCtrl($scope, authentication) {
-		
-	}
-})(angular);
-/*
- *
- */
-;(function(angular) {
-	'use strict';
-	angular.module('litewait.ui').controller('profileCtrl', profileCtrl);
-
-	profileCtrl.$inject = ['$scope', 'authentication'];
-
-	function profileCtrl($scope, authentication) {
-		
-	}
-})(angular);
-
-;(function(angular) {
-    'use strict';
-
-    angular.module('litewait').config(config);
-
-    config.$inject = ['$stateProvider'];
-
-    function config($stateProvider) {
-        $stateProvider
-            .state('user', {
-                abstract: true
-            })
-            .state('user.profile', {
-            	url: "/profile",
-                views: {
-                    "@": {
-                        templateUrl: "user/profile.html",
-                        controller: "profileCtrl"
-                    }
-                },
-                resolve: {
-                    authentication: function (AuthService, $q, $timeout) {
-                        var deferred = $q.defer();
-                        
-                        var handler = $timeout(function() {
-                            var auth = AuthService.isAuthenticated();
-                            if (auth) {
-                                deferred.resolve(true);
-                            } else {
-                                deferred.reject(true);
-                            }
-                            $timeout.cancel(handler);
-                        }, 0);
-                        
-                        return deferred.promise;
-                    }
-                }
-            }).state('user.chpwd', {
-                url: "/change-password",
-                views: {
-                    "@": {
-                        templateUrl: "user/ch-pwd.html",
-                        controller: "chpwdCtrl"
-                    }
-                },
-                resolve: {
-                    authentication: function (AuthService, $q, $timeout) {
-                        var deferred = $q.defer();
-                        
-                        var handler = $timeout(function() {
-                            var auth = AuthService.isAuthenticated();
-                            if (auth) {
-                                deferred.resolve(true);
-                            } else {
-                                deferred.reject(true);
-                            }
-                            $timeout.cancel(handler);
-                        }, 0);
-                        
-                        return deferred.promise;
-                    }
-                }
-            });
-    }
-})(angular);
