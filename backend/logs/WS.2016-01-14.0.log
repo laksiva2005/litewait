@@ -1,0 +1,98 @@
+14 Jan 2016 21:16:56.848 WARN  o.a.cxf.bus.spring.OldSpringSupport - Import of META-INF/cxf/cxf-extension-soap.xml has been deprecated and is unnecessary.
+14 Jan 2016 21:16:57.356 INFO  org.apache.cxf.endpoint.ServerImpl - Setting the server's publish address to be /v1.0
+14 Jan 2016 21:21:09.278 WARN  o.a.cxf.bus.spring.OldSpringSupport - Import of META-INF/cxf/cxf-extension-soap.xml has been deprecated and is unnecessary.
+14 Jan 2016 21:21:09.826 INFO  org.apache.cxf.endpoint.ServerImpl - Setting the server's publish address to be /v1.0
+14 Jan 2016 21:21:10.187 INFO  o.a.c.i.LoggingOutInterceptor - Outbound Message
+---------------------------
+ID: 1
+Address: http://localhost:8080/litewait/v1.0/rest/user
+Http-Method: POST
+Content-Type: application/json
+Headers: {Accept=[application/json], Content-Type=[application/json]}
+Payload: {"user":"test","user_password":"test@123","user_mail":"mail@gmail.com","user_type":"C"}
+--------------------------------------
+14 Jan 2016 21:21:10.199 WARN  o.a.cxf.phase.PhaseInterceptorChain - Interceptor for {http://localhost:8080/litewait/v1.0/rest/user}WebClient has thrown exception, unwinding now
+org.apache.cxf.interceptor.Fault: Could not send Message.
+	at org.apache.cxf.interceptor.MessageSenderInterceptor$MessageSenderEndingInterceptor.handleMessage(MessageSenderInterceptor.java:64) ~[cxf-api-2.7.4.jar:2.7.4]
+	at org.apache.cxf.phase.PhaseInterceptorChain.doIntercept(PhaseInterceptorChain.java:271) ~[cxf-api-2.7.4.jar:2.7.4]
+	at org.apache.cxf.jaxrs.client.AbstractClient.doRunInterceptorChain(AbstractClient.java:581) [cxf-rt-frontend-jaxrs-2.7.4.jar:2.7.4]
+	at org.apache.cxf.jaxrs.client.WebClient.doChainedInvocation(WebClient.java:998) [cxf-rt-frontend-jaxrs-2.7.4.jar:2.7.4]
+	at org.apache.cxf.jaxrs.client.WebClient.doInvoke(WebClient.java:836) [cxf-rt-frontend-jaxrs-2.7.4.jar:2.7.4]
+	at org.apache.cxf.jaxrs.client.WebClient.doInvoke(WebClient.java:810) [cxf-rt-frontend-jaxrs-2.7.4.jar:2.7.4]
+	at org.apache.cxf.jaxrs.client.WebClient.invoke(WebClient.java:275) [cxf-rt-frontend-jaxrs-2.7.4.jar:2.7.4]
+	at org.apache.cxf.jaxrs.client.WebClient.post(WebClient.java:284) [cxf-rt-frontend-jaxrs-2.7.4.jar:2.7.4]
+	at com.litewait.test.RestServiceTest.webClientTest(RestServiceTest.java:264) [test-classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_60]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:1.8.0_60]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.8.0_60]
+	at java.lang.reflect.Method.invoke(Method.java:497) ~[na:1.8.0_60]
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44) [junit-4.8.2.jar:na]
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15) [junit-4.8.2.jar:na]
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41) [junit-4.8.2.jar:na]
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20) [junit-4.8.2.jar:na]
+	at org.springframework.test.context.junit4.statements.RunBeforeTestMethodCallbacks.evaluate(RunBeforeTestMethodCallbacks.java:74) [spring-test-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.springframework.test.context.junit4.statements.RunAfterTestMethodCallbacks.evaluate(RunAfterTestMethodCallbacks.java:83) [spring-test-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.springframework.test.context.junit4.statements.SpringRepeat.evaluate(SpringRepeat.java:72) [spring-test-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:231) [spring-test-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:49) [junit-4.8.2.jar:na]
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193) [junit-4.8.2.jar:na]
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52) [junit-4.8.2.jar:na]
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191) [junit-4.8.2.jar:na]
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42) [junit-4.8.2.jar:na]
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184) [junit-4.8.2.jar:na]
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61) [spring-test-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:71) [spring-test-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236) [junit-4.8.2.jar:na]
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:174) [spring-test-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.apache.maven.surefire.junit4.JUnit4TestSet.execute(JUnit4TestSet.java:53) [surefire-junit4-2.10.jar:2.10]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:123) [surefire-junit4-2.10.jar:2.10]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:104) [surefire-junit4-2.10.jar:2.10]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_60]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:1.8.0_60]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.8.0_60]
+	at java.lang.reflect.Method.invoke(Method.java:497) ~[na:1.8.0_60]
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:164) [surefire-api-2.10.jar:2.10]
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:110) [surefire-booter-2.10.jar:2.10]
+	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:175) [surefire-booter-2.10.jar:2.10]
+	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcessWhenForked(SurefireStarter.java:107) [surefire-booter-2.10.jar:2.10]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:68) [surefire-booter-2.10.jar:2.10]
+Caused by: java.net.ConnectException: ConnectException invoking http://localhost:8080/litewait/v1.0/rest/user: Connection refused
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method) ~[na:1.8.0_60]
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62) ~[na:1.8.0_60]
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45) ~[na:1.8.0_60]
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:422) ~[na:1.8.0_60]
+	at org.apache.cxf.transport.http.HTTPConduit$WrappedOutputStream.mapException(HTTPConduit.java:1338) ~[cxf-rt-transports-http-2.7.4.jar:2.7.4]
+	at org.apache.cxf.transport.http.HTTPConduit$WrappedOutputStream.close(HTTPConduit.java:1322) ~[cxf-rt-transports-http-2.7.4.jar:2.7.4]
+	at org.apache.cxf.io.CacheAndWriteOutputStream.postClose(CacheAndWriteOutputStream.java:50) ~[cxf-api-2.7.4.jar:2.7.4]
+	at org.apache.cxf.io.CachedOutputStream.close(CachedOutputStream.java:223) ~[cxf-api-2.7.4.jar:2.7.4]
+	at org.apache.cxf.transport.AbstractConduit.close(AbstractConduit.java:56) ~[cxf-api-2.7.4.jar:2.7.4]
+	at org.apache.cxf.transport.http.HTTPConduit.close(HTTPConduit.java:622) ~[cxf-rt-transports-http-2.7.4.jar:2.7.4]
+	at org.apache.cxf.interceptor.MessageSenderInterceptor$MessageSenderEndingInterceptor.handleMessage(MessageSenderInterceptor.java:62) ~[cxf-api-2.7.4.jar:2.7.4]
+	... 42 common frames omitted
+Caused by: java.net.ConnectException: Connection refused
+	at java.net.PlainSocketImpl.socketConnect(Native Method) ~[na:1.8.0_60]
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350) ~[na:1.8.0_60]
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206) ~[na:1.8.0_60]
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188) ~[na:1.8.0_60]
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392) ~[na:1.8.0_60]
+	at java.net.Socket.connect(Socket.java:589) ~[na:1.8.0_60]
+	at sun.net.NetworkClient.doConnect(NetworkClient.java:175) ~[na:1.8.0_60]
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:432) ~[na:1.8.0_60]
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:527) ~[na:1.8.0_60]
+	at sun.net.www.http.HttpClient.<init>(HttpClient.java:211) ~[na:1.8.0_60]
+	at sun.net.www.http.HttpClient.New(HttpClient.java:308) ~[na:1.8.0_60]
+	at sun.net.www.http.HttpClient.New(HttpClient.java:326) ~[na:1.8.0_60]
+	at sun.net.www.protocol.http.HttpURLConnection.getNewHttpClient(HttpURLConnection.java:1168) ~[na:1.8.0_60]
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1104) ~[na:1.8.0_60]
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:998) ~[na:1.8.0_60]
+	at sun.net.www.protocol.http.HttpURLConnection.connect(HttpURLConnection.java:932) ~[na:1.8.0_60]
+	at sun.net.www.protocol.http.HttpURLConnection.getOutputStream0(HttpURLConnection.java:1282) ~[na:1.8.0_60]
+	at sun.net.www.protocol.http.HttpURLConnection.getOutputStream(HttpURLConnection.java:1257) ~[na:1.8.0_60]
+	at org.apache.cxf.transport.http.URLConnectionHTTPConduit$URLConnectionWrappedOutputStream.setupWrappedStream(URLConnectionHTTPConduit.java:168) ~[cxf-rt-transports-http-2.7.4.jar:2.7.4]
+	at org.apache.cxf.transport.http.HTTPConduit$WrappedOutputStream.handleHeadersTrustCaching(HTTPConduit.java:1282) ~[cxf-rt-transports-http-2.7.4.jar:2.7.4]
+	at org.apache.cxf.transport.http.HTTPConduit$WrappedOutputStream.onFirstWrite(HTTPConduit.java:1233) ~[cxf-rt-transports-http-2.7.4.jar:2.7.4]
+	at org.apache.cxf.transport.http.URLConnectionHTTPConduit$URLConnectionWrappedOutputStream.onFirstWrite(URLConnectionHTTPConduit.java:195) ~[cxf-rt-transports-http-2.7.4.jar:2.7.4]
+	at org.apache.cxf.io.AbstractWrappedOutputStream.write(AbstractWrappedOutputStream.java:47) ~[cxf-api-2.7.4.jar:2.7.4]
+	at org.apache.cxf.io.AbstractThresholdOutputStream.write(AbstractThresholdOutputStream.java:69) ~[cxf-api-2.7.4.jar:2.7.4]
+	at org.apache.cxf.transport.http.HTTPConduit$WrappedOutputStream.close(HTTPConduit.java:1295) ~[cxf-rt-transports-http-2.7.4.jar:2.7.4]
+	... 47 common frames omitted
