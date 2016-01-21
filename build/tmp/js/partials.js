@@ -5,6 +5,24 @@ try {
   module = angular.module('litewait.ui', []);
 }
 module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('html/spinner.html',
+    '<div class="spinner">\n' +
+    '  <div>\n' +
+    '    <i class="fa fa-spinner fa-spin"></i>\n' +
+    '  </div>\n' +
+    '  <div class="spinner-text">{{$message}}</div>\n' +
+    '</div>\n' +
+    '');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
   $templateCache.put('home/home.html',
     '	<div class="container-fluid banner-wrap" ng-if="!user.isLoggedIn">\n' +
     '    	<div class="banner">\n' +

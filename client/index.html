@@ -18,6 +18,7 @@
 
   <body ng-app="litewait" ng-cloak>
     <div ng-controller="navbarCtrl">
+    <div cg-busy="spinner.spinner" class="spinner-wrapper"></div>
     <div class="header-wrap">
     <header class="container">
       <div>
@@ -143,7 +144,7 @@
               <p class="joinus">New here ? <a  data-toggle="tab"  href="#signup" onclick="activaTab('signup-nav');">Join us</a></p>
           </div>
           </uib-tab>
-          <uib-tab active="!modalProps.signin">
+          <uib-tab active="modalProps.signup">
             <uib-tab-heading>
               <a href="">Signup</a>
             </uib-tab-heading>

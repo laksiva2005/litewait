@@ -6,13 +6,15 @@
 
 	angular.module('litewait.ui').controller('navbarCtrl', navbarCtrl);
 
-	navbarCtrl.$inject = ['$scope', '$q', '$state', '$uibModal', 'User', 'AuthService', 'PubSub'];
+	navbarCtrl.$inject = ['$scope', '$q', '$state', '$uibModal', 'User', 'AuthService', 'PubSub', 'Spinner', 'SPINING_EVENTS', 'HTTPEvent'];
 
-	function navbarCtrl($scope, $q, $state, $uibModal, User, AuthService, PubSub) {
+	function navbarCtrl($scope, $q, $state, $uibModal, User, AuthService, PubSub, Spinner, SPINING_EVENTS, HTTPEvent) {
 		$scope.user = User;
 		$scope.auth = AuthService;
 		$scope.notifyToggle = false;
 		$scope.signin = true;
+        $scope.signup = false;
+        $scope.spinner = Spinner;
 
 		$scope.openUserModal = openUserModal;
 		$scope.openSignUpModal = openSignUpModal;
@@ -21,11 +23,13 @@
 
 		function openUserModal() {
 			$scope.signin = true;
+            $scope.signup = false;
 			userModal();
 		}
 
 		function openSignUpModal() {
 			$scope.signin = false;
+            $scope.signup = true;
 			userModal();
 		}
 
@@ -52,10 +56,21 @@
                 controller: function($scope, $uibModalInstance, PubSub, AuthService) {
                     $scope.modalProps = {};
                     $scope.modalProps.signin = $scope.$parent.signin;
+                    $scope.modalProps.signup = $scope.$parent.signup;
                     $scope.modalProps.username = '';
                     $scope.modalProps.password = '';
+
+                    $scope.registerProps = {
+                        user: '',
+                        user_mail: '',
+                        user_password: '',
+                        user_confirm_password: '',
+                        user_type: ''
+                    };
+
                     $scope.modalProps.login = login;
-                    $scope.modalProps.logout = logout;
+                    $scope.modalProps.register = register;
+
 
                     function login() {
                     	AuthService.login($scope.modalProps.username, $scope.modalProps.password).then(function(data) {
@@ -66,11 +81,19 @@
                     	});
                     }
 
+                    function register() {
+
+                    }
+
                     $scope.modalProps.close = function() {
                         $uibModalInstance.close();
                     };
                 }
             });
         }
+
+        HTTPEvent.on(SPINING_EVENTS.SPINING, function (data) {
+            Spinner.spining(data);
+        });
 	}
 })(angular);

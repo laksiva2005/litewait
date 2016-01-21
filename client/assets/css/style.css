@@ -588,3 +588,31 @@ box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);}
 
 /* custom  added by laksiva*/
 .feature-location .carousel-indicators { display: none;}
+
+.spinner-wrapper {
+  position: initial !important;
+}
+.spinner-wrapper .spinner {
+    left: 50% !important;
+    width: 250px;
+    height: 136px;
+    top: 50% !important;
+    background: #fff;
+    position: absolute !important;
+    text-align: center;
+    padding: 20px;
+    margin-left: -125px;
+    margin-top: -68px;
+    z-index: 1002;
+    box-sizing: border-box;
+    right: initial !important;
+    bottom: initial !important;
+    
+}
+
+.spinner-wrapper .spinner .spinner-text {
+  padding-top:10px;
+}
+.spinner-wrapper .spinner .cg-busy-backdrop {
+  opacity: 0.4;
+}
