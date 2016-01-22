@@ -14,6 +14,15 @@
             notAuthenticated: 'auth:not-authenticated',
             notAuthorized: 'auth:not-authorized'
         })
+        .constant('AUTH_MSG', {
+            loginSuccess: 'User logged in successfully',
+            loginFailed: 'Invalid attempt, please check email/password',
+            registerSuccess: 'Registration success',
+            registerFailed: 'Registration failed'
+        })
+        .constant('AUTH_PROPS', {
+            'PASSWORD_PATTERN': "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!%*?&])[A-Za-z\\d$@$!%*?&]{8,}"
+        })
         .factory('User', User)
         .config(config)
         .factory('AuthInterceptor', AuthInterceptor)
@@ -28,6 +37,7 @@
             id: 0,
             isLoggedIn: false,
             username: '',
+            email: '',
             role: null,
             name: 'User',
             data: {}
@@ -36,7 +46,16 @@
 
         sessionUser.assign = function(user) {
             if (user) {
-                angular.extend(sessionUser, user);
+                var data = {};
+                data.isLoggedIn = true;
+                data.id = user.contact.mail_id;
+                data.username = user.user;
+                data.email = user.contact.mail_id;
+                data.role = 'consumer';
+                data.name = user.user_name;
+                data.data = user;
+                
+                angular.extend(sessionUser, data);
             } else {
                 sessionUser.clear();
             }
@@ -47,6 +66,7 @@
             sessionUser.name = 'User';
             sessionUser.role = '';
             sessionUser.username = '';
+            sessionUser.email = '';
             sessionUser.isLoggedIn = false;
             sessionUser.data = {};
         };
@@ -176,11 +196,7 @@
                             } : {},
                             endpoint = getUrl(REGISTER_ENDPOINT);
 
-                        return $http.post(endpoint, params).success(function(res) {
-                            // Think this is wrong. We're not actually logged in
-                            User.assign(res);
-                            return res;
-                        });
+                        return $http.post(endpoint, params);
                     },
                     login: function(username, password) {
                         var authUrl = getUrl(AUTH_ENDPOINT),
@@ -191,6 +207,7 @@
                             deferred = $q.defer();
 
                         var token = 'test-token';
+                        /*
                         var data = {
                             id: 1,
                             isLoggedIn: true,
@@ -199,31 +216,37 @@
                             name: 'John Doe',
                             data: {}
                         };
-                            
+                        
                         User.assign(data);
                         setToken('secret token');
                         raise(AUTH_EVENTS.loginSuccess, User);
                         deferred.resolve(User);
 
                         return deferred.promise;
-
-                        /*return $http({
+                        */
+                        return $http({
                             method: 'POST',
                             url: authUrl,
                             data: params
-                        }).success(function(data, status, headers) {
-                            var token = headers(API_KEY_HEADER);
-                            data.isLoggedIn = true;
-                            User.assign(data);
-                            setToken(token);
-                            raise(AUTH_EVENTS.loginSuccess, User);
-                            deferred.resolve(User);
+                        }).success(function(response, status, headers) {
+                            if (!response.code) {
+                                var token = headers(API_KEY_HEADER);
+                                User.assign(response.data);
+                                setToken(token);
+                                raise(AUTH_EVENTS.loginSuccess, User);
+                                deferred.resolve(User);
+                            } else {
+                                setToken(null);
+                                User.clear();
+                                raise(AUTH_EVENTS.loginFailure, params);
+                                deferred.reject(reason);
+                            }
                         }).error(function(reason) {
                             setToken(null);
                             User.clear();
                             raise(AUTH_EVENTS.loginFailure, params);
                             deferred.reject(reason);
-                        });*/
+                        });
                     },
                     logout: function() {
                         var endpoint = getUrl(LOGOUT_ENDPOINT);

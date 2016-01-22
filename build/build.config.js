@@ -25,7 +25,8 @@ module.exports = {
 		js: [
    			 'client/vendor/jquery/dist/jquery.js',
              'client/vendor/jquery-ui/ui/jquery-ui.js',
-             'client/vendor/angular/angular.js',       
+             'client/vendor/angular/angular.js', 
+             'client/vendor/angular-messages/angular-messages.js',      
              'client/vendor/eventemitter2/lib/eventemitter2.js',      
              'client/vendor/angular-animate/angular-animate.js',
              'client/vendor/AngularJS-Toaster/toaster.js',

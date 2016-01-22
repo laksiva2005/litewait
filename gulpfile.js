@@ -28,7 +28,8 @@ var config = require('./build/build.config.js'),
         livereload = require('gulp-livereload');
 
 
-gulp.task('default',['buildjs','buildcss','buildfonts','buildimg','buildhtml2js','buildindex','open']);
+gulp.task('default',['buildjs','buildcss','buildfonts','buildimg','buildhtml2js','buildindexdev','open']);
+gulp.task('prod',['buildjs','buildcss','buildfonts','buildimg','buildhtml2js','buildindexprod']);
 
 gulp.task('clean',function(){
     return gulp.src(config.buildDir +'/', {read:false})
@@ -70,19 +71,33 @@ gulp.task('buildhtml2js', function() {
  return gulp.src(config.clientFiles.templates)
         .pipe(ngHtml2Js({
             moduleName: pkg.name + ".ui"
-            //,prefix: "/partials"
         }))
-        /*.pipe(html2js({
-          outputModuleName: 'litewait',
-          useStrict: true,
-          base: '/test/'
-        }))*/
         .pipe(concat('partials.js'))
         .pipe(gulp.dest(config.buildDir + '/js'));
 });
 
 
-gulp.task('buildindex', function(){
+gulp.task('buildindexdev', function(){
+    var options = [
+      config.buildDir +'/css/vendor.css', 
+      config.buildDir +'/css/app.css',
+      config.buildDir +'/js/vendor.js', 
+      config.buildDir +'/js/app.js',
+      config.buildDir + '/js/partials.js',
+    ];
+
+    var destination = config.buildDir;
+
+    var ignorepath = ['/'+config.buildDir,'/'+config.distDir];
+    var indexfile  = config.clientFiles.index;
+    var target = gulp.src(indexfile);
+    var source = gulp.src(options,{read:false});
+
+    return target.pipe(inject(source)).pipe(gulp.dest(destination));
+
+});
+
+gulp.task('buildindexprod', function(){
     var options = [
       config.buildDir +'/css/vendor.css', 
       config.buildDir +'/css/app.css',
@@ -111,12 +126,6 @@ gulp.task('buildindex', function(){
     }
   )).pipe(gulp.dest(destination));
 
-    // return gulp.src(options,{read:false})
-    //            .pipe(inject(indexfile,{ ignorePath: ignorepath}))
-    //             .pipe(tap(function(file) {
-    //             file.path = path.join(file.base, path.basename(indexFile))
-    //             }))
-    //             .pipe(gulp.dest(destination));
 });
 
 gulp.task('open', ['server'], function(){
@@ -125,7 +134,6 @@ gulp.task('open', ['server'], function(){
         indexFile = folder + "/index.html",
         port = config.express.port || 80,
         open = require('gulp-open');
-        //console.log(indexexFile);
         var options = {
         uri : 'http://' + config.express.hostname + ':' + port,
         app: 'chrome'
@@ -141,5 +149,4 @@ gulp.task('open', ['server'], function(){
 gulp.task('server',function() {   
     var flags = false ? '--production' : '--debug';
     return nodemon({ script: 'server/app.js', options: flags });
-    // .on('restart', ['lint'])
 });

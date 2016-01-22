@@ -53,12 +53,13 @@
                 windowClass: 'signin-modal',
                 keyboard: false,
                 scope: $scope,
-                controller: function($scope, $uibModalInstance, PubSub, AuthService) {
+                controller: function($scope, $uibModalInstance, PubSub, AuthService, toaster, AUTH_MSG, AUTH_PROPS) {
                     $scope.modalProps = {};
                     $scope.modalProps.signin = $scope.$parent.signin;
                     $scope.modalProps.signup = $scope.$parent.signup;
                     $scope.modalProps.username = '';
                     $scope.modalProps.password = '';
+                    $scope.modalProps.passwordPattern = AUTH_PROPS.PASSWORD_PATTERN;
 
                     $scope.registerProps = {
                         user: '',
@@ -73,16 +74,31 @@
 
 
                     function login() {
-                    	AuthService.login($scope.modalProps.username, $scope.modalProps.password).then(function(data) {
-                    		console.log(data);
+                    	AuthService.login($scope.modalProps.username, $scope.modalProps.password).then(function(response) {
                     		$scope.modalProps.close();
                     	}, function(error) {
 
                     	});
                     }
 
-                    function register() {
+                    function register(valid, data) {
+                        if (!valid) return;
+                        var udata = {};
+                        udata.user = data.user;
+                        udata.user_mail = data.user_mail;
+                        udata.user_password = data.user_password;
+                        udata.user_type = data.user_type;
 
+                        AuthService.register(udata).then(function(response) {
+                            if (!response.code) {
+                                toaster.pop('success', 'Success', AUTH_MSG.registerSuccess);
+                            } else {
+                                toaster.pop('error', 'Error', AUTH_MSG.registerSuccess);
+                            }
+                            $scope.modalProps.close();
+                        }, function (err) {
+
+                        });
                     }
 
                     $scope.modalProps.close = function() {

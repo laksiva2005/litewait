@@ -20,6 +20,7 @@
   <body ng-app="litewait" ng-cloak>
     <div ng-controller="navbarCtrl">
     <div cg-busy="spinner.spinner" class="spinner-wrapper"></div>
+    <toaster-container toaster-options="{'position-class': 'toast-top-full-width', 'toaster-id': 1}"></toaster-container>
     <div class="header-wrap">
     <header class="container">
       <div>
@@ -150,20 +151,41 @@
               <a href="">Signup</a>
             </uib-tab-heading>
             <div class="signup-form-wrap">
-              <!-- For Validation Error 
-              <div class="alert alert-danger" >
-                Validation Error
-              </div> -->
-              <input class="form-control" type="text" placeholder="Email Id"/>
-              <input class="form-control" type="text" placeholder="User Name"/>
-              <input class="form-control" type="password" placeholder="Password" />
-              <input class="form-control" type="password" placeholder="Confirm Password" />
-              <div class="radio-wrap">
-                <label class="name">Register as</label> 
-                <label class="radio-inline"><input type="radio" name="optradio">Consumer</label>
-                <label class="radio-inline"><input type="radio" name="optradio">Merchant</label>
+              <toaster-container toaster-options="{'position-class': 'toast-top-full-width', 'toaster-id': 2}"></toaster-container>
+              
+              <div ng-if="registerForm.$submitted && registerForm.$error" class="alert alert-danger" >
+                <div ng-messages="registerForm.user_email.$error">
+                  <div ng-message="required">Email field is required</div>
+                  <div ng-message="email">Please enter a valid Email Id</div>
+                </div>
+                <div ng-messages="registerForm.user.$error">
+                  <div ng-message="required">Username is required</div>
+                  <div ng-message="minlength">Please enter a valid Username</div>
+                </div>
+                <div ng-messages="registerForm.user_password.$error">
+                  <div ng-message="required">Password field is required</div>
+                  <div ng-message="pattern">Minimum 8 characters and must contain a numeric, uppercase, lowercase, as well as special character</div>
+                </div>
+                <div ng-messages="registerForm.user_confirm_password.$error">
+                  <div ng-message="required">Confirm Password field is required</div>
+                  <div ng-message="compareTo">Confirm Password must be equal to Password</div>
+                </div>
+                <div ng-messages="registerForm.user_type.$error">
+                  <div ng-message="required">Register as field is required</div>
+                </div>
               </div>
-              <div class="sign-wrap"><a href="#" class="btn sign">signup</a></div>
+              <form name="registerForm" ng-submit="modalProps.register(registerForm.$valid, registerProps)">
+                <input class="form-control" required name="user_email" ng-model="registerProps.user_mail" type="email" placeholder="Email Id"/>
+                <input class="form-control" required name="user" ng-model="registerProps.user" type="text" placeholder="User Name" minlength="2"/>
+                <input class="form-control" required name="user_password" ng-model="registerProps.user_password" type="password" placeholder="Password" pattern="{{modalProps.passwordPattern}}" />
+                <input class="form-control" required name="user_confirm_password" ng-model="registerProps.user_confirm_password" type="password" placeholder="Confirm Password" compare-to="registerProps.user_password"/>
+                <div class="radio-wrap">
+                  <label class="name">Register as</label> 
+                  <label class="radio-inline"><input required type="radio" ng-model="registerProps.user_type" value="C" name="user_type">Consumer</label>
+                  <label class="radio-inline"><input required type="radio" ng-model="registerProps.user_type" value="M" name="user_type">Merchant</label>
+                </div>
+                <div class="sign-wrap"><button class="btn sign">signup</button></div>
+              </form>
               <div class="clearfix"></div>
             </div>
           </uib-tab>
