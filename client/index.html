@@ -126,12 +126,21 @@
               </div>
               <p>OR</p>
               <div class="form-wrap">
-                <input class="form-control" type="text" ng-model="modalProps.username" placeholder="User Name"/>
-                <input class="form-control" type="password" ng-model="modalProps.password" placeholder="Password" />
-                 <div class="sign-wrap"><a href="#" class="btn sign" ng-click="modalProps.login()">signin</a></div>
-                 <div class="clearfix"></div>
-                     
-                     
+                <div ng-if="loginForm.$submitted && loginForm.$error" class="alert alert-danger">
+                  <div ng-messages="loginForm.username.$error">
+                    <div ng-message="required">Username is required</div>
+                  </div>
+                  <div ng-messages="loginForm.password.$error">
+                    <div ng-message="required">Password is required</div>
+                  </div>
+                </div>
+                <toaster-container toaster-options="{'position-class': 'toast-top-full-width', 'toaster-id': 3}"></toaster-container>
+                <form name="loginForm" ng-submit="modalProps.login(loginForm.$valid, modalProps)">
+                  <input class="form-control" required name="username" type="text" ng-model="modalProps.username" placeholder="User Name"/>
+                  <input class="form-control" required name="password" type="password" ng-model="modalProps.password" placeholder="Password" />
+                  <div class="sign-wrap"><button class="btn sign">signin</button></div>
+                </form>
+                <div class="clearfix"></div>
                 <div class="forget-wrap">
                   <div class="checkbox col-md-6">
                     <label>
@@ -143,7 +152,7 @@
                 </div>
               </div>
               <p class="joinus">New here ? <a  data-toggle="tab"  href="#signup" onclick="activaTab('signup-nav');">Join us</a></p>
-          </div>
+            </div>
           </uib-tab>
           <uib-tab active="modalProps.signup">
             <uib-tab-heading>

@@ -5,24 +5,6 @@ try {
   module = angular.module('litewait.ui', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('html/spinner.html',
-    '<div class="spinner">\n' +
-    '  <div>\n' +
-    '    <i class="fa fa-spinner fa-spin"></i>\n' +
-    '  </div>\n' +
-    '  <div class="spinner-text">{{$message}}</div>\n' +
-    '</div>\n' +
-    '');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
   $templateCache.put('home/home.html',
     '	<div class="container-fluid banner-wrap" ng-if="!user.isLoggedIn">\n' +
     '    	<div class="banner">\n' +
@@ -36,7 +18,7 @@ module.run(['$templateCache', function($templateCache) {
     '    </div>\n' +
     '    <div class="container-fluid search-wrap">\n' +
     '      <div class="container search">\n' +
-    '        <h1>SEARCH FOR YOU FAVORITE RETAILER</h1>\n' +
+    '        <h1>SEARCH FOR YOUR FAVORITE RETAILER</h1>\n' +
     '        <div class="row">\n' +
     '          <div class="col-md-5 less-padding">\n' +
     '            <input type="text" class="form-control" placeholder="Location" />\n' +
@@ -162,6 +144,24 @@ module.run(['$templateCache', function($templateCache) {
     '        <div class="next-prev-wrap"> <a data-slide="prev" href="#testimonial" class="carousel-control left">‹</a> <a data-slide="next" href="#testimonial" class="carousel-control right">›</a> </div>\n' +
     '      </div>\n' +
     '    </div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('html/spinner.html',
+    '<div class="spinner">\n' +
+    '  <div>\n' +
+    '    <i class="fa fa-spinner fa-spin"></i>\n' +
+    '  </div>\n' +
+    '  <div class="spinner-text">{{$message}}</div>\n' +
+    '</div>\n' +
+    '');
 }]);
 })();
 

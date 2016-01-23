@@ -3037,11 +3037,26 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     $scope.modalProps.register = register;
 
 
-                    function login() {
-                    	AuthService.login($scope.modalProps.username, $scope.modalProps.password).then(function(response) {
-                    		$scope.modalProps.close();
+                    function login(valid, data) {
+                    	AuthService.login(data.username, data.password).then(function(response) {
+                            if (!response.code) {
+                                $scope.modalProps.close();
+                            } else {
+                                toaster.pop({
+                                    type: 'error', 
+                                    title:'Error', 
+                                    body: AUTH_MSG.loginFailed, 
+                                    toasterId: 3
+                                });
+                            }
+                    		
                     	}, function(error) {
-
+                            toaster.pop({
+                                type: 'error', 
+                                title:'Error', 
+                                body: AUTH_MSG.loginFailed, 
+                                toasterId: 3
+                            });
                     	});
                     }
 
@@ -3056,12 +3071,23 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         AuthService.register(udata).then(function(response) {
                             if (!response.code) {
                                 toaster.pop('success', 'Success', AUTH_MSG.registerSuccess);
+                                $scope.modalProps.close();
                             } else {
-                                toaster.pop('error', 'Error', AUTH_MSG.registerSuccess);
+                                toaster.pop({
+                                    type: 'error', 
+                                    title:'Error', 
+                                    body: AUTH_MSG.registerFailed, 
+                                    toasterId:2
+                                });
                             }
-                            $scope.modalProps.close();
+                            
                         }, function (err) {
-
+                            toaster.pop({
+                                type: 'error', 
+                                title:'Error', 
+                                body: AUTH_MSG.registerFailed, 
+                                toasterId:2
+                            });
                         });
                     }
 

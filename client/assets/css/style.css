@@ -79,7 +79,7 @@ header.container { padding:26px 0px 20px; position:relative;z-index:1;}
 .signin-modal p { padding:20px 0 4px; text-align:center; color:#444444; font-size:18px;}
 .signin-modal .form-wrap { font-size:18px; color:#444; border-bottom:1px solid #000; padding-bottom:0px;}
 .signin-modal .form-control { background:#f0f0f0; height:42px; margin-bottom:20px;border-radius:0px; box-shadow:none;border:none; font-size:16px; color:#444;}
-.signin-modal a.sign { background:#28ace2; color:#fff; text-align:center; border-radius:0px; font-size:16px; padding:5px 15px 6px; text-transform:uppercase; height:32px;}
+.signin-modal button.sign { background:#28ace2; color:#fff; text-align:center; border-radius:0px; font-size:16px; padding:5px 15px 6px; text-transform:uppercase; height:32px;}
 .signin-modal .form-control::-moz-placeholder {color: #444;opacity: 1;font-size:16px;}
 .signin-modal .form-control:-ms-input-placeholder {color: #444;font-size:18px;}
 .signin-modal .form-control::-webkit-input-placeholder {color: #444;font-size:18px;}
