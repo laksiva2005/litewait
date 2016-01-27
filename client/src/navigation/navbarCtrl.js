@@ -75,7 +75,7 @@
 
                     function login(valid, data) {
                     	AuthService.login(data.username, data.password).then(function(response) {
-                            if (!response.code) {
+                            if (!response.data.code) {
                                 $scope.modalProps.close();
                             } else {
                                 toaster.pop({
@@ -105,24 +105,29 @@
                         udata.user_type = data.user_type;
 
                         AuthService.register(udata).then(function(response) {
-                            if (!response.code) {
-                                toaster.pop('success', 'Success', AUTH_MSG.registerSuccess);
+                            if (!response.data.code) {
+                                toaster.pop({
+                                    type: 'success', 
+                                    title: 'Success', 
+                                    body: AUTH_MSG.registerSuccess,
+                                    toasterId: 1
+                                });
                                 $scope.modalProps.close();
                             } else {
                                 toaster.pop({
                                     type: 'error', 
-                                    title:'Error', 
+                                    title: 'Error', 
                                     body: AUTH_MSG.registerFailed, 
-                                    toasterId:2
+                                    toasterId: 2
                                 });
                             }
                             
                         }, function (err) {
                             toaster.pop({
                                 type: 'error', 
-                                title:'Error', 
+                                title: 'Error', 
                                 body: AUTH_MSG.registerFailed, 
-                                toasterId:2
+                                toasterId: 2
                             });
                         });
                     }

@@ -150,25 +150,26 @@
                         authUrl = getUrl(WHOAMI_ENDPOINT);
 
                     var data = {};
-                    deferred.resolve(User);
+                    //deferred.resolve(User);
 
-                    /*
+                    
                     $http({
                         method: 'GET',
                         url: authUrl,
                         data: data
                     }).success(function(data) {
-                        data.isLoggedIn = true;
-                        User.assign(data);
-                        setToken(token);
+                       // data.isLoggedIn = true;
+                       // User.assign(data);
+                       // setToken(token);
                         deferred.resolve(User);
                     }).error(function(reason) {
                         // clear user, clear token
-                        setToken(null);
-                        User.clear();
-                        deferred.reject(reason);
+                       // setToken(null);
+                        //User.clear();
+                        //deferred.reject(reason);
+                        deferred.resolve(User);
                     });
-                    */
+                    
                     return deferred.promise;
                 };
 
@@ -191,9 +192,7 @@
                         return !!service.getAuthToken();
                     },
                     register: function(user) {
-                        var params = user ? {
-                                params: user
-                            } : {},
+                        var params = user ? user : {},
                             endpoint = getUrl(REGISTER_ENDPOINT);
 
                         return $http.post(endpoint, params);
@@ -232,7 +231,7 @@
                             if (!response.code) {
                                 var token = headers(API_KEY_HEADER);
                                 User.assign(response.data);
-                                setToken(token);
+                                setToken(response.data.user_session);
                                 raise(AUTH_EVENTS.loginSuccess, User);
                                 deferred.resolve(User);
                             } else {
@@ -253,7 +252,7 @@
                         var deferred = $q.defer();
 
                         var saveUser = _.clone(User);
-
+                        
                         setToken(null);
                         User.clear();
                         raise(AUTH_EVENTS.logoutSuccess, saveUser);

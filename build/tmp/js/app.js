@@ -3039,7 +3039,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
                     function login(valid, data) {
                     	AuthService.login(data.username, data.password).then(function(response) {
-                            if (!response.code) {
+                            if (!response.data.code) {
                                 $scope.modalProps.close();
                             } else {
                                 toaster.pop({
@@ -3069,24 +3069,29 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         udata.user_type = data.user_type;
 
                         AuthService.register(udata).then(function(response) {
-                            if (!response.code) {
-                                toaster.pop('success', 'Success', AUTH_MSG.registerSuccess);
+                            if (!response.data.code) {
+                                toaster.pop({
+                                    type: 'success', 
+                                    title: 'Success', 
+                                    body: AUTH_MSG.registerSuccess,
+                                    toasterId: 1
+                                });
                                 $scope.modalProps.close();
                             } else {
                                 toaster.pop({
                                     type: 'error', 
-                                    title:'Error', 
+                                    title: 'Error', 
                                     body: AUTH_MSG.registerFailed, 
-                                    toasterId:2
+                                    toasterId: 2
                                 });
                             }
                             
                         }, function (err) {
                             toaster.pop({
                                 type: 'error', 
-                                title:'Error', 
+                                title: 'Error', 
                                 body: AUTH_MSG.registerFailed, 
-                                toasterId:2
+                                toasterId: 2
                             });
                         });
                     }
@@ -3313,25 +3318,26 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         authUrl = getUrl(WHOAMI_ENDPOINT);
 
                     var data = {};
-                    deferred.resolve(User);
+                    //deferred.resolve(User);
 
-                    /*
+                    
                     $http({
                         method: 'GET',
                         url: authUrl,
                         data: data
                     }).success(function(data) {
-                        data.isLoggedIn = true;
-                        User.assign(data);
-                        setToken(token);
+                       // data.isLoggedIn = true;
+                       // User.assign(data);
+                       // setToken(token);
                         deferred.resolve(User);
                     }).error(function(reason) {
                         // clear user, clear token
-                        setToken(null);
-                        User.clear();
-                        deferred.reject(reason);
+                       // setToken(null);
+                        //User.clear();
+                        //deferred.reject(reason);
+                        deferred.resolve(User);
                     });
-                    */
+                    
                     return deferred.promise;
                 };
 
@@ -3354,9 +3360,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         return !!service.getAuthToken();
                     },
                     register: function(user) {
-                        var params = user ? {
-                                params: user
-                            } : {},
+                        var params = user ? user : {},
                             endpoint = getUrl(REGISTER_ENDPOINT);
 
                         return $http.post(endpoint, params);
@@ -3395,7 +3399,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                             if (!response.code) {
                                 var token = headers(API_KEY_HEADER);
                                 User.assign(response.data);
-                                setToken(token);
+                                setToken(response.data.user_session);
                                 raise(AUTH_EVENTS.loginSuccess, User);
                                 deferred.resolve(User);
                             } else {
@@ -3416,7 +3420,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         var deferred = $q.defer();
 
                         var saveUser = _.clone(User);
-
+                        
                         setToken(null);
                         User.clear();
                         raise(AUTH_EVENTS.logoutSuccess, saveUser);
@@ -3557,6 +3561,12 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
       var wrapper = function () {
         return $http.apply($http, arguments);
       };
+
+      Object.keys($http).filter(function (key) {
+        return (typeof $http[key] !== 'function');
+      }).forEach(function (key) {
+        wrapper[key] = $http[key];
+      });
 
       Object.keys($http).filter(function (key) {
         return (typeof $http[key] === 'function');

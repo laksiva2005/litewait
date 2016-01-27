@@ -46,6 +46,12 @@
       };
 
       Object.keys($http).filter(function (key) {
+        return (typeof $http[key] !== 'function');
+      }).forEach(function (key) {
+        wrapper[key] = $http[key];
+      });
+
+      Object.keys($http).filter(function (key) {
         return (typeof $http[key] === 'function');
       }).forEach(function (key) {
         wrapper[key] = function () {
