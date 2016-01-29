@@ -3108,71 +3108,13 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
         });
 	}
 })(angular);
-/*
- *
- */
-;(function(angular) {
-	'use strict';
-
-	angular.module('litewait.ui').controller('myOrderCtrl', myOrderCtrl);
-
-	myOrderCtrl.$inject = ['$scope', 'authentication'];
-
-	function myOrderCtrl($scope, authentication) {
-		console.log(authentication);
-		// TODO: Need to change things dynamically
-	}
-
-
-})(angular);
-
-;(function(angular) {
-    'use strict';
-
-    angular.module('litewait').config(config);
-
-    config.$inject = ['$stateProvider'];
-
-    function config($stateProvider) {
-        $stateProvider
-            .state('order', {
-                abstract: true
-            })
-            .state('order.myorder', {
-            	url: "/myorder",
-                views: {
-                    "@": {
-                        templateUrl: "orders/myorder.html",
-                        controller: "myOrderCtrl"
-                    }
-                },
-                resolve: {
-                    authentication: function (AuthService, $q, $timeout) {
-                        var deferred = $q.defer();
-                        
-                        var handler = $timeout(function() {
-                            var auth = AuthService.isAuthenticated();
-                            if (auth) {
-                                deferred.resolve(true);
-                            } else {
-                                deferred.reject(true);
-                            }
-                            $timeout.cancel(handler);
-                        }, 0);
-                        
-                        return deferred.promise;
-                    }
-                }
-            });
-    }
-})(angular);
 /**
  *
  */
 ;(function(angular){
 
     'use strict';
-
+    var USER_KEY = 'USER:KEY';
     angular.module('litewait.services')
         .constant('AUTH_EVENTS', {
             loginSuccess: 'auth:login-success',
@@ -3186,7 +3128,11 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             loginSuccess: 'User logged in successfully',
             loginFailed: 'Invalid attempt, please check email/password',
             registerSuccess: 'Registration success',
-            registerFailed: 'Registration failed'
+            registerFailed: 'Registration failed',
+            profileUpdateSuccess: 'Profile has been successfully updated',
+            profileUpdateFailed: 'Profile update has been failed',
+            chPwdSuccess: 'Password has been changed successfully',
+            chPwdFailed: 'Password change has been failed'
         })
         .constant('AUTH_PROPS', {
             'PASSWORD_PATTERN': "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!%*?&])[A-Za-z\\d$@$!%*?&]{8,}"
@@ -3196,11 +3142,13 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
         .factory('AuthInterceptor', AuthInterceptor)
         .provider('AuthService', AuthService);
 
+    User.$inject = ['$http', 'RouteConfig', '$q', 'AUTH_MSG', 'toaster'];
     config.$inject = ['$httpProvider'];
     AuthInterceptor.$inject = ['$rootScope', '$q', 'AUTH_EVENTS'];
 
-    function User () {
+    function User ($http, RouteConfig, $q, AUTH_MSG, toaster) {
 
+        var urlBase = RouteConfig.apiBase;
         var sessionUser = {
             id: 0,
             isLoggedIn: false,
@@ -3209,6 +3157,36 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             role: null,
             name: 'User',
             data: {}
+        };
+
+        sessionUser.updateProfile = function (data) {
+            var deferred = $q.defer();
+            return $http.put(urlBase + '/user', data).success(function(response) {
+                return deferred.resolve(response);
+            }).error(function(error) {
+                toaster.pop({
+                    type: 'error', 
+                    title:'Error', 
+                    body: AUTH_MSG.profileUpdateFailed, 
+                    toasterId: 1
+                });
+                deferred.reject();
+            });
+        };
+
+        sessionUser.changePassword = function (data) {
+            var deferred = $q.defer();
+            return $http.put(urlBase + '/user/passhash', data).success(function(response) {
+                return deferred.resolve(response);
+            }).error(function(error) {
+                toaster.pop({
+                    type: 'error', 
+                    title:'Error', 
+                    body: AUTH_MSG.chPwdFailed, 
+                    toasterId: 1
+                });
+                deferred.reject();
+            });
         };
 
 
@@ -3224,8 +3202,18 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                 data.data = user;
                 
                 angular.extend(sessionUser, data);
+                sessionUser.resetUser(sessionUser.data);
             } else {
+                sessionUser.resetUser(null);
                 sessionUser.clear();
+            }
+        };
+
+        sessionUser.resetUser = function(data) {
+            if (data) {
+                sessionStorage.setItem(USER_KEY, angular.toJson(data));
+            } else {
+                sessionStorage.removeItem(USER_KEY);
             }
         };
 
@@ -3237,6 +3225,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             sessionUser.email = '';
             sessionUser.isLoggedIn = false;
             sessionUser.data = {};
+            sessionUser.resetUser(null);
         };
 
         return sessionUser;
@@ -3282,6 +3271,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             function($q, $rootScope, $http, User, RouteConfig, AUTH_EVENTS) {
 
                 var TOKEN_KEY = 'AUTH:TOKEN';
+                var USER_KEY = 'USER:KEY';
                 var session = window.sessionStorage;
 
                 var getUrl = function(path) {
@@ -3308,19 +3298,25 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     }
                 };
 
-
+                
                 var getToken = function() {
                     return session.getItem(TOKEN_KEY);
+                };
+
+                var getUser = function() {
+                    return session.getItem(USER_KEY);
                 };
 
                 var reloadUser = function(token) {
                     var deferred = $q.defer(),
                         authUrl = getUrl(WHOAMI_ENDPOINT);
 
+                    var userVal = angular.fromJson(getUser());
+                    User.assign(userVal);
                     var data = {};
-                    //deferred.resolve(User);
+                    deferred.resolve(User);
 
-                    
+                    /*                    
                     $http({
                         method: 'GET',
                         url: authUrl,
@@ -3337,7 +3333,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         //deferred.reject(reason);
                         deferred.resolve(User);
                     });
-                    
+                    */
                     return deferred.promise;
                 };
 
@@ -3406,7 +3402,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                                 setToken(null);
                                 User.clear();
                                 raise(AUTH_EVENTS.loginFailure, params);
-                                deferred.reject(reason);
+                                deferred.reject();
                             }
                         }).error(function(reason) {
                             setToken(null);
@@ -3602,12 +3598,114 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
  */
 ;(function(angular) {
 	'use strict';
+
+	angular.module('litewait.ui').controller('myOrderCtrl', myOrderCtrl);
+
+	myOrderCtrl.$inject = ['$scope', 'authentication'];
+
+	function myOrderCtrl($scope, authentication) {
+		console.log(authentication);
+		// TODO: Need to change things dynamically
+	}
+
+
+})(angular);
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('order', {
+                abstract: true
+            })
+            .state('order.myorder', {
+            	url: "/myorder",
+                views: {
+                    "@": {
+                        templateUrl: "orders/myorder.html",
+                        controller: "myOrderCtrl"
+                    }
+                },
+                resolve: {
+                    authentication: function (AuthService, $q, $timeout) {
+                        var deferred = $q.defer();
+                        
+                        var handler = $timeout(function() {
+                            var auth = AuthService.isAuthenticated();
+                            if (auth) {
+                                deferred.resolve(true);
+                            } else {
+                                deferred.reject(true);
+                            }
+                            $timeout.cancel(handler);
+                        }, 0);
+                        
+                        return deferred.promise;
+                    }
+                }
+            });
+    }
+})(angular);
+/*
+ *
+ */
+;(function(angular) {
+	'use strict';
 	angular.module('litewait.ui').controller('chpwdCtrl', chpwdCtrl);
 
-	chpwdCtrl.$inject = ['$scope', 'authentication'];
+	chpwdCtrl.$inject = ['$scope', 'AUTH_PROPS', 'authentication'];
 
-	function chpwdCtrl($scope, authentication) {
-		
+	function chpwdCtrl($scope, AUTH_PROPS, authentication) {
+		$scope.pwd = {
+			old_password: '',
+			new_password: '',
+			confirm_password: '',
+			passwordPattern: AUTH_PROPS.PASSWORD_PATTERN
+		};
+
+		$scope.changePassword = changePassword;
+		$scope.resetForm = resetForm;
+
+		function changePassword(valid) {
+			if (valid) {
+				var data = {};
+				data.old_password = $scope.pwd.old_password;
+				data.new_password = $scope.pwd.new_password;
+
+				$scope.user.changePassword($scope.profile).then(function(response) {
+					if (!response.data.code) {
+						toaster.pop({
+                            type: 'success', 
+                            title:'Success', 
+                            body: AUTH_MSG.chPwdSuccess, 
+                            toasterId: 1
+                        });
+					} else {
+						toaster.pop({
+                            type: 'error', 
+                            title:'Error', 
+                            body: AUTH_MSG.chPwdFailed, 
+                            toasterId: 1
+                        });
+					}
+
+					$scope.resetForm();
+				}, function() {
+					$scope.resetForm();
+				});
+			}
+		}
+
+		function resetForm() {
+			$scope.pwd.old_password = '';
+			$scope.pwd.new_password = '';
+			$scope.pwd.confirm_password = '';
+		}
 	}
 })(angular);
 /*
@@ -3617,10 +3715,69 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	'use strict';
 	angular.module('litewait.ui').controller('profileCtrl', profileCtrl);
 
-	profileCtrl.$inject = ['$scope', 'authentication'];
+	profileCtrl.$inject = ['$scope', 'User', '$state', 'toaster', 'AUTH_MSG', 'authentication'];
 
-	function profileCtrl($scope, authentication) {
-		
+	function profileCtrl($scope, User, $state, toaster, AUTH_MSG, authentication) {
+		$scope.user = User;
+		$scope.profile = {
+			user_name: '',
+			contact: {
+				address_1: '',
+				address_2: '',
+				phone: '',
+				city: '',
+				state: '',
+				country: '',
+				zip_code: '',
+				mail_id: ''
+			}
+		};
+
+		$scope.updateProfile = updateProfile;
+		$scope.assignProfile = assignProfile;
+		$scope.cancel = cancel;
+
+		function updateProfile(valid) {
+			if (valid) {
+				
+				$scope.user.updateProfile($scope.profile).then(function(response) {
+					if (!response.data.code) {
+						toaster.pop({
+                            type: 'success', 
+                            title:'Success', 
+                            body: AUTH_MSG.profileUpdateSuccess, 
+                            toasterId: 1
+                        });
+					} else {
+						toaster.pop({
+                            type: 'error', 
+                            title:'Error', 
+                            body: AUTH_MSG.profileUpdateFailed, 
+                            toasterId: 1
+                        });
+					}
+				});
+			}
+		}
+
+		function assignProfile() {
+			$scope.profile.user_name = $scope.user.data.user_name;
+			$scope.profile.contact.address_1 = $scope.user.data.contact.address_1;
+			$scope.profile.contact.address_2 = $scope.user.data.contact.address_2;
+			$scope.profile.contact.phone = $scope.user.data.contact.phone;
+			$scope.profile.contact.city = $scope.user.data.contact.city;
+			$scope.profile.contact.state = $scope.user.data.contact.state;
+			$scope.profile.contact.country = $scope.user.data.contact.country;
+			$scope.profile.contact.zip_code = $scope.user.data.contact.zip_code;
+			$scope.profile.contact.mail_id = $scope.user.data.contact.mail_id;
+		}
+
+		function cancel(event) {
+			event.preventDefault();
+			$state.go('home');
+		}
+
+		$scope.assignProfile();
 	}
 })(angular);
 

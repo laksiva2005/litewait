@@ -294,25 +294,33 @@ module.run(['$templateCache', function($templateCache) {
     '<h1>Change Password</h1>\n' +
     '<div class="col-md-3 hidden-xs"></div>\n' +
     '<div class="col-md-6 form-wrap">\n' +
-    ' <form role="form">\n' +
+    ' <form name="chPwdForm" ng-submit="changePassword(chPwdForm.$valid)" role="form">\n' +
     '  <div class="form-group">\n' +
-    '    <input type="text" class="form-control"  placeholder="User Name">\n' +
+    '    <input type="password" required name="old_password" ng-model="pwd.old_password" class="form-control"  placeholder="Old Password">\n' +
+    '    <div ng-if="chPwdForm.$submitted && chPwdForm.old_password.$error" ng-messages="chPwdForm.old_password.$error" class="alert alert-danger">\n' +
+    '      <div ng-message="required">Old Password field is required</div>\n' +
+    '    </div>\n' +
     '  </div>\n' +
     '  <div class="form-group">\n' +
-    '    <input type="password" class="form-control"  placeholder="New Password">\n' +
+    '    <input type="password" pattern="{{pwd.passwordPattern}}" required name="new_password" ng-model="pwd.new_password" class="form-control"  placeholder="New Password">\n' +
+    '    <div ng-if="chPwdForm.$submitted && chPwdForm.new_password.$error" ng-messages="chPwdForm.new_password.$error" class="alert alert-danger">\n' +
+    '      <div ng-message="required">New Password field is required</div>\n' +
+    '      <div ng-message="pattern">Minimum 8 characters and must contain a numeric, uppercase, lowercase, as well as special character</div>\n' +
+    '    </div>\n' +
     '  </div>\n' +
     '  <div class="form-group">\n' +
-    '    <input type="password" class="form-control" placeholder="Confirm Password">\n' +
+    '    <input type="password" required name="confirm_password" ng-model="pwd.confirm_password"   compare-to="pwd.new_password" class="form-control" placeholder="Confirm Password">\n' +
+    '    <div ng-if="chPwdForm.$submitted && chPwdForm.confirm_password.$error" ng-messages="chPwdForm.confirm_password.$error" class="alert alert-danger">\n' +
+    '      <div ng-message="required">Confirm Password field is required</div>\n' +
+    '      <div ng-message="compareTo">Confirm Password must be equal to Password</div>\n' +
+    '    </div>\n' +
     '  </div>\n' +
     '\n' +
     '  <button type="submit" class="btn btn-default pull-right">Submit</button>\n' +
     '</form>\n' +
     '\n' +
     '</div>\n' +
-    '<div class="col-md-3 hidden-xs"></div>\n' +
-    '\n' +
-    '  \n' +
-    '  \n' +
+    '<div class="col-md-3 hidden-xs"></div> \n' +
     '</div>');
 }]);
 })();
@@ -338,39 +346,45 @@ module.run(['$templateCache', function($templateCache) {
     '                  <h1>Edit Profile</h1>\n' +
     '                  \n' +
     '                  <div class="col-md-12 form-wrap">\n' +
-    '      <form role="form">\n' +
+    '      <form name="editProfileForm" ng-submit="updateProfile(editProfileForm.$valid)" role="form">\n' +
     '         <div class="col-md-6">\n' +
     '            <div class="form-group">\n' +
-    '               <input type="text" class="form-control"  placeholder="Name">\n' +
+    '               <input type="text" name="user_name" maxlength="50" ng-model="profile.user_name" class="form-control"  placeholder="Name">\n' +
+    '               <div ng-if="editProfileForm.$submitted && editProfileForm.user_name.$error" ng-messages="editProfileForm.user_name.$error" class="alert alert-danger">\n' +
+    '                  <div ng-message="maxlength">Please enter a valid Username</div>\n' +
+    '               </div>\n' +
     '            </div>\n' +
     '            <div class="form-group">\n' +
-    '            	<textarea class="form-control"  placeholder="Address"></textarea>\n' +
+    '            	<textarea name="address_1" ng-model="profile.contact_address_1" class="form-control"  placeholder="Address"></textarea>\n' +
     '            </div>\n' +
     '            <div class="form-group">\n' +
-    '               <input type="text" class="form-control" placeholder="State">\n' +
+    '               <input type="text" name="state" ng-model="profile.contact.state" class="form-control" placeholder="State">\n' +
     '            </div>\n' +
     '            <div class="form-group">\n' +
-    '               <input type="text" class="form-control" placeholder="Zipcode">\n' +
+    '               <input type="text" name="zip_code" ng-model="profile.contact.zip_code" class="form-control" placeholder="Zipcode">\n' +
     '            </div>\n' +
     '         </div>\n' +
     '         <div class="col-md-6">\n' +
     '            <div class="form-group">\n' +
-    '               <input type="email" class="form-control" placeholder="Email">\n' +
+    '               <input type="email" name="mail_id" ng-model="profile.contact.mail_id" class="form-control" placeholder="Email">\n' +
+    '               <div ng-if="editProfileForm.$submitted && editProfileForm.mail_id.$error" ng-messages="editProfileForm.mail_id.$error" class="alert alert-danger">\n' +
+    '                  <div ng-message="email">Please enter a valid Email Id</div>\n' +
+    '                </div>\n' +
     '            </div>\n' +
     '            <div class="form-group">\n' +
-    '               <input type="text" class="form-control" placeholder="Phone">\n' +
+    '               <input type="text" name="phone" ng-model="profile.contact.phone" class="form-control" placeholder="Phone">\n' +
     '            </div>\n' +
     '            <div class="form-group">\n' +
-    '               <input type="text" class="form-control" placeholder="City">\n' +
+    '               <input type="text" name="city" ng-model="profile.contact.city" class="form-control" placeholder="City">\n' +
     '            </div>\n' +
     '            <div class="form-group">\n' +
-    '               <input type="text" class="form-control" placeholder="Country">\n' +
+    '               <input type="text" name="country" ng-model="profile.contact.country" class="form-control" placeholder="Country">\n' +
     '            </div>\n' +
     '         </div>\n' +
     '         <div class="clearfix"></div>\n' +
     '         <div class="col-md-12">\n' +
     '            <button type="submit" class="btn btn-default pull-right">Submit</button>\n' +
-    '            <button type="submit" class="btn btn-default pull-right">Cancel</button>\n' +
+    '            <button type="submit" ng-click="cancel($event)" class="btn btn-default pull-right">Cancel</button>\n' +
     '            <div class="clearfix"></div>\n' +
     '         </div>\n' +
     '      </form>\n' +

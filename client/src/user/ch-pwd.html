@@ -2,23 +2,31 @@
 <h1>Change Password</h1>
 <div class="col-md-3 hidden-xs"></div>
 <div class="col-md-6 form-wrap">
- <form role="form">
+ <form name="chPwdForm" ng-submit="changePassword(chPwdForm.$valid)" role="form">
   <div class="form-group">
-    <input type="text" class="form-control"  placeholder="User Name">
+    <input type="password" required name="old_password" ng-model="pwd.old_password" class="form-control"  placeholder="Old Password">
+    <div ng-if="chPwdForm.$submitted && chPwdForm.old_password.$error" ng-messages="chPwdForm.old_password.$error" class="alert alert-danger">
+      <div ng-message="required">Old Password field is required</div>
+    </div>
   </div>
   <div class="form-group">
-    <input type="password" class="form-control"  placeholder="New Password">
+    <input type="password" pattern="{{pwd.passwordPattern}}" required name="new_password" ng-model="pwd.new_password" class="form-control"  placeholder="New Password">
+    <div ng-if="chPwdForm.$submitted && chPwdForm.new_password.$error" ng-messages="chPwdForm.new_password.$error" class="alert alert-danger">
+      <div ng-message="required">New Password field is required</div>
+      <div ng-message="pattern">Minimum 8 characters and must contain a numeric, uppercase, lowercase, as well as special character</div>
+    </div>
   </div>
   <div class="form-group">
-    <input type="password" class="form-control" placeholder="Confirm Password">
+    <input type="password" required name="confirm_password" ng-model="pwd.confirm_password"   compare-to="pwd.new_password" class="form-control" placeholder="Confirm Password">
+    <div ng-if="chPwdForm.$submitted && chPwdForm.confirm_password.$error" ng-messages="chPwdForm.confirm_password.$error" class="alert alert-danger">
+      <div ng-message="required">Confirm Password field is required</div>
+      <div ng-message="compareTo">Confirm Password must be equal to Password</div>
+    </div>
   </div>
 
   <button type="submit" class="btn btn-default pull-right">Submit</button>
 </form>
 
 </div>
-<div class="col-md-3 hidden-xs"></div>
-
-  
-  
+<div class="col-md-3 hidden-xs"></div> 
 </div>

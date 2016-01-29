@@ -11,39 +11,45 @@
                   <h1>Edit Profile</h1>
                   
                   <div class="col-md-12 form-wrap">
-      <form role="form">
+      <form name="editProfileForm" ng-submit="updateProfile(editProfileForm.$valid)" role="form">
          <div class="col-md-6">
             <div class="form-group">
-               <input type="text" class="form-control"  placeholder="Name">
+               <input type="text" name="user_name" maxlength="50" ng-model="profile.user_name" class="form-control"  placeholder="Name">
+               <div ng-if="editProfileForm.$submitted && editProfileForm.user_name.$error" ng-messages="editProfileForm.user_name.$error" class="alert alert-danger">
+                  <div ng-message="maxlength">Please enter a valid Username</div>
+               </div>
             </div>
             <div class="form-group">
-            	<textarea class="form-control"  placeholder="Address"></textarea>
+            	<textarea name="address_1" ng-model="profile.contact_address_1" class="form-control"  placeholder="Address"></textarea>
             </div>
             <div class="form-group">
-               <input type="text" class="form-control" placeholder="State">
+               <input type="text" name="state" ng-model="profile.contact.state" class="form-control" placeholder="State">
             </div>
             <div class="form-group">
-               <input type="text" class="form-control" placeholder="Zipcode">
+               <input type="text" name="zip_code" ng-model="profile.contact.zip_code" class="form-control" placeholder="Zipcode">
             </div>
          </div>
          <div class="col-md-6">
             <div class="form-group">
-               <input type="email" class="form-control" placeholder="Email">
+               <input type="email" name="mail_id" ng-model="profile.contact.mail_id" class="form-control" placeholder="Email">
+               <div ng-if="editProfileForm.$submitted && editProfileForm.mail_id.$error" ng-messages="editProfileForm.mail_id.$error" class="alert alert-danger">
+                  <div ng-message="email">Please enter a valid Email Id</div>
+                </div>
             </div>
             <div class="form-group">
-               <input type="text" class="form-control" placeholder="Phone">
+               <input type="text" name="phone" ng-model="profile.contact.phone" class="form-control" placeholder="Phone">
             </div>
             <div class="form-group">
-               <input type="text" class="form-control" placeholder="City">
+               <input type="text" name="city" ng-model="profile.contact.city" class="form-control" placeholder="City">
             </div>
             <div class="form-group">
-               <input type="text" class="form-control" placeholder="Country">
+               <input type="text" name="country" ng-model="profile.contact.country" class="form-control" placeholder="Country">
             </div>
          </div>
          <div class="clearfix"></div>
          <div class="col-md-12">
             <button type="submit" class="btn btn-default pull-right">Submit</button>
-            <button type="submit" class="btn btn-default pull-right">Cancel</button>
+            <button type="submit" ng-click="cancel($event)" class="btn btn-default pull-right">Cancel</button>
             <div class="clearfix"></div>
          </div>
       </form>

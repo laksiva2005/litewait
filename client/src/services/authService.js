@@ -4,7 +4,7 @@
 ;(function(angular){
 
     'use strict';
-
+    var USER_KEY = 'USER:KEY';
     angular.module('litewait.services')
         .constant('AUTH_EVENTS', {
             loginSuccess: 'auth:login-success',
@@ -18,7 +18,11 @@
             loginSuccess: 'User logged in successfully',
             loginFailed: 'Invalid attempt, please check email/password',
             registerSuccess: 'Registration success',
-            registerFailed: 'Registration failed'
+            registerFailed: 'Registration failed',
+            profileUpdateSuccess: 'Profile has been successfully updated',
+            profileUpdateFailed: 'Profile update has been failed',
+            chPwdSuccess: 'Password has been changed successfully',
+            chPwdFailed: 'Password change has been failed'
         })
         .constant('AUTH_PROPS', {
             'PASSWORD_PATTERN': "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!%*?&])[A-Za-z\\d$@$!%*?&]{8,}"
@@ -28,11 +32,13 @@
         .factory('AuthInterceptor', AuthInterceptor)
         .provider('AuthService', AuthService);
 
+    User.$inject = ['$http', 'RouteConfig', '$q', 'AUTH_MSG', 'toaster'];
     config.$inject = ['$httpProvider'];
     AuthInterceptor.$inject = ['$rootScope', '$q', 'AUTH_EVENTS'];
 
-    function User () {
+    function User ($http, RouteConfig, $q, AUTH_MSG, toaster) {
 
+        var urlBase = RouteConfig.apiBase;
         var sessionUser = {
             id: 0,
             isLoggedIn: false,
@@ -41,6 +47,36 @@
             role: null,
             name: 'User',
             data: {}
+        };
+
+        sessionUser.updateProfile = function (data) {
+            var deferred = $q.defer();
+            return $http.put(urlBase + '/user', data).success(function(response) {
+                return deferred.resolve(response);
+            }).error(function(error) {
+                toaster.pop({
+                    type: 'error', 
+                    title:'Error', 
+                    body: AUTH_MSG.profileUpdateFailed, 
+                    toasterId: 1
+                });
+                deferred.reject();
+            });
+        };
+
+        sessionUser.changePassword = function (data) {
+            var deferred = $q.defer();
+            return $http.put(urlBase + '/user/passhash', data).success(function(response) {
+                return deferred.resolve(response);
+            }).error(function(error) {
+                toaster.pop({
+                    type: 'error', 
+                    title:'Error', 
+                    body: AUTH_MSG.chPwdFailed, 
+                    toasterId: 1
+                });
+                deferred.reject();
+            });
         };
 
 
@@ -56,8 +92,18 @@
                 data.data = user;
                 
                 angular.extend(sessionUser, data);
+                sessionUser.resetUser(sessionUser.data);
             } else {
+                sessionUser.resetUser(null);
                 sessionUser.clear();
+            }
+        };
+
+        sessionUser.resetUser = function(data) {
+            if (data) {
+                sessionStorage.setItem(USER_KEY, angular.toJson(data));
+            } else {
+                sessionStorage.removeItem(USER_KEY);
             }
         };
 
@@ -69,6 +115,7 @@
             sessionUser.email = '';
             sessionUser.isLoggedIn = false;
             sessionUser.data = {};
+            sessionUser.resetUser(null);
         };
 
         return sessionUser;
@@ -114,6 +161,7 @@
             function($q, $rootScope, $http, User, RouteConfig, AUTH_EVENTS) {
 
                 var TOKEN_KEY = 'AUTH:TOKEN';
+                var USER_KEY = 'USER:KEY';
                 var session = window.sessionStorage;
 
                 var getUrl = function(path) {
@@ -140,19 +188,25 @@
                     }
                 };
 
-
+                
                 var getToken = function() {
                     return session.getItem(TOKEN_KEY);
+                };
+
+                var getUser = function() {
+                    return session.getItem(USER_KEY);
                 };
 
                 var reloadUser = function(token) {
                     var deferred = $q.defer(),
                         authUrl = getUrl(WHOAMI_ENDPOINT);
 
+                    var userVal = angular.fromJson(getUser());
+                    User.assign(userVal);
                     var data = {};
-                    //deferred.resolve(User);
+                    deferred.resolve(User);
 
-                    
+                    /*                    
                     $http({
                         method: 'GET',
                         url: authUrl,
@@ -169,7 +223,7 @@
                         //deferred.reject(reason);
                         deferred.resolve(User);
                     });
-                    
+                    */
                     return deferred.promise;
                 };
 
@@ -238,7 +292,7 @@
                                 setToken(null);
                                 User.clear();
                                 raise(AUTH_EVENTS.loginFailure, params);
-                                deferred.reject(reason);
+                                deferred.reject();
                             }
                         }).error(function(reason) {
                             setToken(null);
