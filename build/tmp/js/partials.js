@@ -25,7 +25,7 @@ module.run(['$templateCache', function($templateCache) {
     '                <td>\n' +
     '                	<table class="sub-table">\n' +
     '                    	<tr>\n' +
-    '                        	<td><img src="assets/images/cart-1.jpg" class="product img-responsive" /></td>\n' +
+    '                        	<td><img src="img/cart-1.jpg" class="product img-responsive" /></td>\n' +
     '                            <td> <h3>Egg rol 2</h3>\n' +
     '                    <p>Lorem ipsum dolor sit amet <br/> consectetuer adipiscing elit.</p></td>\n' +
     '                        \n' +
@@ -43,7 +43,7 @@ module.run(['$templateCache', function($templateCache) {
     '                <td>\n' +
     '                	<table class="sub-table">\n' +
     '                    	<tr>\n' +
-    '                        	<td><img src="assets/images/cart-1.jpg" class="product img-responsive" /></td>\n' +
+    '                        	<td><img src="img/cart-1.jpg" class="product img-responsive" /></td>\n' +
     '                            <td> <h3>Egg rol 2</h3>\n' +
     '                    <p>Lorem ipsum dolor sit amet <br/> consectetuer adipiscing elit.</p></td>\n' +
     '                        \n' +
@@ -102,7 +102,7 @@ module.run(['$templateCache', function($templateCache) {
     '      \n' +
     '      <div class="product-widget">\n' +
     '            <h2><a href="shop-detail-menu.html">Charlie\'s Sandwich</a></h2>\n' +
-    '            <img src="assets/images/search-result-1.jpg" />\n' +
+    '            <img src="img/search-result-1.jpg" />\n' +
     '            \n' +
     '            <div class="cnt"> <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>\n' +
     '              <p>0.98 mi Distance from search location</p>\n' +
@@ -147,7 +147,7 @@ module.run(['$templateCache', function($templateCache) {
     '                <td>\n' +
     '                	<table class="sub-table">\n' +
     '                    	<tr>\n' +
-    '                        	<td><img src="assets/images/cart-1.jpg" class="product img-responsive" /></td>\n' +
+    '                        	<td><img src="img/cart-1.jpg" class="product img-responsive" /></td>\n' +
     '                            <td> <h3>Egg rol 2</h3>\n' +
     '                    <p>Lorem ipsum dolor sit amet <br/> consectetuer adipiscing elit.</p>\n' +
     '                    </td>\n' +
@@ -166,7 +166,7 @@ module.run(['$templateCache', function($templateCache) {
     '                <td>\n' +
     '                	<table class="sub-table">\n' +
     '                    	<tr>\n' +
-    '                        	<td><img src="assets/images/cart-1.jpg" class="product img-responsive" /></td>\n' +
+    '                        	<td><img src="img/cart-1.jpg" class="product img-responsive" /></td>\n' +
     '                            <td> <h3>Egg rol 2</h3>\n' +
     '                    <p>Lorem ipsum dolor sit amet <br/> consectetuer adipiscing elit.</p>\n' +
     '                    </td>\n' +
@@ -226,7 +226,7 @@ module.run(['$templateCache', function($templateCache) {
     '      </div>\n' +
     '      <div class="payment-method">\n' +
     '        <h2>Payment method</h2>\n' +
-    '        <p><img src="assets/images/ic-visa.gif" /><span>Visa</span><span>ending in 7519</span></p>\n' +
+    '        <p><img src="img/ic-visa.gif" /><span>Visa</span><span>ending in 7519</span></p>\n' +
     '      </div>\n' +
     '      <div class="billing-address">\n' +
     '      	<h3>Biling Address:</h3>\n' +
@@ -236,7 +236,7 @@ module.run(['$templateCache', function($templateCache) {
     '      </div>\n' +
     '      <div class="product-widget">\n' +
     '            <h2><a href="shop-detail-menu.html">Charlie\'s Sandwich</a></h2>\n' +
-    '            <img src="assets/images/search-result-1.jpg" />\n' +
+    '            <img src="img/search-result-1.jpg" />\n' +
     '            \n' +
     '            <div class="cnt"> <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>\n' +
     '              <p>0.98 mi Distance from search location</p>\n' +
@@ -255,7 +255,7 @@ module.run(['$templateCache', function($templateCache) {
     '        <div class="row">\n' +
     '        	<div class="col-md-4 list">\n' +
     '            \n' +
-    '            	<img src="assets/images/recent-view-7.jpg" class="left" />\n' +
+    '            	<img src="img/recent-view-7.jpg" class="left" />\n' +
     '                <div class="right">\n' +
     '                <h3>Tom Kha Sou</h3>\n' +
     '            	<p class="order">Order Id : <a href="shopping-cart-summary.html">4269-2215</a> </p>\n' +
@@ -266,7 +266,7 @@ module.run(['$templateCache', function($templateCache) {
     '             </div>\n' +
     '             <div class="col-md-4 list">\n' +
     '            \n' +
-    '            	<img src="assets/images/recent-view-7.jpg" class="left" />\n' +
+    '            	<img src="img/recent-view-7.jpg" class="left" />\n' +
     '                <div class="right">\n' +
     '                <h3>Tom Kha Sou</h3>\n' +
     '            	<p class="order">Order Id : <a href="shopping-cart-summary.html">4269-2215</a> </p>\n' +
@@ -277,7 +277,7 @@ module.run(['$templateCache', function($templateCache) {
     '             </div>\n' +
     '             <div class="col-md-4 list">\n' +
     '            \n' +
-    '            	<img src="assets/images/recent-view-7.jpg" class="left" />\n' +
+    '            	<img src="img/recent-view-7.jpg" class="left" />\n' +
     '                <div class="right">\n' +
     '                <h3>Tom Kha Sou</h3>\n' +
     '            	<p class="order">Order Id : <a href="shopping-cart-summary.html">4269-2215</a> </p>\n' +
@@ -295,24 +295,6 @@ module.run(['$templateCache', function($templateCache) {
     '    </div>\n' +
     '  </div>\n' +
     '</div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('html/spinner.html',
-    '<div class="spinner">\n' +
-    '  <div>\n' +
-    '    <i class="fa fa-spinner fa-spin"></i>\n' +
-    '  </div>\n' +
-    '  <div class="spinner-text">{{$message}}</div>\n' +
-    '</div>\n' +
-    '');
 }]);
 })();
 
@@ -450,6 +432,24 @@ module.run(['$templateCache', function($templateCache) {
     '        <div class="next-prev-wrap"> <a data-slide="prev" href="#testimonial" class="carousel-control left">‹</a> <a data-slide="next" href="#testimonial" class="carousel-control right">›</a> </div>\n' +
     '      </div>\n' +
     '    </div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('html/spinner.html',
+    '<div class="spinner">\n' +
+    '  <div>\n' +
+    '    <i class="fa fa-spinner fa-spin"></i>\n' +
+    '  </div>\n' +
+    '  <div class="spinner-text">{{$message}}</div>\n' +
+    '</div>\n' +
+    '');
 }]);
 })();
 
