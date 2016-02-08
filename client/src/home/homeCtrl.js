@@ -3,11 +3,11 @@
  */
 ;(function (angular) {
 	'use strict';
-	angular.module('litewait.ui').controller('homeCtrl', homeCtrl);
+	angular.module('litewait.ui').controller('HomeCtrl', HomeCtrl);
 
-	homeCtrl.$inject = ['$scope'];
+	HomeCtrl.$inject = ['$scope'];
 
-	function homeCtrl($scope) {
+	function HomeCtrl($scope) {
 		$scope.myInterval = 1000;
   		$scope.noWrapSlides = false;
 		$scope.slides = [{

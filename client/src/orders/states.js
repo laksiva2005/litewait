@@ -16,7 +16,7 @@
                 views: {
                     "@": {
                         templateUrl: "orders/myorder.html",
-                        controller: "myOrderCtrl"
+                        controller: "MyOrderCtrl"
                     }
                 },
                 resolve: {

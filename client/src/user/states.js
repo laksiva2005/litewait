@@ -16,7 +16,7 @@
                 views: {
                     "@": {
                         templateUrl: "user/profile.html",
-                        controller: "profileCtrl"
+                        controller: "ProfileCtrl"
                     }
                 },
                 resolve: {
@@ -41,7 +41,7 @@
                 views: {
                     "@": {
                         templateUrl: "user/ch-pwd.html",
-                        controller: "chpwdCtrl"
+                        controller: "ChpwdCtrl"
                     }
                 },
                 resolve: {

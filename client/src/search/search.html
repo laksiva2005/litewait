@@ -1,0 +1,176 @@
+<div class="container-fluid banner-wrap" ng-if="!user.isLoggedIn">
+	<div class="banner">
+    	<div class="col-md-10 cnt">
+    	<p class="title-1">SAVE YOUR TIME...INCREASE PRODUCTIVE TIME<br/>
+SAVE MONEY!!</p>
+		<p class="title-2">Tired of waiting in queue, come join us</p>
+        <a href="#" class="btn join"  ng-click="openSignUpModal()">Join Now !!</a>
+        </div>
+    </div>
+</div>
+<div class="container-fluid search-wrap" ui-view="search-box">
+</div>
+<div class="container search-result">
+  <div class="col-md-12 best-bet">These retailers are your best bet for:<a href="#">Sandwich</a></div>
+  <div class="row-fluid">
+    <div class="col-md-4">
+      <div class="specify">
+        <ul>
+          <li>
+            <label>Filters</label>
+            <a href="#" class="pull-right">Clear All</a> </li>
+          <li>
+            <label>Category</label>
+            <a href="#" class="pull-right">Clear All</a>
+            <div class="form-group">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="">
+                  Calzones</label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="">
+                  Pasta</label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="">
+                  Pizza</label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="">
+                  Salads</label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="">
+                  Sandwiches </label>
+              </div>
+            </div>
+          </li>
+          <li>
+            <label>Rating</label>
+            <div class="rating"><span class="pull-left"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>
+              <div class="clearfix"></div>
+            </div>
+          </li>
+          <li>
+            <label>Price</label>
+            <div class="range-wrap">
+              <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="600" data-slider-step="5" data-slider-value="[250,450]" id="sl2" >
+              <br />
+              <b>$ 0</b> <b class="pull-right">$ 600</b> </div>
+          </li>
+          <li>
+            <label>Distance</label>
+            <div class="range-wrap">
+              <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="600" data-slider-step="5" data-slider-value="[250,450]" id="sl3" >
+              <br />
+              <b>.2 mi</b> <b class="pull-right">10 mi</b> </div>
+          </li>
+          <li>
+            <label>Average Wait Time</label>
+            <div class="range-wrap">
+              <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="600" data-slider-step="5" data-slider-value="[250,450]" id="sl4" >
+              <br />
+              <b>10 m</b> <b class="pull-right">1.30 h</b> </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="list-wrap">
+        <div class="list-item">
+          <div class="col-xs-12 col-sm-8 col-md-8">
+            <h2><a href="shop-detail-menu.html">Charlie's Sandwich</a></h2>
+            <img src="img/search-result-1.jpg" class="pull-left" />
+            <div> <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>
+              <p>0.98 mi Distance from search location</p>
+              <p class="wait">20 m Wait Time</p>
+              <p>Open 11:00 AM to 4:00 AM</p>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-4 col-md-4 menu">
+            <h2>Popular Items</h2>
+            <ul>
+              <li><a href="#">Chicken Parmesan Sub</a></li>
+              <li><a href="#">BBQ Chicken Sub</a></li>
+              <li><a href="#">Veggie Sub</a></li>
+              <li><a href="#">Chicken Ranch Hot Sandwich</a></li>
+              <li><a href="#">Cold Cut Hot Sandwich</a></li>
+            </ul>
+            <a ng-click="go('shop.detail')" class="btn btn-block">View Retailer</a> </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="list-item">
+          <div class="col-xs-12 col-sm-8 col-md-8">
+            <h2><a href="shop-detail-menu.html">Charlie's Sandwich</a></h2>
+            <img src="img/search-result-1.jpg" class="pull-left" />
+            <div> <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>
+              <p>0.98 mi Distance from search location</p>
+              <p class="wait">20 m Wait Time</p>
+              <p>Open 11:00 AM to 4:00 AM</p>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-4 col-md-4 menu">
+            <h2>Popular Items</h2>
+            <ul>
+              <li><a href="#">Chicken Parmesan Sub</a></li>
+              <li><a href="#">BBQ Chicken Sub</a></li>
+              <li><a href="#">Veggie Sub</a></li>
+              <li><a href="#">Chicken Ranch Hot Sandwich</a></li>
+              <li><a href="#">Cold Cut Hot Sandwich</a></li>
+            </ul>
+            <a ng-click="go('shop.detail')" class="btn btn-block">View Retailer</a> </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="list-item">
+          <div class="col-xs-12 col-sm-8 col-md-8">
+            <h2><a href="shop-detail-menu.html">Charlie's Sandwich</a></h2>
+            <img src="img/search-result-1.jpg" class="pull-left" />
+            <div> <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>
+              <p>0.98 mi Distance from search location</p>
+              <p class="wait">20 m Wait Time</p>
+              <p>Open 11:00 AM to 4:00 AM</p>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-4 col-md-4 menu">
+            <h2>Popular Items</h2>
+            <ul>
+              <li><a href="#">Chicken Parmesan Sub</a></li>
+              <li><a href="#">BBQ Chicken Sub</a></li>
+              <li><a href="#">Veggie Sub</a></li>
+              <li><a href="#">Chicken Ranch Hot Sandwich</a></li>
+              <li><a href="#">Cold Cut Hot Sandwich</a></li>
+            </ul>
+            <a ng-click="go('shop.detail')" class="btn btn-block">View Retailer</a> </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="list-item">
+          <div class="col-xs-12 col-sm-8 col-md-8">
+            <h2><a href="shop-detail-menu.html">Charlie's Sandwich</a></h2>
+            <img src="img/search-result-1.jpg" class="pull-left" />
+            <div> <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>
+              <p>0.98 mi Distance from search location</p>
+              <p class="wait">20 m Wait Time</p>
+              <p>Open 11:00 AM to 4:00 AM</p>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-4 col-md-4 menu">
+            <h2>Popular Items</h2>
+            <ul>
+              <li><a href="#">Chicken Parmesan Sub</a></li>
+              <li><a href="#">BBQ Chicken Sub</a></li>
+              <li><a href="#">Veggie Sub</a></li>
+              <li><a href="#">Chicken Ranch Hot Sandwich</a></li>
+              <li><a href="#">Cold Cut Hot Sandwich</a></li>
+            </ul>
+            <a ng-click="go('shop.detail')" class="btn btn-block">View Retailer</a> </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

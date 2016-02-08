@@ -1,0 +1,12 @@
+<div class="container search">
+  <h1>SEARCH FOR YOUR FAVORITE RETAILER</h1>
+  <div class="row">
+    <div class="col-md-5 less-padding">
+      <input ng-model="searchCriteria.location" type="text" class="form-control" placeholder="Location" />
+    </div>
+    <div class="col-md-5 less-padding">
+      <input type="text" class="form-control" ng-model="searchCriteria.keyword" placeholder="Keyword" />
+    </div>
+    <div class="col-md-2 less-padding"><a class="btn btn-block" ng-click="searchFn($event)"><i class="fa fa-search"></i> Search</a></div>
+  </div>
+</div>

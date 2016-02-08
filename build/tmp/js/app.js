@@ -2811,9 +2811,85 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             .state('home', {
             	url: "",
                 views: {
+                    "search-box@home": {
+                      templateUrl: 'navigation/search-box.html',
+                      controller: "SearchBoxCtrl"
+                    },
                     "@": {
                         templateUrl: "home/home.html",
-                        controller: "homeCtrl"
+                        controller: "HomeCtrl"
+                    }
+                },
+                params: { location: '', keyword: '' },
+                resolve: {
+                    search: function ($q, $timeout) {
+                        var deferred = $q.defer();
+                        
+                        var handler = $timeout(function() {
+                            deferred.resolve('home');
+                            $timeout.cancel(handler);
+                        }, 0);
+                        
+                        return deferred.promise;
+                    }
+                }
+            });
+    }
+})(angular);
+/*
+ *
+ */
+;(function () {
+	'use strict';
+	angular.module('litewait.ui').controller('CartCtrl', CartCtrl);
+
+	CartCtrl.$inject = ['$scope'];
+
+	function CartCtrl($scope) {
+		
+	}
+})();
+/*
+ *
+ */
+;(function () {
+	'use strict';
+	angular.module('litewait.ui').controller('CartSummaryCtrl', CartSummaryCtrl);
+
+	CartSummaryCtrl.$inject = ['$scope'];
+
+	function CartSummaryCtrl($scope) {
+		
+	}
+})();
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('cart', {
+                abstract: true
+            })
+            .state('cart.detail', {
+            	url: "/cart",
+                views: {
+                    "@": {
+                        templateUrl: "cart/cart.html",
+                        controller: "CartCtrl"
+                    }
+                }
+            })
+            .state('cart.summary', {
+                url: "/cart-summary",
+                views: {
+                    "@": {
+                        templateUrl: "cart/cart-summary.html",
+                        controller: "CartSummaryCtrl"
                     }
                 }
             });
@@ -2875,11 +2951,11 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
  */
 ;(function (angular) {
 	'use strict';
-	angular.module('litewait.ui').controller('homeCtrl', homeCtrl);
+	angular.module('litewait.ui').controller('HomeCtrl', HomeCtrl);
 
-	homeCtrl.$inject = ['$scope'];
+	HomeCtrl.$inject = ['$scope'];
 
-	function homeCtrl($scope) {
+	function HomeCtrl($scope) {
 		$scope.myInterval = 1000;
   		$scope.noWrapSlides = false;
 		$scope.slides = [{
@@ -3107,6 +3183,148 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             Spinner.spining(data);
         });
 	}
+})(angular);
+/*
+ *
+ */
+;(function () {
+	'use strict';
+	angular.module('litewait.ui').controller('SearchBoxCtrl', SearchBoxCtrl);
+
+	SearchBoxCtrl.$inject = ['$scope', '$state', '$stateParams', 'search'];
+
+	function SearchBoxCtrl($scope, $state, $stateParams, search) {
+		$scope.searchCriteria = {};
+		$scope.searchCriteria.location =  $stateParams.location;
+		$scope.searchCriteria.keyword =  $stateParams.keyword;
+		$scope.search = search;
+
+		$scope.searchFn = searchFn;
+
+		function searchFn(event) {
+			if (search == 'home') {
+				$state.go('search.restaurant', {location: $scope.searchCriteria.location, keyword: $scope.searchCriteria.keyword});
+			} else {
+				//TODO: do the actual search and emit the result
+			}
+		}
+	}
+})();
+/*
+ *
+ */
+;(function(angular) {
+	'use strict';
+
+	angular.module('litewait.ui').controller('MyOrderCtrl', MyOrderCtrl);
+
+	MyOrderCtrl.$inject = ['$scope', 'authentication'];
+
+	function MyOrderCtrl($scope, authentication) {
+		console.log(authentication);
+		// TODO: Need to change things dynamically
+	}
+
+
+})(angular);
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('order', {
+                abstract: true
+            })
+            .state('order.myorder', {
+            	url: "/myorder",
+                views: {
+                    "@": {
+                        templateUrl: "orders/myorder.html",
+                        controller: "MyOrderCtrl"
+                    }
+                },
+                resolve: {
+                    authentication: function (AuthService, $q, $timeout) {
+                        var deferred = $q.defer();
+                        
+                        var handler = $timeout(function() {
+                            var auth = AuthService.isAuthenticated();
+                            if (auth) {
+                                deferred.resolve(true);
+                            } else {
+                                deferred.reject(true);
+                            }
+                            $timeout.cancel(handler);
+                        }, 0);
+                        
+                        return deferred.promise;
+                    }
+                }
+            });
+    }
+})(angular);
+/*
+ *
+ */
+;(function() {
+	'use strict';
+	angular.module('litewait.ui').controller('SearchCtrl', SearchCtrl);
+
+	SearchCtrl.$inject = ['$scope', '$state'];
+
+	function SearchCtrl($scope, $state) {
+		$scope.viewRetailer = viewRetailer;
+
+		function viewRetailer() {
+			$state.go('shop.detail.menu');
+		}
+	}
+})();
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('search', {
+                abstract: true
+            })
+            .state('search.restaurant', {
+            	url: "/serach",
+                views: {
+                    "search-box@search": {
+                      templateUrl: 'navigation/search-box.html',
+                      controller: "SearchBoxCtrl"
+                    },
+                    "@": {
+                        templateUrl: "search/search.html",
+                        controller: "SearchCtrl"
+                    }
+                },
+                params: {location: '', keyword: ''},
+                resolve: {
+                    search: function ($q, $timeout) {
+                        var deferred = $q.defer();
+                        
+                        var handler = $timeout(function() {
+                            deferred.resolve('search');
+                            $timeout.cancel(handler);
+                        }, 0);
+                        
+                        return deferred.promise;
+                    }
+                }
+            });
+    }
 })(angular);
 /**
  *
@@ -3596,20 +3814,16 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 /*
  *
  */
-;(function(angular) {
+;(function () {
 	'use strict';
+	angular.module('litewait.ui').controller('ShopDetailMenuCtrl', ShopDetailMenuCtrl);
 
-	angular.module('litewait.ui').controller('myOrderCtrl', myOrderCtrl);
+	ShopDetailMenuCtrl.$inject = ['$scope'];
 
-	myOrderCtrl.$inject = ['$scope', 'authentication'];
-
-	function myOrderCtrl($scope, authentication) {
-		console.log(authentication);
-		// TODO: Need to change things dynamically
+	function ShopDetailMenuCtrl($scope) {
+		
 	}
-
-
-})(angular);
+})();
 
 ;(function(angular) {
     'use strict';
@@ -3620,32 +3834,15 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
     function config($stateProvider) {
         $stateProvider
-            .state('order', {
+            .state('shop', {
                 abstract: true
             })
-            .state('order.myorder', {
-            	url: "/myorder",
+            .state('shop.detail', {
+            	url: "/shop-detail-menu",
                 views: {
                     "@": {
-                        templateUrl: "orders/myorder.html",
-                        controller: "myOrderCtrl"
-                    }
-                },
-                resolve: {
-                    authentication: function (AuthService, $q, $timeout) {
-                        var deferred = $q.defer();
-                        
-                        var handler = $timeout(function() {
-                            var auth = AuthService.isAuthenticated();
-                            if (auth) {
-                                deferred.resolve(true);
-                            } else {
-                                deferred.reject(true);
-                            }
-                            $timeout.cancel(handler);
-                        }, 0);
-                        
-                        return deferred.promise;
+                        templateUrl: "shop/shop-detail-menu.html",
+                        controller: "ShopDetailMenuCtrl"
                     }
                 }
             });
@@ -3656,11 +3853,11 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
  */
 ;(function(angular) {
 	'use strict';
-	angular.module('litewait.ui').controller('chpwdCtrl', chpwdCtrl);
+	angular.module('litewait.ui').controller('ChpwdCtrl', ChpwdCtrl);
 
-	chpwdCtrl.$inject = ['$scope', 'AUTH_PROPS', 'authentication'];
+	ChpwdCtrl.$inject = ['$scope', 'AUTH_PROPS', 'authentication'];
 
-	function chpwdCtrl($scope, AUTH_PROPS, authentication) {
+	function ChpwdCtrl($scope, AUTH_PROPS, authentication) {
 		$scope.pwd = {
 			old_password: '',
 			new_password: '',
@@ -3713,11 +3910,11 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
  */
 ;(function(angular) {
 	'use strict';
-	angular.module('litewait.ui').controller('profileCtrl', profileCtrl);
+	angular.module('litewait.ui').controller('ProfileCtrl', ProfileCtrl);
 
-	profileCtrl.$inject = ['$scope', 'User', '$state', 'toaster', 'AUTH_MSG', 'authentication'];
+	ProfileCtrl.$inject = ['$scope', 'User', '$state', 'toaster', 'AUTH_MSG', 'authentication'];
 
-	function profileCtrl($scope, User, $state, toaster, AUTH_MSG, authentication) {
+	function ProfileCtrl($scope, User, $state, toaster, AUTH_MSG, authentication) {
 		$scope.user = User;
 		$scope.profile = {
 			user_name: '',
@@ -3798,7 +3995,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                 views: {
                     "@": {
                         templateUrl: "user/profile.html",
-                        controller: "profileCtrl"
+                        controller: "ProfileCtrl"
                     }
                 },
                 resolve: {
@@ -3823,7 +4020,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                 views: {
                     "@": {
                         templateUrl: "user/ch-pwd.html",
-                        controller: "chpwdCtrl"
+                        controller: "ChpwdCtrl"
                     }
                 },
                 resolve: {

@@ -8,19 +8,7 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid search-wrap">
-      <div class="container search">
-        <h1>SEARCH FOR YOUR FAVORITE RETAILER</h1>
-        <div class="row">
-          <div class="col-md-5 less-padding">
-            <input type="text" class="form-control" placeholder="Location" />
-          </div>
-          <div class="col-md-5 less-padding">
-            <input type="text" class="form-control" placeholder="Keyword" />
-          </div>
-          <div class="col-md-2 less-padding"><a href="search-before-login.html" class="btn btn-block"><i class="fa fa-search"></i> Search</a></div>
-        </div>
-      </div>
+    <div class="container-fluid search-wrap" ui-view="search-box">
     </div>
     <div ng-if="user.isLoggedIn" class="container most-visit">
 	  <h1>Recently Viewed Locations</h1>

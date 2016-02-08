@@ -3,11 +3,11 @@
  */
 ;(function(angular) {
 	'use strict';
-	angular.module('litewait.ui').controller('chpwdCtrl', chpwdCtrl);
+	angular.module('litewait.ui').controller('ChpwdCtrl', ChpwdCtrl);
 
-	chpwdCtrl.$inject = ['$scope', 'AUTH_PROPS', 'authentication'];
+	ChpwdCtrl.$inject = ['$scope', 'AUTH_PROPS', 'authentication'];
 
-	function chpwdCtrl($scope, AUTH_PROPS, authentication) {
+	function ChpwdCtrl($scope, AUTH_PROPS, authentication) {
 		$scope.pwd = {
 			old_password: '',
 			new_password: '',

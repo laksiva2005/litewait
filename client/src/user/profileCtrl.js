@@ -3,11 +3,11 @@
  */
 ;(function(angular) {
 	'use strict';
-	angular.module('litewait.ui').controller('profileCtrl', profileCtrl);
+	angular.module('litewait.ui').controller('ProfileCtrl', ProfileCtrl);
 
-	profileCtrl.$inject = ['$scope', 'User', '$state', 'toaster', 'AUTH_MSG', 'authentication'];
+	ProfileCtrl.$inject = ['$scope', 'User', '$state', 'toaster', 'AUTH_MSG', 'authentication'];
 
-	function profileCtrl($scope, User, $state, toaster, AUTH_MSG, authentication) {
+	function ProfileCtrl($scope, User, $state, toaster, AUTH_MSG, authentication) {
 		$scope.user = User;
 		$scope.profile = {
 			user_name: '',

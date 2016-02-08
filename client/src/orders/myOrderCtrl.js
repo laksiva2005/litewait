@@ -4,11 +4,11 @@
 ;(function(angular) {
 	'use strict';
 
-	angular.module('litewait.ui').controller('myOrderCtrl', myOrderCtrl);
+	angular.module('litewait.ui').controller('MyOrderCtrl', MyOrderCtrl);
 
-	myOrderCtrl.$inject = ['$scope', 'authentication'];
+	MyOrderCtrl.$inject = ['$scope', 'authentication'];
 
-	function myOrderCtrl($scope, authentication) {
+	function MyOrderCtrl($scope, authentication) {
 		console.log(authentication);
 		// TODO: Need to change things dynamically
 	}

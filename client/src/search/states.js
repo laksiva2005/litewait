@@ -8,25 +8,28 @@
 
     function config($stateProvider) {
         $stateProvider
-            .state('home', {
-            	url: "",
+            .state('search', {
+                abstract: true
+            })
+            .state('search.restaurant', {
+            	url: "/serach",
                 views: {
-                    "search-box@home": {
+                    "search-box@search": {
                       templateUrl: 'navigation/search-box.html',
                       controller: "SearchBoxCtrl"
                     },
                     "@": {
-                        templateUrl: "home/home.html",
-                        controller: "HomeCtrl"
+                        templateUrl: "search/search.html",
+                        controller: "SearchCtrl"
                     }
                 },
-                params: { location: '', keyword: '' },
+                params: {location: '', keyword: ''},
                 resolve: {
                     search: function ($q, $timeout) {
                         var deferred = $q.defer();
                         
                         var handler = $timeout(function() {
-                            deferred.resolve('home');
+                            deferred.resolve('search');
                             $timeout.cancel(handler);
                         }, 0);
                         
