@@ -16,7 +16,8 @@
                 views: {
                     "@": {
                         templateUrl: "user/profile.html",
-                        controller: "ProfileCtrl"
+                        controller: "ProfileCtrl",
+                        controllerAs: "vm"
                     }
                 },
                 resolve: {

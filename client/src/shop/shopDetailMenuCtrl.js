@@ -8,6 +8,7 @@
 	ShopDetailMenuCtrl.$inject = ['$scope'];
 
 	function ShopDetailMenuCtrl($scope) {
+		var vm = this;
 		
 	}
 })();

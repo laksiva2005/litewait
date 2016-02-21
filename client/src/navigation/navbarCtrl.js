@@ -9,27 +9,29 @@
 	navbarCtrl.$inject = ['$scope', '$q', '$state', '$uibModal', 'User', 'AuthService', 'PubSub', 'Spinner', 'SPINING_EVENTS', 'HTTPEvent'];
 
 	function navbarCtrl($scope, $q, $state, $uibModal, User, AuthService, PubSub, Spinner, SPINING_EVENTS, HTTPEvent) {
-		$scope.user = User;
-		$scope.auth = AuthService;
-		$scope.notifyToggle = false;
-		$scope.signin = true;
-        $scope.signup = false;
-        $scope.spinner = Spinner;
+        var vm = this;
+        vm.form = {};
+		vm.user = User;
+		vm.auth = AuthService;
+		vm.notifyToggle = false;
+		$scope.signin = vm.signin = true;
+        $scope.signup = vm.signup = false;
+        vm.spinner = Spinner;
 
-		$scope.openUserModal = openUserModal;
-		$scope.openSignUpModal = openSignUpModal;
-		$scope.logout = logout;
-		$scope.go = go;
+		vm.openUserModal = openUserModal;
+		vm.openSignUpModal = openSignUpModal;
+		vm.logout = logout;
+		vm.go = go;
 
 		function openUserModal() {
-			$scope.signin = true;
-            $scope.signup = false;
+			$scope.signin = vm.signin = true;
+            $scope.signup = vm.signup = false;
 			userModal();
 		}
 
 		function openSignUpModal() {
-			$scope.signin = false;
-            $scope.signup = true;
+			$scope.signin = vm.signin = false;
+            $scope.signup = vm.signup = true;
 			userModal();
 		}
 
@@ -53,15 +55,18 @@
                 windowClass: 'signin-modal',
                 keyboard: false,
                 scope: $scope,
+                bindToController: true,
+                controllerAs: 'loginModal',
                 controller: function($scope, $uibModalInstance, PubSub, AuthService, toaster, AUTH_MSG, AUTH_PROPS) {
-                    $scope.modalProps = {};
-                    $scope.modalProps.signin = $scope.$parent.signin;
-                    $scope.modalProps.signup = $scope.$parent.signup;
-                    $scope.modalProps.username = '';
-                    $scope.modalProps.password = '';
-                    $scope.modalProps.passwordPattern = AUTH_PROPS.PASSWORD_PATTERN;
+                    var vm = this;
+                    vm.modalProps = {};
+                    vm.modalProps.signin = $scope.$parent.signin;
+                    vm.modalProps.signup = $scope.$parent.signup;
+                    vm.modalProps.username = '';
+                    vm.modalProps.password = '';
+                    vm.modalProps.passwordPattern = AUTH_PROPS.PASSWORD_PATTERN;
 
-                    $scope.registerProps = {
+                    vm.registerProps = {
                         user: '',
                         user_mail: '',
                         user_password: '',
@@ -69,14 +74,14 @@
                         user_type: ''
                     };
 
-                    $scope.modalProps.login = login;
-                    $scope.modalProps.register = register;
+                    vm.modalProps.login = login;
+                    vm.modalProps.register = register;
 
 
                     function login(valid, data) {
-                    	AuthService.login(data.username, data.password).then(function(response) {
-                            if (!response.data.code) {
-                                $scope.modalProps.close();
+                        AuthService.login(data.username, data.password).then(function(response) {
+                            if (!(response.data.error || response.error)) {
+                                vm.modalProps.close();
                             } else {
                                 toaster.pop({
                                     type: 'error', 
@@ -85,15 +90,15 @@
                                     toasterId: 3
                                 });
                             }
-                    		
-                    	}, function(error) {
+                            
+                        }, function(error) {
                             toaster.pop({
                                 type: 'error', 
                                 title:'Error', 
                                 body: AUTH_MSG.loginFailed, 
                                 toasterId: 3
                             });
-                    	});
+                        });
                     }
 
                     function register(valid, data) {
@@ -105,14 +110,14 @@
                         udata.user_type = data.user_type;
 
                         AuthService.register(udata).then(function(response) {
-                            if (!response.data.code) {
+                            if (!(response.data.error || response.error)) {
                                 toaster.pop({
                                     type: 'success', 
                                     title: 'Success', 
                                     body: AUTH_MSG.registerSuccess,
                                     toasterId: 1
                                 });
-                                $scope.modalProps.close();
+                                vm.modalProps.close();
                             } else {
                                 toaster.pop({
                                     type: 'error', 
@@ -132,7 +137,7 @@
                         });
                     }
 
-                    $scope.modalProps.close = function() {
+                    vm.modalProps.close = function() {
                         $uibModalInstance.close();
                     };
                 }
@@ -143,4 +148,7 @@
             Spinner.spining(data);
         });
 	}
+
+
+    
 })(angular);

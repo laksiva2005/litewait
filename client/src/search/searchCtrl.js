@@ -8,7 +8,8 @@
 	SearchCtrl.$inject = ['$scope', '$state'];
 
 	function SearchCtrl($scope, $state) {
-		$scope.viewRetailer = viewRetailer;
+		var vm = this;
+		vm.viewRetailer = viewRetailer;
 
 		function viewRetailer() {
 			$state.go('shop.detail.menu');

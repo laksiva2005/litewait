@@ -2774,7 +2774,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
     "use strict";
     var app = angular.module('litewait');
 
-    var apiBase = 'http://fierce-scrubland-5738.herokuapp.com/v1.0/rest';
+    var apiBase = 'http://litewait-sandbox.herokuapp.com/v1.0/rest';
 
     app.value('RouteConfig', {
         base: '/',
@@ -2813,11 +2813,13 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                 views: {
                     "search-box@home": {
                       templateUrl: 'navigation/search-box.html',
-                      controller: "SearchBoxCtrl"
+                      controller: "SearchBoxCtrl",
+                      controllerAs: "vm"
                     },
                     "@": {
                         templateUrl: "home/home.html",
-                        controller: "HomeCtrl"
+                        controller: "HomeCtrl",
+                        controllerAs: "vm"
                     }
                 },
                 params: { location: '', keyword: '' },
@@ -2925,6 +2927,51 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 })(angular);
 
+
+;(function() {
+  'use strict';
+
+  function dateAsMs() {
+    return {
+      restrict: 'A',
+      require: 'ngModel',
+      link: function(scope,elem,attrs,ngModelCtrl) {
+        ngModelCtrl.$parsers.push(function(value){
+          if (value && value.getTime) {
+            return value.getTime();
+          } else {
+            return value;
+          }
+        });
+      }
+    };
+  }
+
+  angular.module('litewait.directives').directive("dateAsMs", dateAsMs);
+  
+})();
+/**
+ *
+ */
+ ;(function() {
+ 	'use strict';
+
+	angular.module('litewait.directives')
+    .directive('datepickerPopup', datepickerPopup);
+
+    function datepickerPopup() {
+
+        return {
+            restrict: 'EA',
+            require: 'ngModel',
+            link: function(scope, element, attr, controller) {
+              controller.$formatters.shift();
+            }
+        };
+    }
+ })();
+
+
 /*
  *
  */
@@ -2956,9 +3003,10 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	HomeCtrl.$inject = ['$scope'];
 
 	function HomeCtrl($scope) {
-		$scope.myInterval = 1000;
-  		$scope.noWrapSlides = false;
-		$scope.slides = [{
+		var vm = this;	
+		vm.myInterval = 1000;
+  		vm.noWrapSlides = false;
+		vm.slides = [{
 			active: true,
 			id: 0,
 			data:[
@@ -3049,27 +3097,29 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	navbarCtrl.$inject = ['$scope', '$q', '$state', '$uibModal', 'User', 'AuthService', 'PubSub', 'Spinner', 'SPINING_EVENTS', 'HTTPEvent'];
 
 	function navbarCtrl($scope, $q, $state, $uibModal, User, AuthService, PubSub, Spinner, SPINING_EVENTS, HTTPEvent) {
-		$scope.user = User;
-		$scope.auth = AuthService;
-		$scope.notifyToggle = false;
-		$scope.signin = true;
-        $scope.signup = false;
-        $scope.spinner = Spinner;
+        var vm = this;
+        vm.form = {};
+		vm.user = User;
+		vm.auth = AuthService;
+		vm.notifyToggle = false;
+		$scope.signin = vm.signin = true;
+        $scope.signup = vm.signup = false;
+        vm.spinner = Spinner;
 
-		$scope.openUserModal = openUserModal;
-		$scope.openSignUpModal = openSignUpModal;
-		$scope.logout = logout;
-		$scope.go = go;
+		vm.openUserModal = openUserModal;
+		vm.openSignUpModal = openSignUpModal;
+		vm.logout = logout;
+		vm.go = go;
 
 		function openUserModal() {
-			$scope.signin = true;
-            $scope.signup = false;
+			$scope.signin = vm.signin = true;
+            $scope.signup = vm.signup = false;
 			userModal();
 		}
 
 		function openSignUpModal() {
-			$scope.signin = false;
-            $scope.signup = true;
+			$scope.signin = vm.signin = false;
+            $scope.signup = vm.signup = true;
 			userModal();
 		}
 
@@ -3093,15 +3143,18 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                 windowClass: 'signin-modal',
                 keyboard: false,
                 scope: $scope,
+                bindToController: true,
+                controllerAs: 'loginModal',
                 controller: function($scope, $uibModalInstance, PubSub, AuthService, toaster, AUTH_MSG, AUTH_PROPS) {
-                    $scope.modalProps = {};
-                    $scope.modalProps.signin = $scope.$parent.signin;
-                    $scope.modalProps.signup = $scope.$parent.signup;
-                    $scope.modalProps.username = '';
-                    $scope.modalProps.password = '';
-                    $scope.modalProps.passwordPattern = AUTH_PROPS.PASSWORD_PATTERN;
+                    var vm = this;
+                    vm.modalProps = {};
+                    vm.modalProps.signin = $scope.$parent.signin;
+                    vm.modalProps.signup = $scope.$parent.signup;
+                    vm.modalProps.username = '';
+                    vm.modalProps.password = '';
+                    vm.modalProps.passwordPattern = AUTH_PROPS.PASSWORD_PATTERN;
 
-                    $scope.registerProps = {
+                    vm.registerProps = {
                         user: '',
                         user_mail: '',
                         user_password: '',
@@ -3109,14 +3162,14 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         user_type: ''
                     };
 
-                    $scope.modalProps.login = login;
-                    $scope.modalProps.register = register;
+                    vm.modalProps.login = login;
+                    vm.modalProps.register = register;
 
 
                     function login(valid, data) {
-                    	AuthService.login(data.username, data.password).then(function(response) {
-                            if (!response.data.code) {
-                                $scope.modalProps.close();
+                        AuthService.login(data.username, data.password).then(function(response) {
+                            if (!(response.data.error || response.error)) {
+                                vm.modalProps.close();
                             } else {
                                 toaster.pop({
                                     type: 'error', 
@@ -3125,15 +3178,15 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                                     toasterId: 3
                                 });
                             }
-                    		
-                    	}, function(error) {
+                            
+                        }, function(error) {
                             toaster.pop({
                                 type: 'error', 
                                 title:'Error', 
                                 body: AUTH_MSG.loginFailed, 
                                 toasterId: 3
                             });
-                    	});
+                        });
                     }
 
                     function register(valid, data) {
@@ -3145,14 +3198,14 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         udata.user_type = data.user_type;
 
                         AuthService.register(udata).then(function(response) {
-                            if (!response.data.code) {
+                            if (!(response.data.error || response.error)) {
                                 toaster.pop({
                                     type: 'success', 
                                     title: 'Success', 
                                     body: AUTH_MSG.registerSuccess,
                                     toasterId: 1
                                 });
-                                $scope.modalProps.close();
+                                vm.modalProps.close();
                             } else {
                                 toaster.pop({
                                     type: 'error', 
@@ -3172,7 +3225,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         });
                     }
 
-                    $scope.modalProps.close = function() {
+                    vm.modalProps.close = function() {
                         $uibModalInstance.close();
                     };
                 }
@@ -3183,6 +3236,9 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             Spinner.spining(data);
         });
 	}
+
+
+    
 })(angular);
 /*
  *
@@ -3194,16 +3250,17 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	SearchBoxCtrl.$inject = ['$scope', '$state', '$stateParams', 'search'];
 
 	function SearchBoxCtrl($scope, $state, $stateParams, search) {
-		$scope.searchCriteria = {};
-		$scope.searchCriteria.location =  $stateParams.location;
-		$scope.searchCriteria.keyword =  $stateParams.keyword;
-		$scope.search = search;
+		var vm = this;
+		vm.searchCriteria = {};
+		vm.searchCriteria.location =  $stateParams.location;
+		vm.searchCriteria.keyword =  $stateParams.keyword;
+		vm.search = search;
 
-		$scope.searchFn = searchFn;
+		vm.searchFn = searchFn;
 
 		function searchFn(event) {
 			if (search == 'home') {
-				$state.go('search.restaurant', {location: $scope.searchCriteria.location, keyword: $scope.searchCriteria.keyword});
+				$state.go('search.restaurant', {location: vm.searchCriteria.location, keyword: vm.searchCriteria.keyword});
 			} else {
 				//TODO: do the actual search and emit the result
 			}
@@ -3221,6 +3278,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	MyOrderCtrl.$inject = ['$scope', 'authentication'];
 
 	function MyOrderCtrl($scope, authentication) {
+		var vm = this;
 		console.log(authentication);
 		// TODO: Need to change things dynamically
 	}
@@ -3245,7 +3303,8 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                 views: {
                     "@": {
                         templateUrl: "orders/myorder.html",
-                        controller: "MyOrderCtrl"
+                        controller: "MyOrderCtrl",
+                        controllerAs: "vm"
                     }
                 },
                 resolve: {
@@ -3278,7 +3337,8 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	SearchCtrl.$inject = ['$scope', '$state'];
 
 	function SearchCtrl($scope, $state) {
-		$scope.viewRetailer = viewRetailer;
+		var vm = this;
+		vm.viewRetailer = viewRetailer;
 
 		function viewRetailer() {
 			$state.go('shop.detail.menu');
@@ -3303,11 +3363,13 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                 views: {
                     "search-box@search": {
                       templateUrl: 'navigation/search-box.html',
-                      controller: "SearchBoxCtrl"
+                      controller: "SearchBoxCtrl",
+                      controllerAs: "vm"
                     },
                     "@": {
                         templateUrl: "search/search.html",
-                        controller: "SearchCtrl"
+                        controller: "SearchCtrl",
+                        controllerAs: "vm"
                     }
                 },
                 params: {location: '', keyword: ''},
@@ -3338,6 +3400,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             loginSuccess: 'auth:login-success',
             loginFailed: 'auth:login-failed',
             logoutSuccess: 'auth:logout-success',
+            logoutFailed: 'auth:logout-failed',
             sessionTimeout: 'auth:session-timeout',
             notAuthenticated: 'auth:not-authenticated',
             notAuthorized: 'auth:not-authorized'
@@ -3345,15 +3408,21 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
         .constant('AUTH_MSG', {
             loginSuccess: 'User logged in successfully',
             loginFailed: 'Invalid attempt, please check email/password',
+            logoutSuccess: 'You have been logged out successfully',
+            logoutFailed: 'Logout failed',
             registerSuccess: 'Registration success',
             registerFailed: 'Registration failed',
             profileUpdateSuccess: 'Profile has been successfully updated',
             profileUpdateFailed: 'Profile update has been failed',
+            paymentUpdateSuccess: 'Payment has been successfully updated',
+            paymentUpdateFailed: 'Payment update has been failed',
             chPwdSuccess: 'Password has been changed successfully',
             chPwdFailed: 'Password change has been failed'
         })
         .constant('AUTH_PROPS', {
-            'PASSWORD_PATTERN': "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!%*?&])[A-Za-z\\d$@$!%*?&]{8,}"
+            'PASSWORD_PATTERN': "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!%*?&])[A-Za-z\\d$@$!%*?&]{8,}",
+            'CARD': '^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|6(?:011|5[0-9]{2})[0-9]{12}|(?:2131|1800|35\d{3})\d{11})$',
+            'CVV': '^[0-9]{3,4}$'
         })
         .factory('User', User)
         .config(config)
@@ -3392,9 +3461,24 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             });
         };
 
+        sessionUser.updatePayment = function (data) {
+            var deferred = $q.defer();
+            return $http.post(urlBase + '/payment', data).success(function(response) {
+                return deferred.resolve(response);
+            }).error(function(error) {
+                toaster.pop({
+                    type: 'error', 
+                    title:'Error', 
+                    body: AUTH_MSG.paymentUpdateFailed, 
+                    toasterId: 1
+                });
+                deferred.reject();
+            });
+        };
+
         sessionUser.changePassword = function (data) {
             var deferred = $q.defer();
-            return $http.put(urlBase + '/user/passhash', data).success(function(response) {
+            return $http.put(urlBase + '/passhash', data).success(function(response) {
                 return deferred.resolve(response);
             }).error(function(error) {
                 toaster.pop({
@@ -3518,6 +3602,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
                 
                 var getToken = function() {
+                    var a = session.getItem(TOKEN_KEY);
                     return session.getItem(TOKEN_KEY);
                 };
 
@@ -3587,8 +3672,8 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                             },
                             deferred = $q.defer();
 
-                        var token = 'test-token';
-                        /*
+                        /*var token = 'test-token';
+                        
                         var data = {
                             id: 1,
                             isLoggedIn: true,
@@ -3610,8 +3695,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                             url: authUrl,
                             data: params
                         }).success(function(response, status, headers) {
-                            if (!response.code) {
-                                var token = headers(API_KEY_HEADER);
+                            if (!response.error) {
                                 User.assign(response.data);
                                 setToken(response.data.user_session);
                                 raise(AUTH_EVENTS.loginSuccess, User);
@@ -3634,6 +3718,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         var deferred = $q.defer();
 
                         var saveUser = _.clone(User);
+                        /*var saveUser = _.clone(User);
                         
                         setToken(null);
                         User.clear();
@@ -3641,14 +3726,31 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         deferred.resolve(true);
 
                         return deferred.promise;
-
-                        /*return $http.post(endpoint).success(function() {
-                            var saveUser = _.clone(User);
-                            setToken(null);
-                            User.clear();
-                            raise(AUTH_EVENTS.logoutSuccess, saveUser);
-                            return true;
-                        });*/
+                        */
+                        return $http.get(endpoint).success(function(response) {
+                            if (!response.error) {
+                                
+                                setToken(null);
+                                User.clear();
+                                raise(AUTH_EVENTS.logoutSuccess, saveUser);
+                                toaster.pop({
+                                    type: 'success', 
+                                    title:'Success', 
+                                    body: AUTH_MSG.logoutSuccess, 
+                                    toasterId: 1
+                                });
+                                return deferred.resolve(response);
+                            } else {
+                                raise(AUTH_EVENTS.logoutFailed, saveUser);
+                                toaster.pop({
+                                    type: 'error', 
+                                    title:'Error', 
+                                    body: AUTH_MSG.logoutFailed, 
+                                    toasterId: 1
+                                });
+                                return deferred.reject(response);
+                            }
+                        });
                     },
                     getAuthToken: function() {
                         return getToken();
@@ -3821,6 +3923,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	ShopDetailMenuCtrl.$inject = ['$scope'];
 
 	function ShopDetailMenuCtrl($scope) {
+		var vm = this;
 		
 	}
 })();
@@ -3842,7 +3945,8 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                 views: {
                     "@": {
                         templateUrl: "shop/shop-detail-menu.html",
-                        controller: "ShopDetailMenuCtrl"
+                        controller: "ShopDetailMenuCtrl",
+                        controllerAs: "vm"
                     }
                 }
             });
@@ -3858,24 +3962,25 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	ChpwdCtrl.$inject = ['$scope', 'AUTH_PROPS', 'authentication'];
 
 	function ChpwdCtrl($scope, AUTH_PROPS, authentication) {
-		$scope.pwd = {
+		var vm = this;
+		vm.pwd = {
 			old_password: '',
 			new_password: '',
 			confirm_password: '',
 			passwordPattern: AUTH_PROPS.PASSWORD_PATTERN
 		};
 
-		$scope.changePassword = changePassword;
-		$scope.resetForm = resetForm;
+		vm.changePassword = changePassword;
+		vm.resetForm = resetForm;
 
 		function changePassword(valid) {
 			if (valid) {
 				var data = {};
-				data.old_password = $scope.pwd.old_password;
-				data.new_password = $scope.pwd.new_password;
+				data.old_password = vm.pwd.old_password;
+				data.new_password = vm.pwd.new_password;
 
-				$scope.user.changePassword($scope.profile).then(function(response) {
-					if (!response.data.code) {
+				vm.user.changePassword(data).then(function(response) {
+					if (!(response.data.error || response.error)) {
 						toaster.pop({
                             type: 'success', 
                             title:'Success', 
@@ -3891,17 +3996,18 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         });
 					}
 
-					$scope.resetForm();
+					vm.resetForm();
 				}, function() {
-					$scope.resetForm();
+					vm.resetForm();
 				});
 			}
 		}
 
 		function resetForm() {
-			$scope.pwd.old_password = '';
-			$scope.pwd.new_password = '';
-			$scope.pwd.confirm_password = '';
+			vm.chPwdForm.reset();
+			vm.pwd.old_password = '';
+			vm.pwd.new_password = '';
+			vm.pwd.confirm_password = '';
 		}
 	}
 })(angular);
@@ -3912,11 +4018,13 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	'use strict';
 	angular.module('litewait.ui').controller('ProfileCtrl', ProfileCtrl);
 
-	ProfileCtrl.$inject = ['$scope', 'User', '$state', 'toaster', 'AUTH_MSG', 'authentication'];
+	ProfileCtrl.$inject = ['$scope', 'User', '$state', 'toaster', 'AUTH_MSG', 'AUTH_PROPS', 'authentication'];
 
-	function ProfileCtrl($scope, User, $state, toaster, AUTH_MSG, authentication) {
-		$scope.user = User;
-		$scope.profile = {
+	function ProfileCtrl($scope, User, $state, toaster, AUTH_MSG, AUTH_PROPS, authentication) {
+		var vm = this;
+		vm.AUTH_PROPS = AUTH_PROPS;
+		vm.user = User;
+		vm.profile = {
 			user_name: '',
 			contact: {
 				address_1: '',
@@ -3930,15 +4038,41 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			}
 		};
 
-		$scope.updateProfile = updateProfile;
-		$scope.assignProfile = assignProfile;
-		$scope.cancel = cancel;
+		vm.payment = {
+			card_type: '',
+			card_number: '',
+			card_name: '',
+			card_expiry: '',
+			cvv: '',
+			contact: {
+				address_1: '',
+				address_2: '',
+				city: '',
+				state: '',
+				zip_code: ''
+			}
+		};
+
+		vm.pay = {
+			opened: false,
+			onOpenFocus: true
+		};
+
+		vm.updateProfile = updateProfile;
+		vm.assignProfile = assignProfile;
+		vm.cancel = cancel;
+		vm.savePayment = savePayment;
+		vm.open1 = open1;
+
+		function open1() {
+			vm.pay.opened = true;
+		}
 
 		function updateProfile(valid) {
 			if (valid) {
 				
-				$scope.user.updateProfile($scope.profile).then(function(response) {
-					if (!response.data.code) {
+				vm.user.updateProfile(vm.profile).then(function(response) {
+					if (!(response.data.error || response.error)) {
 						toaster.pop({
                             type: 'success', 
                             title:'Success', 
@@ -3958,23 +4092,47 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		}
 
 		function assignProfile() {
-			$scope.profile.user_name = $scope.user.data.user_name;
-			$scope.profile.contact.address_1 = $scope.user.data.contact.address_1;
-			$scope.profile.contact.address_2 = $scope.user.data.contact.address_2;
-			$scope.profile.contact.phone = $scope.user.data.contact.phone;
-			$scope.profile.contact.city = $scope.user.data.contact.city;
-			$scope.profile.contact.state = $scope.user.data.contact.state;
-			$scope.profile.contact.country = $scope.user.data.contact.country;
-			$scope.profile.contact.zip_code = $scope.user.data.contact.zip_code;
-			$scope.profile.contact.mail_id = $scope.user.data.contact.mail_id;
+			vm.profile.user_name = vm.user.data.user_name;
+			vm.profile.contact.address_1 = vm.user.data.contact.address_1;
+			vm.profile.contact.address_2 = vm.user.data.contact.address_2;
+			vm.profile.contact.phone = vm.user.data.contact.phone;
+			vm.profile.contact.city = vm.user.data.contact.city;
+			vm.profile.contact.state = vm.user.data.contact.state;
+			vm.profile.contact.country = vm.user.data.contact.country;
+			vm.profile.contact.zip_code = vm.user.data.contact.zip_code;
+			vm.profile.contact.mail_id = vm.user.data.contact.mail_id;
 		}
+
+		function savePayment(valid) {
+			if (valid) {
+				
+				vm.user.updatePayment(vm.payment).then(function(response) {
+					if (!(response.data.error || response.error)) {
+						toaster.pop({
+                            type: 'success', 
+                            title:'Success', 
+                            body: AUTH_MSG.paymentUpdateSuccess, 
+                            toasterId: 1
+                        });
+					} else {
+						toaster.pop({
+                            type: 'error', 
+                            title:'Error', 
+                            body: AUTH_MSG.paymentUpdateFailed, 
+                            toasterId: 1
+                        });
+					}
+				});
+			}
+		}
+
 
 		function cancel(event) {
 			event.preventDefault();
 			$state.go('home');
 		}
 
-		$scope.assignProfile();
+		vm.assignProfile();
 	}
 })(angular);
 
@@ -3995,7 +4153,8 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                 views: {
                     "@": {
                         templateUrl: "user/profile.html",
-                        controller: "ProfileCtrl"
+                        controller: "ProfileCtrl",
+                        controllerAs: "vm"
                     }
                 },
                 resolve: {

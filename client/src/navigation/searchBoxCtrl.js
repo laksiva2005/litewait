@@ -8,16 +8,17 @@
 	SearchBoxCtrl.$inject = ['$scope', '$state', '$stateParams', 'search'];
 
 	function SearchBoxCtrl($scope, $state, $stateParams, search) {
-		$scope.searchCriteria = {};
-		$scope.searchCriteria.location =  $stateParams.location;
-		$scope.searchCriteria.keyword =  $stateParams.keyword;
-		$scope.search = search;
+		var vm = this;
+		vm.searchCriteria = {};
+		vm.searchCriteria.location =  $stateParams.location;
+		vm.searchCriteria.keyword =  $stateParams.keyword;
+		vm.search = search;
 
-		$scope.searchFn = searchFn;
+		vm.searchFn = searchFn;
 
 		function searchFn(event) {
 			if (search == 'home') {
-				$state.go('search.restaurant', {location: $scope.searchCriteria.location, keyword: $scope.searchCriteria.keyword});
+				$state.go('search.restaurant', {location: vm.searchCriteria.location, keyword: vm.searchCriteria.keyword});
 			} else {
 				//TODO: do the actual search and emit the result
 			}

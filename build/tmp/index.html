@@ -18,38 +18,38 @@
   </head>
 
   <body ng-app="litewait" ng-cloak>
-    <div ng-controller="navbarCtrl">
+    <div ng-controller="navbarCtrl as nav">
     <div cg-busy="spinner.spinner" class="spinner-wrapper"></div>
     <toaster-container toaster-options="{'position-class': 'toast-top-full-width', 'toaster-id': 1}"></toaster-container>
     <div class="header-wrap">
     <header class="container">
       <div>
-        <div class="col-md-6"><a ng-click="home()"><img src="img/logo.jpg" class="img-responsive pull-left" /></a></div>
+        <div class="col-md-6"><a ng-click="nav.home()"><img src="img/logo.jpg" class="img-responsive pull-left" /></a></div>
         <div class="col-md-6">
           <nav class="navbar navbar-default">
             <div class="container-fluid">
               <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
               </div>
-              <div ng-if="!user.isLoggedIn" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <div ng-if="!nav.user.isLoggedIn" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                   <li><a ng-click="openUserModal()"><i class="fa fa-user fa-lg"></i></a></li>
+                   <li><a ng-click="nav.openUserModal()"><i class="fa fa-user fa-lg"></i></a></li>
                 </ul>
               </div>
-              <div ng-if="user.isLoggedIn" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <div ng-if="nav.user.isLoggedIn" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                   <li>
-                    <a id="notify" ng-click="notifyToggle=!notifyToggle"><i class="fa fa-bell fa-lg"></i>(2)</a>
-                    <div class="notify-wrap" id="notify-block" data-slide-toggle="notifyToggle" data-slide-toggle-duration="100" style="display:none;">
+                    <a id="notify" ng-click="nav.notifyToggle=!nav.notifyToggle"><i class="fa fa-bell fa-lg"></i>(2)</a>
+                    <div class="notify-wrap" id="notify-block" data-slide-toggle="nav.notifyToggle" data-slide-toggle-duration="100" style="display:none;">
                       <div class="col-md-12">
-                        <button type="button" class="close" ng-click="notifyToggle=!notifyToggle" data-dismiss="#notify-block">&times;</button>
+                        <button type="button" class="close" ng-click="nav.notifyToggle=!nav.notifyToggle" data-dismiss="#notify-block">&times;</button>
                         <form role="form" method="post">
                           <div class="col-md-12">
                               <h2>Notification (2)</h2>
                               <div class="list">
                                   <div class="col-md-9">
                                       <h3>ID 456789</h3>
-                                      <p>Order <a ng-click="go('cart.summary')">342342342</a> is ready for picked up.
+                                      <p>Order <a ng-click="nav.go('cart.summary')">342342342</a> is ready for picked up.
                                         Mark it as complete once you pick up.
                                         Auto close order in 48 hours</p>
                                   </div>
@@ -60,7 +60,7 @@
                               <div class="list">
                                   <div class="col-md-9">
                                       <h3>ID 456789</h3>
-                                      <p>Order <a ng-click="go('cart.summary')">342342342</a> is ready for picked up.
+                                      <p>Order <a ng-click="nav.go('cart.summary')">342342342</a> is ready for picked up.
                                         Mark it as complete once you pick up.
                                         Auto close order in 48 hours</p>
                                   </div>
@@ -74,20 +74,20 @@
                     </div>
                   
                   </li>
-                  <li><a ng-click="go('cart.detail')"><i class="fa fa-shopping-cart fa-lg"></i>(10) </a></li>
+                  <li><a ng-click="nav.go('cart.detail')"><i class="fa fa-shopping-cart fa-lg"></i>(10) </a></li>
                   <li class="dropdown" uib-dropdown>
                     <span class="user-prof">
                       <img src="img/user.jpg" />
                     </span>
                     <a href="#" uib-dropdown-toggle>
-                      Welcome {{user.name}} <span class="caret"></span>
+                      Welcome {{nav.user.name}} <span class="caret"></span>
                     </a>
                     <ul uib-dropdown-menu>
-                        <li><a ng-click="go('user.profile')"><i class="fa fa-th-large fa-lg"></i>My Account</a></li>
+                        <li><a ng-click="nav.go('user.profile')"><i class="fa fa-th-large fa-lg"></i>My Account</a></li>
                         <!--li><a href="edit-profile.html"><i class="fa fa-cog fa-lg"></i>Settings</a></li-->
-                        <li><a ng-click="go('user.chpwd')"><i class="fa fa-key fa-lg"></i>Change Password</a></li>
-                        <li><a ng-click="go('order.myorder')"><i class="fa fa-sort-alpha-desc fa-lg"></i>My Orders</a></li>
-                        <li><a ng-click="logout()"><i class="fa fa-sign-out fa-lg"></i>Logout</a></li>
+                        <li><a ng-click="nav.go('user.chpwd')"><i class="fa fa-key fa-lg"></i>Change Password</a></li>
+                        <li><a ng-click="nav.go('order.myorder')"><i class="fa fa-sort-alpha-desc fa-lg"></i>My Orders</a></li>
+                        <li><a ng-click="nav.logout()"><i class="fa fa-sign-out fa-lg"></i>Logout</a></li>
                     </ul>
                   </li>
                 </ul>
@@ -114,9 +114,9 @@
     </footer>
     <script type="text/ng-template" id="userModal.html">
       <div id="signin-modal" ng-cloak>
-        <button type="button" class="close" ng-click="modalProps.close()">&times;</button>
+        <button type="button" class="close" ng-click="loginModal.modalProps.close()">&times;</button>
         <uib-tabset justified="true">
-          <uib-tab active="modalProps.signin">
+          <uib-tab active="loginModal.modalProps.signin">
             <uib-tab-heading>
               <a href="">Signin</a>
             </uib-tab-heading>
@@ -127,18 +127,18 @@
               </div>
               <p>OR</p>
               <div class="form-wrap">
-                <div ng-if="loginForm.$submitted && loginForm.$error" class="alert alert-danger">
-                  <div ng-messages="loginForm.username.$error">
+                <div ng-if="loginModal.loginForm.$submitted && loginModal.loginForm.$invalid" class="alert alert-danger">
+                  <div ng-messages="loginModal.loginForm.username.$error">
                     <div ng-message="required">Username is required</div>
                   </div>
-                  <div ng-messages="loginForm.password.$error">
+                  <div ng-messages="loginModal.loginForm.password.$error">
                     <div ng-message="required">Password is required</div>
                   </div>
                 </div>
                 <toaster-container toaster-options="{'position-class': 'toast-top-full-width', 'toaster-id': 3}"></toaster-container>
-                <form name="loginForm" ng-submit="modalProps.login(loginForm.$valid, modalProps)">
-                  <input class="form-control" required name="username" type="text" ng-model="modalProps.username" placeholder="User Name"/>
-                  <input class="form-control" required name="password" type="password" ng-model="modalProps.password" placeholder="Password" />
+                <form novalidate name="loginModal.loginForm" ng-submit="loginModal.modalProps.login(loginModal.loginForm.$valid, loginModal.modalProps)">
+                  <input class="form-control" required name="username" type="text" ng-model="loginModal.modalProps.username" placeholder="User Name"/>
+                  <input class="form-control" required name="password" type="password" ng-model="loginModal.modalProps.password" placeholder="Password" />
                   <div class="sign-wrap"><button class="btn sign">signin</button></div>
                 </form>
                 <div class="clearfix"></div>
@@ -152,46 +152,46 @@
                   <div class="clearfix"></div>
                 </div>
               </div>
-              <p class="joinus">New here ? <a  data-toggle="tab"  href="#signup" onclick="activaTab('signup-nav');">Join us</a></p>
+              <p class="joinus">New here ? <a  data-toggle="tab"  href="#signup" onclick="loginModal.activaTab('signup-nav');">Join us</a></p>
             </div>
           </uib-tab>
-          <uib-tab active="modalProps.signup">
+          <uib-tab active="loginModal.modalProps.signup">
             <uib-tab-heading>
               <a href="">Signup</a>
             </uib-tab-heading>
             <div class="signup-form-wrap">
               <toaster-container toaster-options="{'position-class': 'toast-top-full-width', 'toaster-id': 2}"></toaster-container>
               
-              <div ng-if="registerForm.$submitted && registerForm.$error" class="alert alert-danger" >
-                <div ng-messages="registerForm.user_email.$error">
+              <div ng-if="loginModal.registerForm.$submitted && loginModal.registerForm.$invalid" class="alert alert-danger" >
+                <div ng-messages="loginModal.registerForm.user_email.$error">
                   <div ng-message="required">Email field is required</div>
                   <div ng-message="email">Please enter a valid Email Id</div>
                 </div>
-                <div ng-messages="registerForm.user.$error">
+                <div ng-messages="loginModal.registerForm.user.$error">
                   <div ng-message="required">Username is required</div>
                   <div ng-message="minlength">Please enter a valid Username</div>
                 </div>
-                <div ng-messages="registerForm.user_password.$error">
+                <div ng-messages="loginModal.registerForm.user_password.$error">
                   <div ng-message="required">Password field is required</div>
                   <div ng-message="pattern">Minimum 8 characters and must contain a numeric, uppercase, lowercase, as well as special character</div>
                 </div>
-                <div ng-messages="registerForm.user_confirm_password.$error">
+                <div ng-messages="loginModal.registerForm.user_confirm_password.$error">
                   <div ng-message="required">Confirm Password field is required</div>
                   <div ng-message="compareTo">Confirm Password must be equal to Password</div>
                 </div>
-                <div ng-messages="registerForm.user_type.$error">
+                <div ng-messages="loginModal.registerForm.user_type.$error">
                   <div ng-message="required">Register as field is required</div>
                 </div>
               </div>
-              <form name="registerForm" ng-submit="modalProps.register(registerForm.$valid, registerProps)">
-                <input class="form-control" required name="user_email" ng-model="registerProps.user_mail" type="email" placeholder="Email Id"/>
-                <input class="form-control" required name="user" ng-model="registerProps.user" type="text" placeholder="User Name" minlength="2"/>
-                <input class="form-control" required name="user_password" ng-model="registerProps.user_password" type="password" placeholder="Password" pattern="{{modalProps.passwordPattern}}" />
-                <input class="form-control" required name="user_confirm_password" ng-model="registerProps.user_confirm_password" type="password" placeholder="Confirm Password" compare-to="registerProps.user_password"/>
+              <form novalidate name="loginModal.registerForm" ng-submit="loginModal.modalProps.register(loginModal.registerForm.$valid, loginModal.registerProps)">
+                <input class="form-control" required name="user_email" ng-model="loginModal.registerProps.user_mail" type="email" placeholder="Email Id"/>
+                <input class="form-control" required name="user" ng-model="loginModal.registerProps.user" type="text" placeholder="User Name" minlength="2"/>
+                <input class="form-control" required name="user_password" ng-model="loginModal.registerProps.user_password" type="password" placeholder="Password" pattern="{{loginModal.modalProps.passwordPattern}}" />
+                <input class="form-control" required name="user_confirm_password" ng-model="loginModal.registerProps.user_confirm_password" type="password" placeholder="Confirm Password" compare-to="loginModal.registerProps.user_password"/>
                 <div class="radio-wrap">
                   <label class="name">Register as</label> 
-                  <label class="radio-inline"><input required type="radio" ng-model="registerProps.user_type" value="C" name="user_type">Consumer</label>
-                  <label class="radio-inline"><input required type="radio" ng-model="registerProps.user_type" value="M" name="user_type">Merchant</label>
+                  <label class="radio-inline"><input required type="radio" ng-model="loginModal.registerProps.user_type" value="C" name="user_type">Consumer</label>
+                  <label class="radio-inline"><input required type="radio" ng-model="loginModal.registerProps.user_type" value="M" name="user_type">Merchant</label>
                 </div>
                 <div class="sign-wrap"><button class="btn sign">signup</button></div>
               </form>

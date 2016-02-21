@@ -1,16 +1,16 @@
-	<div class="container-fluid banner-wrap" ng-if="!user.isLoggedIn">
+	<div class="container-fluid banner-wrap" ng-if="!nav.user.isLoggedIn">
     	<div class="banner">
         	<div class="col-md-10 cnt">
         	<p class="title-1">SAVE YOUR TIME...INCREASE PRODUCTIVE TIME<br/>
     SAVE MONEY!!</p>
     		<p class="title-2">Tired of waiting in queue, come join us</p>
-            <a href="#" class="btn join"  ng-click="openSignUpModal()">Join Now !!</a>
+            <a href="#" class="btn join"  ng-click="nav.openSignUpModal()">Join Now !!</a>
             </div>
         </div>
     </div>
     <div class="container-fluid search-wrap" ui-view="search-box">
     </div>
-    <div ng-if="user.isLoggedIn" class="container most-visit">
+    <div ng-if="nav.user.isLoggedIn" class="container most-visit">
 	  <h1>Recently Viewed Locations</h1>
 	  <div class="row">
 	    <ul>
@@ -49,8 +49,8 @@
     <div class="container-fluid feature-location">
         <div class="container">
 	        <h1>featured locations</h1>
-	        <uib-carousel interval="myInterval" no-wrap="noWrapSlides">
-		        <uib-slide ng-repeat="slide in slides" active="slide.active" index="slide.id">
+	        <uib-carousel interval="vm.myInterval" no-wrap="noWrapSlides">
+		        <uib-slide ng-repeat="slide in vm.slides" active="slide.active" index="slide.id">
 			      	<ul>
 				      	<li class="col-sm-6 col-md-3" ng-repeat="slideData in slide.data">
 				        	<img src="{{slideData.image}}" class="img-responsive" />
@@ -74,7 +74,7 @@
 		    </uib-carousel>
         </div>
     </div>
-    <div ng-if="!user.isLoggedIn" class="container browse-city">
+    <div ng-if="!nav.user.isLoggedIn" class="container browse-city">
       <h1>Browse your city</h1>
       <ul>
         <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">New York City; New York</a></li>

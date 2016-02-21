@@ -8,9 +8,10 @@
 	HomeCtrl.$inject = ['$scope'];
 
 	function HomeCtrl($scope) {
-		$scope.myInterval = 1000;
-  		$scope.noWrapSlides = false;
-		$scope.slides = [{
+		var vm = this;	
+		vm.myInterval = 1000;
+  		vm.noWrapSlides = false;
+		vm.slides = [{
 			active: true,
 			id: 0,
 			data:[

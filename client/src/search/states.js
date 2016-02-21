@@ -16,11 +16,13 @@
                 views: {
                     "search-box@search": {
                       templateUrl: 'navigation/search-box.html',
-                      controller: "SearchBoxCtrl"
+                      controller: "SearchBoxCtrl",
+                      controllerAs: "vm"
                     },
                     "@": {
                         templateUrl: "search/search.html",
-                        controller: "SearchCtrl"
+                        controller: "SearchCtrl",
+                        controllerAs: "vm"
                     }
                 },
                 params: {location: '', keyword: ''},

@@ -16,7 +16,8 @@
                 views: {
                     "@": {
                         templateUrl: "shop/shop-detail-menu.html",
-                        controller: "ShopDetailMenuCtrl"
+                        controller: "ShopDetailMenuCtrl",
+                        controllerAs: "vm"
                     }
                 }
             });

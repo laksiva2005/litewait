@@ -13,11 +13,13 @@
                 views: {
                     "search-box@home": {
                       templateUrl: 'navigation/search-box.html',
-                      controller: "SearchBoxCtrl"
+                      controller: "SearchBoxCtrl",
+                      controllerAs: "vm"
                     },
                     "@": {
                         templateUrl: "home/home.html",
-                        controller: "HomeCtrl"
+                        controller: "HomeCtrl",
+                        controllerAs: "vm"
                     }
                 },
                 params: { location: '', keyword: '' },

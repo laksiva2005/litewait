@@ -5,11 +5,13 @@
 	'use strict';
 	angular.module('litewait.ui').controller('ProfileCtrl', ProfileCtrl);
 
-	ProfileCtrl.$inject = ['$scope', 'User', '$state', 'toaster', 'AUTH_MSG', 'authentication'];
+	ProfileCtrl.$inject = ['$scope', 'User', '$state', 'toaster', 'AUTH_MSG', 'AUTH_PROPS', 'authentication'];
 
-	function ProfileCtrl($scope, User, $state, toaster, AUTH_MSG, authentication) {
-		$scope.user = User;
-		$scope.profile = {
+	function ProfileCtrl($scope, User, $state, toaster, AUTH_MSG, AUTH_PROPS, authentication) {
+		var vm = this;
+		vm.AUTH_PROPS = AUTH_PROPS;
+		vm.user = User;
+		vm.profile = {
 			user_name: '',
 			contact: {
 				address_1: '',
@@ -23,15 +25,41 @@
 			}
 		};
 
-		$scope.updateProfile = updateProfile;
-		$scope.assignProfile = assignProfile;
-		$scope.cancel = cancel;
+		vm.payment = {
+			card_type: '',
+			card_number: '',
+			card_name: '',
+			card_expiry: '',
+			cvv: '',
+			contact: {
+				address_1: '',
+				address_2: '',
+				city: '',
+				state: '',
+				zip_code: ''
+			}
+		};
+
+		vm.pay = {
+			opened: false,
+			onOpenFocus: true
+		};
+
+		vm.updateProfile = updateProfile;
+		vm.assignProfile = assignProfile;
+		vm.cancel = cancel;
+		vm.savePayment = savePayment;
+		vm.open1 = open1;
+
+		function open1() {
+			vm.pay.opened = true;
+		}
 
 		function updateProfile(valid) {
 			if (valid) {
 				
-				$scope.user.updateProfile($scope.profile).then(function(response) {
-					if (!response.data.code) {
+				vm.user.updateProfile(vm.profile).then(function(response) {
+					if (!(response.data.error || response.error)) {
 						toaster.pop({
                             type: 'success', 
                             title:'Success', 
@@ -51,22 +79,46 @@
 		}
 
 		function assignProfile() {
-			$scope.profile.user_name = $scope.user.data.user_name;
-			$scope.profile.contact.address_1 = $scope.user.data.contact.address_1;
-			$scope.profile.contact.address_2 = $scope.user.data.contact.address_2;
-			$scope.profile.contact.phone = $scope.user.data.contact.phone;
-			$scope.profile.contact.city = $scope.user.data.contact.city;
-			$scope.profile.contact.state = $scope.user.data.contact.state;
-			$scope.profile.contact.country = $scope.user.data.contact.country;
-			$scope.profile.contact.zip_code = $scope.user.data.contact.zip_code;
-			$scope.profile.contact.mail_id = $scope.user.data.contact.mail_id;
+			vm.profile.user_name = vm.user.data.user_name;
+			vm.profile.contact.address_1 = vm.user.data.contact.address_1;
+			vm.profile.contact.address_2 = vm.user.data.contact.address_2;
+			vm.profile.contact.phone = vm.user.data.contact.phone;
+			vm.profile.contact.city = vm.user.data.contact.city;
+			vm.profile.contact.state = vm.user.data.contact.state;
+			vm.profile.contact.country = vm.user.data.contact.country;
+			vm.profile.contact.zip_code = vm.user.data.contact.zip_code;
+			vm.profile.contact.mail_id = vm.user.data.contact.mail_id;
 		}
+
+		function savePayment(valid) {
+			if (valid) {
+				
+				vm.user.updatePayment(vm.payment).then(function(response) {
+					if (!(response.data.error || response.error)) {
+						toaster.pop({
+                            type: 'success', 
+                            title:'Success', 
+                            body: AUTH_MSG.paymentUpdateSuccess, 
+                            toasterId: 1
+                        });
+					} else {
+						toaster.pop({
+                            type: 'error', 
+                            title:'Error', 
+                            body: AUTH_MSG.paymentUpdateFailed, 
+                            toasterId: 1
+                        });
+					}
+				});
+			}
+		}
+
 
 		function cancel(event) {
 			event.preventDefault();
 			$state.go('home');
 		}
 
-		$scope.assignProfile();
+		vm.assignProfile();
 	}
 })(angular);

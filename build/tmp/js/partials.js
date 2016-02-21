@@ -306,19 +306,19 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('home/home.html',
-    '	<div class="container-fluid banner-wrap" ng-if="!user.isLoggedIn">\n' +
+    '	<div class="container-fluid banner-wrap" ng-if="!nav.user.isLoggedIn">\n' +
     '    	<div class="banner">\n' +
     '        	<div class="col-md-10 cnt">\n' +
     '        	<p class="title-1">SAVE YOUR TIME...INCREASE PRODUCTIVE TIME<br/>\n' +
     '    SAVE MONEY!!</p>\n' +
     '    		<p class="title-2">Tired of waiting in queue, come join us</p>\n' +
-    '            <a href="#" class="btn join"  ng-click="openSignUpModal()">Join Now !!</a>\n' +
+    '            <a href="#" class="btn join"  ng-click="nav.openSignUpModal()">Join Now !!</a>\n' +
     '            </div>\n' +
     '        </div>\n' +
     '    </div>\n' +
     '    <div class="container-fluid search-wrap" ui-view="search-box">\n' +
     '    </div>\n' +
-    '    <div ng-if="user.isLoggedIn" class="container most-visit">\n' +
+    '    <div ng-if="nav.user.isLoggedIn" class="container most-visit">\n' +
     '	  <h1>Recently Viewed Locations</h1>\n' +
     '	  <div class="row">\n' +
     '	    <ul>\n' +
@@ -357,8 +357,8 @@ module.run(['$templateCache', function($templateCache) {
     '    <div class="container-fluid feature-location">\n' +
     '        <div class="container">\n' +
     '	        <h1>featured locations</h1>\n' +
-    '	        <uib-carousel interval="myInterval" no-wrap="noWrapSlides">\n' +
-    '		        <uib-slide ng-repeat="slide in slides" active="slide.active" index="slide.id">\n' +
+    '	        <uib-carousel interval="vm.myInterval" no-wrap="noWrapSlides">\n' +
+    '		        <uib-slide ng-repeat="slide in vm.slides" active="slide.active" index="slide.id">\n' +
     '			      	<ul>\n' +
     '				      	<li class="col-sm-6 col-md-3" ng-repeat="slideData in slide.data">\n' +
     '				        	<img src="{{slideData.image}}" class="img-responsive" />\n' +
@@ -382,7 +382,7 @@ module.run(['$templateCache', function($templateCache) {
     '		    </uib-carousel>\n' +
     '        </div>\n' +
     '    </div>\n' +
-    '    <div ng-if="!user.isLoggedIn" class="container browse-city">\n' +
+    '    <div ng-if="!nav.user.isLoggedIn" class="container browse-city">\n' +
     '      <h1>Browse your city</h1>\n' +
     '      <ul>\n' +
     '        <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">New York City; New York</a></li>\n' +
@@ -548,36 +548,36 @@ module.run(['$templateCache', function($templateCache) {
     '                        <tbody>\n' +
     '                           <tr>\n' +
     '                              <td>10/26/2015 12:30 PM </td>\n' +
-    '                              <td><a class="orderid" ng-click="go(\'cart.summary\')">4269-2215</a></td>\n' +
-    '                              <td><a ng-click="go(\'shop.detail\')" class="merchant">Charlie\'s Sandwich Shoppe</a></td>\n' +
+    '                              <td><a class="orderid" ng-click="vm.go(\'cart.summary\')">4269-2215</a></td>\n' +
+    '                              <td><a ng-click="vm.go(\'shop.detail\')" class="merchant">Charlie\'s Sandwich Shoppe</a></td>\n' +
     '                              <td class="inprogress"> In progress</td>\n' +
     '                              <td>&nbsp;</td>\n' +
     '                           </tr>\n' +
     '                           <tr>\n' +
     '                              <td>10/26/2015 12:30 PM </td>\n' +
-    '                              <td><a class="orderid" ng-click="go(\'cart.summary\')">4269-2215</a></td>\n' +
-    '                              <td><a ng-click="go(\'shop.detail\')" class="merchant">Charlie\'s Sandwich Shoppe</a></td>\n' +
+    '                              <td><a class="orderid" ng-click="vm.go(\'cart.summary\')">4269-2215</a></td>\n' +
+    '                              <td><a ng-click="vm.go(\'shop.detail\')" class="merchant">Charlie\'s Sandwich Shoppe</a></td>\n' +
     '                              <td class="ready-pickup"> Ready for pick-up</td>\n' +
     '                              <td>&nbsp;</td>\n' +
     '                           </tr>\n' +
     '                           <tr>\n' +
     '                              <td>10/26/2015 12:30 PM </td>\n' +
-    '                              <td><a class="orderid" ng-click="go(\'cart.summary\')">4269-2215</a></td>\n' +
-    '                              <td><a ng-click="go(\'shop.detail\')" class="merchant">Charlie\'s Sandwich Shoppe</a></td>\n' +
+    '                              <td><a class="orderid" ng-click="vm.go(\'cart.summary\')">4269-2215</a></td>\n' +
+    '                              <td><a ng-click="vm.go(\'shop.detail\')" class="merchant">Charlie\'s Sandwich Shoppe</a></td>\n' +
     '                              <td class="complete"> Completed</td>\n' +
     '                              <td>&nbsp;</td>\n' +
     '                           </tr>\n' +
     '                           <tr>\n' +
     '                              <td>10/26/2015 12:30 PM </td>\n' +
-    '                              <td><a class="orderid" ng-click="go(\'cart.summary\')">4269-2215</a></td>\n' +
-    '                              <td><a ng-click="go(\'shop.detail\')" class="merchant">Charlie\'s Sandwich Shoppe</a></td>\n' +
+    '                              <td><a class="orderid" ng-click="vm.go(\'cart.summary\')">4269-2215</a></td>\n' +
+    '                              <td><a ng-click="vm.go(\'shop.detail\')" class="merchant">Charlie\'s Sandwich Shoppe</a></td>\n' +
     '                              <td class="complete"> Completed</td>\n' +
     '                              <td>&nbsp;</td>\n' +
     '                           </tr>\n' +
     '                           <tr>\n' +
     '                              <td>10/26/2015 12:30 PM </td>\n' +
-    '                              <td><a class="orderid" ng-click="go(\'cart.summary\')">4269-2215</a></td>\n' +
-    '                              <td><a ng-click="go(\'shop.detail\')" class="merchant">Charlie\'s Sandwich Shoppe</a></td>\n' +
+    '                              <td><a class="orderid" ng-click="vm.go(\'cart.summary\')">4269-2215</a></td>\n' +
+    '                              <td><a ng-click="vm.go(\'shop.detail\')" class="merchant">Charlie\'s Sandwich Shoppe</a></td>\n' +
     '                              <td class="complete"> Completed</td>\n' +
     '                              <td>&nbsp;</td>\n' +
     '                           </tr>\n' +
@@ -607,7 +607,7 @@ module.run(['$templateCache', function($templateCache) {
     '    	<p class="title-1">SAVE YOUR TIME...INCREASE PRODUCTIVE TIME<br/>\n' +
     'SAVE MONEY!!</p>\n' +
     '		<p class="title-2">Tired of waiting in queue, come join us</p>\n' +
-    '        <a href="#" class="btn join"  ng-click="openSignUpModal()">Join Now !!</a>\n' +
+    '        <a href="#" class="btn join"  ng-click="vm.openSignUpModal()">Join Now !!</a>\n' +
     '        </div>\n' +
     '    </div>\n' +
     '</div>\n' +
@@ -704,7 +704,7 @@ module.run(['$templateCache', function($templateCache) {
     '              <li><a href="#">Chicken Ranch Hot Sandwich</a></li>\n' +
     '              <li><a href="#">Cold Cut Hot Sandwich</a></li>\n' +
     '            </ul>\n' +
-    '            <a ng-click="go(\'shop.detail\')" class="btn btn-block">View Retailer</a> </div>\n' +
+    '            <a ng-click="vm.go(\'shop.detail\')" class="btn btn-block">View Retailer</a> </div>\n' +
     '          <div class="clearfix"></div>\n' +
     '        </div>\n' +
     '        <div class="list-item">\n' +
@@ -726,7 +726,7 @@ module.run(['$templateCache', function($templateCache) {
     '              <li><a href="#">Chicken Ranch Hot Sandwich</a></li>\n' +
     '              <li><a href="#">Cold Cut Hot Sandwich</a></li>\n' +
     '            </ul>\n' +
-    '            <a ng-click="go(\'shop.detail\')" class="btn btn-block">View Retailer</a> </div>\n' +
+    '            <a ng-click="vm.go(\'shop.detail\')" class="btn btn-block">View Retailer</a> </div>\n' +
     '          <div class="clearfix"></div>\n' +
     '        </div>\n' +
     '        <div class="list-item">\n' +
@@ -748,7 +748,7 @@ module.run(['$templateCache', function($templateCache) {
     '              <li><a href="#">Chicken Ranch Hot Sandwich</a></li>\n' +
     '              <li><a href="#">Cold Cut Hot Sandwich</a></li>\n' +
     '            </ul>\n' +
-    '            <a ng-click="go(\'shop.detail\')" class="btn btn-block">View Retailer</a> </div>\n' +
+    '            <a ng-click="vm.go(\'shop.detail\')" class="btn btn-block">View Retailer</a> </div>\n' +
     '          <div class="clearfix"></div>\n' +
     '        </div>\n' +
     '        <div class="list-item">\n' +
@@ -770,7 +770,7 @@ module.run(['$templateCache', function($templateCache) {
     '              <li><a href="#">Chicken Ranch Hot Sandwich</a></li>\n' +
     '              <li><a href="#">Cold Cut Hot Sandwich</a></li>\n' +
     '            </ul>\n' +
-    '            <a ng-click="go(\'shop.detail\')" class="btn btn-block">View Retailer</a> </div>\n' +
+    '            <a ng-click="vm.go(\'shop.detail\')" class="btn btn-block">View Retailer</a> </div>\n' +
     '          <div class="clearfix"></div>\n' +
     '        </div>\n' +
     '      </div>\n' +
@@ -3188,23 +3188,23 @@ module.run(['$templateCache', function($templateCache) {
     '<h1>Change Password</h1>\n' +
     '<div class="col-md-3 hidden-xs"></div>\n' +
     '<div class="col-md-6 form-wrap">\n' +
-    ' <form name="chPwdForm" ng-submit="changePassword(chPwdForm.$valid)" role="form">\n' +
+    ' <form novalidate name="vm.chPwdForm" ng-submit="vm.changePassword(chPwdForm.$valid)" role="form">\n' +
     '  <div class="form-group">\n' +
-    '    <input type="password" required name="old_password" ng-model="pwd.old_password" class="form-control"  placeholder="Old Password">\n' +
-    '    <div ng-if="chPwdForm.$submitted && chPwdForm.old_password.$error" ng-messages="chPwdForm.old_password.$error" class="alert alert-danger">\n' +
+    '    <input type="password" required name="old_password" ng-model="vm.pwd.old_password" class="form-control"  placeholder="Old Password">\n' +
+    '    <div ng-if="vm.chPwdForm.$submitted && vm.chPwdForm.old_password.$invalid" ng-messages="vm.chPwdForm.old_password.$error" class="alert alert-danger">\n' +
     '      <div ng-message="required">Old Password field is required</div>\n' +
     '    </div>\n' +
     '  </div>\n' +
     '  <div class="form-group">\n' +
-    '    <input type="password" pattern="{{pwd.passwordPattern}}" required name="new_password" ng-model="pwd.new_password" class="form-control"  placeholder="New Password">\n' +
-    '    <div ng-if="chPwdForm.$submitted && chPwdForm.new_password.$error" ng-messages="chPwdForm.new_password.$error" class="alert alert-danger">\n' +
+    '    <input type="password" pattern="{{vm.pwd.passwordPattern}}" required name="new_password" ng-model="vm.pwd.new_password" class="form-control"  placeholder="New Password">\n' +
+    '    <div ng-if="vm.chPwdForm.$submitted && vm.chPwdForm.new_password.$invalid" ng-messages="vm.chPwdForm.new_password.$error" class="alert alert-danger">\n' +
     '      <div ng-message="required">New Password field is required</div>\n' +
     '      <div ng-message="pattern">Minimum 8 characters and must contain a numeric, uppercase, lowercase, as well as special character</div>\n' +
     '    </div>\n' +
     '  </div>\n' +
     '  <div class="form-group">\n' +
-    '    <input type="password" required name="confirm_password" ng-model="pwd.confirm_password"   compare-to="pwd.new_password" class="form-control" placeholder="Confirm Password">\n' +
-    '    <div ng-if="chPwdForm.$submitted && chPwdForm.confirm_password.$error" ng-messages="chPwdForm.confirm_password.$error" class="alert alert-danger">\n' +
+    '    <input type="password" required name="confirm_password" ng-model="vm.pwd.confirm_password"   compare-to="vm.pwd.new_password" class="form-control" placeholder="Confirm Password">\n' +
+    '    <div ng-if="vm.chPwdForm.$submitted && vm.chPwdForm.confirm_password.$invalid" ng-messages="vm.chPwdForm.confirm_password.$error" class="alert alert-danger">\n' +
     '      <div ng-message="required">Confirm Password field is required</div>\n' +
     '      <div ng-message="compareTo">Confirm Password must be equal to Password</div>\n' +
     '    </div>\n' +
@@ -3240,45 +3240,45 @@ module.run(['$templateCache', function($templateCache) {
     '                  <h1>Edit Profile</h1>\n' +
     '                  \n' +
     '                  <div class="col-md-12 form-wrap">\n' +
-    '      <form name="editProfileForm" ng-submit="updateProfile(editProfileForm.$valid)" role="form">\n' +
+    '      <form novalidate name="vm.editProfileForm" ng-submit="vm.updateProfile(editProfileForm.$valid)" role="form">\n' +
     '         <div class="col-md-6">\n' +
     '            <div class="form-group">\n' +
-    '               <input type="text" name="user_name" maxlength="50" ng-model="profile.user_name" class="form-control"  placeholder="Name">\n' +
-    '               <div ng-if="editProfileForm.$submitted && editProfileForm.user_name.$error" ng-messages="editProfileForm.user_name.$error" class="alert alert-danger">\n' +
+    '               <input type="text" name="user_name" maxlength="50" ng-model="vm.profile.user_name" class="form-control"  placeholder="Name">\n' +
+    '               <div ng-if="vm.editProfileForm.$submitted && vm.editProfileForm.user_name.$invalid" ng-messages="vm.editProfileForm.user_name.$error" class="alert alert-danger">\n' +
     '                  <div ng-message="maxlength">Please enter a valid Username</div>\n' +
     '               </div>\n' +
     '            </div>\n' +
     '            <div class="form-group">\n' +
-    '            	<textarea name="address_1" ng-model="profile.contact_address_1" class="form-control"  placeholder="Address"></textarea>\n' +
+    '            	<textarea name="address_1" ng-model="vm.profile.contact_address_1" class="form-control"  placeholder="Address"></textarea>\n' +
     '            </div>\n' +
     '            <div class="form-group">\n' +
-    '               <input type="text" name="state" ng-model="profile.contact.state" class="form-control" placeholder="State">\n' +
+    '               <input type="text" name="state" ng-model="vm.profile.contact.state" class="form-control" placeholder="State">\n' +
     '            </div>\n' +
     '            <div class="form-group">\n' +
-    '               <input type="text" name="zip_code" ng-model="profile.contact.zip_code" class="form-control" placeholder="Zipcode">\n' +
+    '               <input type="text" name="zip_code" ng-model="vm.profile.contact.zip_code" class="form-control" placeholder="Zipcode">\n' +
     '            </div>\n' +
     '         </div>\n' +
     '         <div class="col-md-6">\n' +
     '            <div class="form-group">\n' +
-    '               <input type="email" name="mail_id" ng-model="profile.contact.mail_id" class="form-control" placeholder="Email">\n' +
-    '               <div ng-if="editProfileForm.$submitted && editProfileForm.mail_id.$error" ng-messages="editProfileForm.mail_id.$error" class="alert alert-danger">\n' +
+    '               <input type="email" name="mail_id" ng-model="vm.profile.contact.mail_id" class="form-control" placeholder="Email">\n' +
+    '               <div ng-if="vm.editProfileForm.$submitted && vm.editProfileForm.mail_id.$invalid" ng-messages="vm.editProfileForm.mail_id.$error" class="alert alert-danger">\n' +
     '                  <div ng-message="email">Please enter a valid Email Id</div>\n' +
     '                </div>\n' +
     '            </div>\n' +
     '            <div class="form-group">\n' +
-    '               <input type="text" name="phone" ng-model="profile.contact.phone" class="form-control" placeholder="Phone">\n' +
+    '               <input type="text" name="phone" ng-model="vm.profile.contact.phone" class="form-control" placeholder="Phone">\n' +
     '            </div>\n' +
     '            <div class="form-group">\n' +
-    '               <input type="text" name="city" ng-model="profile.contact.city" class="form-control" placeholder="City">\n' +
+    '               <input type="text" name="city" ng-model="vm.profile.contact.city" class="form-control" placeholder="City">\n' +
     '            </div>\n' +
     '            <div class="form-group">\n' +
-    '               <input type="text" name="country" ng-model="profile.contact.country" class="form-control" placeholder="Country">\n' +
+    '               <input type="text" name="country" ng-model="vm.profile.contact.country" class="form-control" placeholder="Country">\n' +
     '            </div>\n' +
     '         </div>\n' +
     '         <div class="clearfix"></div>\n' +
     '         <div class="col-md-12">\n' +
     '            <button type="submit" class="btn btn-default pull-right">Submit</button>\n' +
-    '            <button type="submit" ng-click="cancel($event)" class="btn btn-default pull-right">Cancel</button>\n' +
+    '            <button type="submit" ng-click="vm.cancel($event)" class="btn btn-default pull-right">Cancel</button>\n' +
     '            <div class="clearfix"></div>\n' +
     '         </div>\n' +
     '      </form>\n' +
@@ -3289,45 +3289,86 @@ module.run(['$templateCache', function($templateCache) {
     '                    <h1>Payment Configuration</h1>\n' +
     '                  \n' +
     '                  <div class="col-md-12 form-wrap">\n' +
-    '      <form role="form">\n' +
-    '\n' +
-    '      	\n' +
+    '      <form role="form" novalidate name="vm.editPaymentForm" ng-submit="vm.savePayment(vm.editPaymentForm.$valid)">\n' +
     '         <div class="col-md-6">\n' +
     '            <div class="form-group">\n' +
-    '               <input type="text" class="form-control"  placeholder="Card type">\n' +
+    '               <select class="form-control" name="card_type" ng-model="vm.payment.contact.card_type" required>\n' +
+    '                  <option value="" selected>Card Type</option>\n' +
+    '                  <option value="master">Master</option>\n' +
+    '                  <option value="visa">Visa</option>\n' +
+    '               </select>\n' +
+    '               <div ng-if="vm.editPaymentForm.$submitted && vm.editPaymentForm.card_type.$invalid" ng-messages="vm.editPaymentForm.mail_id.$error" class="alert alert-danger">\n' +
+    '                  <div ng-message="required">Card type is required</div>\n' +
+    '               </div>\n' +
     '            </div>\n' +
     '            <div class="form-group">\n' +
-    '            	<input type="text" class="form-control"  placeholder="Card Number">\n' +
+    '            	<input required pattern="{{vm.AUTH_PROPS.CARD}}" type="text" class="form-control"  placeholder="Card Number" name="card_number" ng-model="vm.payment.card_number">\n' +
+    '               <div ng-if="vm.editPaymentForm.$submitted && vm.editPaymentForm.card_number.$invalid" ng-messages="vm.editPaymentForm.card_number.$error" class="alert alert-danger">\n' +
+    '                  <div ng-message="required">Card number is required</div>\n' +
+    '                  <div ng-message="pattern">Please enter a valid Credit/Debit Card Number</div>\n' +
+    '               </div>\n' +
     '            </div>\n' +
     '            <div class="form-group">\n' +
-    '              	<input type="text" class="form-control"  placeholder="Name as in card">\n' +
+    '              	<input required maxlength="50" type="text" class="form-control"  placeholder="Name as in card" name="card_name" ng-model="vm.payment.card_name">\n' +
+    '               <div ng-if="vm.editPaymentForm.$submitted && vm.editPaymentForm.card_name.$invalid" ng-messages="vm.editPaymentForm.card_name.$error" class="alert alert-danger">\n' +
+    '                  <div ng-message="required">Card name is required</div>\n' +
+    '                  <div ng-message="maxlength">Card number should have maximum 50 characters</div>\n' +
+    '               </div>\n' +
     '            </div>\n' +
     '            <div class="form-group">\n' +
-    '               <input type="text" class="form-control" placeholder="Expiry date">\n' +
+    '               <input date-as-ms required uib-datepicker-popup="dd-MM-yyyy" type="text" class="form-control" placeholder="Expiry date" name="card_expiry" ng-model="vm.payment.card_expiry" is-open="vm.pay.opened" on-open-focus="vm.pay.onOpenFocus">\n' +
+    '               <span class="input-group-btn">\n' +
+    '                <button type="button" class="btn btn-default" ng-click="vm.open1()"><i class="glyphicon glyphicon-calendar"></i></button>\n' +
+    '              </span>\n' +
+    '               <div ng-if="vm.editPaymentForm.$submitted && vm.editPaymentForm.card_expiry.$invalid" ng-messages="vm.editPaymentForm.card_expiry.$error" class="alert alert-danger">\n' +
+    '                  <div ng-message="required">Card Expiry is required</div>\n' +
+    '               </div>\n' +
     '            </div>\n' +
     '            <div class="form-group">\n' +
-    '               <input type="text" class="form-control" placeholder="CVV">\n' +
+    '               <input required pattern="{{AUTH_PROPS.CVV}}" type="text" class="form-control" placeholder="CVV" name="cvv" ng-model="vm.payment.cvv">\n' +
+    '               <div ng-if="vm.editPaymentForm.$submitted && vm.editPaymentForm.cvv.$invalid" ng-messages="vm.editPaymentForm.cvv.$error" class="alert alert-danger">\n' +
+    '                  <div ng-message="required">CVV is required</div>\n' +
+    '                  <div ng-message="pattern">Please enter a valid CVV</div>\n' +
+    '               </div>\n' +
     '            </div>\n' +
     '            <div class="form-group">\n' +
-    '               <input type="text" class="form-control" placeholder="Address 1">\n' +
+    '               <input required maxlength="100" type="text" class="form-control" placeholder="Address 1" name="address_1" ng-model="vm.payment.contact.address_1">\n' +
+    '               <div ng-if="vm.editPaymentForm.$submitted && vm.editPaymentForm.address_1.$invalid" ng-messages="vm.editPaymentForm.address_1.$error" class="alert alert-danger">\n' +
+    '                  <div ng-message="required">Address 1 is required</div>\n' +
+    '                  <div ng-message="maxlength">Address 1 should have maximum 100 characters</div>\n' +
+    '               </div>\n' +
     '            </div>\n' +
     '            <div class="form-group">\n' +
-    '               <input type="text" class="form-control" placeholder="Address 2">\n' +
+    '               <input required maxlength="100" type="text" class="form-control" placeholder="Address 2" name="address_2" ng-model="vm.payment.contact.address_2">\n' +
+    '               <div ng-if="vm.editPaymentForm.$submitted && vm.editPaymentForm.address_2.$invalid" ng-messages="vm.editPaymentForm.address_2.$error" class="alert alert-danger">\n' +
+    '                  <div ng-message="required">Address 2 is required</div>\n' +
+    '                  <div ng-message="maxlength">Address 2 should have maximum 100 characters</div>\n' +
+    '               </div>\n' +
     '            </div>\n' +
     '            <div class="form-group">\n' +
-    '               <input type="text" class="form-control" placeholder="City">\n' +
+    '               <input required maxlength="50" type="text" class="form-control" placeholder="City" name="city" ng-model="vm.payment.contact.city">\n' +
+    '               <div ng-if="vm.editPaymentForm.$submitted && vm.editPaymentForm.city.$invalid" ng-messages="vm.editPaymentForm.city.$error" class="alert alert-danger">\n' +
+    '                  <div ng-message="required">City is required</div>\n' +
+    '                  <div ng-message="maxlength">City should have maximum 50 characters</div>\n' +
+    '               </div>\n' +
     '            </div>\n' +
     '            <div class="form-group">\n' +
-    '            <select class="form-control">\n' +
-    '              <option value="" selected>State</option>\n' +
-    '              <option value="1">Tamilnadu</option>\n' +
-    '              <option value="2">Kerala</option>\n' +
-    '              <option value="3">Karnataka</option>\n' +
-    '              <option value="4">Andra</option>\n' +
-    '          </select>\n' +
+    '               <select required class="form-control" name="state" ng-model="vm.payment.contact.state">\n' +
+    '                  <option value="" selected>State</option>\n' +
+    '                  <option value="Tamilnadu">Tamilnadu</option>\n' +
+    '                  <option value="Kerala">Kerala</option>\n' +
+    '                  <option value="Karnataka">Karnataka</option>\n' +
+    '                  <option value="Andra">Andra</option>\n' +
+    '               </select>\n' +
+    '               <div ng-if="vm.editPaymentForm.$submitted && vm.editPaymentForm.state.$invalid" ng-messages="vm.editPaymentForm.state.$error" class="alert alert-danger">\n' +
+    '                  <div ng-message="required">State is required</div>\n' +
+    '               </div>\n' +
     '            </div>\n' +
     '            <div class="form-group">\n' +
-    '               <input type="text" class="form-control" placeholder="Pincode">\n' +
+    '               <input required type="text" class="form-control" placeholder="Pincode" name="zip_code" ng-model="vm.payment.contact.zip_code">\n' +
+    '               <div ng-if="vm.editPaymentForm.$submitted && vm.editPaymentForm.zip_code.$invalid" ng-messages="vm.editPaymentForm.zip_code.$error" class="alert alert-danger">\n' +
+    '                  <div ng-message="required">Pincode is required</div>\n' +
+    '               </div>\n' +
     '            </div>\n' +
     '            \n' +
     '            \n' +
@@ -3340,8 +3381,8 @@ module.run(['$templateCache', function($templateCache) {
     '    \n' +
     '\n' +
     '         <div class="col-md-6">\n' +
-    '         <button type="submit" class="btn btn-default pull-right">Save</button>\n' +
-    '            <button type="submit" class="btn btn-default pull-right">Cancel</button>\n' +
+    '            <button type="submit" class="btn btn-default pull-right">Save</button>\n' +
+    '            <button type="submit" class="btn btn-default pull-right" ng-click="vm.cancel($event)">Cancel</button>\n' +
     '            <div class="clearfix"></div>\n' +
     '            \n' +
     '         </div>\n' +

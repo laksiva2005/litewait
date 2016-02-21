@@ -5,7 +5,7 @@
     "use strict";
     var app = angular.module('litewait');
 
-    var apiBase = 'http://fierce-scrubland-5738.herokuapp.com/v1.0/rest';
+    var apiBase = 'http://litewait-sandbox.herokuapp.com/v1.0/rest';
 
     app.value('RouteConfig', {
         base: '/',

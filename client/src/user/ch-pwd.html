@@ -2,23 +2,23 @@
 <h1>Change Password</h1>
 <div class="col-md-3 hidden-xs"></div>
 <div class="col-md-6 form-wrap">
- <form name="chPwdForm" ng-submit="changePassword(chPwdForm.$valid)" role="form">
+ <form novalidate name="vm.chPwdForm" ng-submit="vm.changePassword(chPwdForm.$valid)" role="form">
   <div class="form-group">
-    <input type="password" required name="old_password" ng-model="pwd.old_password" class="form-control"  placeholder="Old Password">
-    <div ng-if="chPwdForm.$submitted && chPwdForm.old_password.$error" ng-messages="chPwdForm.old_password.$error" class="alert alert-danger">
+    <input type="password" required name="old_password" ng-model="vm.pwd.old_password" class="form-control"  placeholder="Old Password">
+    <div ng-if="vm.chPwdForm.$submitted && vm.chPwdForm.old_password.$invalid" ng-messages="vm.chPwdForm.old_password.$error" class="alert alert-danger">
       <div ng-message="required">Old Password field is required</div>
     </div>
   </div>
   <div class="form-group">
-    <input type="password" pattern="{{pwd.passwordPattern}}" required name="new_password" ng-model="pwd.new_password" class="form-control"  placeholder="New Password">
-    <div ng-if="chPwdForm.$submitted && chPwdForm.new_password.$error" ng-messages="chPwdForm.new_password.$error" class="alert alert-danger">
+    <input type="password" pattern="{{vm.pwd.passwordPattern}}" required name="new_password" ng-model="vm.pwd.new_password" class="form-control"  placeholder="New Password">
+    <div ng-if="vm.chPwdForm.$submitted && vm.chPwdForm.new_password.$invalid" ng-messages="vm.chPwdForm.new_password.$error" class="alert alert-danger">
       <div ng-message="required">New Password field is required</div>
       <div ng-message="pattern">Minimum 8 characters and must contain a numeric, uppercase, lowercase, as well as special character</div>
     </div>
   </div>
   <div class="form-group">
-    <input type="password" required name="confirm_password" ng-model="pwd.confirm_password"   compare-to="pwd.new_password" class="form-control" placeholder="Confirm Password">
-    <div ng-if="chPwdForm.$submitted && chPwdForm.confirm_password.$error" ng-messages="chPwdForm.confirm_password.$error" class="alert alert-danger">
+    <input type="password" required name="confirm_password" ng-model="vm.pwd.confirm_password"   compare-to="vm.pwd.new_password" class="form-control" placeholder="Confirm Password">
+    <div ng-if="vm.chPwdForm.$submitted && vm.chPwdForm.confirm_password.$invalid" ng-messages="vm.chPwdForm.confirm_password.$error" class="alert alert-danger">
       <div ng-message="required">Confirm Password field is required</div>
       <div ng-message="compareTo">Confirm Password must be equal to Password</div>
     </div>

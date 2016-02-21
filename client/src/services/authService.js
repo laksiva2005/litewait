@@ -10,6 +10,7 @@
             loginSuccess: 'auth:login-success',
             loginFailed: 'auth:login-failed',
             logoutSuccess: 'auth:logout-success',
+            logoutFailed: 'auth:logout-failed',
             sessionTimeout: 'auth:session-timeout',
             notAuthenticated: 'auth:not-authenticated',
             notAuthorized: 'auth:not-authorized'
@@ -17,15 +18,21 @@
         .constant('AUTH_MSG', {
             loginSuccess: 'User logged in successfully',
             loginFailed: 'Invalid attempt, please check email/password',
+            logoutSuccess: 'You have been logged out successfully',
+            logoutFailed: 'Logout failed',
             registerSuccess: 'Registration success',
             registerFailed: 'Registration failed',
             profileUpdateSuccess: 'Profile has been successfully updated',
             profileUpdateFailed: 'Profile update has been failed',
+            paymentUpdateSuccess: 'Payment has been successfully updated',
+            paymentUpdateFailed: 'Payment update has been failed',
             chPwdSuccess: 'Password has been changed successfully',
             chPwdFailed: 'Password change has been failed'
         })
         .constant('AUTH_PROPS', {
-            'PASSWORD_PATTERN': "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!%*?&])[A-Za-z\\d$@$!%*?&]{8,}"
+            'PASSWORD_PATTERN': "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!%*?&])[A-Za-z\\d$@$!%*?&]{8,}",
+            'CARD': '^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|6(?:011|5[0-9]{2})[0-9]{12}|(?:2131|1800|35\d{3})\d{11})$',
+            'CVV': '^[0-9]{3,4}$'
         })
         .factory('User', User)
         .config(config)
@@ -64,9 +71,24 @@
             });
         };
 
+        sessionUser.updatePayment = function (data) {
+            var deferred = $q.defer();
+            return $http.post(urlBase + '/payment', data).success(function(response) {
+                return deferred.resolve(response);
+            }).error(function(error) {
+                toaster.pop({
+                    type: 'error', 
+                    title:'Error', 
+                    body: AUTH_MSG.paymentUpdateFailed, 
+                    toasterId: 1
+                });
+                deferred.reject();
+            });
+        };
+
         sessionUser.changePassword = function (data) {
             var deferred = $q.defer();
-            return $http.put(urlBase + '/user/passhash', data).success(function(response) {
+            return $http.put(urlBase + '/passhash', data).success(function(response) {
                 return deferred.resolve(response);
             }).error(function(error) {
                 toaster.pop({
@@ -190,6 +212,7 @@
 
                 
                 var getToken = function() {
+                    var a = session.getItem(TOKEN_KEY);
                     return session.getItem(TOKEN_KEY);
                 };
 
@@ -259,8 +282,8 @@
                             },
                             deferred = $q.defer();
 
-                        var token = 'test-token';
-                        /*
+                        /*var token = 'test-token';
+                        
                         var data = {
                             id: 1,
                             isLoggedIn: true,
@@ -282,8 +305,7 @@
                             url: authUrl,
                             data: params
                         }).success(function(response, status, headers) {
-                            if (!response.code) {
-                                var token = headers(API_KEY_HEADER);
+                            if (!response.error) {
                                 User.assign(response.data);
                                 setToken(response.data.user_session);
                                 raise(AUTH_EVENTS.loginSuccess, User);
@@ -306,6 +328,7 @@
                         var deferred = $q.defer();
 
                         var saveUser = _.clone(User);
+                        /*var saveUser = _.clone(User);
                         
                         setToken(null);
                         User.clear();
@@ -313,14 +336,31 @@
                         deferred.resolve(true);
 
                         return deferred.promise;
-
-                        /*return $http.post(endpoint).success(function() {
-                            var saveUser = _.clone(User);
-                            setToken(null);
-                            User.clear();
-                            raise(AUTH_EVENTS.logoutSuccess, saveUser);
-                            return true;
-                        });*/
+                        */
+                        return $http.get(endpoint).success(function(response) {
+                            if (!response.error) {
+                                
+                                setToken(null);
+                                User.clear();
+                                raise(AUTH_EVENTS.logoutSuccess, saveUser);
+                                toaster.pop({
+                                    type: 'success', 
+                                    title:'Success', 
+                                    body: AUTH_MSG.logoutSuccess, 
+                                    toasterId: 1
+                                });
+                                return deferred.resolve(response);
+                            } else {
+                                raise(AUTH_EVENTS.logoutFailed, saveUser);
+                                toaster.pop({
+                                    type: 'error', 
+                                    title:'Error', 
+                                    body: AUTH_MSG.logoutFailed, 
+                                    toasterId: 1
+                                });
+                                return deferred.reject(response);
+                            }
+                        });
                     },
                     getAuthToken: function() {
                         return getToken();
