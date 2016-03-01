@@ -63,9 +63,9 @@
       <form role="form" novalidate name="vm.editPaymentForm" ng-submit="vm.savePayment(vm.editPaymentForm.$valid)">
          <div class="col-md-6">
             <div class="form-group">
-               <select class="form-control" name="card_type" ng-model="vm.payment.contact.card_type" required>
+               <select class="form-control" name="card_type" ng-model="vm.payment.card_type" required>
                   <option value="" selected>Card Type</option>
-                  <option value="master">Master</option>
+                  <option value="master">Mastercard</option>
                   <option value="visa">Visa</option>
                </select>
                <div ng-if="vm.editPaymentForm.$submitted && vm.editPaymentForm.card_type.$invalid" ng-messages="vm.editPaymentForm.mail_id.$error" class="alert alert-danger">
@@ -87,7 +87,7 @@
                </div>
             </div>
             <div class="form-group">
-               <input date-as-ms required uib-datepicker-popup="dd-MM-yyyy" type="text" class="form-control" placeholder="Expiry date" name="card_expiry" ng-model="vm.payment.card_expiry" is-open="vm.pay.opened" on-open-focus="vm.pay.onOpenFocus">
+               <input date-as-ms required uib-datepicker-popup="MM/yyyy" min-mode="month" type="text" class="form-control" placeholder="Expiry date" name="card_expiry" ng-model="vm.payment.card_expiry" is-open="vm.pay.opened" on-open-focus="vm.pay.onOpenFocus">
                <span class="input-group-btn">
                 <button type="button" class="btn btn-default" ng-click="vm.open1()"><i class="glyphicon glyphicon-calendar"></i></button>
               </span>
@@ -110,13 +110,6 @@
                </div>
             </div>
             <div class="form-group">
-               <input required maxlength="100" type="text" class="form-control" placeholder="Address 2" name="address_2" ng-model="vm.payment.contact.address_2">
-               <div ng-if="vm.editPaymentForm.$submitted && vm.editPaymentForm.address_2.$invalid" ng-messages="vm.editPaymentForm.address_2.$error" class="alert alert-danger">
-                  <div ng-message="required">Address 2 is required</div>
-                  <div ng-message="maxlength">Address 2 should have maximum 100 characters</div>
-               </div>
-            </div>
-            <div class="form-group">
                <input required maxlength="50" type="text" class="form-control" placeholder="City" name="city" ng-model="vm.payment.contact.city">
                <div ng-if="vm.editPaymentForm.$submitted && vm.editPaymentForm.city.$invalid" ng-messages="vm.editPaymentForm.city.$error" class="alert alert-danger">
                   <div ng-message="required">City is required</div>
@@ -136,9 +129,9 @@
                </div>
             </div>
             <div class="form-group">
-               <input required type="text" class="form-control" placeholder="Pincode" name="zip_code" ng-model="vm.payment.contact.zip_code">
+               <input required type="text" class="form-control" placeholder="Zip Code" name="zip_code" ng-model="vm.payment.contact.zip_code">
                <div ng-if="vm.editPaymentForm.$submitted && vm.editPaymentForm.zip_code.$invalid" ng-messages="vm.editPaymentForm.zip_code.$error" class="alert alert-danger">
-                  <div ng-message="required">Pincode is required</div>
+                  <div ng-message="required">Zip Code is required</div>
                </div>
             </div>
             

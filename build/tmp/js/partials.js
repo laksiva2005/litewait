@@ -382,7 +382,7 @@ module.run(['$templateCache', function($templateCache) {
     '		    </uib-carousel>\n' +
     '        </div>\n' +
     '    </div>\n' +
-    '    <div ng-if="!nav.user.isLoggedIn" class="container browse-city">\n' +
+    '    <!--div ng-if="!nav.user.isLoggedIn" class="container browse-city">\n' +
     '      <h1>Browse your city</h1>\n' +
     '      <ul>\n' +
     '        <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">New York City; New York</a></li>\n' +
@@ -403,7 +403,7 @@ module.run(['$templateCache', function($templateCache) {
     '          <a href="#" class="btn col-md-3">Enter</a> </div>\n' +
     '        <div class="col-md-2 hidden-xs"></div>\n' +
     '      </div>\n' +
-    '    </div>\n' +
+    '    </div-->\n' +
     '    <div class="container testimonial">\n' +
     '      <h1>testimonials</h1>\n' +
     '      <div class="carousel slide" id="testimonial">\n' +
@@ -3292,9 +3292,9 @@ module.run(['$templateCache', function($templateCache) {
     '      <form role="form" novalidate name="vm.editPaymentForm" ng-submit="vm.savePayment(vm.editPaymentForm.$valid)">\n' +
     '         <div class="col-md-6">\n' +
     '            <div class="form-group">\n' +
-    '               <select class="form-control" name="card_type" ng-model="vm.payment.contact.card_type" required>\n' +
+    '               <select class="form-control" name="card_type" ng-model="vm.payment.card_type" required>\n' +
     '                  <option value="" selected>Card Type</option>\n' +
-    '                  <option value="master">Master</option>\n' +
+    '                  <option value="master">Mastercard</option>\n' +
     '                  <option value="visa">Visa</option>\n' +
     '               </select>\n' +
     '               <div ng-if="vm.editPaymentForm.$submitted && vm.editPaymentForm.card_type.$invalid" ng-messages="vm.editPaymentForm.mail_id.$error" class="alert alert-danger">\n' +
@@ -3316,7 +3316,7 @@ module.run(['$templateCache', function($templateCache) {
     '               </div>\n' +
     '            </div>\n' +
     '            <div class="form-group">\n' +
-    '               <input date-as-ms required uib-datepicker-popup="dd-MM-yyyy" type="text" class="form-control" placeholder="Expiry date" name="card_expiry" ng-model="vm.payment.card_expiry" is-open="vm.pay.opened" on-open-focus="vm.pay.onOpenFocus">\n' +
+    '               <input date-as-ms required uib-datepicker-popup="MM/yyyy" min-mode="month" type="text" class="form-control" placeholder="Expiry date" name="card_expiry" ng-model="vm.payment.card_expiry" is-open="vm.pay.opened" on-open-focus="vm.pay.onOpenFocus">\n' +
     '               <span class="input-group-btn">\n' +
     '                <button type="button" class="btn btn-default" ng-click="vm.open1()"><i class="glyphicon glyphicon-calendar"></i></button>\n' +
     '              </span>\n' +
@@ -3339,13 +3339,6 @@ module.run(['$templateCache', function($templateCache) {
     '               </div>\n' +
     '            </div>\n' +
     '            <div class="form-group">\n' +
-    '               <input required maxlength="100" type="text" class="form-control" placeholder="Address 2" name="address_2" ng-model="vm.payment.contact.address_2">\n' +
-    '               <div ng-if="vm.editPaymentForm.$submitted && vm.editPaymentForm.address_2.$invalid" ng-messages="vm.editPaymentForm.address_2.$error" class="alert alert-danger">\n' +
-    '                  <div ng-message="required">Address 2 is required</div>\n' +
-    '                  <div ng-message="maxlength">Address 2 should have maximum 100 characters</div>\n' +
-    '               </div>\n' +
-    '            </div>\n' +
-    '            <div class="form-group">\n' +
     '               <input required maxlength="50" type="text" class="form-control" placeholder="City" name="city" ng-model="vm.payment.contact.city">\n' +
     '               <div ng-if="vm.editPaymentForm.$submitted && vm.editPaymentForm.city.$invalid" ng-messages="vm.editPaymentForm.city.$error" class="alert alert-danger">\n' +
     '                  <div ng-message="required">City is required</div>\n' +
@@ -3365,9 +3358,9 @@ module.run(['$templateCache', function($templateCache) {
     '               </div>\n' +
     '            </div>\n' +
     '            <div class="form-group">\n' +
-    '               <input required type="text" class="form-control" placeholder="Pincode" name="zip_code" ng-model="vm.payment.contact.zip_code">\n' +
+    '               <input required type="text" class="form-control" placeholder="Zip Code" name="zip_code" ng-model="vm.payment.contact.zip_code">\n' +
     '               <div ng-if="vm.editPaymentForm.$submitted && vm.editPaymentForm.zip_code.$invalid" ng-messages="vm.editPaymentForm.zip_code.$error" class="alert alert-danger">\n' +
-    '                  <div ng-message="required">Pincode is required</div>\n' +
+    '                  <div ng-message="required">Zip Code is required</div>\n' +
     '               </div>\n' +
     '            </div>\n' +
     '            \n' +

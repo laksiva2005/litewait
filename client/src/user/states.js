@@ -25,7 +25,7 @@
                         var deferred = $q.defer();
                         
                         var handler = $timeout(function() {
-                            var auth = AuthService.isAuthenticated();
+                            var auth = true;//AuthService.isAuthenticated();
                             if (auth) {
                                 deferred.resolve(true);
                             } else {

@@ -33,7 +33,6 @@
 			cvv: '',
 			contact: {
 				address_1: '',
-				address_2: '',
 				city: '',
 				state: '',
 				zip_code: ''
@@ -92,8 +91,9 @@
 
 		function savePayment(valid) {
 			if (valid) {
-				
-				vm.user.updatePayment(vm.payment).then(function(response) {
+				var data = angular.copy(vm.payment);
+				data.card_expiry = formatDate(data.card_expiry);
+				vm.user.updatePayment(data).then(function(response) {
 					if (!(response.data.error || response.error)) {
 						toaster.pop({
                             type: 'success', 
@@ -111,6 +111,14 @@
 					}
 				});
 			}
+		}
+
+		function formatDate(dateasms) {
+			var date = new Date(dateasms);
+			var month = date.getMonth() + 1;
+			month = (month < 10) ? "0" + month : month;
+			var year = date.getFullYear();
+			return month + "/" + year;
 		}
 
 

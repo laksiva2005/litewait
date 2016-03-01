@@ -23,7 +23,7 @@
     <div class="header-wrap">
     <header class="container">
       <div>
-        <div class="col-md-6"><a ng-click="nav.home()"><img src="img/logo.jpg" class="img-responsive pull-left" /></a></div>
+        <div class="col-md-6"><a ng-click="nav.go('home')"><img src="img/logo.jpg" class="img-responsive pull-left" /></a></div>
         <div class="col-md-6">
           <nav class="navbar navbar-default">
             <div class="container-fluid">
@@ -151,7 +151,7 @@
                   <div class="clearfix"></div>
                 </div>
               </div>
-              <p class="joinus">New here ? <a  data-toggle="tab"  href="#signup" onclick="loginModal.activaTab('signup-nav');">Join us</a></p>
+              <p class="joinus">New here ? <a ng-click="loginModal.modalProps.signup=!loginModal.modalProps.signup">Join us</a></p>
             </div>
           </uib-tab>
           <uib-tab active="loginModal.modalProps.signup">

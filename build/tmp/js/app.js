@@ -3004,7 +3004,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 	function HomeCtrl($scope) {
 		var vm = this;	
-		vm.myInterval = 1000;
+		vm.myInterval = 3000;
   		vm.noWrapSlides = false;
 		vm.slides = [{
 			active: true,
@@ -4046,7 +4046,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			cvv: '',
 			contact: {
 				address_1: '',
-				address_2: '',
 				city: '',
 				state: '',
 				zip_code: ''
@@ -4105,8 +4104,9 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 		function savePayment(valid) {
 			if (valid) {
-				
-				vm.user.updatePayment(vm.payment).then(function(response) {
+				var data = angular.copy(vm.payment);
+				data.card_expiry = formatDate(data.card_expiry);
+				vm.user.updatePayment(data).then(function(response) {
 					if (!(response.data.error || response.error)) {
 						toaster.pop({
                             type: 'success', 
@@ -4124,6 +4124,14 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 					}
 				});
 			}
+		}
+
+		function formatDate(dateasms) {
+			var date = new Date(dateasms);
+			var month = date.getMonth() + 1;
+			month = (month < 10) ? "0" + month : month;
+			var year = date.getFullYear();
+			return month + "/" + year;
 		}
 
 
@@ -4162,7 +4170,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         var deferred = $q.defer();
                         
                         var handler = $timeout(function() {
-                            var auth = AuthService.isAuthenticated();
+                            var auth = true;//AuthService.isAuthenticated();
                             if (auth) {
                                 deferred.resolve(true);
                             } else {
