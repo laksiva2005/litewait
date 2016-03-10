@@ -442,24 +442,6 @@ try {
   module = angular.module('litewait.ui', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('html/spinner.html',
-    '<div class="spinner">\n' +
-    '  <div>\n' +
-    '    <i class="fa fa-spinner fa-spin"></i>\n' +
-    '  </div>\n' +
-    '  <div class="spinner-text">{{$message}}</div>\n' +
-    '</div>\n' +
-    '');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
   $templateCache.put('navigation/navbar.html',
     '');
 }]);
@@ -485,6 +467,24 @@ module.run(['$templateCache', function($templateCache) {
     '    <div class="col-md-2 less-padding"><a class="btn btn-block" ng-click="searchFn($event)"><i class="fa fa-search"></i> Search</a></div>\n' +
     '  </div>\n' +
     '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('html/spinner.html',
+    '<div class="spinner">\n' +
+    '  <div>\n' +
+    '    <i class="fa fa-spinner fa-spin"></i>\n' +
+    '  </div>\n' +
+    '  <div class="spinner-text">{{$message}}</div>\n' +
+    '</div>\n' +
+    '');
 }]);
 })();
 
@@ -3348,7 +3348,7 @@ module.run(['$templateCache', function($templateCache) {
     '            <div class="form-group">\n' +
     '               <select required class="form-control" name="state" ng-model="vm.payment.contact.state">\n' +
     '                  <option value="" selected>State</option>\n' +
-    '                  <option value="Tamilnadu">Tamilnadu</option>\n' +
+    '                  <option value="Tamilnadu">tamil nadu</option>\n' +
     '                  <option value="Kerala">Kerala</option>\n' +
     '                  <option value="Karnataka">Karnataka</option>\n' +
     '                  <option value="Andra">Andra</option>\n' +
