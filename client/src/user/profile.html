@@ -11,7 +11,7 @@
                   <h1>Edit Profile</h1>
                   
                   <div class="col-md-12 form-wrap">
-      <form novalidate name="vm.editProfileForm" ng-submit="vm.updateProfile(editProfileForm.$valid)" role="form">
+      <form novalidate name="vm.editProfileForm" ng-submit="vm.updateProfile(vm.editProfileForm.$valid)" role="form">
          <div class="col-md-6">
             <div class="form-group">
                <input type="text" name="user_name" maxlength="50" ng-model="vm.profile.user_name" class="form-control"  placeholder="Name">

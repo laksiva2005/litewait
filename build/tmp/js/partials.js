@@ -3240,7 +3240,7 @@ module.run(['$templateCache', function($templateCache) {
     '                  <h1>Edit Profile</h1>\n' +
     '                  \n' +
     '                  <div class="col-md-12 form-wrap">\n' +
-    '      <form novalidate name="vm.editProfileForm" ng-submit="vm.updateProfile(editProfileForm.$valid)" role="form">\n' +
+    '      <form novalidate name="vm.editProfileForm" ng-submit="vm.updateProfile(vm.editProfileForm.$valid)" role="form">\n' +
     '         <div class="col-md-6">\n' +
     '            <div class="form-group">\n' +
     '               <input type="text" name="user_name" maxlength="50" ng-model="vm.profile.user_name" class="form-control"  placeholder="Name">\n' +
