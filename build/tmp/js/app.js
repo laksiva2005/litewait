@@ -3388,45 +3388,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             });
     }
 })(angular);
-/*
- *
- */
-;(function () {
-	'use strict';
-	angular.module('litewait.ui').controller('ShopDetailMenuCtrl', ShopDetailMenuCtrl);
-
-	ShopDetailMenuCtrl.$inject = ['$scope'];
-
-	function ShopDetailMenuCtrl($scope) {
-		var vm = this;
-		
-	}
-})();
-
-;(function(angular) {
-    'use strict';
-
-    angular.module('litewait').config(config);
-
-    config.$inject = ['$stateProvider'];
-
-    function config($stateProvider) {
-        $stateProvider
-            .state('shop', {
-                abstract: true
-            })
-            .state('shop.detail', {
-            	url: "/shop-detail-menu",
-                views: {
-                    "@": {
-                        templateUrl: "shop/shop-detail-menu.html",
-                        controller: "ShopDetailMenuCtrl",
-                        controllerAs: "vm"
-                    }
-                }
-            });
-    }
-})(angular);
 /**
  *
  */
@@ -3955,6 +3916,45 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 /*
  *
  */
+;(function () {
+	'use strict';
+	angular.module('litewait.ui').controller('ShopDetailMenuCtrl', ShopDetailMenuCtrl);
+
+	ShopDetailMenuCtrl.$inject = ['$scope'];
+
+	function ShopDetailMenuCtrl($scope) {
+		var vm = this;
+		
+	}
+})();
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('shop', {
+                abstract: true
+            })
+            .state('shop.detail', {
+            	url: "/shop-detail-menu",
+                views: {
+                    "@": {
+                        templateUrl: "shop/shop-detail-menu.html",
+                        controller: "ShopDetailMenuCtrl",
+                        controllerAs: "vm"
+                    }
+                }
+            });
+    }
+})(angular);
+/*
+ *
+ */
 ;(function(angular) {
 	'use strict';
 	angular.module('litewait.ui').controller('ChpwdCtrl', ChpwdCtrl);
@@ -4061,6 +4061,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		vm.assignProfile = assignProfile;
 		vm.cancel = cancel;
 		vm.savePayment = savePayment;
+		vm.assignPayment = assignPayment;
 		vm.open1 = open1;
 
 		function open1() {
@@ -4102,6 +4103,19 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			vm.profile.contact.mail_id = vm.user.data.contact.mail_id;
 		}
 
+		function assignPayment(paymentConfig) {
+			//var paymentConfig = userPayment.data.paymentConfig;
+			vm.payment.card_type = paymentConfig.card_type;
+			vm.payment.card_number = paymentConfig.card_number;
+			vm.payment.card_name = paymentConfig.card_name;
+			vm.payment.card_expiry = new Date(parseInt(paymentConfig.card_expiry));
+			vm.payment.cvv = paymentConfig.cvv;
+			vm.payment.contact.address_1 = paymentConfig.card_address.address_1;
+			vm.payment.contact.city = paymentConfig.card_address.city;
+			vm.payment.contact.state = paymentConfig.card_address.state;
+			vm.payment.contact.zip_code = paymentConfig.card_address.zip_code;
+		}
+
 		function savePayment(valid) {
 			if (valid) {
 				var data = angular.copy(vm.payment);
@@ -4141,6 +4155,10 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		}
 
 		vm.assignProfile();
+
+		if (User.data.paymentConfig) {
+			vm.assignPayment(User.data.paymentConfig);
+		}
 	}
 })(angular);
 

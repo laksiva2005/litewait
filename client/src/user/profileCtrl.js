@@ -48,6 +48,7 @@
 		vm.assignProfile = assignProfile;
 		vm.cancel = cancel;
 		vm.savePayment = savePayment;
+		vm.assignPayment = assignPayment;
 		vm.open1 = open1;
 
 		function open1() {
@@ -89,6 +90,19 @@
 			vm.profile.contact.mail_id = vm.user.data.contact.mail_id;
 		}
 
+		function assignPayment(paymentConfig) {
+			//var paymentConfig = userPayment.data.paymentConfig;
+			vm.payment.card_type = paymentConfig.card_type;
+			vm.payment.card_number = paymentConfig.card_number;
+			vm.payment.card_name = paymentConfig.card_name;
+			vm.payment.card_expiry = new Date(parseInt(paymentConfig.card_expiry));
+			vm.payment.cvv = paymentConfig.cvv;
+			vm.payment.contact.address_1 = paymentConfig.card_address.address_1;
+			vm.payment.contact.city = paymentConfig.card_address.city;
+			vm.payment.contact.state = paymentConfig.card_address.state;
+			vm.payment.contact.zip_code = paymentConfig.card_address.zip_code;
+		}
+
 		function savePayment(valid) {
 			if (valid) {
 				var data = angular.copy(vm.payment);
@@ -128,5 +142,9 @@
 		}
 
 		vm.assignProfile();
+
+		if (User.data.paymentConfig) {
+			vm.assignPayment(User.data.paymentConfig);
+		}
 	}
 })(angular);
