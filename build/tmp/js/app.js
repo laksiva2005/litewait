@@ -2814,7 +2814,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     "search-box@home": {
                       templateUrl: 'navigation/search-box.html',
                       controller: "SearchBoxCtrl",
-                      controllerAs: "vm"
+                      controllerAs: "sbc"
                     },
                     "@": {
                         templateUrl: "home/home.html",
@@ -2824,7 +2824,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                 },
                 params: { location: '', keyword: '' },
                 resolve: {
-                    search: function ($q, $timeout) {
+                    srch: function ($q, $timeout) {
                         var deferred = $q.defer();
                         
                         var handler = $timeout(function() {
@@ -2832,6 +2832,45 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                             $timeout.cancel(handler);
                         }, 0);
                         
+                        return deferred.promise;
+                    },
+                    geolocation: function ($q, Search, $timeout, Location) {
+                        var loc = {};
+                        var deferred = $q.defer();
+
+                        var handler = $timeout(function() { 
+                            Search.getRegionByGeo().then(function(response) {
+                                if (!response.data.error) {
+                                    Location.status = loc.status = true;
+                                    Location.data = loc.data = response.data.data;
+                                    deferred.resolve(loc);
+                                } else {
+                                    getByIp();
+                                }
+                            }, function(error) {
+                                getByIp();
+                            });
+
+                            function getByIp() {
+                                Search.getRegionByIP().then(function(res) {
+                                    if (!res.data.error) {
+                                        Location.status = loc.status = true;
+                                        Location.data = loc.data = res.data.data;
+                                        deferred.resolve(loc);
+                                    } else {
+                                        Location.status = loc.status = false;
+                                        Location.data = loc.data = null;
+                                        deferred.resolve(loc);
+                                    }
+                                }, function() {
+                                    Location.status = loc.status = false;
+                                    Location.data = loc.data = null;
+                                    deferred.resolve(loc);
+                                });
+                            }
+
+                            $timeout.cancel(handler);
+                        }, 0);
                         return deferred.promise;
                     }
                 }
@@ -3247,24 +3286,108 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	'use strict';
 	angular.module('litewait.ui').controller('SearchBoxCtrl', SearchBoxCtrl);
 
-	SearchBoxCtrl.$inject = ['$scope', '$state', '$stateParams', 'search'];
+	SearchBoxCtrl.$inject = ['$scope', '$state', '$stateParams', 'PubSub', 'Search', 'Location', 'srch', 'geolocation'];
 
-	function SearchBoxCtrl($scope, $state, $stateParams, search) {
+	function SearchBoxCtrl($scope, $state, $stateParams, PubSub, Search, Location, srch, geolocation) {
 		var vm = this;
 		vm.searchCriteria = {};
-		vm.searchCriteria.location =  $stateParams.location;
-		vm.searchCriteria.keyword =  $stateParams.keyword;
-		vm.search = search;
+		vm.isLocation = false;
+		if ($stateParams.location) {
+			vm.searchCriteria.location = $stateParams.location;
+		} else if (Location.current.place) {
+			vm.searchCriteria.location = Location.current.place;
+			vm.isLocation = true;
+		} else if (geolocation.status) {
+			vm.searchCriteria.location =  geolocation.data;	
+			vm.isLocation = true;
+		}
+		
+		vm.searchCriteria.keyword =  '';
+		if ($stateParams.keyword) {
+			vm.searchCriteria.keyword = $stateParams.keyword;
+		} else if (Location.current.keyword) {
+			vm.searchCriteria.keyword = Location.keyword;
+		}
+
+		vm.search = srch;
 
 		vm.searchFn = searchFn;
+		vm.getLocation = getLocation;
+		vm.onSelectRegion = onSelectRegion;
+		vm.getKeywords = getKeywords;
 
 		function searchFn(event) {
-			if (search == 'home') {
-				$state.go('search.restaurant', {location: vm.searchCriteria.location, keyword: vm.searchCriteria.keyword});
+			if (srch == 'home') {
+				$state.go('search', {
+					location: vm.searchCriteria.location, 
+					keyword: vm.searchCriteria.keyword
+				});
 			} else {
+				PubSub.publish('search', vm.searchCriteria);
 				//TODO: do the actual search and emit the result
 			}
 		}
+
+		function getLocation(str) {
+			return Search.getRegions(str);
+		}
+
+		function getKeywords(str) {
+			if (!vm.searchCriteria.location) {
+				return [];
+			}
+			var data = {
+				region_id: vm.searchCriteria.location.region_id,
+				city_id: vm.searchCriteria.location.city_id,
+				search_text: str
+			};
+			return Search.getKeywords(data);
+		}
+
+		function onSelectRegion() {
+			Location.current.place = vm.searchCriteria.location;
+		}
+
+		function onSelectKeyword() {
+			Location.current.keyword = vm.searchCriteria.keyword;
+		}
+
+		$scope.$watch(function(scope) {
+            // Return the "result" of the watch expression.
+            return vm.searchCriteria.location;
+        },
+        function(newValue, oldValue) {
+            if (!vm.searchCriteria.location && Location.data) {
+            	vm.searchCriteria.location = Location.data;
+            	Location.current.place = vm.searchCriteria.location;
+            	vm.isLocation = true;
+            }
+
+            if (!vm.searchCriteria.location && !Location.data) {
+            	vm.isLocation = false;
+            	Location.current.place = null;
+            }
+
+            if (vm.searchCriteria.location || Location.data) {
+            	vm.isLocation = true;
+            }
+        });
+
+        $scope.$watch(function(scope) {
+            // Return the "result" of the watch expression.
+            return vm.searchCriteria.keyword;
+        },
+        function(newValue, oldValue) {
+            if (!vm.searchCriteria.keyword || vm.searchCriteria.keyword === '') {
+            	Location.current.keyword = '';
+            } else {
+	            Location.current.keyword = newValue;
+	        }
+        });
+
+        if (srch !== 'home') {
+        	PubSub.publish('search', vm.searchCriteria);
+        }
 	}
 })();
 /*
@@ -3334,15 +3457,38 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	'use strict';
 	angular.module('litewait.ui').controller('SearchCtrl', SearchCtrl);
 
-	SearchCtrl.$inject = ['$scope', '$state'];
+	SearchCtrl.$inject = ['$scope', '$state', 'PubSub', 'Location', 'Search', 'srch'];
 
-	function SearchCtrl($scope, $state) {
+	function SearchCtrl($scope, $state, PubSub, Location, Search, srch) {
 		var vm = this;
+		vm.retailer = {
+			list: []
+		};
 		vm.viewRetailer = viewRetailer;
 
 		function viewRetailer() {
 			$state.go('shop.detail.menu');
 		}
+
+		function searchRetailer(data) {
+			var obj = {
+				region_id: data.location.region_id,
+				city_id: data.location.city_id,
+				search_text: data.keyword.category,
+				page_no: 1,
+				page_size: 10
+			};
+
+			Search.getMerchantList(obj).then(function(response) {
+				vm.retailer.list = response;
+			}, function() {
+				vm.retailer.list = [];
+			});
+		}
+
+		PubSub.subscribe('search', function(event, obj) {
+			searchRetailer(obj.args);
+		});
 	}
 })();
 
@@ -3356,25 +3502,22 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
     function config($stateProvider) {
         $stateProvider
             .state('search', {
-                abstract: true
-            })
-            .state('search.restaurant', {
             	url: "/serach",
                 views: {
                     "search-box@search": {
                       templateUrl: 'navigation/search-box.html',
                       controller: "SearchBoxCtrl",
-                      controllerAs: "vm"
+                      controllerAs: "sbc"
                     },
                     "@": {
                         templateUrl: "search/search.html",
                         controller: "SearchCtrl",
-                        controllerAs: "vm"
+                        controllerAs: "sc"
                     }
                 },
                 params: {location: '', keyword: ''},
                 resolve: {
-                    search: function ($q, $timeout) {
+                    srch: function ($q, $timeout) {
                         var deferred = $q.defer();
                         
                         var handler = $timeout(function() {
@@ -3382,6 +3525,45 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                             $timeout.cancel(handler);
                         }, 0);
                         
+                        return deferred.promise;
+                    },
+                    geolocation: function ($q, Search, $timeout, Location) {
+                        var loc = {};
+                        var deferred = $q.defer();
+
+                        var handler = $timeout(function() { 
+                            Search.getRegionByGeo().then(function(response) {
+                                if (!response.data.error) {
+                                    Location.status = loc.status = true;
+                                    Location.data = loc.data = response.data.data;
+                                    deferred.resolve(loc);
+                                } else {
+                                    getByIp();
+                                }
+                            }, function(error) {
+                                getByIp();
+                            });
+
+                            function getByIp() {
+                                Search.getRegionByIP().then(function(res) {
+                                    if (!res.data.error) {
+                                        Location.status = loc.status = true;
+                                        Location.data = loc.data = res.data.data;
+                                        deferred.resolve(loc);
+                                    } else {
+                                        Location.status = loc.status = false;
+                                        Location.data = loc.data = null;
+                                        deferred.resolve(loc);
+                                    }
+                                }, function() {
+                                    Location.status = loc.status = false;
+                                    Location.data = loc.data = null;
+                                    deferred.resolve(loc);
+                                });
+                            }
+
+                            $timeout.cancel(handler);
+                        }, 0);
                         return deferred.promise;
                     }
                 }
@@ -3672,24 +3854,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                             },
                             deferred = $q.defer();
 
-                        /*var token = 'test-token';
                         
-                        var data = {
-                            id: 1,
-                            isLoggedIn: true,
-                            username: username,
-                            role: 'consumer',
-                            name: 'John Doe',
-                            data: {}
-                        };
-                        
-                        User.assign(data);
-                        setToken('secret token');
-                        raise(AUTH_EVENTS.loginSuccess, User);
-                        deferred.resolve(User);
-
-                        return deferred.promise;
-                        */
                         return $http({
                             method: 'POST',
                             url: authUrl,
@@ -3718,15 +3883,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         var deferred = $q.defer();
 
                         var saveUser = _.clone(User);
-                        /*var saveUser = _.clone(User);
                         
-                        setToken(null);
-                        User.clear();
-                        raise(AUTH_EVENTS.logoutSuccess, saveUser);
-                        deferred.resolve(true);
-
-                        return deferred.promise;
-                        */
                         return $http.get(endpoint).success(function(response) {
                             if (!response.error) {
                                 
@@ -3765,6 +3922,25 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
     }
 
 })(angular);
+/*
+*
+*/
+;(function() {
+	'use strict';
+	angular.module('litewait.services').factory('Location', Location);
+	
+	Location.$inject = [];
+
+	function Location() {
+		var location = {};
+		location.status = false;
+		location.data = "";
+		location.current = {};
+		location.current.place = "";
+		location.current.keyword = '';
+		return location;
+	}
+})();
 /**
  *
  */
@@ -3831,6 +4007,104 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 
 
+/*
+*
+*/
+;(function(angular) {
+	'use strict';
+	angular.module('litewait.services').factory('Search', Search);
+
+	Search.$inject = ['$http', '$q', 'RouteConfig'];
+
+	function Search($http, $q, RouteConfig) {
+		var urlBase = RouteConfig.apiBase + '/search';
+		var search = {};
+
+		search.getRegions = getRegions;
+		search.getRegionByIP = getRegionByIP;
+		search.getRegionByGeo = getRegionByGeo;
+		search.getMerchantList = getMerchantList;
+		search.getKeywords = getKeywords;
+
+		function getRegions(str) {
+			var url = urlBase + '?cityregion=' + str;
+			return $http.get(url).then(function(response) {
+				if (!response.data.error) {
+					return response.data.data;
+				}
+				return [];
+			});
+		}
+
+		function getKeywords(params) {
+			var url = urlBase + 'items?region_id=5540de6bb01cc3100320ff05&city_id=5540de6bb01cc3100320ff04&search_text=z';
+			return $http.get(url).then(function(response) {
+				if (!response.data.error) {
+					return response.data.data;
+				}
+				return [];
+			});
+		}
+
+		function getRegionByIP() {
+			var url = urlBase + '?type=ipaddress';
+			return $http.get(url).then(function(response) {
+				if (!response.data.error) {
+					return response.data.data;
+				}
+				return [];
+			});
+		}
+
+		function getRegionByGeo() {
+			return getLocation().then(function(position) {
+				var url = urlBase;
+				var params = {
+					params: {
+						latitude: position.coords.latitude,
+						longitude: position.coords.longitude
+					}
+				};
+
+				return $http.get(url, params);
+			});
+		}
+
+		function getMerchantList(params) {
+			var queryString = angular.param(params);
+			var url = urlBase + 'merchant';
+			return $http.get(url, {params: params}).then(function(response) {
+				if (!response.data.error) {
+					return response.data.data;
+				}
+
+				return [];
+			});
+		}
+
+		function getLocation() {
+			var deferred = $q.defer();
+			if ( ! navigator.geolocation) {
+				deferred.reject(false);
+				return deferred.promise;
+			}
+
+			navigator.geolocation.getCurrentPosition(getPosition,failed);
+
+			function getPosition(position) {
+				deferred.resolve(position);
+			}
+
+			function failed(error) {
+				deferred.reject(error);
+			}
+
+			return deferred.promise;
+		}
+
+		return search;
+	}
+})(angular);
 /**
  * created by kanagu on 11/05/2015
  */

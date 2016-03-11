@@ -282,24 +282,7 @@
                             },
                             deferred = $q.defer();
 
-                        /*var token = 'test-token';
                         
-                        var data = {
-                            id: 1,
-                            isLoggedIn: true,
-                            username: username,
-                            role: 'consumer',
-                            name: 'John Doe',
-                            data: {}
-                        };
-                        
-                        User.assign(data);
-                        setToken('secret token');
-                        raise(AUTH_EVENTS.loginSuccess, User);
-                        deferred.resolve(User);
-
-                        return deferred.promise;
-                        */
                         return $http({
                             method: 'POST',
                             url: authUrl,
@@ -328,15 +311,7 @@
                         var deferred = $q.defer();
 
                         var saveUser = _.clone(User);
-                        /*var saveUser = _.clone(User);
                         
-                        setToken(null);
-                        User.clear();
-                        raise(AUTH_EVENTS.logoutSuccess, saveUser);
-                        deferred.resolve(true);
-
-                        return deferred.promise;
-                        */
                         return $http.get(endpoint).success(function(response) {
                             if (!response.error) {
                                 
