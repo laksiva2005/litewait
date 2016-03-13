@@ -12,14 +12,15 @@
                 abstract: true
             })
             .state('shop.detail', {
-            	url: "/shop-detail-menu",
+            	url: "/shop/:id",
                 views: {
                     "@": {
                         templateUrl: "shop/shop-detail-menu.html",
                         controller: "ShopDetailMenuCtrl",
-                        controllerAs: "vm"
+                        controllerAs: "sdm"
                     }
-                }
+                },
+                params: {id: ''}
             });
     }
 })(angular);

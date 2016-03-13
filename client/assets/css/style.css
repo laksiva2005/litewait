@@ -317,8 +317,8 @@ box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);}
 .menu-detail-wrap .popular-items .item-right p { color:#424242; margin:0px; font-size:14px; padding:4px 0 4px 13px; max-width:260px;}
 .menu-detail-wrap .popular-items .item-right .fa { color:#28ace2; margin-right:10px; font-size:18px;}
 .menu-detail-wrap .popular-items .item-right .price { font-size:16px; text-align:right;}
-.menu-detail-wrap .menu-items ul li.active a { color:#28ace2;background:#f7f7f7;}
-.menu-detail-wrap .menu-items ul li.active a:focus { text-decoration:none;}
+.menu-detail-wrap .menu-items ul li.active a { color: #28ace2;background: #f7f7f7;text-decoration: none;border: none;border-radius: 0;margin: 0;}
+.menu-detail-wrap .menu-items ul li.active a:focus { text-decoration: none;border: none;border-radius: 0;margin: 0;}
 
 /* Merchant */
 .merchant-landing { padding:20px 0 0 0;}

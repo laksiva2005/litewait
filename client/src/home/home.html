@@ -4,7 +4,7 @@
         	<p class="title-1">SAVE YOUR TIME...INCREASE PRODUCTIVE TIME<br/>
     SAVE MONEY!!</p>
     		<p class="title-2">Tired of waiting in queue, come join us</p>
-            <a href="#" class="btn join"  ng-click="nav.openSignUpModal()">Join Now !!</a>
+            <a href="#" class="btn join"  ng-click="nav.openSignUpModal($event)">Join Now !!</a>
             </div>
         </div>
     </div>
@@ -49,8 +49,8 @@
     <div class="container-fluid feature-location">
         <div class="container">
 	        <h1>featured locations</h1>
-	        <uib-carousel interval="vm.myInterval" no-wrap="noWrapSlides">
-		        <uib-slide ng-repeat="slide in vm.slides" active="slide.active" index="slide.id">
+	        <uib-carousel interval="home.myInterval" no-wrap="home.noWrap" active="home.active" no-transition="home.noTransition" no-pause="home.noPause">
+		        <uib-slide ng-repeat="slide in home.slides" active="slide.active" index="slide.id">
 			      	<ul>
 				      	<li class="col-sm-6 col-md-3" ng-repeat="slideData in slide.data">
 				        	<img src="{{slideData.image}}" class="img-responsive" />

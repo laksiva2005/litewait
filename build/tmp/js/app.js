@@ -2762,7 +2762,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 	angular.module('litewait.services', []);
 	angular.module('litewait.directives', ['ngMessages']);
-	angular.module('litewait.ui', ['ui.bootstrap', 'litewait.directives', 'cgBusy', 'toaster']);
+	angular.module('litewait.ui', ['ui.bootstrap', 'litewait.directives', 'cgBusy', 'toaster', 'infinite-scroll']);
 	angular.module('litewait', ['ui.router', 'litewait.services', 'litewait.ui']);
 
 })(angular);
@@ -2819,7 +2819,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     "@": {
                         templateUrl: "home/home.html",
                         controller: "HomeCtrl",
-                        controllerAs: "vm"
+                        controllerAs: "home"
                     }
                 },
                 params: { location: '', keyword: '' },
@@ -3044,7 +3044,10 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	function HomeCtrl($scope) {
 		var vm = this;	
 		vm.myInterval = 3000;
-  		vm.noWrapSlides = false;
+  		vm.noWrap = false;
+  		vm.active = 0;
+  		vm.noPause = false;
+  		vm.noTransition = false;
 		vm.slides = [{
 			active: true,
 			id: 0,
@@ -3156,7 +3159,10 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			userModal();
 		}
 
-		function openSignUpModal() {
+		function openSignUpModal(event) {
+            if (event) {
+                event.preventDefault();
+            }
 			$scope.signin = vm.signin = false;
             $scope.signup = vm.signup = true;
 			userModal();
@@ -3461,33 +3467,72 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 	function SearchCtrl($scope, $state, PubSub, Location, Search, srch) {
 		var vm = this;
-		vm.retailer = {
-			list: []
+		vm.merchant = {
+			list: [],
+			busy: false,
+			offset: 0,
+			limit: 10,
+			searchCriteria: {},
+			totalRecords: 0
 		};
-		vm.viewRetailer = viewRetailer;
+		vm.keyword = '';
+		vm.viewMerchant = viewMerchant;
+		vm.initializeMerchant = initializeMerchant;
+		vm.nextPage = nextPage;
 
-		function viewRetailer() {
-			$state.go('shop.detail.menu');
+		function viewMerchant(id) {
+			$state.go('shop.detail', {id: id});
 		}
 
-		function searchRetailer(data) {
-			var obj = {
-				region_id: data.location.region_id,
-				city_id: data.location.city_id,
-				search_text: data.keyword.category,
-				page_no: 1,
-				page_size: 10
-			};
-
+		function searchMerchant() {
+			var obj = getMerchantParams();
 			Search.getMerchantList(obj).then(function(response) {
-				vm.retailer.list = response;
+				assignMerchants(response.merchants);
+				vm.merchant.busy = false;
 			}, function() {
-				vm.retailer.list = [];
+				vm.merchant.busy = false;
 			});
 		}
 
-		PubSub.subscribe('search', function(event, obj) {
-			searchRetailer(obj.args);
+        function assignMerchants(items) {
+          for (var i = 0; i < items.length; i++) {
+            var index = _.findIndex(vm.merchant.list, {id: items[i].id});
+            if (-1 === index) {
+              vm.merchant.list.push(items[i]);
+            }
+          }
+          vm.merchant.offset = vm.merchant.list.length;
+        }
+
+        function getMerchantParams() {
+        	vm.keyword = vm.merchant.searchCriteria.keyword.category;
+          	return {
+				region_id: vm.merchant.searchCriteria.location.region_id,
+				city_id: vm.merchant.searchCriteria.location.city_id,
+				search_text: vm.merchant.searchCriteria.keyword.category,
+				page_no: vm.merchant.offset,
+				page_size: vm.merchant.limit
+			};
+        }
+
+        function initializeMerchant() {
+          vm.merchant.offset = 1;
+          vm.merchant.list.length = 0;
+          searchMerchant();
+        }
+
+        function nextPage() {
+          var params = getMerchantParams();
+
+          if ( ! vm.merchant.busy) {
+            vm.merchant.busy = true;
+            searchMerchant();
+          }
+        }
+
+        PubSub.subscribe('search', function(event, obj) {
+			vm.merchant.searchCriteria = obj.args;
+			initializeMerchant();
 		});
 	}
 })();
@@ -3567,6 +3612,62 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         return deferred.promise;
                     }
                 }
+            });
+    }
+})(angular);
+/*
+ *
+ */
+;(function () {
+	'use strict';
+	angular.module('litewait.ui').controller('ShopDetailMenuCtrl', ShopDetailMenuCtrl);
+
+	ShopDetailMenuCtrl.$inject = ['$scope', '$state', '$stateParams', 'Merchant'];
+
+	function ShopDetailMenuCtrl($scope, $state, $stateParams, Merchant) {
+		var vm = this;
+		vm.nest = {};
+		vm.nest.merchantDetail = {};
+		vm.nest.merchantId = $stateParams.id;
+
+		function getMerchant(id) {
+			Merchant.get(id).then(function(response) {
+				vm.nest.merchantDetail = response;
+				vm.nest.merchantId = vm.nest.merchantDetail.id;
+			}, function(error) {
+				vm.nest.merchantDetail = {};
+				vm.nest.merchantId = '';
+			});
+		}
+
+		if (vm.nest.merchantId) {
+			getMerchant(vm.nest.merchantId);
+		}
+	}
+})();
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('shop', {
+                abstract: true
+            })
+            .state('shop.detail', {
+            	url: "/shop/:id",
+                views: {
+                    "@": {
+                        templateUrl: "shop/shop-detail-menu.html",
+                        controller: "ShopDetailMenuCtrl",
+                        controllerAs: "sdm"
+                    }
+                },
+                params: {id: ''}
             });
     }
 })(angular);
@@ -3941,6 +4042,44 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		return location;
 	}
 })();
+/*
+*
+*/
+;(function() {
+	'use strict';
+	angular.module('litewait.services').factory('Merchant', Merchant);
+
+	Merchant.$inject = ['$http', '$q', 'RouteConfig'];
+
+	function Merchant($http, $q, RouteConfig) {
+		var urlBase = RouteConfig.apiBase + '/merchant';
+		var obj = {};
+
+		obj.get = get;
+		obj.deleteMerchant = deleteMerchant;
+
+		function get(id) {
+			var params = {
+				params: {
+					id: id
+				}
+			};
+
+			return $http.get(urlBase, params).then(function(response) {
+				if (!response.data.error) {
+					return response.data.data;
+				}
+				return {};
+			});
+		}
+
+		function deleteMerchant() {
+
+		}
+
+		return obj;
+	}
+})();
 /**
  *
  */
@@ -4071,9 +4210,9 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		}
 
 		function getMerchantList(params) {
-			var queryString = angular.param(params);
-			var url = urlBase + 'merchant';
-			return $http.get(url, {params: params}).then(function(response) {
+			//var queryString = angular.param(params);
+			var url = urlBase + 'merchant?region_id=5540de6bb01cc3100320ff05&city_id=5540de6bb01cc3100320ff04&search_text=y&page_no=1&page_size=10';
+			return $http.get(url).then(function(response) {
 				if (!response.data.error) {
 					return response.data.data;
 				}
@@ -4187,45 +4326,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 })(angular);
 
-/*
- *
- */
-;(function () {
-	'use strict';
-	angular.module('litewait.ui').controller('ShopDetailMenuCtrl', ShopDetailMenuCtrl);
-
-	ShopDetailMenuCtrl.$inject = ['$scope'];
-
-	function ShopDetailMenuCtrl($scope) {
-		var vm = this;
-		
-	}
-})();
-
-;(function(angular) {
-    'use strict';
-
-    angular.module('litewait').config(config);
-
-    config.$inject = ['$stateProvider'];
-
-    function config($stateProvider) {
-        $stateProvider
-            .state('shop', {
-                abstract: true
-            })
-            .state('shop.detail', {
-            	url: "/shop-detail-menu",
-                views: {
-                    "@": {
-                        templateUrl: "shop/shop-detail-menu.html",
-                        controller: "ShopDetailMenuCtrl",
-                        controllerAs: "vm"
-                    }
-                }
-            });
-    }
-})(angular);
 /*
  *
  */

@@ -10,7 +10,10 @@
 	function HomeCtrl($scope) {
 		var vm = this;	
 		vm.myInterval = 3000;
-  		vm.noWrapSlides = false;
+  		vm.noWrap = false;
+  		vm.active = 0;
+  		vm.noPause = false;
+  		vm.noTransition = false;
 		vm.slides = [{
 			active: true,
 			id: 0,

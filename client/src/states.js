@@ -19,7 +19,7 @@
                     "@": {
                         templateUrl: "home/home.html",
                         controller: "HomeCtrl",
-                        controllerAs: "vm"
+                        controllerAs: "home"
                     }
                 },
                 params: { location: '', keyword: '' },

@@ -29,7 +29,10 @@
 			userModal();
 		}
 
-		function openSignUpModal() {
+		function openSignUpModal(event) {
+            if (event) {
+                event.preventDefault();
+            }
 			$scope.signin = vm.signin = false;
             $scope.signup = vm.signup = true;
 			userModal();
