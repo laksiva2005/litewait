@@ -23,8 +23,26 @@
         });
     });
 
-    app.config(function ($httpProvider) {
-      $httpProvider.useApplyAsync(true);
+    app.config(function ($httpProvider, $authProvider) {
+        $httpProvider.useApplyAsync(true);
+
+        $authProvider.facebook({
+            name: 'facebook',
+            url: '/auth/facebook',
+            authorizationEndpoint: 'https://www.facebook.com/v2.5/dialog/oauth',
+            redirectUri: window.location.origin + '/',
+            clientId: '1558123447850269',
+            responseType: 'token'
+        });
+
+        $authProvider.google({
+            name: 'google',
+            url: '/auth/google',
+            authorizationEndpoint: 'https://accounts.google.com/o/oauth2/auth',
+            redirectUri: window.location.origin,
+            clientId: '165165136801-696aje3s6hs717to99umig0j0a05oaf8.apps.googleusercontent.com',
+            responseType: 'token'
+        });
     });
 
 })();

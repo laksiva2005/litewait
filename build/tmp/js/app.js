@@ -2762,7 +2762,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 	angular.module('litewait.services', []);
 	angular.module('litewait.directives', ['ngMessages']);
-	angular.module('litewait.ui', ['ui.bootstrap', 'litewait.directives', 'cgBusy', 'toaster', 'infinite-scroll']);
+	angular.module('litewait.ui', ['ui.bootstrap', 'litewait.directives', 'cgBusy', 'toaster', 'infinite-scroll', 'satellizer']);
 	angular.module('litewait', ['ui.router', 'litewait.services', 'litewait.ui']);
 
 })(angular);
@@ -2792,8 +2792,26 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
         });
     });
 
-    app.config(function ($httpProvider) {
-      $httpProvider.useApplyAsync(true);
+    app.config(function ($httpProvider, $authProvider) {
+        $httpProvider.useApplyAsync(true);
+
+        $authProvider.facebook({
+            name: 'facebook',
+            url: '/auth/facebook',
+            authorizationEndpoint: 'https://www.facebook.com/v2.5/dialog/oauth',
+            redirectUri: window.location.origin + '/',
+            clientId: '1558123447850269',
+            responseType: 'token'
+        });
+
+        $authProvider.google({
+            name: 'google',
+            url: '/auth/google',
+            authorizationEndpoint: 'https://accounts.google.com/o/oauth2/auth',
+            redirectUri: window.location.origin,
+            clientId: '165165136801-696aje3s6hs717to99umig0j0a05oaf8.apps.googleusercontent.com',
+            responseType: 'token'
+        });
     });
 
 })();
@@ -3211,8 +3229,9 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     vm.modalProps.register = register;
 
 
-                    function login(valid, data) {
-                        AuthService.login(data.username, data.password).then(function(response) {
+                    function login(valid, provider, data) {
+                        data = data || {};
+                        AuthService.authenticate(provider, data).then(function(response) {
                             if (!(response.data.error || response.error)) {
                                 vm.modalProps.close();
                             } else {
@@ -3615,62 +3634,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             });
     }
 })(angular);
-/*
- *
- */
-;(function () {
-	'use strict';
-	angular.module('litewait.ui').controller('ShopDetailMenuCtrl', ShopDetailMenuCtrl);
-
-	ShopDetailMenuCtrl.$inject = ['$scope', '$state', '$stateParams', 'Merchant'];
-
-	function ShopDetailMenuCtrl($scope, $state, $stateParams, Merchant) {
-		var vm = this;
-		vm.nest = {};
-		vm.nest.merchantDetail = {};
-		vm.nest.merchantId = $stateParams.id;
-
-		function getMerchant(id) {
-			Merchant.get(id).then(function(response) {
-				vm.nest.merchantDetail = response;
-				vm.nest.merchantId = vm.nest.merchantDetail.id;
-			}, function(error) {
-				vm.nest.merchantDetail = {};
-				vm.nest.merchantId = '';
-			});
-		}
-
-		if (vm.nest.merchantId) {
-			getMerchant(vm.nest.merchantId);
-		}
-	}
-})();
-
-;(function(angular) {
-    'use strict';
-
-    angular.module('litewait').config(config);
-
-    config.$inject = ['$stateProvider'];
-
-    function config($stateProvider) {
-        $stateProvider
-            .state('shop', {
-                abstract: true
-            })
-            .state('shop.detail', {
-            	url: "/shop/:id",
-                views: {
-                    "@": {
-                        templateUrl: "shop/shop-detail-menu.html",
-                        controller: "ShopDetailMenuCtrl",
-                        controllerAs: "sdm"
-                    }
-                },
-                params: {id: ''}
-            });
-    }
-})(angular);
 /**
  *
  */
@@ -3851,9 +3814,9 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             LOGOUT_ENDPOINT = '/logout';
 
         this.$get = [
-            '$q', '$rootScope', '$http', 'User', 'RouteConfig', 'AUTH_EVENTS',
+            '$q', '$rootScope', '$http', 'User', 'RouteConfig', 'AUTH_EVENTS', '$auth',
 
-            function($q, $rootScope, $http, User, RouteConfig, AUTH_EVENTS) {
+            function($q, $rootScope, $http, User, RouteConfig, AUTH_EVENTS, $auth) {
 
                 var TOKEN_KEY = 'AUTH:TOKEN';
                 var USER_KEY = 'USER:KEY';
@@ -3947,15 +3910,58 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
                         return $http.post(endpoint, params);
                     },
-                    login: function(username, password) {
-                        var authUrl = getUrl(AUTH_ENDPOINT),
-                            params = {
-                                user: username,
-                                user_password: password
-                            },
-                            deferred = $q.defer();
+                    authenticate: function (provider, data) {
+                        var params;
+                        switch(provider) {
+                            case 'litewait':
+                                params = {
+                                    provider: 'litewait',
+                                    user: data.username,
+                                    user_password: data.password
+                                };
+                                return service.login(params);
+                                break;
+                            case 'facebook':
+                                params = {
+                                    provider: 'facebook'
+                                };
 
-                        
+                                return $auth.authenticate(provider).then(function(response) {
+                                    console.log(response);
+                                    params.code = response.access_token;
+                                    params.expiresIn = response.expires_in;
+                                    return service.login(params);
+                                }, function (error) {
+                                    console.log('facebook failed');
+                                    setToken(null);
+                                    User.clear();
+                                    raise(AUTH_EVENTS.loginFailure, params);
+                                });
+
+                                break;
+                            case 'google':
+                                params = {
+                                    provider: 'google'
+                                };
+
+                                return $auth.authenticate(provider).then(function(response) {
+                                    console.log(response);
+                                    params.code = response.access_token;
+                                    params.expiresIn = response.expires_in;
+                                    return service.login(params);
+                                }, function (error) {
+                                    console.log('google failed');
+                                    setToken(null);
+                                    User.clear();
+                                    raise(AUTH_EVENTS.loginFailure, params);
+                                });
+                                break;
+                        }
+                    },
+                    login: function(params) {
+                        var authUrl = getUrl(AUTH_ENDPOINT);
+                        var deferred = $q.defer();
+
                         return $http({
                             method: 'POST',
                             url: authUrl,
@@ -4326,6 +4332,62 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 })(angular);
 
+/*
+ *
+ */
+;(function () {
+	'use strict';
+	angular.module('litewait.ui').controller('ShopDetailMenuCtrl', ShopDetailMenuCtrl);
+
+	ShopDetailMenuCtrl.$inject = ['$scope', '$state', '$stateParams', 'Merchant'];
+
+	function ShopDetailMenuCtrl($scope, $state, $stateParams, Merchant) {
+		var vm = this;
+		vm.nest = {};
+		vm.nest.merchantDetail = {};
+		vm.nest.merchantId = $stateParams.id;
+
+		function getMerchant(id) {
+			Merchant.get(id).then(function(response) {
+				vm.nest.merchantDetail = response;
+				vm.nest.merchantId = vm.nest.merchantDetail.id;
+			}, function(error) {
+				vm.nest.merchantDetail = {};
+				vm.nest.merchantId = '';
+			});
+		}
+
+		if (vm.nest.merchantId) {
+			getMerchant(vm.nest.merchantId);
+		}
+	}
+})();
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('shop', {
+                abstract: true
+            })
+            .state('shop.detail', {
+            	url: "/shop/:id",
+                views: {
+                    "@": {
+                        templateUrl: "shop/shop-detail-menu.html",
+                        controller: "ShopDetailMenuCtrl",
+                        controllerAs: "sdm"
+                    }
+                },
+                params: {id: ''}
+            });
+    }
+})(angular);
 /*
  *
  */

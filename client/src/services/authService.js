@@ -178,9 +178,9 @@
             LOGOUT_ENDPOINT = '/logout';
 
         this.$get = [
-            '$q', '$rootScope', '$http', 'User', 'RouteConfig', 'AUTH_EVENTS',
+            '$q', '$rootScope', '$http', 'User', 'RouteConfig', 'AUTH_EVENTS', '$auth',
 
-            function($q, $rootScope, $http, User, RouteConfig, AUTH_EVENTS) {
+            function($q, $rootScope, $http, User, RouteConfig, AUTH_EVENTS, $auth) {
 
                 var TOKEN_KEY = 'AUTH:TOKEN';
                 var USER_KEY = 'USER:KEY';
@@ -274,15 +274,58 @@
 
                         return $http.post(endpoint, params);
                     },
-                    login: function(username, password) {
-                        var authUrl = getUrl(AUTH_ENDPOINT),
-                            params = {
-                                user: username,
-                                user_password: password
-                            },
-                            deferred = $q.defer();
+                    authenticate: function (provider, data) {
+                        var params;
+                        switch(provider) {
+                            case 'litewait':
+                                params = {
+                                    provider: 'litewait',
+                                    user: data.username,
+                                    user_password: data.password
+                                };
+                                return service.login(params);
+                                break;
+                            case 'facebook':
+                                params = {
+                                    provider: 'facebook'
+                                };
 
-                        
+                                return $auth.authenticate(provider).then(function(response) {
+                                    console.log(response);
+                                    params.code = response.access_token;
+                                    params.expiresIn = response.expires_in;
+                                    return service.login(params);
+                                }, function (error) {
+                                    console.log('facebook failed');
+                                    setToken(null);
+                                    User.clear();
+                                    raise(AUTH_EVENTS.loginFailure, params);
+                                });
+
+                                break;
+                            case 'google':
+                                params = {
+                                    provider: 'google'
+                                };
+
+                                return $auth.authenticate(provider).then(function(response) {
+                                    console.log(response);
+                                    params.code = response.access_token;
+                                    params.expiresIn = response.expires_in;
+                                    return service.login(params);
+                                }, function (error) {
+                                    console.log('google failed');
+                                    setToken(null);
+                                    User.clear();
+                                    raise(AUTH_EVENTS.loginFailure, params);
+                                });
+                                break;
+                        }
+                    },
+                    login: function(params) {
+                        var authUrl = getUrl(AUTH_ENDPOINT);
+                        var deferred = $q.defer();
+
                         return $http({
                             method: 'POST',
                             url: authUrl,

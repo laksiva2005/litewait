@@ -65,6 +65,7 @@ header.container { padding:26px 0px 20px; position:relative;z-index:1;}
 .signin-modal .modal-content { border-radius:0px;}
 .signin-modal .modal-content .nav-tabs { border:none;}
 .signin-modal .modal-content .nav-tabs > li { padding:0px;width: 50%;margin-bottom: -1px;float:left;}
+.signin-modal .modal-content .nav-tabs > li a { padding: 0; border: none;}
 .signin-modal .modal-content .nav-tabs > li > div {border: 0;padding: 0;margin: 0;}
 .signin-modal .modal-content .nav-tabs > li uib-tab-heading {width: 100%; display:block;padding:0;margin:0;float:none;}
 .signin-modal .modal-content .nav-tabs > li uib-tab-heading a {width: 100%;display:block;background:#f79622; border-radius:0px; border:none; color:#fff; font-size:16px; text-transform:uppercase; text-align:center; padding:10px 0 8px; margin:0px;}

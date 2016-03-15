@@ -122,7 +122,9 @@
             </uib-tab-heading>
             <div id="signin" class="tab-pane fade in active">
               <h2>Signin Via</h2>
-              <div class="social"> <a class="btn col-md-6 fb"><i class="fa fa-facebook"></i>Signin with facebook</a> <a class="btn col-md-6 twit"><i class="fa fa-google"></i>Signin with gmail</a>
+              <div class="social">
+                <a class="btn col-md-6 fb" ng-click="loginModal.modalProps.login(true, 'facebook', {})"><i class="fa fa-facebook"></i>Signin with facebook</a> 
+                <a class="btn col-md-6 twit" ng-click="loginModal.modalProps.login(true, 'google', {})"><i class="fa fa-google"></i>Signin with gmail</a>
                 <div class="clearfix"></div>
               </div>
               <p>OR</p>
@@ -136,7 +138,7 @@
                   </div>
                 </div>
                 <toaster-container toaster-options="{'position-class': 'toast-top-full-width', 'toaster-id': 3}"></toaster-container>
-                <form novalidate name="loginModal.loginForm" ng-submit="loginModal.modalProps.login(loginModal.loginForm.$valid, loginModal.modalProps)">
+                <form novalidate name="loginModal.loginForm" ng-submit="loginModal.modalProps.login(loginModal.loginForm.$valid, 'litewait', loginModal.modalProps)">
                   <input class="form-control" required name="username" type="text" ng-model="loginModal.modalProps.username" placeholder="User Name"/>
                   <input class="form-control" required name="password" type="password" ng-model="loginModal.modalProps.password" placeholder="Password" />
                   <div class="sign-wrap"><button class="btn sign">signin</button></div>

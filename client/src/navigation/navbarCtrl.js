@@ -81,8 +81,9 @@
                     vm.modalProps.register = register;
 
 
-                    function login(valid, data) {
-                        AuthService.login(data.username, data.password).then(function(response) {
+                    function login(valid, provider, data) {
+                        data = data || {};
+                        AuthService.authenticate(provider, data).then(function(response) {
                             if (!(response.data.error || response.error)) {
                                 vm.modalProps.close();
                             } else {

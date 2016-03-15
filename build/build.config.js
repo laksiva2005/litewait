@@ -39,7 +39,8 @@ module.exports = {
              'client/vendor/ngInfiniteScroll/build/ng-infinite-scroll.js',
              'client/vendor/ng-tags-input/ng-tags-input.js',
              'client/vendor/angular-busy/dist/angular-busy.js',
-             'client/vendor/angular-ui-router/release/angular-ui-router.js'
+             'client/vendor/angular-ui-router/release/angular-ui-router.js',
+             'client/vendor/satellizer/satellizer.js'
 		],
 		css: [
 			'client/vendor/sass-bootstrap/dist/css/bootstrap.min.css',
