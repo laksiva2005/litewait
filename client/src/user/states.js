@@ -62,6 +62,43 @@
                         return deferred.promise;
                     }
                 }
+            }).state('user.verify', {
+                url: "/verify/:code",
+                views: {
+                    "@": {
+                        templateUrl: "user/verify-email.html",
+                        controller: "VerifyUserCtrl",
+                        controllerAs: "vusr"
+                    }
+                },
+                resolve: {
+                    verify: function($stateParams, $q, $timeout, User) {
+                        var deferred = $q.defer();
+                        var code = $stateParams.code || '';
+                        var handler = $timeout(function() {
+                            if (code) {
+                                var verified = User.verifyUser(code).then(function(response) {
+                                    deferred.resolve(response.data);
+                                }, function (error) {
+                                    deferred.resolve({
+                                        error: true, 
+                                        message: 'User verification failed'
+                                    });
+                                });
+
+                            } else {
+                                deferred.resolve({
+                                    error: true, 
+                                    message: 'Could not able to verify user without verification code'
+                                });
+                            }
+
+                            $timeout.cancel(handler);
+                        });
+
+                        return deferred.promise;
+                    }
+                }
             });
     }
 })(angular);

@@ -101,6 +101,10 @@
             });
         };
 
+        sessionUser.verifyUser = function (code) {
+            return $http.put(urlBase + '/verifyuser?activation_code=' + code);
+        };
+
 
         sessionUser.assign = function(user) {
             if (user) {

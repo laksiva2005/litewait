@@ -3737,6 +3737,10 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             });
         };
 
+        sessionUser.verifyUser = function (code) {
+            return $http.put(urlBase + '/verifyuser?activation_code=' + code);
+        };
+
 
         sessionUser.assign = function(user) {
             if (user) {
@@ -4661,6 +4665,60 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         return deferred.promise;
                     }
                 }
+            }).state('user.verify', {
+                url: "/verify/:code",
+                views: {
+                    "@": {
+                        templateUrl: "user/verify-email.html",
+                        controller: "VerifyUserCtrl",
+                        controllerAs: "vusr"
+                    }
+                },
+                resolve: {
+                    verify: function($stateParams, $q, $timeout, User) {
+                        var deferred = $q.defer();
+                        var code = $stateParams.code || '';
+                        var handler = $timeout(function() {
+                            if (code) {
+                                var verified = User.verifyUser(code).then(function(response) {
+                                    deferred.resolve(response.data);
+                                }, function (error) {
+                                    deferred.resolve({
+                                        error: true, 
+                                        message: 'User verification failed'
+                                    });
+                                });
+
+                            } else {
+                                deferred.resolve({
+                                    error: true, 
+                                    message: 'Could not able to verify user without verification code'
+                                });
+                            }
+
+                            $timeout.cancel(handler);
+                        });
+
+                        return deferred.promise;
+                    }
+                }
             });
     }
+})(angular);
+/*
+*
+*/
+;(function(angular) {
+	'use strict';
+
+	angular.module('litewait.ui').controller('VerifyUserCtrl', VerifyUserCtrl);
+
+	VerifyUserCtrl.$inject = ['$scope', 'verify'];
+
+	function VerifyUserCtrl($scope, verify) {
+		var vm = this;
+
+		vm.data = verify;
+
+	}
 })(angular);

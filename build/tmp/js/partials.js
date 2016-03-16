@@ -1015,3 +1015,19 @@ module.run(['$templateCache', function($templateCache) {
     '</div>');
 }]);
 })();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('user/verify-email.html',
+    '<div class="container">\n' +
+    '	<h1>Email Verification:</h1>\n' +
+    '	<div class="alert" ng-class="{\'alert-success\': !vusr.data.error, \'alert-danger\': vusr.data.error}">{{vusr.data.message}}</div>\n' +
+    '	<div class="text-center"><a ng-click="nav.go(\'home\')" class="btn btn-default">Goto Home</a></div>\n' +
+    '</div>');
+}]);
+})();
