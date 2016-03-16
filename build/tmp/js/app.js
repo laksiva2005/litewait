@@ -3634,6 +3634,62 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             });
     }
 })(angular);
+/*
+ *
+ */
+;(function () {
+	'use strict';
+	angular.module('litewait.ui').controller('ShopDetailMenuCtrl', ShopDetailMenuCtrl);
+
+	ShopDetailMenuCtrl.$inject = ['$scope', '$state', '$stateParams', 'Merchant'];
+
+	function ShopDetailMenuCtrl($scope, $state, $stateParams, Merchant) {
+		var vm = this;
+		vm.nest = {};
+		vm.nest.merchantDetail = {};
+		vm.nest.merchantId = $stateParams.id;
+
+		function getMerchant(id) {
+			Merchant.get(id).then(function(response) {
+				vm.nest.merchantDetail = response;
+				vm.nest.merchantId = vm.nest.merchantDetail.id;
+			}, function(error) {
+				vm.nest.merchantDetail = {};
+				vm.nest.merchantId = '';
+			});
+		}
+
+		if (vm.nest.merchantId) {
+			getMerchant(vm.nest.merchantId);
+		}
+	}
+})();
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('shop', {
+                abstract: true
+            })
+            .state('shop.detail', {
+            	url: "/shop/:id",
+                views: {
+                    "@": {
+                        templateUrl: "shop/shop-detail-menu.html",
+                        controller: "ShopDetailMenuCtrl",
+                        controllerAs: "sdm"
+                    }
+                },
+                params: {id: ''}
+            });
+    }
+})(angular);
 /**
  *
  */
@@ -4339,62 +4395,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 /*
  *
  */
-;(function () {
-	'use strict';
-	angular.module('litewait.ui').controller('ShopDetailMenuCtrl', ShopDetailMenuCtrl);
-
-	ShopDetailMenuCtrl.$inject = ['$scope', '$state', '$stateParams', 'Merchant'];
-
-	function ShopDetailMenuCtrl($scope, $state, $stateParams, Merchant) {
-		var vm = this;
-		vm.nest = {};
-		vm.nest.merchantDetail = {};
-		vm.nest.merchantId = $stateParams.id;
-
-		function getMerchant(id) {
-			Merchant.get(id).then(function(response) {
-				vm.nest.merchantDetail = response;
-				vm.nest.merchantId = vm.nest.merchantDetail.id;
-			}, function(error) {
-				vm.nest.merchantDetail = {};
-				vm.nest.merchantId = '';
-			});
-		}
-
-		if (vm.nest.merchantId) {
-			getMerchant(vm.nest.merchantId);
-		}
-	}
-})();
-
-;(function(angular) {
-    'use strict';
-
-    angular.module('litewait').config(config);
-
-    config.$inject = ['$stateProvider'];
-
-    function config($stateProvider) {
-        $stateProvider
-            .state('shop', {
-                abstract: true
-            })
-            .state('shop.detail', {
-            	url: "/shop/:id",
-                views: {
-                    "@": {
-                        templateUrl: "shop/shop-detail-menu.html",
-                        controller: "ShopDetailMenuCtrl",
-                        controllerAs: "sdm"
-                    }
-                },
-                params: {id: ''}
-            });
-    }
-})(angular);
-/*
- *
- */
 ;(function(angular) {
 	'use strict';
 	angular.module('litewait.ui').controller('ChpwdCtrl', ChpwdCtrl);
@@ -4719,6 +4719,5 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		var vm = this;
 
 		vm.data = verify;
-
 	}
 })(angular);
