@@ -14,8 +14,9 @@
 		vm.user = User;
 		vm.auth = AuthService;
 		vm.notifyToggle = false;
-		$scope.signin = vm.signin = true;
-        $scope.signup = vm.signup = false;
+		$scope.signin = vm.signin = 1;
+        $scope.signup = vm.signup = 2;
+        $scope.activeTab = vm.activeTab = 1;
         vm.spinner = Spinner;
 
 		vm.openUserModal = openUserModal;
@@ -24,8 +25,7 @@
 		vm.go = go;
 
 		function openUserModal() {
-			$scope.signin = vm.signin = true;
-            $scope.signup = vm.signup = false;
+			$scope.activeTab = 1;
 			userModal();
 		}
 
@@ -33,8 +33,7 @@
             if (event) {
                 event.preventDefault();
             }
-			$scope.signin = vm.signin = false;
-            $scope.signup = vm.signup = true;
+			$scope.activeTab = 2;
 			userModal();
 		}
 
@@ -60,26 +59,70 @@
                 scope: $scope,
                 bindToController: true,
                 controllerAs: 'loginModal',
-                controller: function($scope, $uibModalInstance, PubSub, AuthService, toaster, AUTH_MSG, AUTH_PROPS) {
+                controller: function($scope, $uibModalInstance, PubSub, AuthService, toaster, AUTH_MSG, AUTH_PROPS, User) {
                     var vm = this;
                     vm.modalProps = {};
                     vm.modalProps.signin = $scope.$parent.signin;
                     vm.modalProps.signup = $scope.$parent.signup;
+                    vm.modalProps.active = $scope.$parent.activeTab;
                     vm.modalProps.username = '';
                     vm.modalProps.password = '';
+                    vm.modalProps.user_type = 'C';
+                    vm.modalProps.isForgotPassword = false;
                     vm.modalProps.passwordPattern = AUTH_PROPS.PASSWORD_PATTERN;
+
+                    vm.resetProps = {
+                        user: '',
+                        user_type: 'C',
+                    };
 
                     vm.registerProps = {
                         user: '',
                         user_mail: '',
                         user_password: '',
                         user_confirm_password: '',
-                        user_type: ''
+                        user_type: 'C'
                     };
 
                     vm.modalProps.login = login;
                     vm.modalProps.register = register;
+                    vm.modalProps.resetPwd = resetPwd;
+                    vm.modalProps.joinUs = joinUs;
 
+                    function joinUs() {
+                        vm.modalProps.isForgotPassword = false;
+                        vm.modalProps.active = 2;
+                    }
+
+                    function resetPwd(valid, data) {
+                        data = data || {};
+                        User.resetPassword(data).then(function(response) {
+                            if (!(response.data.error || response.error)) {
+                                vm.modalProps.close();
+                                toaster.pop({
+                                    type: 'success', 
+                                    title:'Success', 
+                                    body: AUTH_MSG.resetSuccess, 
+                                    toasterId: 1
+                                });
+                            } else {
+                                toaster.pop({
+                                    type: 'error', 
+                                    title:'Error', 
+                                    body: AUTH_MSG.resetFailed, 
+                                    toasterId: 4
+                                });
+                            }
+                            
+                        }, function(error) {
+                            toaster.pop({
+                                type: 'error', 
+                                title:'Error', 
+                                body: AUTH_MSG.resetFailed, 
+                                toasterId: 4
+                            });
+                        });
+                    } 
 
                     function login(valid, provider, data) {
                         data = data || {};

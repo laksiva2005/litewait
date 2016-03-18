@@ -2958,102 +2958,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
  *
  */
 ;(function (angular) {
-    'use strict';
-
-    function compareTo() {
-        return {
-            restrict: 'A',
-            require: "ngModel",
-            scope: {
-                otherModelValue: "=compareTo"
-            },
-            link: function(scope, element, attributes, ngModel) {
-                 
-                ngModel.$validators.compareTo = function(modelValue) {
-                    return modelValue == scope.otherModelValue;
-                };
-     
-                scope.$watch("otherModelValue", function() {
-                    ngModel.$validate();
-                });
-            }
-        };
-    }
-     
-    angular.module('litewait.directives').directive("compareTo", compareTo);
-
-})(angular);
-
-
-;(function() {
-  'use strict';
-
-  function dateAsMs() {
-    return {
-      restrict: 'A',
-      require: 'ngModel',
-      link: function(scope,elem,attrs,ngModelCtrl) {
-        ngModelCtrl.$parsers.push(function(value){
-          if (value && value.getTime) {
-            return value.getTime();
-          } else {
-            return value;
-          }
-        });
-      }
-    };
-  }
-
-  angular.module('litewait.directives').directive("dateAsMs", dateAsMs);
-  
-})();
-/**
- *
- */
- ;(function() {
- 	'use strict';
-
-	angular.module('litewait.directives')
-    .directive('datepickerPopup', datepickerPopup);
-
-    function datepickerPopup() {
-
-        return {
-            restrict: 'EA',
-            require: 'ngModel',
-            link: function(scope, element, attr, controller) {
-              controller.$formatters.shift();
-            }
-        };
-    }
- })();
-
-
-/*
- *
- */
-;(function (angular) {
-    angular.module('litewait.directives').directive('slideToggle', function() {  
-        return {
-            restrict: 'A',      
-            scope:{
-                isOpen: "=slideToggle"
-            },  
-            link: function(scope, element, attr) {
-                var slideDuration = parseInt(attr.slideToggleDuration, 10) || 200;      
-                scope.$watch('isOpen', function(newVal,oldVal){
-                    if(newVal !== oldVal){ 
-                        element.stop().slideToggle(slideDuration);
-                    }
-                });
-            }
-        };  
-    });
-})(angular);
-/*
- *
- */
-;(function (angular) {
 	'use strict';
 	angular.module('litewait.ui').controller('HomeCtrl', HomeCtrl);
 
@@ -3149,6 +3053,102 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 /*
  *
  */
+;(function (angular) {
+    'use strict';
+
+    function compareTo() {
+        return {
+            restrict: 'A',
+            require: "ngModel",
+            scope: {
+                otherModelValue: "=compareTo"
+            },
+            link: function(scope, element, attributes, ngModel) {
+                 
+                ngModel.$validators.compareTo = function(modelValue) {
+                    return modelValue == scope.otherModelValue;
+                };
+     
+                scope.$watch("otherModelValue", function() {
+                    ngModel.$validate();
+                });
+            }
+        };
+    }
+     
+    angular.module('litewait.directives').directive("compareTo", compareTo);
+
+})(angular);
+
+
+;(function() {
+  'use strict';
+
+  function dateAsMs() {
+    return {
+      restrict: 'A',
+      require: 'ngModel',
+      link: function(scope,elem,attrs,ngModelCtrl) {
+        ngModelCtrl.$parsers.push(function(value){
+          if (value && value.getTime) {
+            return value.getTime();
+          } else {
+            return value;
+          }
+        });
+      }
+    };
+  }
+
+  angular.module('litewait.directives').directive("dateAsMs", dateAsMs);
+  
+})();
+/**
+ *
+ */
+ ;(function() {
+ 	'use strict';
+
+	angular.module('litewait.directives')
+    .directive('datepickerPopup', datepickerPopup);
+
+    function datepickerPopup() {
+
+        return {
+            restrict: 'EA',
+            require: 'ngModel',
+            link: function(scope, element, attr, controller) {
+              controller.$formatters.shift();
+            }
+        };
+    }
+ })();
+
+
+/*
+ *
+ */
+;(function (angular) {
+    angular.module('litewait.directives').directive('slideToggle', function() {  
+        return {
+            restrict: 'A',      
+            scope:{
+                isOpen: "=slideToggle"
+            },  
+            link: function(scope, element, attr) {
+                var slideDuration = parseInt(attr.slideToggleDuration, 10) || 200;      
+                scope.$watch('isOpen', function(newVal,oldVal){
+                    if(newVal !== oldVal){ 
+                        element.stop().slideToggle(slideDuration);
+                    }
+                });
+            }
+        };  
+    });
+})(angular);
+/*
+ *
+ */
 ;(function(angular) {
 	'use strict';
 
@@ -3162,8 +3162,9 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		vm.user = User;
 		vm.auth = AuthService;
 		vm.notifyToggle = false;
-		$scope.signin = vm.signin = true;
-        $scope.signup = vm.signup = false;
+		$scope.signin = vm.signin = 1;
+        $scope.signup = vm.signup = 2;
+        $scope.activeTab = vm.activeTab = 1;
         vm.spinner = Spinner;
 
 		vm.openUserModal = openUserModal;
@@ -3172,8 +3173,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		vm.go = go;
 
 		function openUserModal() {
-			$scope.signin = vm.signin = true;
-            $scope.signup = vm.signup = false;
+			$scope.activeTab = 1;
 			userModal();
 		}
 
@@ -3181,8 +3181,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             if (event) {
                 event.preventDefault();
             }
-			$scope.signin = vm.signin = false;
-            $scope.signup = vm.signup = true;
+			$scope.activeTab = 2;
 			userModal();
 		}
 
@@ -3208,26 +3207,70 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                 scope: $scope,
                 bindToController: true,
                 controllerAs: 'loginModal',
-                controller: function($scope, $uibModalInstance, PubSub, AuthService, toaster, AUTH_MSG, AUTH_PROPS) {
+                controller: function($scope, $uibModalInstance, PubSub, AuthService, toaster, AUTH_MSG, AUTH_PROPS, User) {
                     var vm = this;
                     vm.modalProps = {};
                     vm.modalProps.signin = $scope.$parent.signin;
                     vm.modalProps.signup = $scope.$parent.signup;
+                    vm.modalProps.active = $scope.$parent.activeTab;
                     vm.modalProps.username = '';
                     vm.modalProps.password = '';
+                    vm.modalProps.user_type = 'C';
+                    vm.modalProps.isForgotPassword = false;
                     vm.modalProps.passwordPattern = AUTH_PROPS.PASSWORD_PATTERN;
+
+                    vm.resetProps = {
+                        user: '',
+                        user_type: 'C',
+                    };
 
                     vm.registerProps = {
                         user: '',
                         user_mail: '',
                         user_password: '',
                         user_confirm_password: '',
-                        user_type: ''
+                        user_type: 'C'
                     };
 
                     vm.modalProps.login = login;
                     vm.modalProps.register = register;
+                    vm.modalProps.resetPwd = resetPwd;
+                    vm.modalProps.joinUs = joinUs;
 
+                    function joinUs() {
+                        vm.modalProps.isForgotPassword = false;
+                        vm.modalProps.active = 2;
+                    }
+
+                    function resetPwd(valid, data) {
+                        data = data || {};
+                        User.resetPassword(data).then(function(response) {
+                            if (!(response.data.error || response.error)) {
+                                vm.modalProps.close();
+                                toaster.pop({
+                                    type: 'success', 
+                                    title:'Success', 
+                                    body: AUTH_MSG.resetSuccess, 
+                                    toasterId: 1
+                                });
+                            } else {
+                                toaster.pop({
+                                    type: 'error', 
+                                    title:'Error', 
+                                    body: AUTH_MSG.resetFailed, 
+                                    toasterId: 4
+                                });
+                            }
+                            
+                        }, function(error) {
+                            toaster.pop({
+                                type: 'error', 
+                                title:'Error', 
+                                body: AUTH_MSG.resetFailed, 
+                                toasterId: 4
+                            });
+                        });
+                    } 
 
                     function login(valid, provider, data) {
                         data = data || {};
@@ -3634,62 +3677,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             });
     }
 })(angular);
-/*
- *
- */
-;(function () {
-	'use strict';
-	angular.module('litewait.ui').controller('ShopDetailMenuCtrl', ShopDetailMenuCtrl);
-
-	ShopDetailMenuCtrl.$inject = ['$scope', '$state', '$stateParams', 'Merchant'];
-
-	function ShopDetailMenuCtrl($scope, $state, $stateParams, Merchant) {
-		var vm = this;
-		vm.nest = {};
-		vm.nest.merchantDetail = {};
-		vm.nest.merchantId = $stateParams.id;
-
-		function getMerchant(id) {
-			Merchant.get(id).then(function(response) {
-				vm.nest.merchantDetail = response;
-				vm.nest.merchantId = vm.nest.merchantDetail.id;
-			}, function(error) {
-				vm.nest.merchantDetail = {};
-				vm.nest.merchantId = '';
-			});
-		}
-
-		if (vm.nest.merchantId) {
-			getMerchant(vm.nest.merchantId);
-		}
-	}
-})();
-
-;(function(angular) {
-    'use strict';
-
-    angular.module('litewait').config(config);
-
-    config.$inject = ['$stateProvider'];
-
-    function config($stateProvider) {
-        $stateProvider
-            .state('shop', {
-                abstract: true
-            })
-            .state('shop.detail', {
-            	url: "/shop/:id",
-                views: {
-                    "@": {
-                        templateUrl: "shop/shop-detail-menu.html",
-                        controller: "ShopDetailMenuCtrl",
-                        controllerAs: "sdm"
-                    }
-                },
-                params: {id: ''}
-            });
-    }
-})(angular);
 /**
  *
  */
@@ -3719,7 +3706,9 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             paymentUpdateSuccess: 'Payment has been successfully updated',
             paymentUpdateFailed: 'Payment update has been failed',
             chPwdSuccess: 'Password has been changed successfully',
-            chPwdFailed: 'Password change has been failed'
+            chPwdFailed: 'Password change has been failed',
+            resetSuccess: 'Password has been reseted successfully',
+            resetFailed: 'Password reset has been failed'
         })
         .constant('AUTH_PROPS', {
             'PASSWORD_PATTERN': "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!%*?&])[A-Za-z\\d$@$!%*?&]{8,}",
@@ -3779,17 +3768,21 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
         };
 
         sessionUser.changePassword = function (data) {
-            var deferred = $q.defer();
-            return $http.put(urlBase + '/passhash', data).success(function(response) {
-                return deferred.resolve(response);
-            }).error(function(error) {
+            return $http.put(urlBase + '/passhash', data).then(function(response) {
+                return response;
+            }, function(error) {
                 toaster.pop({
                     type: 'error', 
                     title:'Error', 
                     body: AUTH_MSG.chPwdFailed, 
                     toasterId: 1
                 });
-                deferred.reject();
+            });
+        };
+
+        sessionUser.resetPassword = function (data) {
+            return $http.post(urlBase + '/forgotpassword', data).then(function(response) {
+                return response;
             });
         };
 
@@ -3971,56 +3964,63 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         return $http.post(endpoint, params);
                     },
                     authenticate: function (provider, data) {
-                        var params;
                         switch(provider) {
                             case 'litewait':
-                                params = {
-                                    provider: 'litewait',
-                                    user: data.username,
-                                    user_password: data.password
-                                };
-                                return service.login(params);
+                                return service.login(data);
                                 break;
-                            case 'facebook':
-                                params = {
-                                    provider: 'facebook'
-                                };
-
-                                return $auth.authenticate(provider).then(function(response) {
-                                    console.log(response);
-                                    params.code = response.access_token;
-                                    params.expiresIn = response.expires_in;
-                                    return service.login(params);
-                                }, function (error) {
-                                    console.log('facebook failed');
-                                    setToken(null);
-                                    User.clear();
-                                    raise(AUTH_EVENTS.loginFailure, params);
-                                });
-
+                            case 'facebook':    
+                                return service.facebookLogin(data);
                                 break;
                             case 'google':
-                                params = {
-                                    provider: 'google'
-                                };
-
-                                return $auth.authenticate(provider).then(function(response) {
-                                    console.log(response);
-                                    params.code = response.access_token;
-                                    params.expiresIn = response.expires_in;
-                                    return service.login(params);
-                                }, function (error) {
-                                    console.log('google failed');
-                                    setToken(null);
-                                    User.clear();
-                                    raise(AUTH_EVENTS.loginFailure, params);
-                                });
+                                return service.googleLogin(data);    
                                 break;
                         }
                     },
-                    login: function(params) {
-                        var authUrl = getUrl(AUTH_ENDPOINT);
-                        var deferred = $q.defer();
+                    facebookLogin: function (data) {
+                        var params = {
+                            provider: 'facebook',
+                            user_type: data.user_type
+                        };
+
+                        return $auth.authenticate(provider).then(function(response) {
+                            console.log(response);
+                            params.code = response.access_token;
+                            params.expiresIn = response.expires_in;
+                            return service.login(params);
+                        }, function (error) {
+                            console.log('facebook failed');
+                            setToken(null);
+                            User.clear();
+                            raise(AUTH_EVENTS.loginFailure, params);
+                        });
+                    },
+                    googleLogin: function (data) {
+                        var params = {
+                            provider: 'google',
+                            user_type: data.user_type
+                        };
+
+                        return $auth.authenticate(provider).then(function(response) {
+                            console.log(response);
+                            params.code = response.access_token;
+                            params.expiresIn = response.expires_in;
+                            return service.login(params);
+                        }, function (error) {
+                            console.log('google failed');
+                            setToken(null);
+                            User.clear();
+                            raise(AUTH_EVENTS.loginFailure, params);
+                        });
+                    },
+                    login: function(data) {
+                        var authUrl = getUrl(AUTH_ENDPOINT),
+                            deferred = $q.defer(),
+                            params = {
+                                provider: 'litewait',
+                                user: data.username,
+                                user_password: data.password,
+                                user_type: data.user_type
+                            };
 
                         return $http({
                             method: 'POST',
@@ -4392,6 +4392,62 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 })(angular);
 
+/*
+ *
+ */
+;(function () {
+	'use strict';
+	angular.module('litewait.ui').controller('ShopDetailMenuCtrl', ShopDetailMenuCtrl);
+
+	ShopDetailMenuCtrl.$inject = ['$scope', '$state', '$stateParams', 'Merchant'];
+
+	function ShopDetailMenuCtrl($scope, $state, $stateParams, Merchant) {
+		var vm = this;
+		vm.nest = {};
+		vm.nest.merchantDetail = {};
+		vm.nest.merchantId = $stateParams.id;
+
+		function getMerchant(id) {
+			Merchant.get(id).then(function(response) {
+				vm.nest.merchantDetail = response;
+				vm.nest.merchantId = vm.nest.merchantDetail.id;
+			}, function(error) {
+				vm.nest.merchantDetail = {};
+				vm.nest.merchantId = '';
+			});
+		}
+
+		if (vm.nest.merchantId) {
+			getMerchant(vm.nest.merchantId);
+		}
+	}
+})();
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('shop', {
+                abstract: true
+            })
+            .state('shop.detail', {
+            	url: "/shop/:id",
+                views: {
+                    "@": {
+                        templateUrl: "shop/shop-detail-menu.html",
+                        controller: "ShopDetailMenuCtrl",
+                        controllerAs: "sdm"
+                    }
+                },
+                params: {id: ''}
+            });
+    }
+})(angular);
 /*
  *
  */

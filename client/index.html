@@ -114,20 +114,13 @@
     <script type="text/ng-template" id="userModal.html">
       <div id="signin-modal" ng-cloak>
         <button type="button" class="close" ng-click="loginModal.modalProps.close()">&times;</button>
-        <uib-tabset justified="true">
-          <uib-tab active="loginModal.modalProps.signin">
+        <uib-tabset justified="true" active="loginModal.modalProps.active" ng-class="{'forgot-password': loginModal.modalProps.isForgotPassword}">
+          <uib-tab index="loginModal.modalProps.signin">
             <uib-tab-heading>
               <a href="">Signin</a>
             </uib-tab-heading>
             <div id="signin" class="tab-pane fade in active">
-              <h2>Signin Via</h2>
-              <div class="social">
-                <a class="btn col-md-6 fb" ng-click="loginModal.modalProps.login(true, 'facebook', {})"><i class="fa fa-facebook"></i>Signin with facebook</a> 
-                <a class="btn col-md-6 twit" ng-click="loginModal.modalProps.login(true, 'google', {})"><i class="fa fa-google"></i>Signin with gmail</a>
-                <div class="clearfix"></div>
-              </div>
-              <p>OR</p>
-              <div class="form-wrap">
+              <div class="form-wrap" ng-if="!loginModal.modalProps.isForgotPassword">
                 <div ng-if="loginModal.loginForm.$submitted && loginModal.loginForm.$invalid" class="alert alert-danger">
                   <div ng-messages="loginModal.loginForm.username.$error">
                     <div ng-message="required">Username is required</div>
@@ -138,25 +131,60 @@
                 </div>
                 <toaster-container toaster-options="{'position-class': 'toast-top-full-width', 'toaster-id': 3}"></toaster-container>
                 <form novalidate name="loginModal.loginForm" ng-submit="loginModal.modalProps.login(loginModal.loginForm.$valid, 'litewait', loginModal.modalProps)">
+                  <div class="radio-wrap">
+                    <label class="name">Login as</label> 
+                    <label class="radio-inline"><input required type="radio" ng-model="loginModal.modalProps.user_type" value="C" name="user_type">Consumer</label>
+                    <label class="radio-inline"><input required type="radio" ng-model="loginModal.modalProps.user_type" value="M" name="user_type">Merchant</label>
+                  </div>
                   <input class="form-control" required name="username" type="text" ng-model="loginModal.modalProps.username" placeholder="User Name"/>
                   <input class="form-control" required name="password" type="password" ng-model="loginModal.modalProps.password" placeholder="Password" />
                   <div class="sign-wrap"><button class="btn sign">signin</button></div>
                 </form>
                 <div class="clearfix"></div>
-                <div class="forget-wrap">
+                <div class="social-wrap" ng-if="loginModal.modalProps.user_type === 'C'">
+                  <p>OR</p>
+                  <div class="social">
+                    <a class="btn col-md-6 fb" ng-click="loginModal.modalProps.login(true, 'facebook', {})"><i class="fa fa-facebook"></i>Signin with facebook</a> 
+                    <a class="btn col-md-6 twit" ng-click="loginModal.modalProps.login(true, 'google', {})"><i class="fa fa-google"></i>Signin with gmail</a>
+                    <div class="clearfix"></div>
+                  </div>
+                </div>
+                <div class="forgot-wrap">
                   <div class="checkbox col-md-6">
                     <label>
                       <input type="checkbox" value="">
                       Keep me logged in</label>
                   </div>
-                  <div class="col-md-6 right"> <a class="forget" href="#">Forgot Password?</a> </div>
+                  <div class="col-md-6 right"> <a class="forgot" ng-click="loginModal.modalProps.isForgotPassword=true">Forgot Password?</a> </div>
                   <div class="clearfix"></div>
                 </div>
               </div>
-              <p class="joinus">New here ? <a ng-click="loginModal.modalProps.signup=!loginModal.modalProps.signup">Join us</a></p>
+              <div class="form-wrap" ng-if="loginModal.modalProps.isForgotPassword">
+                <h2>Forgot Password?</h2>
+                <div ng-if="loginModal.forgotForm.$submitted && loginModal.forgotForm.$invalid" class="alert alert-danger">
+                  <div ng-messages="loginModal.forgotForm.username.$error">
+                    <div ng-message="required">Username is required</div>
+                  </div>
+                </div>
+                <toaster-container toaster-options="{'position-class': 'toast-top-full-width', 'toaster-id': 4}"></toaster-container>
+                <form novalidate name="loginModal.forgotForm" ng-submit="loginModal.modalProps.resetPwd(loginModal.forgotForm.$valid, loginModal.resetProps)">
+                  <div class="radio-wrap">
+                    <label class="name">Choose as</label> 
+                    <label class="radio-inline"><input required type="radio" ng-model="loginModal.resetProps.user_type" value="C" name="user_type">Consumer</label>
+                    <label class="radio-inline"><input required type="radio" ng-model="loginModal.resetProps.user_type" value="M" name="user_type">Merchant</label>
+                  </div>
+
+                  <input class="form-control" required name="username" type="text" ng-model="loginModal.resetProps.user" placeholder="User Name"/>
+                  <div class="reset-wrap">
+                    <a ng-click="loginModal.modalProps.isForgotPassword=false" class="btn sign" style="margin-bottom:5px;">Cancel</a>
+                    <button class="btn sign" style="margin-bottom:5px;">Reset</button>
+                  </div>
+                </form>
+              </div>
+              <p class="joinus">New here ? <a ng-click="loginModal.modalProps.joinUs()">Join us</a></p>
             </div>
           </uib-tab>
-          <uib-tab active="loginModal.modalProps.signup">
+          <uib-tab index="loginModal.modalProps.signup">
             <uib-tab-heading>
               <a href="">Signup</a>
             </uib-tab-heading>
@@ -189,11 +217,6 @@
                 <input class="form-control" required name="user" ng-model="loginModal.registerProps.user" type="text" placeholder="User Name" minlength="2"/>
                 <input class="form-control" required name="user_password" ng-model="loginModal.registerProps.user_password" type="password" placeholder="Password" pattern="{{loginModal.modalProps.passwordPattern}}" />
                 <input class="form-control" required name="user_confirm_password" ng-model="loginModal.registerProps.user_confirm_password" type="password" placeholder="Confirm Password" compare-to="loginModal.registerProps.user_password"/>
-                <div class="radio-wrap">
-                  <label class="name">Register as</label> 
-                  <label class="radio-inline"><input required type="radio" ng-model="loginModal.registerProps.user_type" value="C" name="user_type">Consumer</label>
-                  <label class="radio-inline"><input required type="radio" ng-model="loginModal.registerProps.user_type" value="M" name="user_type">Merchant</label>
-                </div>
                 <div class="sign-wrap"><button class="btn sign">signup</button></div>
               </form>
               <div class="clearfix"></div>

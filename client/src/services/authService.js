@@ -27,7 +27,9 @@
             paymentUpdateSuccess: 'Payment has been successfully updated',
             paymentUpdateFailed: 'Payment update has been failed',
             chPwdSuccess: 'Password has been changed successfully',
-            chPwdFailed: 'Password change has been failed'
+            chPwdFailed: 'Password change has been failed',
+            resetSuccess: 'Password has been reseted successfully',
+            resetFailed: 'Password reset has been failed'
         })
         .constant('AUTH_PROPS', {
             'PASSWORD_PATTERN': "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!%*?&])[A-Za-z\\d$@$!%*?&]{8,}",
@@ -87,17 +89,21 @@
         };
 
         sessionUser.changePassword = function (data) {
-            var deferred = $q.defer();
-            return $http.put(urlBase + '/passhash', data).success(function(response) {
-                return deferred.resolve(response);
-            }).error(function(error) {
+            return $http.put(urlBase + '/passhash', data).then(function(response) {
+                return response;
+            }, function(error) {
                 toaster.pop({
                     type: 'error', 
                     title:'Error', 
                     body: AUTH_MSG.chPwdFailed, 
                     toasterId: 1
                 });
-                deferred.reject();
+            });
+        };
+
+        sessionUser.resetPassword = function (data) {
+            return $http.post(urlBase + '/forgotpassword', data).then(function(response) {
+                return response;
             });
         };
 
@@ -279,56 +285,63 @@
                         return $http.post(endpoint, params);
                     },
                     authenticate: function (provider, data) {
-                        var params;
                         switch(provider) {
                             case 'litewait':
-                                params = {
-                                    provider: 'litewait',
-                                    user: data.username,
-                                    user_password: data.password
-                                };
-                                return service.login(params);
+                                return service.login(data);
                                 break;
-                            case 'facebook':
-                                params = {
-                                    provider: 'facebook'
-                                };
-
-                                return $auth.authenticate(provider).then(function(response) {
-                                    console.log(response);
-                                    params.code = response.access_token;
-                                    params.expiresIn = response.expires_in;
-                                    return service.login(params);
-                                }, function (error) {
-                                    console.log('facebook failed');
-                                    setToken(null);
-                                    User.clear();
-                                    raise(AUTH_EVENTS.loginFailure, params);
-                                });
-
+                            case 'facebook':    
+                                return service.facebookLogin(data);
                                 break;
                             case 'google':
-                                params = {
-                                    provider: 'google'
-                                };
-
-                                return $auth.authenticate(provider).then(function(response) {
-                                    console.log(response);
-                                    params.code = response.access_token;
-                                    params.expiresIn = response.expires_in;
-                                    return service.login(params);
-                                }, function (error) {
-                                    console.log('google failed');
-                                    setToken(null);
-                                    User.clear();
-                                    raise(AUTH_EVENTS.loginFailure, params);
-                                });
+                                return service.googleLogin(data);    
                                 break;
                         }
                     },
-                    login: function(params) {
-                        var authUrl = getUrl(AUTH_ENDPOINT);
-                        var deferred = $q.defer();
+                    facebookLogin: function (data) {
+                        var params = {
+                            provider: 'facebook',
+                            user_type: data.user_type
+                        };
+
+                        return $auth.authenticate(provider).then(function(response) {
+                            console.log(response);
+                            params.code = response.access_token;
+                            params.expiresIn = response.expires_in;
+                            return service.login(params);
+                        }, function (error) {
+                            console.log('facebook failed');
+                            setToken(null);
+                            User.clear();
+                            raise(AUTH_EVENTS.loginFailure, params);
+                        });
+                    },
+                    googleLogin: function (data) {
+                        var params = {
+                            provider: 'google',
+                            user_type: data.user_type
+                        };
+
+                        return $auth.authenticate(provider).then(function(response) {
+                            console.log(response);
+                            params.code = response.access_token;
+                            params.expiresIn = response.expires_in;
+                            return service.login(params);
+                        }, function (error) {
+                            console.log('google failed');
+                            setToken(null);
+                            User.clear();
+                            raise(AUTH_EVENTS.loginFailure, params);
+                        });
+                    },
+                    login: function(data) {
+                        var authUrl = getUrl(AUTH_ENDPOINT),
+                            deferred = $q.defer(),
+                            params = {
+                                provider: 'litewait',
+                                user: data.username,
+                                user_password: data.password,
+                                user_type: data.user_type
+                            };
 
                         return $http({
                             method: 'POST',
