@@ -1,0 +1,30 @@
+<div class="container merchant-list-wrap">
+	<h1>Merchant List</h1>
+	<div class="col-md-12 merchant-search">
+		<div class="col-sm-12 col-md-6 form-wrap">
+			<div class="form-group">
+				<input type="text" ng-model="ml.merchant.keyword" class="form-control"  placeholder="Search...">
+			</div>
+		</div>
+		<div class="col-sm-12 col-md-6">
+			<div class="form-group">
+				<a ng-click="ml.initializeMerchant()" class="btn btn-default">Search</a>
+			</div>
+		</div>
+	</div>
+	<div infinite-scroll="ml.nextPage()"
+      infinite-scroll-distance="0"
+      infinite-scroll-immediate-check="false">
+		<div class="col-md-12 merchant-list" ng-repeat="(key, value) in ml.merchant.list">
+	        <div class="col-sm-3 col-md-2"><img class="img-responsive" src="{{value.photo}}"></div>
+	        <div class="col-sm-9 col-md-8">
+	           <h2>{{value.business_name}}</h2>
+	           <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>
+	           <p> {{value.street_address}}, {{value.region}}, {{value.city}},<br>{{value.state}} {{value.zipcode}}, {{value.country}} 
+	           </p>
+	        </div>
+	        <a href="#/merchant/{{value.id}}" class="edit"><i class="fa fa-pencil"></i></a>
+	        <div class="clearfix"></div>
+	    </div>
+    </div>
+</div>

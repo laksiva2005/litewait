@@ -13,6 +13,7 @@
 
 		obj.get = get;
 		obj.deleteMerchant = deleteMerchant;
+		obj.getList = getList;
 
 		function get(id) {
 			var params = {
@@ -31,6 +32,24 @@
 
 		function deleteMerchant() {
 
+		}
+
+		function getList(data) {
+			var params = {
+				params: data
+			};
+			var url = urlBase + 's';
+			return $http.get(url, params).then(function(response) {
+				if (!response.data.error) {
+					if (response.data.data) {
+						return response.data.data;
+					} else {
+						return {merchants: []};
+					}
+				}
+
+				return {merchants:[]};
+			});
 		}
 
 		return obj;

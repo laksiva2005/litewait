@@ -497,6 +497,59 @@ try {
   module = angular.module('litewait.ui', []);
 }
 module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('merchant/merchant-create.html',
+    '');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('merchant/merchant-list.html',
+    '<div class="container merchant-list-wrap">\n' +
+    '	<h1>Merchant List</h1>\n' +
+    '	<div class="col-md-12 merchant-search">\n' +
+    '		<div class="col-sm-12 col-md-6 form-wrap">\n' +
+    '			<div class="form-group">\n' +
+    '				<input type="text" ng-model="ml.merchant.keyword" class="form-control"  placeholder="Search...">\n' +
+    '			</div>\n' +
+    '		</div>\n' +
+    '		<div class="col-sm-12 col-md-6">\n' +
+    '			<div class="form-group">\n' +
+    '				<a ng-click="ml.initializeMerchant()" class="btn btn-default">Search</a>\n' +
+    '			</div>\n' +
+    '		</div>\n' +
+    '	</div>\n' +
+    '	<div infinite-scroll="ml.nextPage()"\n' +
+    '      infinite-scroll-distance="0"\n' +
+    '      infinite-scroll-immediate-check="false">\n' +
+    '		<div class="col-md-12 merchant-list" ng-repeat="(key, value) in ml.merchant.list">\n' +
+    '	        <div class="col-sm-3 col-md-2"><img class="img-responsive" src="{{value.photo}}"></div>\n' +
+    '	        <div class="col-sm-9 col-md-8">\n' +
+    '	           <h2>{{value.business_name}}</h2>\n' +
+    '	           <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>\n' +
+    '	           <p> {{value.street_address}}, {{value.region}}, {{value.city}},<br>{{value.state}} {{value.zipcode}}, {{value.country}} \n' +
+    '	           </p>\n' +
+    '	        </div>\n' +
+    '	        <a href="#/merchant/{{value.id}}" class="edit"><i class="fa fa-pencil"></i></a>\n' +
+    '	        <div class="clearfix"></div>\n' +
+    '	    </div>\n' +
+    '    </div>\n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
   $templateCache.put('navigation/navbar.html',
     '');
 }]);

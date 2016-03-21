@@ -2958,6 +2958,102 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
  *
  */
 ;(function (angular) {
+    'use strict';
+
+    function compareTo() {
+        return {
+            restrict: 'A',
+            require: "ngModel",
+            scope: {
+                otherModelValue: "=compareTo"
+            },
+            link: function(scope, element, attributes, ngModel) {
+                 
+                ngModel.$validators.compareTo = function(modelValue) {
+                    return modelValue == scope.otherModelValue;
+                };
+     
+                scope.$watch("otherModelValue", function() {
+                    ngModel.$validate();
+                });
+            }
+        };
+    }
+     
+    angular.module('litewait.directives').directive("compareTo", compareTo);
+
+})(angular);
+
+
+;(function() {
+  'use strict';
+
+  function dateAsMs() {
+    return {
+      restrict: 'A',
+      require: 'ngModel',
+      link: function(scope,elem,attrs,ngModelCtrl) {
+        ngModelCtrl.$parsers.push(function(value){
+          if (value && value.getTime) {
+            return value.getTime();
+          } else {
+            return value;
+          }
+        });
+      }
+    };
+  }
+
+  angular.module('litewait.directives').directive("dateAsMs", dateAsMs);
+  
+})();
+/**
+ *
+ */
+ ;(function() {
+ 	'use strict';
+
+	angular.module('litewait.directives')
+    .directive('datepickerPopup', datepickerPopup);
+
+    function datepickerPopup() {
+
+        return {
+            restrict: 'EA',
+            require: 'ngModel',
+            link: function(scope, element, attr, controller) {
+              controller.$formatters.shift();
+            }
+        };
+    }
+ })();
+
+
+/*
+ *
+ */
+;(function (angular) {
+    angular.module('litewait.directives').directive('slideToggle', function() {  
+        return {
+            restrict: 'A',      
+            scope:{
+                isOpen: "=slideToggle"
+            },  
+            link: function(scope, element, attr) {
+                var slideDuration = parseInt(attr.slideToggleDuration, 10) || 200;      
+                scope.$watch('isOpen', function(newVal,oldVal){
+                    if(newVal !== oldVal){ 
+                        element.stop().slideToggle(slideDuration);
+                    }
+                });
+            }
+        };  
+    });
+})(angular);
+/*
+ *
+ */
+;(function (angular) {
 	'use strict';
 	angular.module('litewait.ui').controller('HomeCtrl', HomeCtrl);
 
@@ -3051,100 +3147,138 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	}
 })(angular);
 /*
- *
- */
-;(function (angular) {
-    'use strict';
+*
+*/
+;(function(angular) {
+	'use strict';
+	angular.module('litewait.ui').controller('MerchantCreateCtrl', MerchantCreateCtrl);
 
-    function compareTo() {
-        return {
-            restrict: 'A',
-            require: "ngModel",
-            scope: {
-                otherModelValue: "=compareTo"
-            },
-            link: function(scope, element, attributes, ngModel) {
-                 
-                ngModel.$validators.compareTo = function(modelValue) {
-                    return modelValue == scope.otherModelValue;
-                };
-     
-                scope.$watch("otherModelValue", function() {
-                    ngModel.$validate();
-                });
+	angular.$inject = ['$scope', 'merchant'];
+
+	function MerchantCreateCtrl($scope, merchant) {
+		var vm = this;
+		vm.data = {};
+		vm.data.merchant = merchant;
+	}
+})(angular);
+/*
+*
+*/
+;(function(angular) {
+	'use strict';
+	angular.module('litewait.ui').controller('MerchantListCtrl', MerchantListCtrl);
+
+	angular.$inject = ['$scope', 'Merchant'];
+
+	function MerchantListCtrl($scope, Merchant) {
+		var vm = this;
+		vm.merchant = {
+			list: [],
+			busy: false,
+			offset: 0,
+			limit: 10,
+			totalRecords: 0,
+			search: ''
+		};
+		vm.initializeMerchant = initializeMerchant;
+		vm.nextPage = nextPage;
+
+		function searchMerchant() {
+			var obj = getMerchantParams();
+			Merchant.getList(obj).then(function(response) {
+				assignMerchants(response.merchants);
+				vm.merchant.busy = false;
+			}, function() {
+				vm.merchant.busy = false;
+			});
+		}
+
+        function assignMerchants(items) {
+          for (var i = 0; i < items.length; i++) {
+            var index = _.findIndex(vm.merchant.list, {id: items[i].id});
+            if (-1 === index) {
+              vm.merchant.list.push(items[i]);
             }
-        };
-    }
-     
-    angular.module('litewait.directives').directive("compareTo", compareTo);
+          }
+          vm.merchant.offset = vm.merchant.list.length;
+        }
 
+        function getMerchantParams() {
+          	return {
+				page_no: vm.merchant.offset,
+				page_size: vm.merchant.limit,
+				search: vm.merchant.search
+			};
+        }
+
+        function initializeMerchant() {
+          vm.merchant.offset = 1;
+          vm.merchant.list.length = 0;
+          searchMerchant();
+        }
+
+        function nextPage() {
+          var params = getMerchantParams();
+
+          if ( ! vm.merchant.busy) {
+            vm.merchant.busy = true;
+            searchMerchant();
+          }
+        }
+
+        initializeMerchant();
+	}
 })(angular);
 
+;(function(angular) {
+    'use strict';
 
-;(function() {
-  'use strict';
+    angular.module('litewait').config(config);
 
-  function dateAsMs() {
-    return {
-      restrict: 'A',
-      require: 'ngModel',
-      link: function(scope,elem,attrs,ngModelCtrl) {
-        ngModelCtrl.$parsers.push(function(value){
-          if (value && value.getTime) {
-            return value.getTime();
-          } else {
-            return value;
-          }
-        });
-      }
-    };
-  }
+    config.$inject = ['$stateProvider'];
 
-  angular.module('litewait.directives').directive("dateAsMs", dateAsMs);
-  
-})();
-/**
- *
- */
- ;(function() {
- 	'use strict';
-
-	angular.module('litewait.directives')
-    .directive('datepickerPopup', datepickerPopup);
-
-    function datepickerPopup() {
-
-        return {
-            restrict: 'EA',
-            require: 'ngModel',
-            link: function(scope, element, attr, controller) {
-              controller.$formatters.shift();
-            }
-        };
-    }
- })();
-
-
-/*
- *
- */
-;(function (angular) {
-    angular.module('litewait.directives').directive('slideToggle', function() {  
-        return {
-            restrict: 'A',      
-            scope:{
-                isOpen: "=slideToggle"
-            },  
-            link: function(scope, element, attr) {
-                var slideDuration = parseInt(attr.slideToggleDuration, 10) || 200;      
-                scope.$watch('isOpen', function(newVal,oldVal){
-                    if(newVal !== oldVal){ 
-                        element.stop().slideToggle(slideDuration);
+    function config($stateProvider) {
+        $stateProvider
+            .state('merchant', {
+                abstract: true
+            })
+            .state('merchant.list', {
+            	url: "/merchant",
+                views: {
+                    "@": {
+                        templateUrl: "merchant/merchant-list.html",
+                        controller: "MerchantListCtrl",
+                        controllerAs: "ml"
                     }
-                });
-            }
-        };  
-    });
+                }
+            }).state('merchant.create', {
+                url: "/merchant/:id",
+                views: {
+                    "@": {
+                        templateUrl: "merchant/merchant-create.html",
+                        controller: "MerchantCreateCtrl",
+                        controllerAs: "mcr"
+                    }
+                },
+                resolve: {
+                    merchant: function($timeout, $q, Merchant, $stateParams) {
+                        var deferred = $q.defer();
+                        var handle = $timeout(function() {
+                            
+                            Merchant.get($stateParams.id).then(function(response) {
+                                deferred.resolve(response.data);
+                            }, function(error) {
+                                deferred.resolve({});
+                            });
+
+                            $timeout.cancel(handle);
+                        }, 0);
+
+                        return deferred.promise;
+                    }
+                }
+            });
+    }
 })(angular);
 /*
  *
@@ -4123,6 +4257,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 		obj.get = get;
 		obj.deleteMerchant = deleteMerchant;
+		obj.getList = getList;
 
 		function get(id) {
 			var params = {
@@ -4141,6 +4276,24 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 		function deleteMerchant() {
 
+		}
+
+		function getList(data) {
+			var params = {
+				params: data
+			};
+			var url = urlBase + 's';
+			return $http.get(url, params).then(function(response) {
+				if (!response.data.error) {
+					if (response.data.data) {
+						return response.data.data;
+					} else {
+						return {merchants: []};
+					}
+				}
+
+				return {merchants:[]};
+			});
 		}
 
 		return obj;

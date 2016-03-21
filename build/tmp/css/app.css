@@ -143,6 +143,48 @@ a { color:#28ace2;}
 a:hover { color:#28ace2; text-decoration:underline;}
 a:focus { color:#28ace2; text-decoration:none;}
 
+/* Merchant list */
+.merchant-list-wrap {padding: 20px 0 0 0;}
+.merchant-list-wrap {
+	font-size: 18px;
+    color: #28ace2;
+    font-weight: bold;
+}
+.merchant-list {
+	padding: 20px;
+    position: relative;
+}
+
+.merchant-list a.edit {
+	position: absolute;
+    right: 10px;
+    top: 10px;
+    color: #808080;
+}
+
+.merchant-list h2 {
+	color: #fe980f;
+    font-size: 17px;
+    font-weight: bold;
+    margin: 0 0 10px;
+}
+
+.mercant-list .rating {padding: 0px 10px 10px 0px;}
+.merchant-list .rating .fa {
+	font-size: 13px;
+    margin-right: 5px;
+    color: #e7711b;
+}
+
+.merchant-list p {
+	font-size: 16px;
+    color: #808080;
+    line-height: 24px;
+}
+
+.merchant-list:nth-child(odd) {background: #f5f5f5;}
+.merchant-list:nth-child(even) {background: #fff;}
+
 /* Header */
 .header-wrap {-webkit-box-shadow: 0px 1px 1px 0px rgba(50, 50, 50, 0.5);
 -moz-box-shadow:    0px 1px 1px 0px rgba(50, 50, 50, 0.5);
@@ -540,6 +582,9 @@ box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);}
 .thankyou p {color:#808080; line-height:20px;}
 .thankyou p.time { color:#fe980f; padding:10px 0 0 0; line-height:26px;}
 .thankyou p.time span { color:#000;}
+
+.merchant-search {padding: 20px;border-bottom: 1px solid #aaa;background:#f7f7f7;}
+.merchant-search .form-control { background:#fff; height:42px; margin-bottom:20px;border-radius:0px; box-shadow:none;border:none; font-size:16px; color:#444;}
 
 /* Change password */
 
