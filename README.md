@@ -1,8 +1,8 @@
 #LiteWait Setup Steps
-#Windows and it is the same for linux as well
+Windows and it is the same for linux as well
 
-#Before going to install, please ensure that .net framework runtime installed
-#and python runtime is also installed and environment variable is set for python executable
+Before going to install, please ensure that .net framework runtime installed
+and python runtime is also installed and environment variable is set for python executable
 
 1. Install nvm for windows
 
