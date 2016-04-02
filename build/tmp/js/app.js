@@ -3153,12 +3153,99 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	'use strict';
 	angular.module('litewait.ui').controller('MerchantCreateCtrl', MerchantCreateCtrl);
 
-	angular.$inject = ['$scope', 'merchant'];
+	angular.$inject = ['$scope', 'Merchant', 'merchant'];
 
-	function MerchantCreateCtrl($scope, merchant) {
+	function MerchantCreateCtrl($scope, Merchant, merchant) {
 		var vm = this;
-		vm.data = {};
-		vm.data.merchant = merchant;
+		vm.merchant = {
+			id: '',
+			business_name: '',
+			business_type: '',
+			contact_person: '',
+			username: '',
+			contact: {
+				address_1: '',
+				phone: '',
+				city: '',
+				state: '',
+				country: '',
+				zip_code: '',
+				mail_id: ''
+			},
+			region: '',
+			region_id: '',
+			city: '',
+			city_id: '',
+			photo: '',
+			website: '',
+			open_time: '',
+			close_time: '',
+			avg_waiting_time: ''
+		};
+
+		vm.updateMerchant = updateMerchant;
+		vm.assignmerchant = assignmerchant;
+		vm.cancel = cancel;
+
+		function updateMerchant(valid) {
+			if (valid) {
+				var action;
+				if (vm.merchant.id) {
+					action = Merchant.update;
+				} else {
+					action = Merchant.add;
+				}
+				action(vm.merchant).then(function(response) {
+					if (!(response.error)) {
+						toaster.pop({
+                            type: 'success', 
+                            title:'Success', 
+                            body: AUTH_MSG.merchantUpdateSuccess, 
+                            toasterId: 1
+                        });
+					} else {
+						toaster.pop({
+                            type: 'error', 
+                            title:'Error', 
+                            body: AUTH_MSG.merchantUpdateFailed, 
+                            toasterId: 1
+                        });
+					}
+				});
+			}
+		}
+
+		function assignMerchant() {
+			if (merchant) {
+				vm.merchant.username = merchant.data.username;
+				vm.merchant.business_name = merchant.data.business_name;
+				vm.merchant.business_type = merchant.data.business_type;
+				vm.merchant.contact_person = merchant.data.contact_person;
+				vm.merchant.contact.address_1 = merchant.data.contact.address_1;
+				vm.merchant.contact.phone = merchant.data.contact.phone;
+				vm.merchant.contact.city = merchant.data.contact.city;
+				vm.merchant.contact.state = merchant.data.contact.state;
+				vm.merchant.contact.country = merchant.data.contact.country;
+				vm.merchant.contact.zip_code = merchant.data.contact.zip_code;
+				vm.merchant.contact.mail_id = merchant.data.contact.mail_id;
+				vm.merchant.region = merchant.data.region;
+				vm.merchant.region_id = merchant.data.region_id;
+				vm.merchant.city = merchant.data.city;
+				vm.merchant.city_id = merchant.data.city_id;
+				vm.merchant.open_time = merchant.data.open_time;
+				vm.merchant.close_time = merchant.data.close_time;
+				vm.merchant.avg_waiting_time = merchant.data.avg_waiting_time;
+				vm.merchant.photo = merchant.data.photo;
+				vm.merchant.website = merchant.data.website;
+			}
+		}
+
+		function cancel(event) {
+			event.preventDefault();
+			$state.go('home');
+		}
+
+		assignMerchant();
 	}
 })(angular);
 /*
@@ -3252,7 +3339,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     }
                 }
             }).state('merchant.create', {
-                url: "/merchant/:id",
+                url: "/cmerchant/:id",
                 views: {
                     "@": {
                         templateUrl: "merchant/merchant-create.html",
@@ -3262,19 +3349,11 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                 },
                 resolve: {
                     merchant: function($timeout, $q, Merchant, $stateParams) {
-                        var deferred = $q.defer();
-                        var handle = $timeout(function() {
-                            
-                            Merchant.get($stateParams.id).then(function(response) {
-                                deferred.resolve(response.data);
-                            }, function(error) {
-                                deferred.resolve({});
-                            });
-
-                            $timeout.cancel(handle);
-                        }, 0);
-
-                        return deferred.promise;
+                        return Merchant.get($stateParams.id).then(function(response) {
+                            return response.data;
+                        }).catch(function(error) {
+                            return false;
+                        });
                     }
                 }
             });
@@ -4256,6 +4335,8 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		var obj = {};
 
 		obj.get = get;
+		obj.update = update;
+		obj.add = add;
 		obj.deleteMerchant = deleteMerchant;
 		obj.getList = getList;
 
@@ -4266,16 +4347,19 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 				}
 			};
 
-			return $http.get(urlBase, params).then(function(response) {
-				if (!response.data.error) {
-					return response.data.data;
-				}
-				return {};
-			});
+			return $http.get(urlBase, params);
 		}
 
-		function deleteMerchant() {
+		function deleteMerchant(id) {
+			//return $http.put(urlBase, data);
+		}
 
+		function update(data) {
+			return $http.put(urlBase, data);
+		}
+
+		function add(data) {
+			return $http.post(urlBase, data);
 		}
 
 		function getList(data) {
@@ -4562,7 +4646,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 		function getMerchant(id) {
 			Merchant.get(id).then(function(response) {
-				vm.nest.merchantDetail = response;
+				vm.nest.merchantDetail = response.data;
 				vm.nest.merchantId = vm.nest.merchantDetail.id;
 			}, function(error) {
 				vm.nest.merchantDetail = {};
@@ -4743,7 +4827,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		function assignProfile() {
 			vm.profile.user_name = vm.user.data.user_name;
 			vm.profile.contact.address_1 = vm.user.data.contact.address_1;
-			vm.profile.contact.address_2 = vm.user.data.contact.address_2;
 			vm.profile.contact.phone = vm.user.data.contact.phone;
 			vm.profile.contact.city = vm.user.data.contact.city;
 			vm.profile.contact.state = vm.user.data.contact.state;

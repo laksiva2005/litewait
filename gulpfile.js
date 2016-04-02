@@ -25,10 +25,13 @@ var config = require('./build/build.config.js'),
         flatten = require('gulp-flatten'),
         sourcemaps = require('gulp-sourcemaps'),
         bump = require('gulp-bump'),
-        livereload = require('gulp-livereload');
+        livereload = require('gulp-livereload'),
+        lr = require('tiny-lr'),
+        server = lr();
 
-
-gulp.task('default',['buildjs','buildcss','buildfonts','buildimg','buildhtml2js','buildindexdev','open']);
+gulp.task('default',['buildjs','buildcss','buildfonts','buildimg','buildhtml2js','buildindexdev'], function() {
+  gulp.start('open');
+});
 gulp.task('prod',['buildjs','buildcss','buildfonts','buildimg','buildhtml2js','buildindexprod']);
 
 gulp.task('clean',function(){
@@ -38,32 +41,34 @@ gulp.task('clean',function(){
 
 gulp.task('buildjs',function() {
     gulp.src(config.clientFiles.js)
-        .pipe(concat('app.js'))
-        .pipe(gulp.dest(config.buildDir + '/js'));
+      .pipe(concat('app.js'))
+      .pipe(gulp.dest(config.buildDir + '/js'));
     return gulp.src(config.vendorFiles.js)
-          .pipe(concat('vendor.js'))
-          .pipe(gulp.dest(config.buildDir + '/js'));
+      .pipe(concat('vendor.js'))
+      .pipe(gulp.dest(config.buildDir + '/js'));
 });
 
 gulp.task('buildcss',function(){    
      gulp.src(config.vendorFiles.css)
-          .pipe(concat('vendor.css'))
-          .pipe(gulp.dest(config.buildDir + '/css'));
-     return     gulp.src(config.clientFiles.css)
+        .pipe(concat('vendor.css'))
+        .pipe(gulp.dest(config.buildDir + '/css'))
+        ;
+     return gulp.src(config.clientFiles.css)
         .pipe(concat('app.css'))
         .pipe(gulp.dest(config.buildDir + '/css'));
 });
 
 gulp.task('buildfonts',function(){
-     gulp.src(config.clientFiles.fonts)
-          .pipe(gulp.dest(config.buildDir + '/fonts'));
-    return gulp.src(config.vendorFiles.fonts)
-          .pipe(gulp.dest(config.buildDir + '/fonts'));
+  var fonts = config.clientFiles.fonts;
+  fonts = config.clientFiles.fonts.concat(config.vendorFiles.fonts);
+  return gulp.src(fonts)
+    .pipe(gulp.dest(config.buildDir + '/fonts'));
+    
 });
 
 gulp.task('buildimg',function(){
     return gulp.src(config.clientFiles.images)
-          .pipe(gulp.dest(config.buildDir + '/img'));
+      .pipe(gulp.dest(config.buildDir + '/img'));
 });
 
 
@@ -128,7 +133,7 @@ gulp.task('buildindexprod', function(){
 
 });
 
-gulp.task('open', ['server'], function(){
+gulp.task('open', ['server', 'lr-server', 'watch'], function(){
     dist = false;
     var folder = dist ? config.distDir : config.buildDir,
         indexFile = folder + "/index.html",
@@ -146,7 +151,51 @@ gulp.task('open', ['server'], function(){
     }, 3000);
 });
 
-gulp.task('server',function() {   
+gulp.task('refresh', function() {
+  dist = false;
+    var folder = dist ? config.distDir : config.buildDir,
+        indexFile = folder + "/index.html",
+        port = config.express.port || 80,
+        open = require('gulp-open');
+        var options = {
+        uri : 'http://' + config.express.hostname + ':' + port,
+        app: 'chrome'
+    };
+
+    // A file must be specified as the src when running options.url or gulp will overlook the task.
+    setTimeout(function(){
+        return gulp.src(indexFile)
+            .pipe(open(options));
+    }, 3000);
+});
+
+gulp.task('server',function() {
+    var called = false;
     var flags = false ? '--production' : '--debug';
-    return nodemon({ script: 'server/app.js', options: flags });
+
+    return nodemon({ script: 'server/app.js', options: flags }).on('start', function() {
+      if(!called) {
+        cb();
+        called = true;
+      }
+    });
+});
+
+gulp.task('lr-server', function () {
+    server.listen(35729, function (err) {
+        if (err) return console.log(err);
+    });
+});
+
+
+gulp.task('watch', function() {
+    gulp.watch([config.vendorFiles.css, config.clientFiles.css], ['buildcss']);
+
+    gulp.watch([config.vendorFiles.js, config.clientFiles.js], ['buildjs']);
+
+    gulp.watch(config.clientFiles.templates, ['buildhtml2js']);
+
+    gulp.watch(config.clientFiles.fonts, ['buildfonts']);
+
+    gulp.watch(config.clientFiles.images, ['buildimg']);
 });

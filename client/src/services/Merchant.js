@@ -12,6 +12,8 @@
 		var obj = {};
 
 		obj.get = get;
+		obj.update = update;
+		obj.add = add;
 		obj.deleteMerchant = deleteMerchant;
 		obj.getList = getList;
 
@@ -22,16 +24,19 @@
 				}
 			};
 
-			return $http.get(urlBase, params).then(function(response) {
-				if (!response.data.error) {
-					return response.data.data;
-				}
-				return {};
-			});
+			return $http.get(urlBase, params);
 		}
 
-		function deleteMerchant() {
+		function deleteMerchant(id) {
+			//return $http.put(urlBase, data);
+		}
 
+		function update(data) {
+			return $http.put(urlBase, data);
+		}
+
+		function add(data) {
+			return $http.post(urlBase, data);
 		}
 
 		function getList(data) {

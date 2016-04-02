@@ -81,7 +81,6 @@
 		function assignProfile() {
 			vm.profile.user_name = vm.user.data.user_name;
 			vm.profile.contact.address_1 = vm.user.data.contact.address_1;
-			vm.profile.contact.address_2 = vm.user.data.contact.address_2;
 			vm.profile.contact.phone = vm.user.data.contact.phone;
 			vm.profile.contact.city = vm.user.data.contact.city;
 			vm.profile.contact.state = vm.user.data.contact.state;

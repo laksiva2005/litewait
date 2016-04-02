@@ -21,7 +21,7 @@
                     }
                 }
             }).state('merchant.create', {
-                url: "/merchant/:id",
+                url: "/cmerchant/:id",
                 views: {
                     "@": {
                         templateUrl: "merchant/merchant-create.html",
@@ -31,19 +31,11 @@
                 },
                 resolve: {
                     merchant: function($timeout, $q, Merchant, $stateParams) {
-                        var deferred = $q.defer();
-                        var handle = $timeout(function() {
-                            
-                            Merchant.get($stateParams.id).then(function(response) {
-                                deferred.resolve(response.data);
-                            }, function(error) {
-                                deferred.resolve({});
-                            });
-
-                            $timeout.cancel(handle);
-                        }, 0);
-
-                        return deferred.promise;
+                        return Merchant.get($stateParams.id).then(function(response) {
+                            return response.data;
+                        }).catch(function(error) {
+                            return false;
+                        });
                     }
                 }
             });

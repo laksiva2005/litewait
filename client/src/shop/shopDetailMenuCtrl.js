@@ -15,7 +15,7 @@
 
 		function getMerchant(id) {
 			Merchant.get(id).then(function(response) {
-				vm.nest.merchantDetail = response;
+				vm.nest.merchantDetail = response.data;
 				vm.nest.merchantId = vm.nest.merchantDetail.id;
 			}, function(error) {
 				vm.nest.merchantDetail = {};

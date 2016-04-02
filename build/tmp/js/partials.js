@@ -498,7 +498,129 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('merchant/merchant-create.html',
-    '');
+    '<div class="container edit-merchant">\n' +
+    '	<div class="col-md-12">            \n' +
+    '      <div id="edit-merchant" >\n' +
+    '         <h1>Edit merchant</h1>      \n' +
+    '         <div class="col-md-12 form-wrap">\n' +
+    '            <form novalidate name="vm.merchantForm" ng-submit="vm.updateMerchant(vm.merchantForm.$valid)" role="form">\n' +
+    '               <div class="col-md-6">\n' +
+    '                  <div class="form-group">\n' +
+    '                     <input type="hidden" name="id" ng-model="vm.merchant.id">\n' +
+    '                     <input type="text" name="username" maxlength="50" ng-model="vm.merchant.username" class="form-control"  placeholder="Name">\n' +
+    '                     <div ng-if="vm.merchantForm.$submitted && vm.merchantForm.username.$invalid" ng-messages="vm.merchantForm.username.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="maxlength">Please enter a valid Username</div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <input type="password" name="password" maxlength="50" ng-model="vm.merchant.password" class="form-control"  placeholder="Name">\n' +
+    '                     <div ng-if="vm.merchantForm.$submitted && vm.merchantForm.password.$invalid" ng-messages="vm.merchantForm.password.$error" class="alert alert-danger">\n' +
+    '                        <!--div ng-message="required">Password is required</div-->\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <input type="text" name="business_name" maxlength="50" ng-model="vm.merchant.business_name" class="form-control"  placeholder="Name">\n' +
+    '                     <div ng-if="vm.merchantForm.$submitted && vm.merchantForm.business_name.$invalid" ng-messages="vm.merchantForm.business_name.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="maxlength">Please enter a valid Business Name</div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <input type="text" name="business_type" maxlength="50" ng-model="vm.merchant.business_type" class="form-control"  placeholder="Name">\n' +
+    '                     <div ng-if="vm.merchantForm.$submitted && vm.merchantForm.business_type.$invalid" ng-messages="vm.merchantForm.business_type.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="maxlength">Please enter a valid Business Type</div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <input type="text" name="contact_person" maxlength="50" ng-model="vm.merchant.contact_person" class="form-control"  placeholder="Name">\n' +
+    '                     <div ng-if="vm.merchantForm.$submitted && vm.merchantForm.contact_person.$invalid" ng-messages="vm.merchantForm.contact_person.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="maxlength">Please enter a valid Contact Person</div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                  	<textarea name="address_1" ng-model="vm.merchant.contact.address_1" class="form-control"  placeholder="Address"></textarea>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <input type="text" name="state" ng-model="vm.merchant.contact.state" class="form-control" placeholder="State">\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <input type="text" name="zip_code" ng-model="vm.merchant.contact.zip_code" class="form-control" placeholder="Zipcode">\n' +
+    '                  </div>\n' +
+    '               </div>\n' +
+    '               <div class="col-md-6">\n' +
+    '                  <div class="form-group">\n' +
+    '                     <input type="email" name="mail_id" ng-model="vm.merchant.contact.mail_id" class="form-control" placeholder="Email">\n' +
+    '                     <div ng-if="vm.merchantForm.$submitted && vm.merchantForm.mail_id.$invalid" ng-messages="vm.merchantForm.mail_id.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="email">Please enter a valid Email Id</div>\n' +
+    '                      </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <input type="text" name="phone" ng-model="vm.merchant.contact.phone" class="form-control" placeholder="Phone">\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <input type="text" name="city" ng-model="vm.merchant.contact.city" class="form-control" placeholder="City">\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <input type="text" name="country" ng-model="vm.merchant.contact.country" class="form-control" placeholder="Country">\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <input type="hidden" name="city_id" ng-model="vm.merchant.city_id">\n' +
+    '                     <input type="text" name="city" maxlength="50" ng-model="vm.merchant.city" class="form-control"  placeholder="Name">\n' +
+    '                     <div ng-if="vm.merchantForm.$submitted && vm.merchantForm.city.$invalid" ng-messages="vm.merchantForm.city.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="maxlength">Please enter a valid Contact Person</div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <input type="hidden" name="region_id" ng-model="vm.merchant.region_id">\n' +
+    '                     <input type="text" name="region" maxlength="50" ng-model="vm.merchant.region" class="form-control"  placeholder="Name">\n' +
+    '                     <div ng-if="vm.merchantForm.$submitted && vm.merchantForm.region.$invalid" ng-messages="vm.merchantForm.region.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="maxlength">Please enter a valid Contact Person</div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <input type="text" name="website" maxlength="50" ng-model="vm.merchant.website" class="form-control"  placeholder="Name">\n' +
+    '                     <div ng-if="vm.merchantForm.$submitted && vm.merchantForm.website.$invalid" ng-messages="vm.merchantForm.website.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="maxlength">Please enter a valid Contact Person</div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <input type="text" name="photo" maxlength="50" ng-model="vm.merchant.photo" class="form-control"  placeholder="Name">\n' +
+    '                     <div ng-if="vm.merchantForm.$submitted && vm.merchantForm.photo.$invalid" ng-messages="vm.merchantForm.photo.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="maxlength">Please enter a valid Contact Person</div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <input type="text" name="open_time" maxlength="50" ng-model="vm.merchant.open_time" class="form-control"  placeholder="Name">\n' +
+    '                     <div ng-if="vm.merchantForm.$submitted && vm.merchantForm.open_time.$invalid" ng-messages="vm.merchantForm.open_time.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="maxlength">Please enter a valid Contact Person</div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <input type="text" name="close_time" maxlength="50" ng-model="vm.merchant.close_time" class="form-control"  placeholder="Name">\n' +
+    '                     <div ng-if="vm.merchantForm.$submitted && vm.merchantForm.close_time.$invalid" ng-messages="vm.merchantForm.close_time.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="maxlength">Please enter a valid Contact Person</div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <input type="text" name="avg_waiting_time" maxlength="50" ng-model="vm.merchant.avg_waiting_time" class="form-control"  placeholder="Name">\n' +
+    '                     <div ng-if="vm.merchantForm.$submitted && vm.merchantForm.avg_waiting_time.$invalid" ng-messages="vm.merchantForm.avg_waiting_time.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="maxlength">Please enter a valid Contact Person</div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <input type="checkbox" name="is_active" ng-true-value="Y" ng-false-value="N" maxlength="50" ng-model="vm.merchant.is_active" class="form-control"  placeholder="Name">\n' +
+    '                  </div>\n' +
+    '               </div>\n' +
+    '               <div class="clearfix"></div>\n' +
+    '               <div class="col-md-12">\n' +
+    '                  <button type="submit" class="btn btn-default pull-right">Submit</button>\n' +
+    '                  <button type="submit" ng-click="vm.cancel($event)" class="btn btn-default pull-right">Cancel</button>\n' +
+    '                  <div class="clearfix"></div>\n' +
+    '               </div>\n' +
+    '            </form>\n' +
+    '         </div>               \n' +
+    '      </div>\n' +
+    '   </div>\n' +
+    '</div>');
 }]);
 })();
 
@@ -535,7 +657,7 @@ module.run(['$templateCache', function($templateCache) {
     '	           <p> {{value.street_address}}, {{value.region}}, {{value.city}},<br>{{value.state}} {{value.zipcode}}, {{value.country}} \n' +
     '	           </p>\n' +
     '	        </div>\n' +
-    '	        <a href="#/merchant/{{value.id}}" class="edit"><i class="fa fa-pencil"></i></a>\n' +
+    '	        <a href="#/cmerchant/{{value.id}}" class="edit"><i class="fa fa-pencil"></i></a>\n' +
     '	        <div class="clearfix"></div>\n' +
     '	    </div>\n' +
     '    </div>\n' +
@@ -923,7 +1045,7 @@ module.run(['$templateCache', function($templateCache) {
     '               </div>\n' +
     '            </div>\n' +
     '            <div class="form-group">\n' +
-    '            	<textarea name="address_1" ng-model="vm.profile.contact_address_1" class="form-control"  placeholder="Address"></textarea>\n' +
+    '            	<textarea name="address_1" ng-model="vm.profile.contact.address_1" class="form-control"  placeholder="Address"></textarea>\n' +
     '            </div>\n' +
     '            <div class="form-group">\n' +
     '               <input type="text" name="state" ng-model="vm.profile.contact.state" class="form-control" placeholder="State">\n' +
