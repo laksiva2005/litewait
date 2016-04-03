@@ -3,117 +3,114 @@
       <div id="edit-merchant" >
          <h1>Edit merchant</h1>      
          <div class="col-md-12 form-wrap">
-            <form novalidate name="vm.merchantForm" ng-submit="vm.updateMerchant(vm.merchantForm.$valid)" role="form">
+            <form novalidate name="mcr.merchantForm" ng-submit="mcr.updateMerchant(mcr.merchantForm.$valid)" role="form">
                <div class="col-md-6">
                   <div class="form-group">
-                     <input type="hidden" name="id" ng-model="vm.merchant.id">
-                     <input type="text" name="username" maxlength="50" ng-model="vm.merchant.username" class="form-control"  placeholder="Name">
-                     <div ng-if="vm.merchantForm.$submitted && vm.merchantForm.username.$invalid" ng-messages="vm.merchantForm.username.$error" class="alert alert-danger">
+                     <input type="hidden" name="id" ng-model="mcr.merchant.id">
+                     <input type="text" name="username" maxlength="50" ng-model="mcr.merchant.username" class="form-control"  placeholder="Enter username">
+                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.username.$invalid" ng-messages="mcr.merchantForm.username.$error" class="alert alert-danger">
                         <div ng-message="maxlength">Please enter a valid Username</div>
                      </div>
                   </div>
                   <div class="form-group">
-                     <input type="password" name="password" maxlength="50" ng-model="vm.merchant.password" class="form-control"  placeholder="Name">
-                     <div ng-if="vm.merchantForm.$submitted && vm.merchantForm.password.$invalid" ng-messages="vm.merchantForm.password.$error" class="alert alert-danger">
+                     <input type="password" name="password" maxlength="50" ng-model="mcr.merchant.password" class="form-control"  placeholder="Enter Password">
+                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.password.$invalid" ng-messages="mcr.merchantForm.password.$error" class="alert alert-danger">
                         <!--div ng-message="required">Password is required</div-->
                      </div>
                   </div>
                   <div class="form-group">
-                     <input type="text" name="business_name" maxlength="50" ng-model="vm.merchant.business_name" class="form-control"  placeholder="Name">
-                     <div ng-if="vm.merchantForm.$submitted && vm.merchantForm.business_name.$invalid" ng-messages="vm.merchantForm.business_name.$error" class="alert alert-danger">
+                     <input type="text" name="business_name" maxlength="50" ng-model="mcr.merchant.business_name" class="form-control"  placeholder="Enter bussiness name">
+                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.business_name.$invalid" ng-messages="mcr.merchantForm.business_name.$error" class="alert alert-danger">
                         <div ng-message="maxlength">Please enter a valid Business Name</div>
                      </div>
                   </div>
                   <div class="form-group">
-                     <input type="text" name="business_type" maxlength="50" ng-model="vm.merchant.business_type" class="form-control"  placeholder="Name">
-                     <div ng-if="vm.merchantForm.$submitted && vm.merchantForm.business_type.$invalid" ng-messages="vm.merchantForm.business_type.$error" class="alert alert-danger">
+                     <input type="text" name="business_type" maxlength="50" ng-model="mcr.merchant.business_type" class="form-control"  placeholder="Enter business type">
+                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.business_type.$invalid" ng-messages="mcr.merchantForm.business_type.$error" class="alert alert-danger">
                         <div ng-message="maxlength">Please enter a valid Business Type</div>
                      </div>
                   </div>
                   <div class="form-group">
-                     <input type="text" name="contact_person" maxlength="50" ng-model="vm.merchant.contact_person" class="form-control"  placeholder="Name">
-                     <div ng-if="vm.merchantForm.$submitted && vm.merchantForm.contact_person.$invalid" ng-messages="vm.merchantForm.contact_person.$error" class="alert alert-danger">
+                     <input type="text" name="contact_person" maxlength="50" ng-model="mcr.merchant.contact_person" class="form-control"  placeholder="Enter contact person name">
+                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.contact_person.$invalid" ng-messages="mcr.merchantForm.contact_person.$error" class="alert alert-danger">
                         <div ng-message="maxlength">Please enter a valid Contact Person</div>
                      </div>
                   </div>
                   <div class="form-group">
-                  	<textarea name="address_1" ng-model="vm.merchant.contact.address_1" class="form-control"  placeholder="Address"></textarea>
+                  	<textarea name="address_1" ng-model="mcr.merchant.contact_details.address_1" class="form-control"  placeholder="Address"></textarea>
                   </div>
                   <div class="form-group">
-                     <input type="text" name="state" ng-model="vm.merchant.contact.state" class="form-control" placeholder="State">
+                     <input type="text" name="state" ng-model="mcr.merchant.contact_details.state" class="form-control" placeholder="Enter state">
                   </div>
                   <div class="form-group">
-                     <input type="text" name="zip_code" ng-model="vm.merchant.contact.zip_code" class="form-control" placeholder="Zipcode">
+                     <input type="text" name="zip_code" ng-model="mcr.merchant.contact_details.zip_code" class="form-control" placeholder="Enter zipcode">
                   </div>
                </div>
                <div class="col-md-6">
                   <div class="form-group">
-                     <input type="email" name="mail_id" ng-model="vm.merchant.contact.mail_id" class="form-control" placeholder="Email">
-                     <div ng-if="vm.merchantForm.$submitted && vm.merchantForm.mail_id.$invalid" ng-messages="vm.merchantForm.mail_id.$error" class="alert alert-danger">
+                     <input type="email" name="mail_id" ng-model="mcr.merchant.contact_details.mail_id" class="form-control" placeholder="Enter email">
+                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.mail_id.$invalid" ng-messages="mcr.merchantForm.mail_id.$error" class="alert alert-danger">
                         <div ng-message="email">Please enter a valid Email Id</div>
                       </div>
                   </div>
                   <div class="form-group">
-                     <input type="text" name="phone" ng-model="vm.merchant.contact.phone" class="form-control" placeholder="Phone">
+                     <input type="text" name="phone" ng-model="mcr.merchant.contact_details.phone" class="form-control" placeholder="Enter phone">
                   </div>
                   <div class="form-group">
-                     <input type="text" name="city" ng-model="vm.merchant.contact.city" class="form-control" placeholder="City">
+                     <input type="text" name="country" ng-model="mcr.merchant.contact_details.country" class="form-control" placeholder="Enter country">
                   </div>
                   <div class="form-group">
-                     <input type="text" name="country" ng-model="vm.merchant.contact.country" class="form-control" placeholder="Country">
-                  </div>
-                  <div class="form-group">
-                     <input type="hidden" name="city_id" ng-model="vm.merchant.city_id">
-                     <input type="text" name="city" maxlength="50" ng-model="vm.merchant.city" class="form-control"  placeholder="Name">
-                     <div ng-if="vm.merchantForm.$submitted && vm.merchantForm.city.$invalid" ng-messages="vm.merchantForm.city.$error" class="alert alert-danger">
+                     <input type="hidden" name="city_id" ng-model="mcr.merchant.city_id">
+                     <input type="text" name="city" maxlength="50" ng-model="mcr.merchant.city" class="form-control"  placeholder="Enter city name">
+                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.city.$invalid" ng-messages="mcr.merchantForm.city.$error" class="alert alert-danger">
                         <div ng-message="maxlength">Please enter a valid Contact Person</div>
                      </div>
                   </div>
                   <div class="form-group">
-                     <input type="hidden" name="region_id" ng-model="vm.merchant.region_id">
-                     <input type="text" name="region" maxlength="50" ng-model="vm.merchant.region" class="form-control"  placeholder="Name">
-                     <div ng-if="vm.merchantForm.$submitted && vm.merchantForm.region.$invalid" ng-messages="vm.merchantForm.region.$error" class="alert alert-danger">
+                     <input type="hidden" name="region_id" ng-model="mcr.merchant.region_id">
+                     <input type="text" name="region" maxlength="50" ng-model="mcr.merchant.region" class="form-control"  placeholder="Enter region">
+                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.region.$invalid" ng-messages="mcr.merchantForm.region.$error" class="alert alert-danger">
                         <div ng-message="maxlength">Please enter a valid Contact Person</div>
                      </div>
                   </div>
                   <div class="form-group">
-                     <input type="text" name="website" maxlength="50" ng-model="vm.merchant.website" class="form-control"  placeholder="Name">
-                     <div ng-if="vm.merchantForm.$submitted && vm.merchantForm.website.$invalid" ng-messages="vm.merchantForm.website.$error" class="alert alert-danger">
+                     <input type="text" name="website" maxlength="50" ng-model="mcr.merchant.website" class="form-control"  placeholder="Enter website">
+                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.website.$invalid" ng-messages="mcr.merchantForm.website.$error" class="alert alert-danger">
                         <div ng-message="maxlength">Please enter a valid Contact Person</div>
                      </div>
                   </div>
                   <div class="form-group">
-                     <input type="text" name="photo" maxlength="50" ng-model="vm.merchant.photo" class="form-control"  placeholder="Name">
-                     <div ng-if="vm.merchantForm.$submitted && vm.merchantForm.photo.$invalid" ng-messages="vm.merchantForm.photo.$error" class="alert alert-danger">
+                     <input type="text" name="photo" maxlength="50" ng-model="mcr.merchant.photo" class="form-control"  placeholder="Enter photo">
+                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.photo.$invalid" ng-messages="mcr.merchantForm.photo.$error" class="alert alert-danger">
                         <div ng-message="maxlength">Please enter a valid Contact Person</div>
                      </div>
                   </div>
                   <div class="form-group">
-                     <input type="text" name="open_time" maxlength="50" ng-model="vm.merchant.open_time" class="form-control"  placeholder="Name">
-                     <div ng-if="vm.merchantForm.$submitted && vm.merchantForm.open_time.$invalid" ng-messages="vm.merchantForm.open_time.$error" class="alert alert-danger">
+                     <input type="text" name="open_time" maxlength="50" ng-model="mcr.merchant.open_time" class="form-control"  placeholder="Enter open time">
+                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.open_time.$invalid" ng-messages="mcr.merchantForm.open_time.$error" class="alert alert-danger">
                         <div ng-message="maxlength">Please enter a valid Contact Person</div>
                      </div>
                   </div>
                   <div class="form-group">
-                     <input type="text" name="close_time" maxlength="50" ng-model="vm.merchant.close_time" class="form-control"  placeholder="Name">
-                     <div ng-if="vm.merchantForm.$submitted && vm.merchantForm.close_time.$invalid" ng-messages="vm.merchantForm.close_time.$error" class="alert alert-danger">
+                     <input type="text" name="close_time" maxlength="50" ng-model="mcr.merchant.close_time" class="form-control"  placeholder="Enter close time">
+                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.close_time.$invalid" ng-messages="mcr.merchantForm.close_time.$error" class="alert alert-danger">
                         <div ng-message="maxlength">Please enter a valid Contact Person</div>
                      </div>
                   </div>
                   <div class="form-group">
-                     <input type="text" name="avg_waiting_time" maxlength="50" ng-model="vm.merchant.avg_waiting_time" class="form-control"  placeholder="Name">
-                     <div ng-if="vm.merchantForm.$submitted && vm.merchantForm.avg_waiting_time.$invalid" ng-messages="vm.merchantForm.avg_waiting_time.$error" class="alert alert-danger">
+                     <input type="text" name="avg_waiting_time" maxlength="50" ng-model="mcr.merchant.avg_waiting_time" class="form-control"  placeholder="Enter average waiting time">
+                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.avg_waiting_time.$invalid" ng-messages="mcr.merchantForm.avg_waiting_time.$error" class="alert alert-danger">
                         <div ng-message="maxlength">Please enter a valid Contact Person</div>
                      </div>
                   </div>
                   <div class="form-group">
-                     <input type="checkbox" name="is_active" ng-true-value="Y" ng-false-value="N" maxlength="50" ng-model="vm.merchant.is_active" class="form-control"  placeholder="Name">
+                     <input type="checkbox" name="is_active" ng-true-value="'Y'" ng-false-value="'N'" ng-model="mcr.merchant.is_active"><label for="is_active">Is Active</label>
                   </div>
                </div>
                <div class="clearfix"></div>
                <div class="col-md-12">
                   <button type="submit" class="btn btn-default pull-right">Submit</button>
-                  <button type="submit" ng-click="vm.cancel($event)" class="btn btn-default pull-right">Cancel</button>
+                  <button type="submit" ng-click="mcr.cancel($event)" class="btn btn-default pull-right">Cancel</button>
                   <div class="clearfix"></div>
                </div>
             </form>

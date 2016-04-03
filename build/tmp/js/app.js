@@ -2898,65 +2898,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 /*
  *
  */
-;(function () {
-	'use strict';
-	angular.module('litewait.ui').controller('CartCtrl', CartCtrl);
-
-	CartCtrl.$inject = ['$scope'];
-
-	function CartCtrl($scope) {
-		
-	}
-})();
-/*
- *
- */
-;(function () {
-	'use strict';
-	angular.module('litewait.ui').controller('CartSummaryCtrl', CartSummaryCtrl);
-
-	CartSummaryCtrl.$inject = ['$scope'];
-
-	function CartSummaryCtrl($scope) {
-		
-	}
-})();
-
-;(function(angular) {
-    'use strict';
-
-    angular.module('litewait').config(config);
-
-    config.$inject = ['$stateProvider'];
-
-    function config($stateProvider) {
-        $stateProvider
-            .state('cart', {
-                abstract: true
-            })
-            .state('cart.detail', {
-            	url: "/cart",
-                views: {
-                    "@": {
-                        templateUrl: "cart/cart.html",
-                        controller: "CartCtrl"
-                    }
-                }
-            })
-            .state('cart.summary', {
-                url: "/cart-summary",
-                views: {
-                    "@": {
-                        templateUrl: "cart/cart-summary.html",
-                        controller: "CartSummaryCtrl"
-                    }
-                }
-            });
-    }
-})(angular);
-/*
- *
- */
 ;(function (angular) {
     'use strict';
 
@@ -3053,6 +2994,65 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 /*
  *
  */
+;(function () {
+	'use strict';
+	angular.module('litewait.ui').controller('CartCtrl', CartCtrl);
+
+	CartCtrl.$inject = ['$scope'];
+
+	function CartCtrl($scope) {
+		
+	}
+})();
+/*
+ *
+ */
+;(function () {
+	'use strict';
+	angular.module('litewait.ui').controller('CartSummaryCtrl', CartSummaryCtrl);
+
+	CartSummaryCtrl.$inject = ['$scope'];
+
+	function CartSummaryCtrl($scope) {
+		
+	}
+})();
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('cart', {
+                abstract: true
+            })
+            .state('cart.detail', {
+            	url: "/cart",
+                views: {
+                    "@": {
+                        templateUrl: "cart/cart.html",
+                        controller: "CartCtrl"
+                    }
+                }
+            })
+            .state('cart.summary', {
+                url: "/cart-summary",
+                views: {
+                    "@": {
+                        templateUrl: "cart/cart-summary.html",
+                        controller: "CartSummaryCtrl"
+                    }
+                }
+            });
+    }
+})(angular);
+/*
+ *
+ */
 ;(function (angular) {
 	'use strict';
 	angular.module('litewait.ui').controller('HomeCtrl', HomeCtrl);
@@ -3145,219 +3145,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			
 		}];
 	}
-})(angular);
-/*
-*
-*/
-;(function(angular) {
-	'use strict';
-	angular.module('litewait.ui').controller('MerchantCreateCtrl', MerchantCreateCtrl);
-
-	angular.$inject = ['$scope', 'Merchant', 'merchant'];
-
-	function MerchantCreateCtrl($scope, Merchant, merchant) {
-		var vm = this;
-		vm.merchant = {
-			id: '',
-			business_name: '',
-			business_type: '',
-			contact_person: '',
-			username: '',
-			contact: {
-				address_1: '',
-				phone: '',
-				city: '',
-				state: '',
-				country: '',
-				zip_code: '',
-				mail_id: ''
-			},
-			region: '',
-			region_id: '',
-			city: '',
-			city_id: '',
-			photo: '',
-			website: '',
-			open_time: '',
-			close_time: '',
-			avg_waiting_time: ''
-		};
-
-		vm.updateMerchant = updateMerchant;
-		vm.assignmerchant = assignmerchant;
-		vm.cancel = cancel;
-
-		function updateMerchant(valid) {
-			if (valid) {
-				var action;
-				if (vm.merchant.id) {
-					action = Merchant.update;
-				} else {
-					action = Merchant.add;
-				}
-				action(vm.merchant).then(function(response) {
-					if (!(response.error)) {
-						toaster.pop({
-                            type: 'success', 
-                            title:'Success', 
-                            body: AUTH_MSG.merchantUpdateSuccess, 
-                            toasterId: 1
-                        });
-					} else {
-						toaster.pop({
-                            type: 'error', 
-                            title:'Error', 
-                            body: AUTH_MSG.merchantUpdateFailed, 
-                            toasterId: 1
-                        });
-					}
-				});
-			}
-		}
-
-		function assignMerchant() {
-			if (merchant) {
-				vm.merchant.username = merchant.data.username;
-				vm.merchant.business_name = merchant.data.business_name;
-				vm.merchant.business_type = merchant.data.business_type;
-				vm.merchant.contact_person = merchant.data.contact_person;
-				vm.merchant.contact.address_1 = merchant.data.contact.address_1;
-				vm.merchant.contact.phone = merchant.data.contact.phone;
-				vm.merchant.contact.city = merchant.data.contact.city;
-				vm.merchant.contact.state = merchant.data.contact.state;
-				vm.merchant.contact.country = merchant.data.contact.country;
-				vm.merchant.contact.zip_code = merchant.data.contact.zip_code;
-				vm.merchant.contact.mail_id = merchant.data.contact.mail_id;
-				vm.merchant.region = merchant.data.region;
-				vm.merchant.region_id = merchant.data.region_id;
-				vm.merchant.city = merchant.data.city;
-				vm.merchant.city_id = merchant.data.city_id;
-				vm.merchant.open_time = merchant.data.open_time;
-				vm.merchant.close_time = merchant.data.close_time;
-				vm.merchant.avg_waiting_time = merchant.data.avg_waiting_time;
-				vm.merchant.photo = merchant.data.photo;
-				vm.merchant.website = merchant.data.website;
-			}
-		}
-
-		function cancel(event) {
-			event.preventDefault();
-			$state.go('home');
-		}
-
-		assignMerchant();
-	}
-})(angular);
-/*
-*
-*/
-;(function(angular) {
-	'use strict';
-	angular.module('litewait.ui').controller('MerchantListCtrl', MerchantListCtrl);
-
-	angular.$inject = ['$scope', 'Merchant'];
-
-	function MerchantListCtrl($scope, Merchant) {
-		var vm = this;
-		vm.merchant = {
-			list: [],
-			busy: false,
-			offset: 0,
-			limit: 10,
-			totalRecords: 0,
-			search: ''
-		};
-		vm.initializeMerchant = initializeMerchant;
-		vm.nextPage = nextPage;
-
-		function searchMerchant() {
-			var obj = getMerchantParams();
-			Merchant.getList(obj).then(function(response) {
-				assignMerchants(response.merchants);
-				vm.merchant.busy = false;
-			}, function() {
-				vm.merchant.busy = false;
-			});
-		}
-
-        function assignMerchants(items) {
-          for (var i = 0; i < items.length; i++) {
-            var index = _.findIndex(vm.merchant.list, {id: items[i].id});
-            if (-1 === index) {
-              vm.merchant.list.push(items[i]);
-            }
-          }
-          vm.merchant.offset = vm.merchant.list.length;
-        }
-
-        function getMerchantParams() {
-          	return {
-				page_no: vm.merchant.offset,
-				page_size: vm.merchant.limit,
-				search: vm.merchant.search
-			};
-        }
-
-        function initializeMerchant() {
-          vm.merchant.offset = 1;
-          vm.merchant.list.length = 0;
-          searchMerchant();
-        }
-
-        function nextPage() {
-          var params = getMerchantParams();
-
-          if ( ! vm.merchant.busy) {
-            vm.merchant.busy = true;
-            searchMerchant();
-          }
-        }
-
-        initializeMerchant();
-	}
-})(angular);
-
-;(function(angular) {
-    'use strict';
-
-    angular.module('litewait').config(config);
-
-    config.$inject = ['$stateProvider'];
-
-    function config($stateProvider) {
-        $stateProvider
-            .state('merchant', {
-                abstract: true
-            })
-            .state('merchant.list', {
-            	url: "/merchant",
-                views: {
-                    "@": {
-                        templateUrl: "merchant/merchant-list.html",
-                        controller: "MerchantListCtrl",
-                        controllerAs: "ml"
-                    }
-                }
-            }).state('merchant.create', {
-                url: "/cmerchant/:id",
-                views: {
-                    "@": {
-                        templateUrl: "merchant/merchant-create.html",
-                        controller: "MerchantCreateCtrl",
-                        controllerAs: "mcr"
-                    }
-                },
-                resolve: {
-                    merchant: function($timeout, $q, Merchant, $stateParams) {
-                        return Merchant.get($stateParams.id).then(function(response) {
-                            return response.data;
-                        }).catch(function(error) {
-                            return false;
-                        });
-                    }
-                }
-            });
-    }
 })(angular);
 /*
  *
@@ -3587,7 +3374,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		if ($stateParams.keyword) {
 			vm.searchCriteria.keyword = $stateParams.keyword;
 		} else if (Location.current.keyword) {
-			vm.searchCriteria.keyword = Location.keyword;
+			vm.searchCriteria.keyword = Location.current.keyword;
 		}
 
 		vm.search = srch;
@@ -3672,22 +3459,211 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	}
 })();
 /*
- *
- */
+*
+*/
 ;(function(angular) {
 	'use strict';
+	angular.module('litewait.ui').controller('MerchantCreateCtrl', MerchantCreateCtrl);
 
-	angular.module('litewait.ui').controller('MyOrderCtrl', MyOrderCtrl);
+	angular.$inject = ['$scope', 'Merchant', 'merchant', 'toaster'];
 
-	MyOrderCtrl.$inject = ['$scope', 'authentication'];
-
-	function MyOrderCtrl($scope, authentication) {
+	function MerchantCreateCtrl($scope, Merchant, merchant, toaster) {
 		var vm = this;
-		console.log(authentication);
-		// TODO: Need to change things dynamically
+		vm.merchant = {
+			id: '',
+			password: '',
+			business_name: '',
+			business_type: '',
+			contact_person: '',
+			username: '',
+			contact_details: {
+				address_1: '',
+				phone: '',
+				city: '',
+				state: '',
+				country: '',
+				zip_code: '',
+				mail_id: ''
+			},
+			region: '',
+			region_id: '',
+			city: '',
+			city_id: '',
+			photo: '',
+			website: '',
+			open_time: '',
+			close_time: '',
+			avg_waiting_time: '',
+			is_active: 'N'
+		};
+
+		vm.updateMerchant = updateMerchant;
+		vm.assignMerchant = assignMerchant;
+		vm.cancel = cancel;
+
+		function updateMerchant(valid) {
+			if (valid) {
+				var action;
+				if (vm.merchant.id) {
+					action = Merchant.update;
+				} else {
+					action = Merchant.add;
+				}
+				action(vm.merchant).then(function(response) {
+					if (!(response.error)) {
+						toaster.pop({
+                            type: 'success', 
+                            title:'Success', 
+                            body: AUTH_MSG.merchantUpdateSuccess, 
+                            toasterId: 1
+                        });
+					} else {
+						toaster.pop({
+                            type: 'error', 
+                            title:'Error', 
+                            body: AUTH_MSG.merchantUpdateFailed, 
+                            toasterId: 1
+                        });
+					}
+				});
+			}
+		}
+
+		function assignMerchant() {
+			if (merchant) {
+				vm.merchant.id = merchant.data.id;
+				vm.merchant.password = '';
+				vm.merchant.username = merchant.data.username;
+				vm.merchant.business_name = merchant.data.business_name;
+				vm.merchant.business_type = merchant.data.business_type;
+				vm.merchant.contact_person = merchant.data.contact_person;
+				vm.merchant.contact_details.address_1 = merchant.data.contact_details.address_1;
+				vm.merchant.contact_details.phone = merchant.data.contact_details.phone;
+				vm.merchant.contact_details.city = merchant.data.contact_details.city;
+				vm.merchant.contact_details.state = merchant.data.contact_details.state;
+				vm.merchant.contact_details.country = merchant.data.contact_details.country;
+				vm.merchant.contact_details.zip_code = merchant.data.contact_details.zip_code;
+				vm.merchant.contact_details.mail_id = merchant.data.contact_details.mail_id;
+				vm.merchant.region = merchant.data.region;
+				vm.merchant.region_id = merchant.data.region_id;
+				vm.merchant.city = merchant.data.city;
+				vm.merchant.city_id = merchant.data.city_id;
+				vm.merchant.open_time = merchant.data.open_time;
+				vm.merchant.close_time = merchant.data.close_time;
+				vm.merchant.avg_waiting_time = merchant.data.avg_waiting_time;
+				vm.merchant.photo = merchant.data.photo;
+				vm.merchant.website = merchant.data.website;
+				vm.merchant.is_active = merchant.data.is_active;
+			}
+		}
+
+		function cancel(event) {
+			event.preventDefault();
+			$state.go('home');
+		}
+
+		assignMerchant();
 	}
+})(angular);
+/*
+*
+*/
+;(function(angular) {
+	'use strict';
+	angular.module('litewait.ui').controller('MerchantListCtrl', MerchantListCtrl);
 
+	angular.$inject = ['$scope', 'Merchant', '$window', 'AUTH_MSG'];
 
+	function MerchantListCtrl($scope, Merchant, $window, AUTH_MSG) {
+		var vm = this;
+		vm.merchant = {
+			list: [],
+			busy: false,
+			offset: 0,
+			limit: 10,
+			totalRecords: 0,
+			search: ''
+		};
+		vm.initializeMerchant = initializeMerchant;
+		vm.nextPage = nextPage;
+		vm.deleteMerchant = deleteMerchant;
+
+		function deleteMerchant(event, id) {
+			event.preventDefault();
+			var confirm = $window.confirm('Are you sure to want to delete?');
+			if (confirm) {
+				Merchant.deleteMerchant(id).then(function(response) {
+					if (!response.error) {
+						toaster.pop({
+	                        type: 'success', 
+	                        title:'Success', 
+	                        body: AUTH_MSG.merchantDeleteSuccess, 
+	                        toasterId: 1
+	                    });
+					} else {
+						toaster.pop({
+	                        type: 'error', 
+	                        title:'Error', 
+	                        body: AUTH_MSG.merchantDeleteFailed, 
+	                        toasterId: 1
+	                    });
+					}
+				}, function(error) {
+					toaster.pop({
+	                    type: 'error', 
+	                    title:'Error', 
+	                    body: AUTH_MSG.merchantDeleteFailed, 
+	                    toasterId: 1
+	                });
+				});
+			}
+		}
+
+		function searchMerchant() {
+			var obj = getMerchantParams();
+			Merchant.getList(obj).then(function(response) {
+				assignMerchants(response.merchants);
+				vm.merchant.busy = false;
+			}, function() {
+				vm.merchant.busy = false;
+			});
+		}
+
+        function assignMerchants(items) {
+          for (var i = 0; i < items.length; i++) {
+            var index = _.findIndex(vm.merchant.list, {id: items[i].id});
+            if (-1 === index) {
+              vm.merchant.list.push(items[i]);
+            }
+          }
+          vm.merchant.offset = vm.merchant.list.length;
+        }
+
+        function getMerchantParams() {
+          	return {
+				page_no: vm.merchant.offset,
+				page_size: vm.merchant.limit,
+				search: vm.merchant.search
+			};
+        }
+
+        function initializeMerchant() {
+          vm.merchant.offset = 1;
+          vm.merchant.list.length = 0;
+          searchMerchant();
+        }
+
+        function nextPage() {
+          var params = getMerchantParams();
+
+          if ( ! vm.merchant.busy) {
+            vm.merchant.busy = true;
+            searchMerchant();
+          }
+        }
+
+        initializeMerchant();
+	}
 })(angular);
 
 ;(function(angular) {
@@ -3699,33 +3675,38 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
     function config($stateProvider) {
         $stateProvider
-            .state('order', {
+            .state('merchant', {
                 abstract: true
             })
-            .state('order.myorder', {
-            	url: "/myorder",
+            .state('merchant.list', {
+            	url: "/merchant",
                 views: {
                     "@": {
-                        templateUrl: "orders/myorder.html",
-                        controller: "MyOrderCtrl",
-                        controllerAs: "vm"
+                        templateUrl: "merchant/merchant-list.html",
+                        controller: "MerchantListCtrl",
+                        controllerAs: "ml"
+                    }
+                }
+            }).state('merchant.create', {
+                url: "/cmerchant/:id",
+                views: {
+                    "@": {
+                        templateUrl: "merchant/merchant-create.html",
+                        controller: "MerchantCreateCtrl",
+                        controllerAs: "mcr"
                     }
                 },
                 resolve: {
-                    authentication: function (AuthService, $q, $timeout) {
-                        var deferred = $q.defer();
-                        
-                        var handler = $timeout(function() {
-                            var auth = AuthService.isAuthenticated();
-                            if (auth) {
-                                deferred.resolve(true);
-                            } else {
-                                deferred.reject(true);
-                            }
-                            $timeout.cancel(handler);
-                        }, 0);
-                        
-                        return deferred.promise;
+                    merchant: function($timeout, $q, Merchant, $stateParams) {
+                        if ($stateParams.id) {
+                            return Merchant.get($stateParams.id).then(function(response) {
+                                return response.data;
+                            }).catch(function(error) {
+                                return false;
+                            });
+                        } else {
+                            return $q.when(false);
+                        }
                     }
                 }
             });
@@ -3890,6 +3871,66 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             });
     }
 })(angular);
+/*
+ *
+ */
+;(function(angular) {
+	'use strict';
+
+	angular.module('litewait.ui').controller('MyOrderCtrl', MyOrderCtrl);
+
+	MyOrderCtrl.$inject = ['$scope', 'authentication'];
+
+	function MyOrderCtrl($scope, authentication) {
+		var vm = this;
+		console.log(authentication);
+		// TODO: Need to change things dynamically
+	}
+
+
+})(angular);
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('order', {
+                abstract: true
+            })
+            .state('order.myorder', {
+            	url: "/myorder",
+                views: {
+                    "@": {
+                        templateUrl: "orders/myorder.html",
+                        controller: "MyOrderCtrl",
+                        controllerAs: "vm"
+                    }
+                },
+                resolve: {
+                    authentication: function (AuthService, $q, $timeout) {
+                        var deferred = $q.defer();
+                        
+                        var handler = $timeout(function() {
+                            var auth = AuthService.isAuthenticated();
+                            if (auth) {
+                                deferred.resolve(true);
+                            } else {
+                                deferred.reject(true);
+                            }
+                            $timeout.cancel(handler);
+                        }, 0);
+                        
+                        return deferred.promise;
+                    }
+                }
+            });
+    }
+})(angular);
 /**
  *
  */
@@ -4008,11 +4049,11 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             if (user) {
                 var data = {};
                 data.isLoggedIn = true;
-                data.id = user.contact.mail_id;
+                data.id = user.contact.mail_id || user.contact_details.mail_id;
                 data.username = user.user;
-                data.email = user.contact.mail_id;
-                data.role = 'consumer';
-                data.name = user.user_name;
+                data.email = user.contact.mail_id || user.contact_details.mail_id;
+                data.role = user.user_session ? 'c' : 'm';
+                data.name = user.user_name || user.username;
                 data.data = user;
                 
                 angular.extend(sessionUser, data);
@@ -4192,7 +4233,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     facebookLogin: function (data) {
                         var params = {
                             provider: 'facebook',
-                            user_type: data.user_type
+                            userType: data.user_type
                         };
 
                         return $auth.authenticate(provider).then(function(response) {
@@ -4210,7 +4251,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     googleLogin: function (data) {
                         var params = {
                             provider: 'google',
-                            user_type: data.user_type
+                            userType: data.user_type
                         };
 
                         return $auth.authenticate(provider).then(function(response) {
@@ -4232,7 +4273,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                                 provider: 'litewait',
                                 user: data.username,
                                 user_password: data.password,
-                                user_type: data.user_type
+                                userType: data.user_type
                             };
 
                         return $http({
@@ -4242,7 +4283,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         }).success(function(response, status, headers) {
                             if (!response.error) {
                                 User.assign(response.data);
-                                setToken(response.data.user_session);
+                                setToken(response.data.user_session || response.data.merchant_session);
                                 raise(AUTH_EVENTS.loginSuccess, User);
                                 deferred.resolve(User);
                             } else {
@@ -4264,7 +4305,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
                         var saveUser = _.clone(User);
                         
-                        return $http.get(endpoint).success(function(response) {
+                        return $http.get(endpoint + '?userType=' + User.role).success(function(response) {
                             if (!response.error) {
                                 
                                 setToken(null);
@@ -4351,7 +4392,8 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		}
 
 		function deleteMerchant(id) {
-			//return $http.put(urlBase, data);
+			var data = {params: id};
+			return $http.delete(urlBase, data);
 		}
 
 		function update(data) {
@@ -4479,8 +4521,9 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		}
 
 		function getKeywords(params) {
-			var url = urlBase + 'items?region_id=5540de6bb01cc3100320ff05&city_id=5540de6bb01cc3100320ff04&search_text=z';
-			return $http.get(url).then(function(response) {
+			var data = {params: params};
+			var url = urlBase;// + 'items?region_id=5540de6bb01cc3100320ff05&city_id=5540de6bb01cc3100320ff04&search_text=z';
+			return $http.get(url, data).then(function(response) {
 				if (!response.data.error) {
 					return response.data.data;
 				}
@@ -4514,8 +4557,9 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 		function getMerchantList(params) {
 			//var queryString = angular.param(params);
-			var url = urlBase + 'merchant?region_id=5540de6bb01cc3100320ff05&city_id=5540de6bb01cc3100320ff04&search_text=y&page_no=1&page_size=10';
-			return $http.get(url).then(function(response) {
+			var data = {params: params};
+			var url = urlBase;// + 'merchant?region_id=5540de6bb01cc3100320ff05&city_id=5540de6bb01cc3100320ff04&search_text=y&page_no=1&page_size=10';
+			return $http.get(url, data).then(function(response) {
 				if (!response.data.error) {
 					return response.data.data;
 				}

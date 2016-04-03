@@ -25,7 +25,7 @@
 		if ($stateParams.keyword) {
 			vm.searchCriteria.keyword = $stateParams.keyword;
 		} else if (Location.current.keyword) {
-			vm.searchCriteria.keyword = Location.keyword;
+			vm.searchCriteria.keyword = Location.current.keyword;
 		}
 
 		vm.search = srch;

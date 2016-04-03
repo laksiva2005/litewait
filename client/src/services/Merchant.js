@@ -28,7 +28,8 @@
 		}
 
 		function deleteMerchant(id) {
-			//return $http.put(urlBase, data);
+			var data = {params: id};
+			return $http.delete(urlBase, data);
 		}
 
 		function update(data) {

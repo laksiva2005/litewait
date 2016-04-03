@@ -5,9 +5,9 @@
 	'use strict';
 	angular.module('litewait.ui').controller('MerchantListCtrl', MerchantListCtrl);
 
-	angular.$inject = ['$scope', 'Merchant'];
+	angular.$inject = ['$scope', 'Merchant', '$window', 'AUTH_MSG'];
 
-	function MerchantListCtrl($scope, Merchant) {
+	function MerchantListCtrl($scope, Merchant, $window, AUTH_MSG) {
 		var vm = this;
 		vm.merchant = {
 			list: [],
@@ -19,6 +19,38 @@
 		};
 		vm.initializeMerchant = initializeMerchant;
 		vm.nextPage = nextPage;
+		vm.deleteMerchant = deleteMerchant;
+
+		function deleteMerchant(event, id) {
+			event.preventDefault();
+			var confirm = $window.confirm('Are you sure to want to delete?');
+			if (confirm) {
+				Merchant.deleteMerchant(id).then(function(response) {
+					if (!response.error) {
+						toaster.pop({
+	                        type: 'success', 
+	                        title:'Success', 
+	                        body: AUTH_MSG.merchantDeleteSuccess, 
+	                        toasterId: 1
+	                    });
+					} else {
+						toaster.pop({
+	                        type: 'error', 
+	                        title:'Error', 
+	                        body: AUTH_MSG.merchantDeleteFailed, 
+	                        toasterId: 1
+	                    });
+					}
+				}, function(error) {
+					toaster.pop({
+	                    type: 'error', 
+	                    title:'Error', 
+	                    body: AUTH_MSG.merchantDeleteFailed, 
+	                    toasterId: 1
+	                });
+				});
+			}
+		}
 
 		function searchMerchant() {
 			var obj = getMerchantParams();

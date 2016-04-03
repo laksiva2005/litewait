@@ -28,8 +28,9 @@
 		}
 
 		function getKeywords(params) {
-			var url = urlBase + 'items?region_id=5540de6bb01cc3100320ff05&city_id=5540de6bb01cc3100320ff04&search_text=z';
-			return $http.get(url).then(function(response) {
+			var data = {params: params};
+			var url = urlBase;// + 'items?region_id=5540de6bb01cc3100320ff05&city_id=5540de6bb01cc3100320ff04&search_text=z';
+			return $http.get(url, data).then(function(response) {
 				if (!response.data.error) {
 					return response.data.data;
 				}
@@ -63,8 +64,9 @@
 
 		function getMerchantList(params) {
 			//var queryString = angular.param(params);
-			var url = urlBase + 'merchant?region_id=5540de6bb01cc3100320ff05&city_id=5540de6bb01cc3100320ff04&search_text=y&page_no=1&page_size=10';
-			return $http.get(url).then(function(response) {
+			var data = {params: params};
+			var url = urlBase;// + 'merchant?region_id=5540de6bb01cc3100320ff05&city_id=5540de6bb01cc3100320ff04&search_text=y&page_no=1&page_size=10';
+			return $http.get(url, data).then(function(response) {
 				if (!response.data.error) {
 					return response.data.data;
 				}

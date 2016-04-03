@@ -5,17 +5,18 @@
 	'use strict';
 	angular.module('litewait.ui').controller('MerchantCreateCtrl', MerchantCreateCtrl);
 
-	angular.$inject = ['$scope', 'Merchant', 'merchant'];
+	angular.$inject = ['$scope', 'Merchant', 'merchant', 'toaster'];
 
-	function MerchantCreateCtrl($scope, Merchant, merchant) {
+	function MerchantCreateCtrl($scope, Merchant, merchant, toaster) {
 		var vm = this;
 		vm.merchant = {
 			id: '',
+			password: '',
 			business_name: '',
 			business_type: '',
 			contact_person: '',
 			username: '',
-			contact: {
+			contact_details: {
 				address_1: '',
 				phone: '',
 				city: '',
@@ -32,11 +33,12 @@
 			website: '',
 			open_time: '',
 			close_time: '',
-			avg_waiting_time: ''
+			avg_waiting_time: '',
+			is_active: 'N'
 		};
 
 		vm.updateMerchant = updateMerchant;
-		vm.assignmerchant = assignmerchant;
+		vm.assignMerchant = assignMerchant;
 		vm.cancel = cancel;
 
 		function updateMerchant(valid) {
@@ -69,17 +71,19 @@
 
 		function assignMerchant() {
 			if (merchant) {
+				vm.merchant.id = merchant.data.id;
+				vm.merchant.password = '';
 				vm.merchant.username = merchant.data.username;
 				vm.merchant.business_name = merchant.data.business_name;
 				vm.merchant.business_type = merchant.data.business_type;
 				vm.merchant.contact_person = merchant.data.contact_person;
-				vm.merchant.contact.address_1 = merchant.data.contact.address_1;
-				vm.merchant.contact.phone = merchant.data.contact.phone;
-				vm.merchant.contact.city = merchant.data.contact.city;
-				vm.merchant.contact.state = merchant.data.contact.state;
-				vm.merchant.contact.country = merchant.data.contact.country;
-				vm.merchant.contact.zip_code = merchant.data.contact.zip_code;
-				vm.merchant.contact.mail_id = merchant.data.contact.mail_id;
+				vm.merchant.contact_details.address_1 = merchant.data.contact_details.address_1;
+				vm.merchant.contact_details.phone = merchant.data.contact_details.phone;
+				vm.merchant.contact_details.city = merchant.data.contact_details.city;
+				vm.merchant.contact_details.state = merchant.data.contact_details.state;
+				vm.merchant.contact_details.country = merchant.data.contact_details.country;
+				vm.merchant.contact_details.zip_code = merchant.data.contact_details.zip_code;
+				vm.merchant.contact_details.mail_id = merchant.data.contact_details.mail_id;
 				vm.merchant.region = merchant.data.region;
 				vm.merchant.region_id = merchant.data.region_id;
 				vm.merchant.city = merchant.data.city;
@@ -89,6 +93,7 @@
 				vm.merchant.avg_waiting_time = merchant.data.avg_waiting_time;
 				vm.merchant.photo = merchant.data.photo;
 				vm.merchant.website = merchant.data.website;
+				vm.merchant.is_active = merchant.data.is_active;
 			}
 		}
 

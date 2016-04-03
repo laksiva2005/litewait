@@ -116,11 +116,11 @@
             if (user) {
                 var data = {};
                 data.isLoggedIn = true;
-                data.id = user.contact.mail_id;
+                data.id = user.contact.mail_id || user.contact_details.mail_id;
                 data.username = user.user;
-                data.email = user.contact.mail_id;
-                data.role = 'consumer';
-                data.name = user.user_name;
+                data.email = user.contact.mail_id || user.contact_details.mail_id;
+                data.role = user.user_session ? 'c' : 'm';
+                data.name = user.user_name || user.username;
                 data.data = user;
                 
                 angular.extend(sessionUser, data);
@@ -300,7 +300,7 @@
                     facebookLogin: function (data) {
                         var params = {
                             provider: 'facebook',
-                            user_type: data.user_type
+                            userType: data.user_type
                         };
 
                         return $auth.authenticate(provider).then(function(response) {
@@ -318,7 +318,7 @@
                     googleLogin: function (data) {
                         var params = {
                             provider: 'google',
-                            user_type: data.user_type
+                            userType: data.user_type
                         };
 
                         return $auth.authenticate(provider).then(function(response) {
@@ -340,7 +340,7 @@
                                 provider: 'litewait',
                                 user: data.username,
                                 user_password: data.password,
-                                user_type: data.user_type
+                                userType: data.user_type
                             };
 
                         return $http({
@@ -350,7 +350,7 @@
                         }).success(function(response, status, headers) {
                             if (!response.error) {
                                 User.assign(response.data);
-                                setToken(response.data.user_session);
+                                setToken(response.data.user_session || response.data.merchant_session);
                                 raise(AUTH_EVENTS.loginSuccess, User);
                                 deferred.resolve(User);
                             } else {
@@ -372,7 +372,7 @@
 
                         var saveUser = _.clone(User);
                         
-                        return $http.get(endpoint).success(function(response) {
+                        return $http.get(endpoint + '?userType=' + User.role).success(function(response) {
                             if (!response.error) {
                                 
                                 setToken(null);

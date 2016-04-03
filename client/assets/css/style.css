@@ -31,10 +31,19 @@ a:focus { color:#28ace2; text-decoration:none;}
 }
 
 .merchant-list a.edit {
-	position: absolute;
+	float: right;
     right: 10px;
     top: 10px;
     color: #808080;
+    padding: 0 5px;
+}
+
+.merchant-list a.delete {
+  float: right;
+    right: 10px;
+    top: 10px;
+    color: #808080;
+    padding: 0 5px;
 }
 
 .merchant-list h2 {
@@ -473,6 +482,25 @@ box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);}
 .change-password .form-control::-webkit-input-placeholder {color: #444;font-size:18px;}
 .change-password .btn { background:#29ace4; font-size:16px; padding:6px 20px 4px; text-transform:uppercase; border-radius:0px; color:#fff; border:none;}
 .change-password .btn:hover { background:#f79623;}
+
+/* Edit merchant */
+.edit-merchant { padding:30px 15px 30px;}
+.edit-merchant h1 { font-size:18px;color:#28ace2; font-weight:bold;}
+.edit-merchant .form-wrap { padding:40px 25px; background:#f7f7f7; margin-top:20px;}
+.edit-merchant .form-control { background:#fff; height:42px; margin-bottom:20px;border-radius:0px; box-shadow:none;border:none; font-size:16px; color:#444;}
+.edit-merchant .form-control::-moz-placeholder {color: #444;opacity: 1;font-size:16px;}
+.edit-merchant .form-control:-ms-input-placeholder {color: #444;font-size:18px;}
+.edit-merchant .form-control::-webkit-input-placeholder {color: #444;font-size:18px;}
+.edit-merchant textarea.form-control { height:103px;}
+.edit-merchant .btn { background:#29ace4; font-size:16px; padding:6px 20px 4px; text-transform:uppercase; border-radius:0px; color:#fff; border:none; margin-left:10px;}
+.edit-merchant .btn:hover { background:#f79623;}
+.edit-merchant .nav-tabs { border:none; border-bottom:1px solid #ccc;}
+.edit-merchant .nav-tabs > li { padding:0px; margin-right:3px;}
+.edit-merchant .nav-tabs > li a { background:#f79622; border-radius:0px; border:none; color:#fff; font-size:16px; text-transform:uppercase; text-align:center; padding:10px 20px 8px; margin:0px;}
+.edit-merchant .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {border:none; background:#28ace2; border-radius:0px; color:#fff;}
+.edit-merchant .tab-content { padding:30px 30px 0px;}
+.edit-merchant .tab-pane { padding-top:20px;}
+
 
 /* Edit profile */
 .edit-profile { padding:30px 15px 30px;}

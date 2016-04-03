@@ -31,11 +31,15 @@
                 },
                 resolve: {
                     merchant: function($timeout, $q, Merchant, $stateParams) {
-                        return Merchant.get($stateParams.id).then(function(response) {
-                            return response.data;
-                        }).catch(function(error) {
-                            return false;
-                        });
+                        if ($stateParams.id) {
+                            return Merchant.get($stateParams.id).then(function(response) {
+                                return response.data;
+                            }).catch(function(error) {
+                                return false;
+                            });
+                        } else {
+                            return $q.when(false);
+                        }
                     }
                 }
             });
