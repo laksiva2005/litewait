@@ -300,7 +300,7 @@
                     facebookLogin: function (data) {
                         var params = {
                             provider: 'facebook',
-                            userType: data.user_type
+                            user_type: data.user_type
                         };
 
                         return $auth.authenticate(provider).then(function(response) {
@@ -318,7 +318,7 @@
                     googleLogin: function (data) {
                         var params = {
                             provider: 'google',
-                            userType: data.user_type
+                            user_type: data.user_type
                         };
 
                         return $auth.authenticate(provider).then(function(response) {
@@ -340,7 +340,7 @@
                                 provider: 'litewait',
                                 user: data.username,
                                 user_password: data.password,
-                                userType: data.user_type
+                                user_type: data.user_type
                             };
 
                         return $http({
@@ -372,7 +372,7 @@
 
                         var saveUser = _.clone(User);
                         
-                        return $http.get(endpoint + '?userType=' + User.role).success(function(response) {
+                        return $http.get(endpoint + '?user_type=' + User.role).success(function(response) {
                             if (!response.error) {
                                 
                                 setToken(null);
