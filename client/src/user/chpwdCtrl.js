@@ -5,9 +5,9 @@
 	'use strict';
 	angular.module('litewait.ui').controller('ChpwdCtrl', ChpwdCtrl);
 
-	ChpwdCtrl.$inject = ['$scope', 'AUTH_PROPS', 'authentication'];
+	ChpwdCtrl.$inject = ['$scope', 'AUTH_PROPS', 'User', 'authentication'];
 
-	function ChpwdCtrl($scope, AUTH_PROPS, authentication) {
+	function ChpwdCtrl($scope, AUTH_PROPS, User, authentication) {
 		var vm = this;
 		vm.pwd = {
 			old_password: '',
@@ -24,6 +24,7 @@
 				var data = {};
 				data.old_password = vm.pwd.old_password;
 				data.new_password = vm.pwd.new_password;
+				data.user_type = User.role;
 
 				vm.user.changePassword(data).then(function(response) {
 					if (!(response.data.error || response.error)) {

@@ -3874,6 +3874,66 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 /*
  *
  */
+;(function(angular) {
+	'use strict';
+
+	angular.module('litewait.ui').controller('MyOrderCtrl', MyOrderCtrl);
+
+	MyOrderCtrl.$inject = ['$scope', 'authentication'];
+
+	function MyOrderCtrl($scope, authentication) {
+		var vm = this;
+		console.log(authentication);
+		// TODO: Need to change things dynamically
+	}
+
+
+})(angular);
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('order', {
+                abstract: true
+            })
+            .state('order.myorder', {
+            	url: "/myorder",
+                views: {
+                    "@": {
+                        templateUrl: "orders/myorder.html",
+                        controller: "MyOrderCtrl",
+                        controllerAs: "vm"
+                    }
+                },
+                resolve: {
+                    authentication: function (AuthService, $q, $timeout) {
+                        var deferred = $q.defer();
+                        
+                        var handler = $timeout(function() {
+                            var auth = AuthService.isAuthenticated();
+                            if (auth) {
+                                deferred.resolve(true);
+                            } else {
+                                deferred.reject(true);
+                            }
+                            $timeout.cancel(handler);
+                        }, 0);
+                        
+                        return deferred.promise;
+                    }
+                }
+            });
+    }
+})(angular);
+/*
+ *
+ */
 ;(function() {
 	'use strict';
 	angular.module('litewait.ui').controller('SearchCtrl', SearchCtrl);
@@ -4024,66 +4084,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
                             $timeout.cancel(handler);
                         }, 0);
-                        return deferred.promise;
-                    }
-                }
-            });
-    }
-})(angular);
-/*
- *
- */
-;(function(angular) {
-	'use strict';
-
-	angular.module('litewait.ui').controller('MyOrderCtrl', MyOrderCtrl);
-
-	MyOrderCtrl.$inject = ['$scope', 'authentication'];
-
-	function MyOrderCtrl($scope, authentication) {
-		var vm = this;
-		console.log(authentication);
-		// TODO: Need to change things dynamically
-	}
-
-
-})(angular);
-
-;(function(angular) {
-    'use strict';
-
-    angular.module('litewait').config(config);
-
-    config.$inject = ['$stateProvider'];
-
-    function config($stateProvider) {
-        $stateProvider
-            .state('order', {
-                abstract: true
-            })
-            .state('order.myorder', {
-            	url: "/myorder",
-                views: {
-                    "@": {
-                        templateUrl: "orders/myorder.html",
-                        controller: "MyOrderCtrl",
-                        controllerAs: "vm"
-                    }
-                },
-                resolve: {
-                    authentication: function (AuthService, $q, $timeout) {
-                        var deferred = $q.defer();
-                        
-                        var handler = $timeout(function() {
-                            var auth = AuthService.isAuthenticated();
-                            if (auth) {
-                                deferred.resolve(true);
-                            } else {
-                                deferred.reject(true);
-                            }
-                            $timeout.cancel(handler);
-                        }, 0);
-                        
                         return deferred.promise;
                     }
                 }
@@ -4896,9 +4896,9 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	'use strict';
 	angular.module('litewait.ui').controller('ChpwdCtrl', ChpwdCtrl);
 
-	ChpwdCtrl.$inject = ['$scope', 'AUTH_PROPS', 'authentication'];
+	ChpwdCtrl.$inject = ['$scope', 'AUTH_PROPS', 'User', 'authentication'];
 
-	function ChpwdCtrl($scope, AUTH_PROPS, authentication) {
+	function ChpwdCtrl($scope, AUTH_PROPS, User, authentication) {
 		var vm = this;
 		vm.pwd = {
 			old_password: '',
@@ -4915,6 +4915,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 				var data = {};
 				data.old_password = vm.pwd.old_password;
 				data.new_password = vm.pwd.new_password;
+				data.user_type = User.role;
 
 				vm.user.changePassword(data).then(function(response) {
 					if (!(response.data.error || response.error)) {
@@ -4972,7 +4973,8 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 				country: '',
 				zip_code: '',
 				mail_id: ''
-			}
+			},
+			user_type: ''
 		};
 
 		vm.payment = {
@@ -5037,6 +5039,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			vm.profile.contact.country = vm.user.data.contact.country;
 			vm.profile.contact.zip_code = vm.user.data.contact.zip_code;
 			vm.profile.contact.mail_id = vm.user.data.contact.mail_id;
+			vm.profile.user_type = User.role;
 		}
 
 		function assignPayment(paymentConfig) {

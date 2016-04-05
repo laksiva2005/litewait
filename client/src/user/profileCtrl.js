@@ -22,7 +22,8 @@
 				country: '',
 				zip_code: '',
 				mail_id: ''
-			}
+			},
+			user_type: ''
 		};
 
 		vm.payment = {
@@ -87,6 +88,7 @@
 			vm.profile.contact.country = vm.user.data.contact.country;
 			vm.profile.contact.zip_code = vm.user.data.contact.zip_code;
 			vm.profile.contact.mail_id = vm.user.data.contact.mail_id;
+			vm.profile.user_type = User.role;
 		}
 
 		function assignPayment(paymentConfig) {

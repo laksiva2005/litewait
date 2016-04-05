@@ -923,62 +923,6 @@ try {
   module = angular.module('litewait.ui', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('search/search.html',
-    '<div class="container-fluid banner-wrap" ng-if="!user.isLoggedIn">\n' +
-    '	<div class="banner">\n' +
-    '    	<div class="col-md-10 cnt">\n' +
-    '    	<p class="title-1">SAVE YOUR TIME...INCREASE PRODUCTIVE TIME<br/>\n' +
-    'SAVE MONEY!!</p>\n' +
-    '		<p class="title-2">Tired of waiting in queue, come join us</p>\n' +
-    '        <a href="#" class="btn join"  ng-click="vm.openSignUpModal($event)">Join Now !!</a>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '</div>\n' +
-    '<div class="container-fluid search-wrap" ui-view="search-box">\n' +
-    '</div>\n' +
-    '<div class="container search-result">\n' +
-    '  <div class="col-md-12 best-bet">These retailers are your best bet for:<a href="#">{{sc.keyword}}</a></div>\n' +
-    '  <div class="row-fluid">\n' +
-    '    <div class="col-md-12">\n' +
-    '      <div class="list-wrap" infinite-scroll="sc.nextPage()"\n' +
-    '      infinite-scroll-distance="0"\n' +
-    '      infinite-scroll-immediate-check="false">\n' +
-    '        <div class="list-item" ng-repeat="(key, value) in sc.merchant.list">\n' +
-    '          <div class="col-xs-12 col-sm-8 col-md-8" >\n' +
-    '            <h2><a href="shop-detail-menu.html">{{value.business_name}}</a></h2>\n' +
-    '            <img src="{{value.photo}}" class="pull-left" />\n' +
-    '            <div> <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>\n' +
-    '              <p>0.98 mi Distance from search location</p>\n' +
-    '              <p class="wait">{{value.avg_wait_time}} Wait Time</p>\n' +
-    '              <p>Open {{value.open_time}} to {{value.close_time}}</p>\n' +
-    '            </div>\n' +
-    '          </div>\n' +
-    '          <div class="col-xs-12 col-sm-4 col-md-4 menu">\n' +
-    '            <h2>Popular Items</h2>\n' +
-    '            <ul>\n' +
-    '              <li><a href="#">Chicken Parmesan Sub</a></li>\n' +
-    '              <li><a href="#">BBQ Chicken Sub</a></li>\n' +
-    '              <li><a href="#">Veggie Sub</a></li>\n' +
-    '              <li><a href="#">Chicken Ranch Hot Sandwich</a></li>\n' +
-    '              <li><a href="#">Cold Cut Hot Sandwich</a></li>\n' +
-    '            </ul>\n' +
-    '            <a ng-click="sc.viewMerchant(value.id)" class="btn btn-block">View Retailer</a></div>\n' +
-    '          <div class="clearfix"></div>\n' +
-    '        </div>\n' +
-    '      </div>\n' +
-    '    </div>\n' +
-    '  </div>\n' +
-    '</div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
   $templateCache.put('orders/myorder.html',
     '<div class="container my-order-wrap">\n' +
     '         \n' +
@@ -1073,6 +1017,62 @@ module.run(['$templateCache', function($templateCache) {
     '         <div class="clearfix"></div>\n' +
     '      </div>\n' +
     '   </div>\n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('search/search.html',
+    '<div class="container-fluid banner-wrap" ng-if="!user.isLoggedIn">\n' +
+    '	<div class="banner">\n' +
+    '    	<div class="col-md-10 cnt">\n' +
+    '    	<p class="title-1">SAVE YOUR TIME...INCREASE PRODUCTIVE TIME<br/>\n' +
+    'SAVE MONEY!!</p>\n' +
+    '		<p class="title-2">Tired of waiting in queue, come join us</p>\n' +
+    '        <a href="#" class="btn join"  ng-click="vm.openSignUpModal($event)">Join Now !!</a>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '</div>\n' +
+    '<div class="container-fluid search-wrap" ui-view="search-box">\n' +
+    '</div>\n' +
+    '<div class="container search-result">\n' +
+    '  <div class="col-md-12 best-bet">These retailers are your best bet for:<a href="#">{{sc.keyword}}</a></div>\n' +
+    '  <div class="row-fluid">\n' +
+    '    <div class="col-md-12">\n' +
+    '      <div class="list-wrap" infinite-scroll="sc.nextPage()"\n' +
+    '      infinite-scroll-distance="0"\n' +
+    '      infinite-scroll-immediate-check="false">\n' +
+    '        <div class="list-item" ng-repeat="(key, value) in sc.merchant.list">\n' +
+    '          <div class="col-xs-12 col-sm-8 col-md-8" >\n' +
+    '            <h2><a href="shop-detail-menu.html">{{value.business_name}}</a></h2>\n' +
+    '            <img src="{{value.photo}}" class="pull-left" />\n' +
+    '            <div> <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>\n' +
+    '              <p>0.98 mi Distance from search location</p>\n' +
+    '              <p class="wait">{{value.avg_wait_time}} Wait Time</p>\n' +
+    '              <p>Open {{value.open_time}} to {{value.close_time}}</p>\n' +
+    '            </div>\n' +
+    '          </div>\n' +
+    '          <div class="col-xs-12 col-sm-4 col-md-4 menu">\n' +
+    '            <h2>Popular Items</h2>\n' +
+    '            <ul>\n' +
+    '              <li><a href="#">Chicken Parmesan Sub</a></li>\n' +
+    '              <li><a href="#">BBQ Chicken Sub</a></li>\n' +
+    '              <li><a href="#">Veggie Sub</a></li>\n' +
+    '              <li><a href="#">Chicken Ranch Hot Sandwich</a></li>\n' +
+    '              <li><a href="#">Cold Cut Hot Sandwich</a></li>\n' +
+    '            </ul>\n' +
+    '            <a ng-click="sc.viewMerchant(value.id)" class="btn btn-block">View Retailer</a></div>\n' +
+    '          <div class="clearfix"></div>\n' +
+    '        </div>\n' +
+    '      </div>\n' +
+    '    </div>\n' +
+    '  </div>\n' +
     '</div>');
 }]);
 })();
