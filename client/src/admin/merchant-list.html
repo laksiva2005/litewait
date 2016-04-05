@@ -9,6 +9,7 @@
 		<div class="col-sm-12 col-md-6">
 			<div class="form-group">
 				<a ng-click="ml.initializeMerchant()" class="btn btn-default">Search</a>
+				<a ng-click="nav.go('admin_merchant.new')" class="btn btn-primary">Add New</a>
 			</div>
 		</div>
 	</div>
@@ -23,7 +24,7 @@
 	           <p> {{value.street_address}}, {{value.region}}, {{value.city}},<br>{{value.state}} {{value.zipcode}}, {{value.country}} 
 	           </p>
 	        </div>
-	        <a href="#/cmerchant/{{value.id}}" class="edit"><i class="fa fa-pencil"></i></a>
+	        <a href="#/admin/merchant/edit/{{value.id}}" class="edit"><i class="fa fa-pencil"></i></a>
 	        <a href="#" ng-click="ml.deleteMerchant($event, value.id)" class="delete"><i class="fa fa-trash"></i></a>
 	        <div class="clearfix"></div>
 	    </div>

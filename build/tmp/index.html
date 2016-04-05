@@ -134,15 +134,15 @@
                 <form novalidate name="loginModal.loginForm" ng-submit="loginModal.modalProps.login(loginModal.loginForm.$valid, 'litewait', loginModal.modalProps)">
                   <div class="radio-wrap">
                     <label class="name">Login as</label> 
-                    <label class="radio-inline"><input required type="radio" ng-model="loginModal.modalProps.user_type" value="C" name="user_type">Consumer</label>
-                    <label class="radio-inline"><input required type="radio" ng-model="loginModal.modalProps.user_type" value="M" name="user_type">Merchant</label>
+                    <label class="radio-inline"><input required type="radio" ng-model="loginModal.modalProps.user_type" value="c" name="user_type">Consumer</label>
+                    <label class="radio-inline"><input required type="radio" ng-model="loginModal.modalProps.user_type" value="m" name="user_type">Merchant</label>
                   </div>
                   <input class="form-control" required name="username" type="text" ng-model="loginModal.modalProps.username" placeholder="User Name"/>
                   <input class="form-control" required name="password" type="password" ng-model="loginModal.modalProps.password" placeholder="Password" />
                   <div class="sign-wrap"><button class="btn sign">signin</button></div>
                 </form>
                 <div class="clearfix"></div>
-                <div class="social-wrap" ng-if="loginModal.modalProps.user_type === 'C'">
+                <div class="social-wrap" ng-if="loginModal.modalProps.user_type === 'c'">
                   <p>OR</p>
                   <div class="social">
                     <a class="btn col-md-6 fb" ng-click="loginModal.modalProps.login(true, 'facebook', {})"><i class="fa fa-facebook"></i>Signin with facebook</a> 
@@ -171,8 +171,8 @@
                 <form novalidate name="loginModal.forgotForm" ng-submit="loginModal.modalProps.resetPwd(loginModal.forgotForm.$valid, loginModal.resetProps)">
                   <div class="radio-wrap">
                     <label class="name">Choose as</label> 
-                    <label class="radio-inline"><input required type="radio" ng-model="loginModal.resetProps.user_type" value="C" name="user_type">Consumer</label>
-                    <label class="radio-inline"><input required type="radio" ng-model="loginModal.resetProps.user_type" value="M" name="user_type">Merchant</label>
+                    <label class="radio-inline"><input required type="radio" ng-model="loginModal.resetProps.user_type" value="c" name="user_type">Consumer</label>
+                    <label class="radio-inline"><input required type="radio" ng-model="loginModal.resetProps.user_type" value="m" name="user_type">Merchant</label>
                   </div>
 
                   <input class="form-control" required name="username" type="text" ng-model="loginModal.resetProps.user" placeholder="User Name"/>

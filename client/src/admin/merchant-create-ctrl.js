@@ -9,6 +9,7 @@
 
 	function MerchantCreateCtrl($scope, Merchant, merchant, toaster) {
 		var vm = this;
+		vm.type = merchant ? 'Edit' : 'Add';
 		vm.merchant = {
 			id: '',
 			password: '',

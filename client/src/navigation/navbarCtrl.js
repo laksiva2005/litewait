@@ -59,7 +59,7 @@
                 scope: $scope,
                 bindToController: true,
                 controllerAs: 'loginModal',
-                controller: function($scope, $uibModalInstance, PubSub, AuthService, toaster, AUTH_MSG, AUTH_PROPS, User) {
+                controller: function($scope, $uibModalInstance, PubSub, AuthService, toaster, AUTH_MSG, AUTH_PROPS, User, $state) {
                     var vm = this;
                     vm.modalProps = {};
                     vm.modalProps.signin = $scope.$parent.signin;
@@ -67,13 +67,13 @@
                     vm.modalProps.active = $scope.$parent.activeTab;
                     vm.modalProps.username = '';
                     vm.modalProps.password = '';
-                    vm.modalProps.user_type = 'C';
+                    vm.modalProps.user_type = 'c';
                     vm.modalProps.isForgotPassword = false;
                     vm.modalProps.passwordPattern = AUTH_PROPS.PASSWORD_PATTERN;
 
                     vm.resetProps = {
                         user: '',
-                        user_type: 'C',
+                        user_type: 'c',
                     };
 
                     vm.registerProps = {
@@ -81,7 +81,7 @@
                         user_mail: '',
                         user_password: '',
                         user_confirm_password: '',
-                        user_type: 'C'
+                        user_type: 'c'
                     };
 
                     vm.modalProps.login = login;
@@ -129,6 +129,9 @@
                         AuthService.authenticate(provider, data).then(function(response) {
                             if (!(response.data.error || response.error)) {
                                 vm.modalProps.close();
+                                if (User.role == 'm') {
+                                    $state.go('merchant.order');
+                                }
                             } else {
                                 toaster.pop({
                                     type: 'error', 

@@ -116,11 +116,11 @@
             if (user) {
                 var data = {};
                 data.isLoggedIn = true;
-                data.id = user.contact.mail_id || user.contact_details.mail_id;
+                data.id = user.contact.mail_id;
                 data.username = user.user;
-                data.email = user.contact.mail_id || user.contact_details.mail_id;
-                data.role = user.user_session ? 'c' : 'm';
-                data.name = user.user_name || user.username;
+                data.email = user.contact.mail_id;
+                data.role = user.user_type;
+                data.name = user.username;
                 data.data = user;
                 
                 angular.extend(sessionUser, data);
@@ -349,6 +349,7 @@
                             data: params
                         }).success(function(response, status, headers) {
                             if (!response.error) {
+                                response.data.user_type = params.user_type;
                                 User.assign(response.data);
                                 setToken(response.data.user_session || response.data.merchant_session);
                                 raise(AUTH_EVENTS.loginSuccess, User);

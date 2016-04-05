@@ -2896,198 +2896,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
     }
 })(angular);
 /*
- *
- */
-;(function (angular) {
-    'use strict';
-
-    function compareTo() {
-        return {
-            restrict: 'A',
-            require: "ngModel",
-            scope: {
-                otherModelValue: "=compareTo"
-            },
-            link: function(scope, element, attributes, ngModel) {
-                 
-                ngModel.$validators.compareTo = function(modelValue) {
-                    return modelValue == scope.otherModelValue;
-                };
-     
-                scope.$watch("otherModelValue", function() {
-                    ngModel.$validate();
-                });
-            }
-        };
-    }
-     
-    angular.module('litewait.directives').directive("compareTo", compareTo);
-
-})(angular);
-
-
-;(function() {
-  'use strict';
-
-  function dateAsMs() {
-    return {
-      restrict: 'A',
-      require: 'ngModel',
-      link: function(scope,elem,attrs,ngModelCtrl) {
-        ngModelCtrl.$parsers.push(function(value){
-          if (value && value.getTime) {
-            return value.getTime();
-          } else {
-            return value;
-          }
-        });
-      }
-    };
-  }
-
-  angular.module('litewait.directives').directive("dateAsMs", dateAsMs);
-  
-})();
-/**
- *
- */
- ;(function() {
- 	'use strict';
-
-	angular.module('litewait.directives')
-    .directive('datepickerPopup', datepickerPopup);
-
-    function datepickerPopup() {
-
-        return {
-            restrict: 'EA',
-            require: 'ngModel',
-            link: function(scope, element, attr, controller) {
-              controller.$formatters.shift();
-            }
-        };
-    }
- })();
-
-
-/*
- *
- */
-;(function (angular) {
-    angular.module('litewait.directives').directive('slideToggle', function() {  
-        return {
-            restrict: 'A',      
-            scope:{
-                isOpen: "=slideToggle"
-            },  
-            link: function(scope, element, attr) {
-                var slideDuration = parseInt(attr.slideToggleDuration, 10) || 200;      
-                scope.$watch('isOpen', function(newVal,oldVal){
-                    if(newVal !== oldVal){ 
-                        element.stop().slideToggle(slideDuration);
-                    }
-                });
-            }
-        };  
-    });
-})(angular);
-/*
- *
- */
-;(function (angular) {
-	'use strict';
-	angular.module('litewait.ui').controller('HomeCtrl', HomeCtrl);
-
-	HomeCtrl.$inject = ['$scope'];
-
-	function HomeCtrl($scope) {
-		var vm = this;	
-		vm.myInterval = 3000;
-  		vm.noWrap = false;
-  		vm.active = 0;
-  		vm.noPause = false;
-  		vm.noTransition = false;
-		vm.slides = [{
-			active: true,
-			id: 0,
-			data:[
-			{
-				image: 'img/feature-location-1.jpg',
-				text: 'Los Angeles; California Dummy text for testing',
-				offerText: '25% Off'
-			},
-			{
-				image: 'img/feature-location-2.jpg',
-				text: 'Los Angeles; California Dummy text for testing',
-				offerText: '25% Off'
-			},
-			{
-				image: 'img/feature-location-1.jpg',
-				text: 'Los Angeles; California Dummy text for testing',
-				offerText: '25% Off'
-			},
-			{
-				image: 'img/feature-location-2.jpg',
-				text: 'Los Angeles; California Dummy text for testing',
-				offerText: '25% Off'
-			}]
-			
-		},
-		{
-			active: false,
-			id: 2,
-			data:[
-			{
-				image: 'img/feature-location-2.jpg',
-				text: 'Los Angeles; California Dummy text for testing',
-				offerText: '25% Off'
-			},
-			{
-				image: 'img/feature-location-1.jpg',
-				text: 'Los Angeles; California Dummy text for testing',
-				offerText: '25% Off'
-			},
-			{
-				image: 'img/feature-location-2.jpg',
-				text: 'Los Angeles; California Dummy text for testing',
-				offerText: '25% Off'
-			},
-			{
-				image: 'img/feature-location-1.jpg',
-				text: 'Los Angeles; California Dummy text for testing',
-				offerText: '25% Off'
-			}]
-			
-		},
-		{
-			active: false,
-			id: 1,
-			data:[
-			{
-				image: 'img/feature-location-1.jpg',
-				text: 'Los Angeles; California Dummy text for testing',
-				offerText: '25% Off'
-			},
-			{
-				image: 'img/feature-location-2.jpg',
-				text: 'Los Angeles; California Dummy text for testing',
-				offerText: '25% Off'
-			},
-			{
-				image: 'img/feature-location-1.jpg',
-				text: 'Los Angeles; California Dummy text for testing',
-				offerText: '25% Off'
-			},
-			{
-				image: 'img/feature-location-2.jpg',
-				text: 'Los Angeles; California Dummy text for testing',
-				offerText: '25% Off'
-			}]
-			
-		}];
-	}
-})(angular);
-/*
 *
 */
 ;(function(angular) {
@@ -3098,6 +2906,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 	function MerchantCreateCtrl($scope, Merchant, merchant, toaster) {
 		var vm = this;
+		vm.type = merchant ? 'Edit' : 'Add';
 		vm.merchant = {
 			id: '',
 			password: '',
@@ -3304,23 +3113,23 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
     function config($stateProvider) {
         $stateProvider
-            .state('merchant', {
+            .state('admin_merchant', {
                 abstract: true
             })
-            .state('merchant.list', {
-            	url: "/merchant",
+            .state('admin_merchant.list', {
+            	url: "/admin/merchant",
                 views: {
                     "@": {
-                        templateUrl: "merchant/merchant-list.html",
+                        templateUrl: "admin/merchant-list.html",
                         controller: "MerchantListCtrl",
                         controllerAs: "ml"
                     }
                 }
-            }).state('merchant.create', {
-                url: "/cmerchant/:id",
+            }).state('admin_merchant.edit', {
+                url: "/admin/merchant/edit/:id",
                 views: {
                     "@": {
-                        templateUrl: "merchant/merchant-create.html",
+                        templateUrl: "admin/merchant-create.html",
                         controller: "MerchantCreateCtrl",
                         controllerAs: "mcr"
                     }
@@ -3336,6 +3145,412 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         } else {
                             return $q.when(false);
                         }
+                    }
+                }
+            }).state('admin_merchant.new', {
+                url: "/admin/merchant/new",
+                views: {
+                    "@": {
+                        templateUrl: "admin/merchant-create.html",
+                        controller: "MerchantCreateCtrl",
+                        controllerAs: "mcr"
+                    }
+                },
+                resolve: {
+                    merchant: function($timeout, $q, Merchant, $stateParams) {
+                        return $q.when("");
+                    }
+                }
+            });
+    }
+})(angular);
+/*
+ *
+ */
+;(function () {
+	'use strict';
+	angular.module('litewait.ui').controller('CartCtrl', CartCtrl);
+
+	CartCtrl.$inject = ['$scope'];
+
+	function CartCtrl($scope) {
+		
+	}
+})();
+/*
+ *
+ */
+;(function () {
+	'use strict';
+	angular.module('litewait.ui').controller('CartSummaryCtrl', CartSummaryCtrl);
+
+	CartSummaryCtrl.$inject = ['$scope'];
+
+	function CartSummaryCtrl($scope) {
+		
+	}
+})();
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('cart', {
+                abstract: true
+            })
+            .state('cart.detail', {
+            	url: "/cart",
+                views: {
+                    "@": {
+                        templateUrl: "cart/cart.html",
+                        controller: "CartCtrl"
+                    }
+                }
+            })
+            .state('cart.summary', {
+                url: "/cart-summary",
+                views: {
+                    "@": {
+                        templateUrl: "cart/cart-summary.html",
+                        controller: "CartSummaryCtrl"
+                    }
+                }
+            });
+    }
+})(angular);
+/*
+ *
+ */
+;(function (angular) {
+    'use strict';
+
+    function compareTo() {
+        return {
+            restrict: 'A',
+            require: "ngModel",
+            scope: {
+                otherModelValue: "=compareTo"
+            },
+            link: function(scope, element, attributes, ngModel) {
+                 
+                ngModel.$validators.compareTo = function(modelValue) {
+                    return modelValue == scope.otherModelValue;
+                };
+     
+                scope.$watch("otherModelValue", function() {
+                    ngModel.$validate();
+                });
+            }
+        };
+    }
+     
+    angular.module('litewait.directives').directive("compareTo", compareTo);
+
+})(angular);
+
+
+;(function() {
+  'use strict';
+
+  function dateAsMs() {
+    return {
+      restrict: 'A',
+      require: 'ngModel',
+      link: function(scope,elem,attrs,ngModelCtrl) {
+        ngModelCtrl.$parsers.push(function(value){
+          if (value && value.getTime) {
+            return value.getTime();
+          } else {
+            return value;
+          }
+        });
+      }
+    };
+  }
+
+  angular.module('litewait.directives').directive("dateAsMs", dateAsMs);
+  
+})();
+/**
+ *
+ */
+ ;(function() {
+ 	'use strict';
+
+	angular.module('litewait.directives')
+    .directive('datepickerPopup', datepickerPopup);
+
+    function datepickerPopup() {
+
+        return {
+            restrict: 'EA',
+            require: 'ngModel',
+            link: function(scope, element, attr, controller) {
+              controller.$formatters.shift();
+            }
+        };
+    }
+ })();
+
+
+/*
+ *
+ */
+;(function (angular) {
+    angular.module('litewait.directives').directive('slideToggle', function() {  
+        return {
+            restrict: 'A',      
+            scope:{
+                isOpen: "=slideToggle"
+            },  
+            link: function(scope, element, attr) {
+                var slideDuration = parseInt(attr.slideToggleDuration, 10) || 200;      
+                scope.$watch('isOpen', function(newVal,oldVal){
+                    if(newVal !== oldVal){ 
+                        element.stop().slideToggle(slideDuration);
+                    }
+                });
+            }
+        };  
+    });
+})(angular);
+/*
+ *
+ */
+;(function (angular) {
+	'use strict';
+	angular.module('litewait.ui').controller('HomeCtrl', HomeCtrl);
+
+	HomeCtrl.$inject = ['$scope'];
+
+	function HomeCtrl($scope) {
+		var vm = this;	
+		vm.myInterval = 3000;
+  		vm.noWrap = false;
+  		vm.active = 0;
+  		vm.noPause = false;
+  		vm.noTransition = false;
+		vm.slides = [{
+			active: true,
+			id: 0,
+			data:[
+			{
+				image: 'img/feature-location-1.jpg',
+				text: 'Los Angeles; California Dummy text for testing',
+				offerText: '25% Off'
+			},
+			{
+				image: 'img/feature-location-2.jpg',
+				text: 'Los Angeles; California Dummy text for testing',
+				offerText: '25% Off'
+			},
+			{
+				image: 'img/feature-location-1.jpg',
+				text: 'Los Angeles; California Dummy text for testing',
+				offerText: '25% Off'
+			},
+			{
+				image: 'img/feature-location-2.jpg',
+				text: 'Los Angeles; California Dummy text for testing',
+				offerText: '25% Off'
+			}]
+			
+		},
+		{
+			active: false,
+			id: 2,
+			data:[
+			{
+				image: 'img/feature-location-2.jpg',
+				text: 'Los Angeles; California Dummy text for testing',
+				offerText: '25% Off'
+			},
+			{
+				image: 'img/feature-location-1.jpg',
+				text: 'Los Angeles; California Dummy text for testing',
+				offerText: '25% Off'
+			},
+			{
+				image: 'img/feature-location-2.jpg',
+				text: 'Los Angeles; California Dummy text for testing',
+				offerText: '25% Off'
+			},
+			{
+				image: 'img/feature-location-1.jpg',
+				text: 'Los Angeles; California Dummy text for testing',
+				offerText: '25% Off'
+			}]
+			
+		},
+		{
+			active: false,
+			id: 1,
+			data:[
+			{
+				image: 'img/feature-location-1.jpg',
+				text: 'Los Angeles; California Dummy text for testing',
+				offerText: '25% Off'
+			},
+			{
+				image: 'img/feature-location-2.jpg',
+				text: 'Los Angeles; California Dummy text for testing',
+				offerText: '25% Off'
+			},
+			{
+				image: 'img/feature-location-1.jpg',
+				text: 'Los Angeles; California Dummy text for testing',
+				offerText: '25% Off'
+			},
+			{
+				image: 'img/feature-location-2.jpg',
+				text: 'Los Angeles; California Dummy text for testing',
+				offerText: '25% Off'
+			}]
+			
+		}];
+	}
+})(angular);
+/*
+*
+*/
+;(function(angular) {
+	'use strict';
+	angular.module('litewait.ui').controller('MerchantLandingCtrl', MerchantLandingCtrl);
+
+	MerchantLandingCtrl.$inject = ['$scope', 'User', '$state'];
+
+	function MerchantLandingCtrl($scope, User, $state) {
+		var vm = this;
+		vm.data = {};
+		vm.data.active = $state.current.url.replace('/', '');
+		vm.data['merchant'] = User.data || {};
+
+		vm.go = go;
+
+		function go(stateName, linkName) {
+			vm.data.active = linkName;
+			$state.go(stateName);
+		}
+	}
+})(angular);
+/*
+*
+*/
+;(function(angular) {
+	'use strict';
+	angular.module('litewait.ui').controller('MerchantMenuCtrl', MerchantMenuCtrl);
+
+	MerchantMenuCtrl.$inject = ['$scope', 'User'];
+
+	function MerchantMenuCtrl($scope, User) {
+		var vm = this;
+		vm.data = {};
+		vm.data['merchant'] = User.data || {};
+
+		// TODO: have to get menu list
+	}
+})(angular);
+/*
+*
+*/
+;(function(angular) {
+	'use strict';
+	angular.module('litewait.ui').controller('MerchantOrderCtrl', MerchantOrderCtrl);
+
+	MerchantOrderCtrl.$inject = ['$scope', 'User'];
+
+	function MerchantOrderCtrl($scope, User) {
+		var vm = this;
+		vm.data = {};
+		vm.data['merchant'] = User.data || {};
+
+		// TODO: have to get order list
+	}
+})(angular);
+/*
+*
+*/
+;(function(angular) {
+   'use strict';
+   angular.module('litewait.ui').controller('MerchantReviewCtrl', MerchantReviewCtrl);
+
+   MerchantReviewCtrl.$inject = ['$scope', 'User'];
+
+   function MerchantReviewCtrl($scope, User) {
+      var vm = this;
+      vm.data = {};
+      vm.data['merchant'] = User.data || {};
+
+      // TODO: have to get review list
+   }
+})(angular);
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('merchant', {
+                url: '/merchant',
+                views: {
+                    "merchant-landing@merchant": {
+                        templateUrl: 'merchant/merchant-order.html',
+                        controller: 'MerchantOrderCtrl',
+                        controllerAs: 'moc'
+                    },
+                    '@': {
+                        templateUrl: 'merchant/merchant-landing.html',
+                        controller: 'MerchantLandingCtrl',
+                        controllerAs: 'mlc'
+                    }
+                }
+            })
+            .state('merchant.order', {
+                url: '/order',
+                views: {
+                    'merchant-landing': {
+                        templateUrl: 'merchant/merchant-order.html',
+                        controller: 'MerchantOrderCtrl',
+                        controllerAs: 'moc'
+                    }
+                }
+            })
+            .state('merchant.pastorder', {
+                url: '/pastorder',
+                views: {
+                    'merchant-landing': {
+                        templateUrl: 'merchant/merchant-order.html',
+                        controller: 'MerchantOrderCtrl',
+                        controllerAs: 'moc'
+                    }
+                }
+            })
+            .state('merchant.review', {
+                url: '/review',
+                views: {
+                    'merchant-landing': {
+                        templateUrl: 'merchant/merchant-review.html',
+                        controller: 'MerchantReviewCtrl',
+                        controllerAs: 'mrc'
+                    }
+                }
+            })
+            .state('merchant.menu', {
+                url: '/menu',
+                views: {
+                    'merchant-landing': {
+                        templateUrl: 'merchant/merchant-menu.html',
+                        controller: 'MerchantMenuCtrl',
+                        controllerAs: 'mmc'
                     }
                 }
             });
@@ -3402,7 +3617,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                 scope: $scope,
                 bindToController: true,
                 controllerAs: 'loginModal',
-                controller: function($scope, $uibModalInstance, PubSub, AuthService, toaster, AUTH_MSG, AUTH_PROPS, User) {
+                controller: function($scope, $uibModalInstance, PubSub, AuthService, toaster, AUTH_MSG, AUTH_PROPS, User, $state) {
                     var vm = this;
                     vm.modalProps = {};
                     vm.modalProps.signin = $scope.$parent.signin;
@@ -3410,13 +3625,13 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     vm.modalProps.active = $scope.$parent.activeTab;
                     vm.modalProps.username = '';
                     vm.modalProps.password = '';
-                    vm.modalProps.user_type = 'C';
+                    vm.modalProps.user_type = 'c';
                     vm.modalProps.isForgotPassword = false;
                     vm.modalProps.passwordPattern = AUTH_PROPS.PASSWORD_PATTERN;
 
                     vm.resetProps = {
                         user: '',
-                        user_type: 'C',
+                        user_type: 'c',
                     };
 
                     vm.registerProps = {
@@ -3424,7 +3639,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         user_mail: '',
                         user_password: '',
                         user_confirm_password: '',
-                        user_type: 'C'
+                        user_type: 'c'
                     };
 
                     vm.modalProps.login = login;
@@ -3472,6 +3687,9 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         AuthService.authenticate(provider, data).then(function(response) {
                             if (!(response.data.error || response.error)) {
                                 vm.modalProps.close();
+                                if (User.role == 'm') {
+                                    $state.go('merchant.order');
+                                }
                             } else {
                                 toaster.pop({
                                     type: 'error', 
@@ -3656,125 +3874,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 /*
  *
  */
-;(function () {
-	'use strict';
-	angular.module('litewait.ui').controller('CartCtrl', CartCtrl);
-
-	CartCtrl.$inject = ['$scope'];
-
-	function CartCtrl($scope) {
-		
-	}
-})();
-/*
- *
- */
-;(function () {
-	'use strict';
-	angular.module('litewait.ui').controller('CartSummaryCtrl', CartSummaryCtrl);
-
-	CartSummaryCtrl.$inject = ['$scope'];
-
-	function CartSummaryCtrl($scope) {
-		
-	}
-})();
-
-;(function(angular) {
-    'use strict';
-
-    angular.module('litewait').config(config);
-
-    config.$inject = ['$stateProvider'];
-
-    function config($stateProvider) {
-        $stateProvider
-            .state('cart', {
-                abstract: true
-            })
-            .state('cart.detail', {
-            	url: "/cart",
-                views: {
-                    "@": {
-                        templateUrl: "cart/cart.html",
-                        controller: "CartCtrl"
-                    }
-                }
-            })
-            .state('cart.summary', {
-                url: "/cart-summary",
-                views: {
-                    "@": {
-                        templateUrl: "cart/cart-summary.html",
-                        controller: "CartSummaryCtrl"
-                    }
-                }
-            });
-    }
-})(angular);
-/*
- *
- */
-;(function(angular) {
-	'use strict';
-
-	angular.module('litewait.ui').controller('MyOrderCtrl', MyOrderCtrl);
-
-	MyOrderCtrl.$inject = ['$scope', 'authentication'];
-
-	function MyOrderCtrl($scope, authentication) {
-		var vm = this;
-		console.log(authentication);
-		// TODO: Need to change things dynamically
-	}
-
-
-})(angular);
-
-;(function(angular) {
-    'use strict';
-
-    angular.module('litewait').config(config);
-
-    config.$inject = ['$stateProvider'];
-
-    function config($stateProvider) {
-        $stateProvider
-            .state('order', {
-                abstract: true
-            })
-            .state('order.myorder', {
-            	url: "/myorder",
-                views: {
-                    "@": {
-                        templateUrl: "orders/myorder.html",
-                        controller: "MyOrderCtrl",
-                        controllerAs: "vm"
-                    }
-                },
-                resolve: {
-                    authentication: function (AuthService, $q, $timeout) {
-                        var deferred = $q.defer();
-                        
-                        var handler = $timeout(function() {
-                            var auth = AuthService.isAuthenticated();
-                            if (auth) {
-                                deferred.resolve(true);
-                            } else {
-                                deferred.reject(true);
-                            }
-                            $timeout.cancel(handler);
-                        }, 0);
-                        
-                        return deferred.promise;
-                    }
-                }
-            });
-    }
-})(angular);
-/*
- *
- */
 ;(function() {
 	'use strict';
 	angular.module('litewait.ui').controller('SearchCtrl', SearchCtrl);
@@ -3931,6 +4030,66 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             });
     }
 })(angular);
+/*
+ *
+ */
+;(function(angular) {
+	'use strict';
+
+	angular.module('litewait.ui').controller('MyOrderCtrl', MyOrderCtrl);
+
+	MyOrderCtrl.$inject = ['$scope', 'authentication'];
+
+	function MyOrderCtrl($scope, authentication) {
+		var vm = this;
+		console.log(authentication);
+		// TODO: Need to change things dynamically
+	}
+
+
+})(angular);
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('order', {
+                abstract: true
+            })
+            .state('order.myorder', {
+            	url: "/myorder",
+                views: {
+                    "@": {
+                        templateUrl: "orders/myorder.html",
+                        controller: "MyOrderCtrl",
+                        controllerAs: "vm"
+                    }
+                },
+                resolve: {
+                    authentication: function (AuthService, $q, $timeout) {
+                        var deferred = $q.defer();
+                        
+                        var handler = $timeout(function() {
+                            var auth = AuthService.isAuthenticated();
+                            if (auth) {
+                                deferred.resolve(true);
+                            } else {
+                                deferred.reject(true);
+                            }
+                            $timeout.cancel(handler);
+                        }, 0);
+                        
+                        return deferred.promise;
+                    }
+                }
+            });
+    }
+})(angular);
 /**
  *
  */
@@ -4049,11 +4208,11 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             if (user) {
                 var data = {};
                 data.isLoggedIn = true;
-                data.id = user.contact.mail_id || user.contact_details.mail_id;
+                data.id = user.contact.mail_id;
                 data.username = user.user;
-                data.email = user.contact.mail_id || user.contact_details.mail_id;
-                data.role = user.user_session ? 'c' : 'm';
-                data.name = user.user_name || user.username;
+                data.email = user.contact.mail_id;
+                data.role = user.user_type;
+                data.name = user.username;
                 data.data = user;
                 
                 angular.extend(sessionUser, data);
@@ -4282,6 +4441,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                             data: params
                         }).success(function(response, status, headers) {
                             if (!response.error) {
+                                response.data.user_type = params.user_type;
                                 User.assign(response.data);
                                 setToken(response.data.user_session || response.data.merchant_session);
                                 raise(AUTH_EVENTS.loginSuccess, User);

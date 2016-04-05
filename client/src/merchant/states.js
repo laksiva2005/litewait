@@ -9,37 +9,57 @@
     function config($stateProvider) {
         $stateProvider
             .state('merchant', {
-                abstract: true
-            })
-            .state('merchant.list', {
-            	url: "/merchant",
+                url: '/merchant',
                 views: {
-                    "@": {
-                        templateUrl: "merchant/merchant-list.html",
-                        controller: "MerchantListCtrl",
-                        controllerAs: "ml"
+                    "merchant-landing@merchant": {
+                        templateUrl: 'merchant/merchant-order.html',
+                        controller: 'MerchantOrderCtrl',
+                        controllerAs: 'moc'
+                    },
+                    '@': {
+                        templateUrl: 'merchant/merchant-landing.html',
+                        controller: 'MerchantLandingCtrl',
+                        controllerAs: 'mlc'
                     }
                 }
-            }).state('merchant.create', {
-                url: "/cmerchant/:id",
+            })
+            .state('merchant.order', {
+                url: '/order',
                 views: {
-                    "@": {
-                        templateUrl: "merchant/merchant-create.html",
-                        controller: "MerchantCreateCtrl",
-                        controllerAs: "mcr"
+                    'merchant-landing': {
+                        templateUrl: 'merchant/merchant-order.html',
+                        controller: 'MerchantOrderCtrl',
+                        controllerAs: 'moc'
                     }
-                },
-                resolve: {
-                    merchant: function($timeout, $q, Merchant, $stateParams) {
-                        if ($stateParams.id) {
-                            return Merchant.get($stateParams.id).then(function(response) {
-                                return response.data;
-                            }).catch(function(error) {
-                                return false;
-                            });
-                        } else {
-                            return $q.when(false);
-                        }
+                }
+            })
+            .state('merchant.pastorder', {
+                url: '/pastorder',
+                views: {
+                    'merchant-landing': {
+                        templateUrl: 'merchant/merchant-order.html',
+                        controller: 'MerchantOrderCtrl',
+                        controllerAs: 'moc'
+                    }
+                }
+            })
+            .state('merchant.review', {
+                url: '/review',
+                views: {
+                    'merchant-landing': {
+                        templateUrl: 'merchant/merchant-review.html',
+                        controller: 'MerchantReviewCtrl',
+                        controllerAs: 'mrc'
+                    }
+                }
+            })
+            .state('merchant.menu', {
+                url: '/menu',
+                views: {
+                    'merchant-landing': {
+                        templateUrl: 'merchant/merchant-menu.html',
+                        controller: 'MerchantMenuCtrl',
+                        controllerAs: 'mmc'
                     }
                 }
             });

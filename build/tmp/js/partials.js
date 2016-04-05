@@ -5,203 +5,11 @@ try {
   module = angular.module('litewait.ui', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('home/home.html',
-    '	<div class="container-fluid banner-wrap" ng-if="!nav.user.isLoggedIn">\n' +
-    '    	<div class="banner">\n' +
-    '        	<div class="col-md-10 cnt">\n' +
-    '        	<p class="title-1">SAVE YOUR TIME...INCREASE PRODUCTIVE TIME<br/>\n' +
-    '    SAVE MONEY!!</p>\n' +
-    '    		<p class="title-2">Tired of waiting in queue, come join us</p>\n' +
-    '            <a href="#" class="btn join"  ng-click="nav.openSignUpModal($event)">Join Now !!</a>\n' +
-    '            </div>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '    <div class="container-fluid search-wrap" ui-view="search-box">\n' +
-    '    </div>\n' +
-    '    <div ng-if="nav.user.isLoggedIn" class="container most-visit">\n' +
-    '	  <h1>Recently Viewed Locations</h1>\n' +
-    '	  <div class="row">\n' +
-    '	    <ul>\n' +
-    '	      <li class="col-sm-6 col-md-3"> <img src="img/most-visit-1.jpg" class="img-responsive" />\n' +
-    '	        <h3>Charlie\'s Sandwich</h3>\n' +
-    '	        <p> <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i> </p>\n' +
-    '	        <p>Los Angeles; California Dummy text for testing</p>\n' +
-    '	        <p class="wait">20m Wait Time</p>\n' +
-    '	        <p>Open 11:00 AM to 4:00 AM</p>\n' +
-    '	      </li>\n' +
-    '	      <li class="col-sm-6 col-md-3"> <img src="img/most-visit-1.jpg" class="img-responsive" />\n' +
-    '	        <h3>Charlie\'s Sandwich</h3>\n' +
-    '	        <p><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i> </p>\n' +
-    '	        <p>Los Angeles; California Dummy text for testing</p>\n' +
-    '	        <p class="wait">20 m Wait Time</p>\n' +
-    '	        <p>Open 11:00 AM to 4:00 AM</p>\n' +
-    '	      </li>\n' +
-    '	      <li class="col-sm-6 col-md-3"> <img src="img/most-visit-1.jpg" class="img-responsive" />\n' +
-    '	        <h3>Charlie\'s Sandwich</h3>\n' +
-    '	        <p><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i> </p>\n' +
-    '	        <p>Los Angeles; California Dummy text for testing</p>\n' +
-    '	        <p class="wait">20 m Wait Time</p>\n' +
-    '	        <p>Open 11:00 AM to 4:00 AM</p>\n' +
-    '	      </li>\n' +
-    '	      <li class="col-sm-6 col-md-3"> <img src="img/most-visit-1.jpg" class="img-responsive" />\n' +
-    '	        <h3>Charlie\'s Sandwich</h3>\n' +
-    '	        <p><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i> </p>\n' +
-    '	        <p>Los Angeles; California Dummy text for testing</p>\n' +
-    '	        <p class="wait">20 m Wait Time</p>\n' +
-    '	        <p>Open 11:00 AM to 4:00 AM</p>\n' +
-    '	      </li>\n' +
-    '	      <div class="clearfix"></div>\n' +
-    '	    </ul>\n' +
-    '	  </div>\n' +
-    '	</div>\n' +
-    '    <div class="container-fluid feature-location">\n' +
-    '        <div class="container">\n' +
-    '	        <h1>featured locations</h1>\n' +
-    '	        <uib-carousel interval="home.myInterval" no-wrap="home.noWrap" active="home.active" no-transition="home.noTransition" no-pause="home.noPause">\n' +
-    '		        <uib-slide ng-repeat="slide in home.slides" active="slide.active" index="slide.id">\n' +
-    '			      	<ul>\n' +
-    '				      	<li class="col-sm-6 col-md-3" ng-repeat="slideData in slide.data">\n' +
-    '				        	<img src="{{slideData.image}}" class="img-responsive" />\n' +
-    '				            <p>{{slideData.text}}</p>\n' +
-    '				            <div>\n' +
-    '				            	<span class="pull-left">\n' +
-    '				            		<i class="fa fa-star"></i>\n' +
-    '				            		<i class="fa fa-star"></i>\n' +
-    '				            		<i class="fa fa-star"></i>\n' +
-    '				            		<i class="fa fa-star"></i>\n' +
-    '				            		<i class="fa fa-star-half-o"></i>\n' +
-    '				            	</span>\n' +
-    '				            	<span class="pull-right">\n' +
-    '				            		<a href="#" class="btn btn-default">{{slideData.offerText}}</a>\n' +
-    '				            	</span>\n' +
-    '				                <div class="clearfix"></div>\n' +
-    '				            </div>\n' +
-    '			            </li>\n' +
-    '		            </ul>\n' +
-    '	        	</uib-slide>\n' +
-    '		    </uib-carousel>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '    <!--div ng-if="!nav.user.isLoggedIn" class="container browse-city">\n' +
-    '      <h1>Browse your city</h1>\n' +
-    '      <ul>\n' +
-    '        <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">New York City; New York</a></li>\n' +
-    '        <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">Los Angeles; California</a></li>\n' +
-    '        <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">Chicago; Illinois</a></li>\n' +
-    '        <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">Houston; Texas</a></li>\n' +
-    '        <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">Philadelphia; Pennsylvania</a></li>\n' +
-    '        <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">Phoenix; Arizona</a></li>\n' +
-    '        <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">San Antonio; Texas</a></li>\n' +
-    '        <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">San Diego; California</a></li>\n' +
-    '        <div class="clear"></div>\n' +
-    '      </ul>\n' +
-    '      <div class="col-md-12">\n' +
-    '        <div class="col-md-2 hidden-xs"></div>\n' +
-    '        <div class="col-md-8 search">\n' +
-    '          <p>Not able to find your city?</p>\n' +
-    '          <input type="text" class="form-control col-md-9" />\n' +
-    '          <a href="#" class="btn col-md-3">Enter</a> </div>\n' +
-    '        <div class="col-md-2 hidden-xs"></div>\n' +
-    '      </div>\n' +
-    '    </div-->\n' +
-    '    <div class="container testimonial">\n' +
-    '      <h1>testimonials</h1>\n' +
-    '      <div class="carousel slide" id="testimonial">\n' +
-    '        <div class="carousel-inner">\n' +
-    '          <div class="col-md-12 item active"> <img src="img/user-testimonial.jpg" class="img-responsive profile" />\n' +
-    '            <h2>Louise S. Morgan</h2>\n' +
-    '            <h6>Treatment, storage, and disposal (TSD) worker</h6>\n' +
-    '            <p>“ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam PreviousLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam Previous ”</p>\n' +
-    '          </div>\n' +
-    '          <div class="col-md-12 item"> <img src="img/user-testimonial.jpg" class="img-responsive profile" />\n' +
-    '            <h2>Louise S. </h2>\n' +
-    '            <h6>Treatment, storage,  worker</h6>\n' +
-    '            <p>“ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam PreviousLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam Previous ”</p>\n' +
-    '          </div>\n' +
-    '          <div class="col-md-12 item"> <img src="img/user-testimonial.jpg" class="img-responsive profile" />\n' +
-    '            <h2> S. Morgan</h2>\n' +
-    '            <h6>Treatment worker</h6>\n' +
-    '            <p>“ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam PreviousLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam Previous ”</p>\n' +
-    '          </div>\n' +
-    '          <div class="col-md-12 item"> <img src="img/user-testimonial.jpg" class="img-responsive profile" />\n' +
-    '            <h2>Lo S. Morgan</h2>\n' +
-    '            <h6> (TSD) worker</h6>\n' +
-    '            <p>“ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam PreviousLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam Previous ”</p>\n' +
-    '          </div>\n' +
-    '        </div>\n' +
-    '        <div class="next-prev-wrap"> <a data-slide="prev" href="#testimonial" class="carousel-control left">‹</a> <a data-slide="next" href="#testimonial" class="carousel-control right">›</a> </div>\n' +
-    '      </div>\n' +
-    '    </div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('html/spinner.html',
-    '<div class="spinner">\n' +
-    '  <div>\n' +
-    '    <i class="fa fa-spinner fa-spin"></i>\n' +
-    '  </div>\n' +
-    '  <div class="spinner-text">{{$message}}</div>\n' +
-    '</div>\n' +
-    '');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('html/tab-template-merchant.html',
-    '<li ng-class="[{active: active, disabled: disabled}, classes]" class="uib-tab nav-item">\n' +
-    '	<a href ng-click="select()" class="nav-link" uib-tab-heading-transclude>{{heading}}</a>\n' +
-    '</li>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('html/tabset-template-merchant.html',
-    '<div class="menu-detail-wrap">\n' +
-    '	<div class="col-md-4 menu-items">\n' +
-    '		<ul class="nav nav-{{tabset.type || \'tabs\'}}" ng-class="{\'nav-stacked\': vertical, \'nav-justified\': justified}" ng-transclude></ul>\n' +
-    '	</div>\n' +
-    '	<div class="tab-content col-md-8 popular-items">\n' +
-    '	  <div class="tab-pane"\n' +
-    '	       ng-repeat="tab in tabset.tabs"\n' +
-    '	       ng-class="{active: tabset.active === tab.index}"\n' +
-    '	       uib-tab-content-transclude="tab">\n' +
-    '	  </div>\n' +
-    '	</div>\n' +
-    '</div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('merchant/merchant-create.html',
+  $templateCache.put('admin/merchant-create.html',
     '<div class="container edit-merchant">\n' +
     '	<div class="col-md-12">            \n' +
     '      <div id="edit-merchant" >\n' +
-    '         <h1>Edit merchant</h1>      \n' +
+    '         <h1>{{mcr.type}} merchant</h1>      \n' +
     '         <div class="col-md-12 form-wrap">\n' +
     '            <form novalidate name="mcr.merchantForm" ng-submit="mcr.updateMerchant(mcr.merchantForm.$valid)" role="form">\n' +
     '               <div class="col-md-6">\n' +
@@ -328,7 +136,7 @@ try {
   module = angular.module('litewait.ui', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('merchant/merchant-list.html',
+  $templateCache.put('admin/merchant-list.html',
     '<div class="container merchant-list-wrap">\n' +
     '	<h1>Merchant List</h1>\n' +
     '	<div class="col-md-12 merchant-search">\n' +
@@ -340,6 +148,7 @@ module.run(['$templateCache', function($templateCache) {
     '		<div class="col-sm-12 col-md-6">\n' +
     '			<div class="form-group">\n' +
     '				<a ng-click="ml.initializeMerchant()" class="btn btn-default">Search</a>\n' +
+    '				<a ng-click="nav.go(\'admin_merchant.new\')" class="btn btn-primary">Add New</a>\n' +
     '			</div>\n' +
     '		</div>\n' +
     '	</div>\n' +
@@ -354,54 +163,11 @@ module.run(['$templateCache', function($templateCache) {
     '	           <p> {{value.street_address}}, {{value.region}}, {{value.city}},<br>{{value.state}} {{value.zipcode}}, {{value.country}} \n' +
     '	           </p>\n' +
     '	        </div>\n' +
-    '	        <a href="#/cmerchant/{{value.id}}" class="edit"><i class="fa fa-pencil"></i></a>\n' +
+    '	        <a href="#/admin/merchant/edit/{{value.id}}" class="edit"><i class="fa fa-pencil"></i></a>\n' +
     '	        <a href="#" ng-click="ml.deleteMerchant($event, value.id)" class="delete"><i class="fa fa-trash"></i></a>\n' +
     '	        <div class="clearfix"></div>\n' +
     '	    </div>\n' +
     '    </div>\n' +
-    '</div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('navigation/navbar.html',
-    '');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('navigation/search-box.html',
-    '<div class="container search">\n' +
-    '  <h1>SEARCH FOR YOUR FAVORITE RETAILER</h1>\n' +
-    '  <div class="row">\n' +
-    '    <div class="col-md-5 less-padding">\n' +
-    '      <input ng-model="sbc.searchCriteria.location" type="text" placeholder="Location" uib-typeahead="address as address.city_region_name for address in sbc.getLocation($viewValue)" typeahead-loading="loadingLocations" typeahead-no-results="noLocations" class="form-control" typeahead-on-select="sbc.onSelectRegion($item, $modal, $label, $event)"/>\n' +
-    '      <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>\n' +
-    '      <div ng-show="noLocations">\n' +
-    '        <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
-    '      </div>\n' +
-    '    </div>\n' +
-    '    <div class="col-md-5 less-padding">\n' +
-    '      <input type="text" class="form-control" ng-disabled="!sbc.isLocation" ng-model="sbc.searchCriteria.keyword" placeholder="Keyword" uib-typeahead="keyword as keyword.category for keyword in sbc.getKeywords($viewValue)" typeahead-loading="loadingKeywords" typeahead-no-results="noKeywords" class="form-control" typeahead-on-select="sbc.onSelectKeyword($item, $modal, $label, $event)"/>\n' +
-    '      <i ng-show="loadingKeywords" class="glyphicon glyphicon-refresh"></i>\n' +
-    '      <div ng-show="noKeywords">\n' +
-    '        <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
-    '      </div>\n' +
-    '    </div>\n' +
-    '    <div class="col-md-2 less-padding"><a ng-disabled="!sbc.isLocation" class="btn btn-block" ng-click="sbc.searchFn($event)"><i class="fa fa-search"></i> Search</a></div>\n' +
-    '  </div>\n' +
     '</div>');
 }]);
 })();
@@ -713,6 +479,506 @@ try {
   module = angular.module('litewait.ui', []);
 }
 module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('home/home.html',
+    '	<div class="container-fluid banner-wrap" ng-if="!nav.user.isLoggedIn">\n' +
+    '    	<div class="banner">\n' +
+    '        	<div class="col-md-10 cnt">\n' +
+    '        	<p class="title-1">SAVE YOUR TIME...INCREASE PRODUCTIVE TIME<br/>\n' +
+    '    SAVE MONEY!!</p>\n' +
+    '    		<p class="title-2">Tired of waiting in queue, come join us</p>\n' +
+    '            <a href="#" class="btn join"  ng-click="nav.openSignUpModal($event)">Join Now !!</a>\n' +
+    '            </div>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '    <div class="container-fluid search-wrap" ui-view="search-box">\n' +
+    '    </div>\n' +
+    '    <div ng-if="nav.user.isLoggedIn" class="container most-visit">\n' +
+    '	  <h1>Recently Viewed Locations</h1>\n' +
+    '	  <div class="row">\n' +
+    '	    <ul>\n' +
+    '	      <li class="col-sm-6 col-md-3"> <img src="img/most-visit-1.jpg" class="img-responsive" />\n' +
+    '	        <h3>Charlie\'s Sandwich</h3>\n' +
+    '	        <p> <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i> </p>\n' +
+    '	        <p>Los Angeles; California Dummy text for testing</p>\n' +
+    '	        <p class="wait">20m Wait Time</p>\n' +
+    '	        <p>Open 11:00 AM to 4:00 AM</p>\n' +
+    '	      </li>\n' +
+    '	      <li class="col-sm-6 col-md-3"> <img src="img/most-visit-1.jpg" class="img-responsive" />\n' +
+    '	        <h3>Charlie\'s Sandwich</h3>\n' +
+    '	        <p><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i> </p>\n' +
+    '	        <p>Los Angeles; California Dummy text for testing</p>\n' +
+    '	        <p class="wait">20 m Wait Time</p>\n' +
+    '	        <p>Open 11:00 AM to 4:00 AM</p>\n' +
+    '	      </li>\n' +
+    '	      <li class="col-sm-6 col-md-3"> <img src="img/most-visit-1.jpg" class="img-responsive" />\n' +
+    '	        <h3>Charlie\'s Sandwich</h3>\n' +
+    '	        <p><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i> </p>\n' +
+    '	        <p>Los Angeles; California Dummy text for testing</p>\n' +
+    '	        <p class="wait">20 m Wait Time</p>\n' +
+    '	        <p>Open 11:00 AM to 4:00 AM</p>\n' +
+    '	      </li>\n' +
+    '	      <li class="col-sm-6 col-md-3"> <img src="img/most-visit-1.jpg" class="img-responsive" />\n' +
+    '	        <h3>Charlie\'s Sandwich</h3>\n' +
+    '	        <p><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i> </p>\n' +
+    '	        <p>Los Angeles; California Dummy text for testing</p>\n' +
+    '	        <p class="wait">20 m Wait Time</p>\n' +
+    '	        <p>Open 11:00 AM to 4:00 AM</p>\n' +
+    '	      </li>\n' +
+    '	      <div class="clearfix"></div>\n' +
+    '	    </ul>\n' +
+    '	  </div>\n' +
+    '	</div>\n' +
+    '    <div class="container-fluid feature-location">\n' +
+    '        <div class="container">\n' +
+    '	        <h1>featured locations</h1>\n' +
+    '	        <uib-carousel interval="home.myInterval" no-wrap="home.noWrap" active="home.active" no-transition="home.noTransition" no-pause="home.noPause">\n' +
+    '		        <uib-slide ng-repeat="slide in home.slides" active="slide.active" index="slide.id">\n' +
+    '			      	<ul>\n' +
+    '				      	<li class="col-sm-6 col-md-3" ng-repeat="slideData in slide.data">\n' +
+    '				        	<img src="{{slideData.image}}" class="img-responsive" />\n' +
+    '				            <p>{{slideData.text}}</p>\n' +
+    '				            <div>\n' +
+    '				            	<span class="pull-left">\n' +
+    '				            		<i class="fa fa-star"></i>\n' +
+    '				            		<i class="fa fa-star"></i>\n' +
+    '				            		<i class="fa fa-star"></i>\n' +
+    '				            		<i class="fa fa-star"></i>\n' +
+    '				            		<i class="fa fa-star-half-o"></i>\n' +
+    '				            	</span>\n' +
+    '				            	<span class="pull-right">\n' +
+    '				            		<a href="#" class="btn btn-default">{{slideData.offerText}}</a>\n' +
+    '				            	</span>\n' +
+    '				                <div class="clearfix"></div>\n' +
+    '				            </div>\n' +
+    '			            </li>\n' +
+    '		            </ul>\n' +
+    '	        	</uib-slide>\n' +
+    '		    </uib-carousel>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '    <!--div ng-if="!nav.user.isLoggedIn" class="container browse-city">\n' +
+    '      <h1>Browse your city</h1>\n' +
+    '      <ul>\n' +
+    '        <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">New York City; New York</a></li>\n' +
+    '        <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">Los Angeles; California</a></li>\n' +
+    '        <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">Chicago; Illinois</a></li>\n' +
+    '        <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">Houston; Texas</a></li>\n' +
+    '        <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">Philadelphia; Pennsylvania</a></li>\n' +
+    '        <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">Phoenix; Arizona</a></li>\n' +
+    '        <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">San Antonio; Texas</a></li>\n' +
+    '        <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">San Diego; California</a></li>\n' +
+    '        <div class="clear"></div>\n' +
+    '      </ul>\n' +
+    '      <div class="col-md-12">\n' +
+    '        <div class="col-md-2 hidden-xs"></div>\n' +
+    '        <div class="col-md-8 search">\n' +
+    '          <p>Not able to find your city?</p>\n' +
+    '          <input type="text" class="form-control col-md-9" />\n' +
+    '          <a href="#" class="btn col-md-3">Enter</a> </div>\n' +
+    '        <div class="col-md-2 hidden-xs"></div>\n' +
+    '      </div>\n' +
+    '    </div-->\n' +
+    '    <div class="container testimonial">\n' +
+    '      <h1>testimonials</h1>\n' +
+    '      <div class="carousel slide" id="testimonial">\n' +
+    '        <div class="carousel-inner">\n' +
+    '          <div class="col-md-12 item active"> <img src="img/user-testimonial.jpg" class="img-responsive profile" />\n' +
+    '            <h2>Louise S. Morgan</h2>\n' +
+    '            <h6>Treatment, storage, and disposal (TSD) worker</h6>\n' +
+    '            <p>“ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam PreviousLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam Previous ”</p>\n' +
+    '          </div>\n' +
+    '          <div class="col-md-12 item"> <img src="img/user-testimonial.jpg" class="img-responsive profile" />\n' +
+    '            <h2>Louise S. </h2>\n' +
+    '            <h6>Treatment, storage,  worker</h6>\n' +
+    '            <p>“ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam PreviousLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam Previous ”</p>\n' +
+    '          </div>\n' +
+    '          <div class="col-md-12 item"> <img src="img/user-testimonial.jpg" class="img-responsive profile" />\n' +
+    '            <h2> S. Morgan</h2>\n' +
+    '            <h6>Treatment worker</h6>\n' +
+    '            <p>“ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam PreviousLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam Previous ”</p>\n' +
+    '          </div>\n' +
+    '          <div class="col-md-12 item"> <img src="img/user-testimonial.jpg" class="img-responsive profile" />\n' +
+    '            <h2>Lo S. Morgan</h2>\n' +
+    '            <h6> (TSD) worker</h6>\n' +
+    '            <p>“ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam PreviousLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam Previous ”</p>\n' +
+    '          </div>\n' +
+    '        </div>\n' +
+    '        <div class="next-prev-wrap"> <a data-slide="prev" href="#testimonial" class="carousel-control left">‹</a> <a data-slide="next" href="#testimonial" class="carousel-control right">›</a> </div>\n' +
+    '      </div>\n' +
+    '    </div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('html/spinner.html',
+    '<div class="spinner">\n' +
+    '  <div>\n' +
+    '    <i class="fa fa-spinner fa-spin"></i>\n' +
+    '  </div>\n' +
+    '  <div class="spinner-text">{{$message}}</div>\n' +
+    '</div>\n' +
+    '');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('html/tab-template-merchant.html',
+    '<li ng-class="[{active: active, disabled: disabled}, classes]" class="uib-tab nav-item">\n' +
+    '	<a href ng-click="select()" class="nav-link" uib-tab-heading-transclude>{{heading}}</a>\n' +
+    '</li>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('html/tabset-template-merchant.html',
+    '<div class="menu-detail-wrap">\n' +
+    '	<div class="col-md-4 menu-items">\n' +
+    '		<ul class="nav nav-{{tabset.type || \'tabs\'}}" ng-class="{\'nav-stacked\': vertical, \'nav-justified\': justified}" ng-transclude></ul>\n' +
+    '	</div>\n' +
+    '	<div class="tab-content col-md-8 popular-items">\n' +
+    '	  <div class="tab-pane"\n' +
+    '	       ng-repeat="tab in tabset.tabs"\n' +
+    '	       ng-class="{active: tabset.active === tab.index}"\n' +
+    '	       uib-tab-content-transclude="tab">\n' +
+    '	  </div>\n' +
+    '	</div>\n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('merchant/merchant-landing.html',
+    '<div class="container merchant-landing">\n' +
+    '   <div class="col-md-12 product-detail">\n' +
+    '      <div class="col-sm-3 col-md-2"><img class="img-responsive" ng-src="mlc.data.merchant.photo"></div>\n' +
+    '      <div class="col-sm-9 col-md-8">\n' +
+    '         <h2>{{mlc.data.merchant.business_name}}</h2>\n' +
+    '         <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>\n' +
+    '         <p> {{mlc.data.merchant.contact.address_1}}, <br/>{{mlc.data.merchant.contact.city}},<br/>\n' +
+    '            {{mlc.data.merchant.region}} {{mlc.data.merchant.contact.zip_code}}, <br/>{{mlc.data.merchant.contact.country}} \n' +
+    '         </p>\n' +
+    '      </div>\n' +
+    '      <a ng-click="nav.go(\'user.profile\')" class="edit"><i class="fa fa-pencil"></i></a>\n' +
+    '      <div class="clearfix"></div>\n' +
+    '   </div>\n' +
+    '   <div class="col-md-12 merchant-detail">\n' +
+    '      <div class="row">\n' +
+    '         <div class="col-md-12 order-status">\n' +
+    '            <div class="table-responsive">\n' +
+    '               <ul class="nav nav-tabs">\n' +
+    '                  <li ng-class="{active: mlc.data.active == \'order\'}"><a ng-click="mlc.go(\'merchant.order\', \'order\')">In-progress / Ready for pick up</a></li>\n' +
+    '                  <li ng-class="{active: mlc.data.active == \'pastorder\'}"><a ng-click="mlc.go(\'merchant.pastorder\', \'past\')">Past orders</a></li>\n' +
+    '                  <li ng-class="{active: mlc.data.active == \'review\'}"><a ng-click="mlc.go(\'merchant.review\', \'review\')">Reviews</a></li>\n' +
+    '                  <li ng-class="{active: mlc.data.active == \'menu\'}"><a ng-click="mlc.go(\'merchant.menu\', \'menu\')">Merchant Menu</a></li>\n' +
+    '               </ul>\n' +
+    '               <div ui-view="merchant-landing"></div> \n' +
+    '            </div>\n' +
+    '         </div>\n' +
+    '         <div class="clearfix"></div>\n' +
+    '      </div>\n' +
+    '   </div>\n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('merchant/merchant-menu.html',
+    '<div id="mer-info">\n' +
+    '                        	 <a href="#" class="add-btn-1"><i class="fa fa-plus"></i>Add</a>\n' +
+    '                             <a href="#" class="add-btn-2"><i class="fa fa-plus"></i>Add</a>\n' +
+    '                           <table class="table">\n' +
+    '                              <thead>\n' +
+    '                                 <tr>\n' +
+    '                                    <th>Item</th>\n' +
+    '                                    <th>Item Category</th>\n' +
+    '                                    <th>Item Short Description</th>\n' +
+    '                                    <th>Item Long Description</th>\n' +
+    '                                    <th>Item Add Ons</th>\n' +
+    '                                    <th>Item Price</th>\n' +
+    '                                    <th>Edit </th>\n' +
+    '                                    <th>Upload Image</th>\n' +
+    '                                 </tr>\n' +
+    '                              </thead>\n' +
+    '                              <tbody>\n' +
+    '                                 <tr>\n' +
+    '                                    <td>4269-2215</td>\n' +
+    '                                    <td>Lorem ipsum </td>\n' +
+    '                                    <td>Lorem ipsum dolor sit amet</td>\n' +
+    '                                    <td>Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet</td>\n' +
+    '                                    <td>Lorem ipsum </td>\n' +
+    '                                    <td>$59.00 </td>\n' +
+    '                                    <td><a href="#">Lorem ipsum</a> </td>\n' +
+    '                                    <td><a href="#">Lorem ipsum.jpg</a> </td>\n' +
+    '                                 </tr>\n' +
+    '                                 <tr>\n' +
+    '                                    <td>4269-2215</td>\n' +
+    '                                    <td>Lorem ipsum </td>\n' +
+    '                                    <td>Lorem ipsum dolor sit amet</td>\n' +
+    '                                    <td>Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet</td>\n' +
+    '                                    <td>Lorem ipsum </td>\n' +
+    '                                    <td>$59.00 </td>\n' +
+    '                                    <td><a href="#">Lorem ipsum</a> </td>\n' +
+    '                                    <td><a href="#">Lorem ipsum.jpg</a> </td>\n' +
+    '                                 </tr>\n' +
+    '                                 <tr>\n' +
+    '                                    <td>4269-2215</td>\n' +
+    '                                    <td>Lorem ipsum </td>\n' +
+    '                                    <td>Lorem ipsum dolor sit amet</td>\n' +
+    '                                    <td>Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet</td>\n' +
+    '                                    <td>Lorem ipsum </td>\n' +
+    '                                    <td>$59.00 </td>\n' +
+    '                                    <td><a href="#">Lorem ipsum</a> </td>\n' +
+    '                                    <td><a href="#">Lorem ipsum.jpg</a> </td>\n' +
+    '                                 </tr>\n' +
+    '                              </tbody>\n' +
+    '                           </table>\n' +
+    '                        </div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('merchant/merchant-order.html',
+    '<div id="mer-in-progress">\n' +
+    '                           <table class="table">\n' +
+    '                              <thead>\n' +
+    '                                 <tr>\n' +
+    '                                    <th>Order ID</th>\n' +
+    '                                    <th>Order</th>\n' +
+    '                                    <th>Time Remaining</th>\n' +
+    '                                    <th>Current Status</th>\n' +
+    '                                    <th>Change state</th>\n' +
+    '                                 </tr>\n' +
+    '                              </thead>\n' +
+    '                              <tbody>\n' +
+    '                                 <tr>\n' +
+    '                                    <td><a class="orderid" href="shopping-cart-summary.html">4269-2215</a></td>\n' +
+    '                                    <td>2. Lorem ipsum dolor\n' +
+    '                                       sit amet \n' +
+    '                                    </td>\n' +
+    '                                    <td>30 mnts</td>\n' +
+    '                                    <td>\n' +
+    '                                       <a class="ready-pick" href="#">\n' +
+    '                                          Ready for pick-up\n' +
+    '                                    </td>\n' +
+    '                                    <td><a class="btn btn-complete btn-block">Complete</a></td>\n' +
+    '                                 </tr>\n' +
+    '                                 <tr>\n' +
+    '                                    <td><a class="orderid" href="shopping-cart-summary.html">4269-2215</a></td>\n' +
+    '                                    <td>\n' +
+    '                                       <ol>\n' +
+    '                                          <li>Lorem ipsum dolor sit amet</li>\n' +
+    '                                          <li>Lorem ipsum dolor sit amet</li>\n' +
+    '                                       </ol>\n' +
+    '                                    </td>\n' +
+    '                                    <td>30 mnts</td>\n' +
+    '                                    <td><a href="#" class="in-progress">In progress</a></td>\n' +
+    '                                    <td><a class="btn btn-ready-for-pick btn-block" href="#">Ready for pick up</a></td>\n' +
+    '                                 </tr>\n' +
+    '                                 <tr>\n' +
+    '                                    <td><a class="orderid" href="shopping-cart-summary.html">4269-2215</a></td>\n' +
+    '                                    <td>2. Lorem ipsum dolor\n' +
+    '                                       sit amet \n' +
+    '                                    </td>\n' +
+    '                                    <td>30 mnts</td>\n' +
+    '                                    <td>\n' +
+    '                                       <a class="ready-pick" href="#">\n' +
+    '                                          Ready for pick-up\n' +
+    '                                    </td>\n' +
+    '                                    <td><a class="btn btn-complete btn-block">Complete</a></td>\n' +
+    '                                 </tr>\n' +
+    '                              </tbody>\n' +
+    '                           </table>\n' +
+    '                        </div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('merchant/merchant-review.html',
+    '<div id="mer-review">\n' +
+    '                           <table class="table">\n' +
+    '                              <thead>\n' +
+    '                                 <tr>\n' +
+    '                                    <th>Name</th>\n' +
+    '                                    <th>Rating </th>\n' +
+    '\n' +
+    '                                 </tr>\n' +
+    '                              </thead>\n' +
+    '                              <tbody>\n' +
+    '                                 <tr>\n' +
+    '                                    <td>David</td>\n' +
+    '                                    <td><div class="rating"><span class="pull-left"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>\n' +
+    '              <div class="clearfix"></div>\n' +
+    '            </div></td>\n' +
+    '                                   \n' +
+    '                                 </tr>\n' +
+    '                                 <tr>\n' +
+    '                                    <td>John</td>\n' +
+    '                                    <td><div class="rating"><span class="pull-left"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span>\n' +
+    '              <div class="clearfix"></div>\n' +
+    '            </div></td>\n' +
+    '                                    \n' +
+    '                                 </tr>\n' +
+    '                                 <tr>\n' +
+    '                                    <td>Peter james</td>\n' +
+    '                                    <td><div class="rating"><span class="pull-left"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span>\n' +
+    '              <div class="clearfix"></div>\n' +
+    '            </div></td>\n' +
+    '                                  \n' +
+    '                                 </tr>\n' +
+    '                              </tbody>\n' +
+    '                           </table>\n' +
+    '                        </div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('navigation/navbar.html',
+    '');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('navigation/search-box.html',
+    '<div class="container search">\n' +
+    '  <h1>SEARCH FOR YOUR FAVORITE RETAILER</h1>\n' +
+    '  <div class="row">\n' +
+    '    <div class="col-md-5 less-padding">\n' +
+    '      <input ng-model="sbc.searchCriteria.location" type="text" placeholder="Location" uib-typeahead="address as address.city_region_name for address in sbc.getLocation($viewValue)" typeahead-loading="loadingLocations" typeahead-no-results="noLocations" class="form-control" typeahead-on-select="sbc.onSelectRegion($item, $modal, $label, $event)"/>\n' +
+    '      <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>\n' +
+    '      <div ng-show="noLocations">\n' +
+    '        <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
+    '      </div>\n' +
+    '    </div>\n' +
+    '    <div class="col-md-5 less-padding">\n' +
+    '      <input type="text" class="form-control" ng-disabled="!sbc.isLocation" ng-model="sbc.searchCriteria.keyword" placeholder="Keyword" uib-typeahead="keyword as keyword.category for keyword in sbc.getKeywords($viewValue)" typeahead-loading="loadingKeywords" typeahead-no-results="noKeywords" class="form-control" typeahead-on-select="sbc.onSelectKeyword($item, $modal, $label, $event)"/>\n' +
+    '      <i ng-show="loadingKeywords" class="glyphicon glyphicon-refresh"></i>\n' +
+    '      <div ng-show="noKeywords">\n' +
+    '        <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
+    '      </div>\n' +
+    '    </div>\n' +
+    '    <div class="col-md-2 less-padding"><a ng-disabled="!sbc.isLocation" class="btn btn-block" ng-click="sbc.searchFn($event)"><i class="fa fa-search"></i> Search</a></div>\n' +
+    '  </div>\n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('search/search.html',
+    '<div class="container-fluid banner-wrap" ng-if="!user.isLoggedIn">\n' +
+    '	<div class="banner">\n' +
+    '    	<div class="col-md-10 cnt">\n' +
+    '    	<p class="title-1">SAVE YOUR TIME...INCREASE PRODUCTIVE TIME<br/>\n' +
+    'SAVE MONEY!!</p>\n' +
+    '		<p class="title-2">Tired of waiting in queue, come join us</p>\n' +
+    '        <a href="#" class="btn join"  ng-click="vm.openSignUpModal($event)">Join Now !!</a>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '</div>\n' +
+    '<div class="container-fluid search-wrap" ui-view="search-box">\n' +
+    '</div>\n' +
+    '<div class="container search-result">\n' +
+    '  <div class="col-md-12 best-bet">These retailers are your best bet for:<a href="#">{{sc.keyword}}</a></div>\n' +
+    '  <div class="row-fluid">\n' +
+    '    <div class="col-md-12">\n' +
+    '      <div class="list-wrap" infinite-scroll="sc.nextPage()"\n' +
+    '      infinite-scroll-distance="0"\n' +
+    '      infinite-scroll-immediate-check="false">\n' +
+    '        <div class="list-item" ng-repeat="(key, value) in sc.merchant.list">\n' +
+    '          <div class="col-xs-12 col-sm-8 col-md-8" >\n' +
+    '            <h2><a href="shop-detail-menu.html">{{value.business_name}}</a></h2>\n' +
+    '            <img src="{{value.photo}}" class="pull-left" />\n' +
+    '            <div> <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>\n' +
+    '              <p>0.98 mi Distance from search location</p>\n' +
+    '              <p class="wait">{{value.avg_wait_time}} Wait Time</p>\n' +
+    '              <p>Open {{value.open_time}} to {{value.close_time}}</p>\n' +
+    '            </div>\n' +
+    '          </div>\n' +
+    '          <div class="col-xs-12 col-sm-4 col-md-4 menu">\n' +
+    '            <h2>Popular Items</h2>\n' +
+    '            <ul>\n' +
+    '              <li><a href="#">Chicken Parmesan Sub</a></li>\n' +
+    '              <li><a href="#">BBQ Chicken Sub</a></li>\n' +
+    '              <li><a href="#">Veggie Sub</a></li>\n' +
+    '              <li><a href="#">Chicken Ranch Hot Sandwich</a></li>\n' +
+    '              <li><a href="#">Cold Cut Hot Sandwich</a></li>\n' +
+    '            </ul>\n' +
+    '            <a ng-click="sc.viewMerchant(value.id)" class="btn btn-block">View Retailer</a></div>\n' +
+    '          <div class="clearfix"></div>\n' +
+    '        </div>\n' +
+    '      </div>\n' +
+    '    </div>\n' +
+    '  </div>\n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
   $templateCache.put('orders/myorder.html',
     '<div class="container my-order-wrap">\n' +
     '         \n' +
@@ -807,62 +1073,6 @@ module.run(['$templateCache', function($templateCache) {
     '         <div class="clearfix"></div>\n' +
     '      </div>\n' +
     '   </div>\n' +
-    '</div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('search/search.html',
-    '<div class="container-fluid banner-wrap" ng-if="!user.isLoggedIn">\n' +
-    '	<div class="banner">\n' +
-    '    	<div class="col-md-10 cnt">\n' +
-    '    	<p class="title-1">SAVE YOUR TIME...INCREASE PRODUCTIVE TIME<br/>\n' +
-    'SAVE MONEY!!</p>\n' +
-    '		<p class="title-2">Tired of waiting in queue, come join us</p>\n' +
-    '        <a href="#" class="btn join"  ng-click="vm.openSignUpModal($event)">Join Now !!</a>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '</div>\n' +
-    '<div class="container-fluid search-wrap" ui-view="search-box">\n' +
-    '</div>\n' +
-    '<div class="container search-result">\n' +
-    '  <div class="col-md-12 best-bet">These retailers are your best bet for:<a href="#">{{sc.keyword}}</a></div>\n' +
-    '  <div class="row-fluid">\n' +
-    '    <div class="col-md-12">\n' +
-    '      <div class="list-wrap" infinite-scroll="sc.nextPage()"\n' +
-    '      infinite-scroll-distance="0"\n' +
-    '      infinite-scroll-immediate-check="false">\n' +
-    '        <div class="list-item" ng-repeat="(key, value) in sc.merchant.list">\n' +
-    '          <div class="col-xs-12 col-sm-8 col-md-8" >\n' +
-    '            <h2><a href="shop-detail-menu.html">{{value.business_name}}</a></h2>\n' +
-    '            <img src="{{value.photo}}" class="pull-left" />\n' +
-    '            <div> <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>\n' +
-    '              <p>0.98 mi Distance from search location</p>\n' +
-    '              <p class="wait">{{value.avg_wait_time}} Wait Time</p>\n' +
-    '              <p>Open {{value.open_time}} to {{value.close_time}}</p>\n' +
-    '            </div>\n' +
-    '          </div>\n' +
-    '          <div class="col-xs-12 col-sm-4 col-md-4 menu">\n' +
-    '            <h2>Popular Items</h2>\n' +
-    '            <ul>\n' +
-    '              <li><a href="#">Chicken Parmesan Sub</a></li>\n' +
-    '              <li><a href="#">BBQ Chicken Sub</a></li>\n' +
-    '              <li><a href="#">Veggie Sub</a></li>\n' +
-    '              <li><a href="#">Chicken Ranch Hot Sandwich</a></li>\n' +
-    '              <li><a href="#">Cold Cut Hot Sandwich</a></li>\n' +
-    '            </ul>\n' +
-    '            <a ng-click="sc.viewMerchant(value.id)" class="btn btn-block">View Retailer</a></div>\n' +
-    '          <div class="clearfix"></div>\n' +
-    '        </div>\n' +
-    '      </div>\n' +
-    '    </div>\n' +
-    '  </div>\n' +
     '</div>');
 }]);
 })();
