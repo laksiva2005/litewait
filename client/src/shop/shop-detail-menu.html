@@ -24,63 +24,21 @@
         </div>
     </div>
     <uib-tabset vertical="true" type="tabs" template-url="html/tabset-template-merchant.html">
-      <uib-tab active="true" template-url="html/tab-template-merchant.html">
+      <uib-tab select="sdm.getMenuByMandC(category.id)" ng-repeat="category in sdm.nest.merchantDetail.categories" active="$index == 0" template-url="html/tab-template-merchant.html">
         <uib-tab-heading>
-            <img src="img/ic-menuitem.png" />Curry
+            <img src="img/ic-menuitem.png" />{{category.category_name}}
         </uib-tab-heading>
-        <div class="tab-pane fade in active">
+        <div class="tab-pane">
           <div class="row-fluid">
-            <div class="col-sm-6 col-md-6 item-left">
+            <div ng-repeat="menu in category.menu_items" class="col-sm-6 col-md-6 item-left">
               <div class="row list">
-                <div class="col-xs-9 col-sm-8 col-md-9"> <img src="img/ic-popularitem.png" class="pull-left" />
+                <div class="col-xs-9 col-sm-8 col-md-9"> <img src="{{menu.picture}}" class="pull-left" />
                   <div class="content">
-                    <h3><a href="#" data-toggle="modal" data-target="#menu-detail">Bntipasto Kabobs</a></h3>
-                    <p>Lorem ipsum dolor sit amet</p>
+                    <h3><a href="#" data-toggle="modal" data-target="#menu-detail">{{menu.item_name}}</a></h3>
+                    <p>{{menu.description}}</p>
                   </div>
                 </div>
-                <div class="col-xs-3 col-sm-4 col-md-3"> <a href="#" data-toggle="modal" data-target="#menu-detail"><i class="fa fa-shopping-cart fa-lg"></i></a> <span class="price">$59</span> </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-md-6 item-right">
-              <div class="row list">
-                <div class="col-xs-9 col-sm-8 col-md-9"> <img src="img/ic-popularitem.png" class="pull-left" />
-                  <div class="content">
-                    <h3><a href="#" data-toggle="modal" data-target="#menu-detail">Cheese Ball</a></h3>
-                    <p>Lorem ipsum dolor sit amet</p>
-                  </div>
-                </div>
-                <div class="col-xs-3 col-sm-4 col-md-3"> <a href="#" data-toggle="modal" data-target="#menu-detail"><i class="fa fa-shopping-cart fa-lg"></i></a> <span class="price">$59</span> </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </uib-tab>
-      <uib-tab template-url="html/tab-template-merchant.html">
-        <uib-tab-heading>
-            <img src="img/ic-menuitem.png" />Appetizers
-        </uib-tab-heading>
-        <div>
-          <div class="row-fluid">
-            <div class="col-sm-6 col-md-6 item-left">
-              <div class="row list">
-                <div class="col-xs-9 col-sm-8 col-md-9"> <img src="img/ic-popularitem.png" class="pull-left" />
-                  <div class="content">
-                    <h3><a href="#" data-toggle="modal" data-target="#menu-detail">Antipasto Kabobs</a></h3>
-                    <p>Lorem ipsum dolor sit amet</p>
-                  </div>
-                </div>
-                <div class="col-xs-3 col-sm-4 col-md-3"> <a href="#" data-toggle="modal" data-target="#menu-detail"><i class="fa fa-shopping-cart fa-lg"></i></a> <span class="price">$59</span> </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-md-6 item-right">
-              <div class="row list">
-                <div class="col-xs-9 col-sm-8 col-md-9"> <img src="img/ic-popularitem.png" class="pull-left" />
-                  <div class="content">
-                    <h3><a href="#" data-toggle="modal" data-target="#menu-detail">Chocolate Cheese Ball</a></h3>
-                    <p>Lorem ipsum dolor sit amet</p>
-                  </div>
-                </div>
-                <div class="col-xs-3 col-sm-4 col-md-3"> <a href="#" data-toggle="modal" data-target="#menu-detail"><i class="fa fa-shopping-cart fa-lg"></i></a> <span class="price">$59</span> </div>
+                <div class="col-xs-3 col-sm-4 col-md-3"> <a title="Add to cart" href="#" data-toggle="modal" data-target="#menu-detail"><i class="fa fa-shopping-cart fa-lg"></i></a> <span class="price">${{menu.price}}</span> </div>
               </div>
             </div>
           </div>

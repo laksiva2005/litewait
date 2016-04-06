@@ -713,56 +713,38 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('merchant/merchant-menu.html',
-    '<div id="mer-info">\n' +
-    '                        	 <a href="#" class="add-btn-1"><i class="fa fa-plus"></i>Add</a>\n' +
-    '                             <a href="#" class="add-btn-2"><i class="fa fa-plus"></i>Add</a>\n' +
-    '                           <table class="table">\n' +
-    '                              <thead>\n' +
-    '                                 <tr>\n' +
-    '                                    <th>Item</th>\n' +
-    '                                    <th>Item Category</th>\n' +
-    '                                    <th>Item Short Description</th>\n' +
-    '                                    <th>Item Long Description</th>\n' +
-    '                                    <th>Item Add Ons</th>\n' +
-    '                                    <th>Item Price</th>\n' +
-    '                                    <th>Edit </th>\n' +
-    '                                    <th>Upload Image</th>\n' +
-    '                                 </tr>\n' +
-    '                              </thead>\n' +
-    '                              <tbody>\n' +
-    '                                 <tr>\n' +
-    '                                    <td>4269-2215</td>\n' +
-    '                                    <td>Lorem ipsum </td>\n' +
-    '                                    <td>Lorem ipsum dolor sit amet</td>\n' +
-    '                                    <td>Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet</td>\n' +
-    '                                    <td>Lorem ipsum </td>\n' +
-    '                                    <td>$59.00 </td>\n' +
-    '                                    <td><a href="#">Lorem ipsum</a> </td>\n' +
-    '                                    <td><a href="#">Lorem ipsum.jpg</a> </td>\n' +
-    '                                 </tr>\n' +
-    '                                 <tr>\n' +
-    '                                    <td>4269-2215</td>\n' +
-    '                                    <td>Lorem ipsum </td>\n' +
-    '                                    <td>Lorem ipsum dolor sit amet</td>\n' +
-    '                                    <td>Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet</td>\n' +
-    '                                    <td>Lorem ipsum </td>\n' +
-    '                                    <td>$59.00 </td>\n' +
-    '                                    <td><a href="#">Lorem ipsum</a> </td>\n' +
-    '                                    <td><a href="#">Lorem ipsum.jpg</a> </td>\n' +
-    '                                 </tr>\n' +
-    '                                 <tr>\n' +
-    '                                    <td>4269-2215</td>\n' +
-    '                                    <td>Lorem ipsum </td>\n' +
-    '                                    <td>Lorem ipsum dolor sit amet</td>\n' +
-    '                                    <td>Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet</td>\n' +
-    '                                    <td>Lorem ipsum </td>\n' +
-    '                                    <td>$59.00 </td>\n' +
-    '                                    <td><a href="#">Lorem ipsum</a> </td>\n' +
-    '                                    <td><a href="#">Lorem ipsum.jpg</a> </td>\n' +
-    '                                 </tr>\n' +
-    '                              </tbody>\n' +
-    '                           </table>\n' +
-    '                        </div>');
+    '<div id="mer-info" infinite-scroll="mmc.nextPage()"\n' +
+    '      infinite-scroll-distance="0"\n' +
+    '      infinite-scroll-immediate-check="false">\n' +
+    '	<a href="#" class="add-btn-1"><i class="fa fa-plus"></i>Add</a>\n' +
+    '   <a href="#" class="add-btn-2"><i class="fa fa-plus"></i>Add</a>\n' +
+    '   <table class="table">\n' +
+    '      <thead>\n' +
+    '         <tr> \n' +
+    '            <th>Item</th>\n' +
+    '            <th>Item Short Description</th>\n' +
+    '            <th>Item Long Description</th>\n' +
+    '            <th>Item Category</th>\n' +
+    '            <th>Item Add Ons</th>\n' +
+    '            <th>Item Price</th>\n' +
+    '            <th>Edit </th>\n' +
+    '            <th>Upload Image</th>\n' +
+    '         </tr>\n' +
+    '      </thead>\n' +
+    '      <tbody>\n' +
+    '         <tr ng-repeat="menu in mmc.data.menu">\n' +
+    '            <td>{{menu.item_name}}</td>\n' +
+    '            <td>{{menu.description}}</td>\n' +
+    '            <td>Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet</td>\n' +
+    '            <td>{{menu.category_name}}</td>\n' +
+    '            <td>Lorem ipsum </td>\n' +
+    '            <td>{{menu.price}}</td>\n' +
+    '            <td><a href="#/mercant/menu/{{menu.item_id}}/{{menu.category_id}}" class="edit"><i class="fa fa-pencil"></i></a> </td>\n' +
+    '            <td><a href="#">Lorem ipsum.jpg</a> </td>\n' +
+    '         </tr>\n' +
+    '      </tbody>\n' +
+    '   </table>\n' +
+    '</div>');
 }]);
 })();
 
@@ -1111,63 +1093,21 @@ module.run(['$templateCache', function($templateCache) {
     '        </div>\n' +
     '    </div>\n' +
     '    <uib-tabset vertical="true" type="tabs" template-url="html/tabset-template-merchant.html">\n' +
-    '      <uib-tab active="true" template-url="html/tab-template-merchant.html">\n' +
+    '      <uib-tab select="sdm.getMenuByMandC(category.id)" ng-repeat="category in sdm.nest.merchantDetail.categories" active="$index == 0" template-url="html/tab-template-merchant.html">\n' +
     '        <uib-tab-heading>\n' +
-    '            <img src="img/ic-menuitem.png" />Curry\n' +
+    '            <img src="img/ic-menuitem.png" />{{category.category_name}}\n' +
     '        </uib-tab-heading>\n' +
-    '        <div class="tab-pane fade in active">\n' +
+    '        <div class="tab-pane">\n' +
     '          <div class="row-fluid">\n' +
-    '            <div class="col-sm-6 col-md-6 item-left">\n' +
+    '            <div ng-repeat="menu in category.menu_items" class="col-sm-6 col-md-6 item-left">\n' +
     '              <div class="row list">\n' +
-    '                <div class="col-xs-9 col-sm-8 col-md-9"> <img src="img/ic-popularitem.png" class="pull-left" />\n' +
+    '                <div class="col-xs-9 col-sm-8 col-md-9"> <img src="{{menu.picture}}" class="pull-left" />\n' +
     '                  <div class="content">\n' +
-    '                    <h3><a href="#" data-toggle="modal" data-target="#menu-detail">Bntipasto Kabobs</a></h3>\n' +
-    '                    <p>Lorem ipsum dolor sit amet</p>\n' +
+    '                    <h3><a href="#" data-toggle="modal" data-target="#menu-detail">{{menu.item_name}}</a></h3>\n' +
+    '                    <p>{{menu.description}}</p>\n' +
     '                  </div>\n' +
     '                </div>\n' +
-    '                <div class="col-xs-3 col-sm-4 col-md-3"> <a href="#" data-toggle="modal" data-target="#menu-detail"><i class="fa fa-shopping-cart fa-lg"></i></a> <span class="price">$59</span> </div>\n' +
-    '              </div>\n' +
-    '            </div>\n' +
-    '            <div class="col-sm-6 col-md-6 item-right">\n' +
-    '              <div class="row list">\n' +
-    '                <div class="col-xs-9 col-sm-8 col-md-9"> <img src="img/ic-popularitem.png" class="pull-left" />\n' +
-    '                  <div class="content">\n' +
-    '                    <h3><a href="#" data-toggle="modal" data-target="#menu-detail">Cheese Ball</a></h3>\n' +
-    '                    <p>Lorem ipsum dolor sit amet</p>\n' +
-    '                  </div>\n' +
-    '                </div>\n' +
-    '                <div class="col-xs-3 col-sm-4 col-md-3"> <a href="#" data-toggle="modal" data-target="#menu-detail"><i class="fa fa-shopping-cart fa-lg"></i></a> <span class="price">$59</span> </div>\n' +
-    '              </div>\n' +
-    '            </div>\n' +
-    '          </div>\n' +
-    '        </div>\n' +
-    '      </uib-tab>\n' +
-    '      <uib-tab template-url="html/tab-template-merchant.html">\n' +
-    '        <uib-tab-heading>\n' +
-    '            <img src="img/ic-menuitem.png" />Appetizers\n' +
-    '        </uib-tab-heading>\n' +
-    '        <div>\n' +
-    '          <div class="row-fluid">\n' +
-    '            <div class="col-sm-6 col-md-6 item-left">\n' +
-    '              <div class="row list">\n' +
-    '                <div class="col-xs-9 col-sm-8 col-md-9"> <img src="img/ic-popularitem.png" class="pull-left" />\n' +
-    '                  <div class="content">\n' +
-    '                    <h3><a href="#" data-toggle="modal" data-target="#menu-detail">Antipasto Kabobs</a></h3>\n' +
-    '                    <p>Lorem ipsum dolor sit amet</p>\n' +
-    '                  </div>\n' +
-    '                </div>\n' +
-    '                <div class="col-xs-3 col-sm-4 col-md-3"> <a href="#" data-toggle="modal" data-target="#menu-detail"><i class="fa fa-shopping-cart fa-lg"></i></a> <span class="price">$59</span> </div>\n' +
-    '              </div>\n' +
-    '            </div>\n' +
-    '            <div class="col-sm-6 col-md-6 item-right">\n' +
-    '              <div class="row list">\n' +
-    '                <div class="col-xs-9 col-sm-8 col-md-9"> <img src="img/ic-popularitem.png" class="pull-left" />\n' +
-    '                  <div class="content">\n' +
-    '                    <h3><a href="#" data-toggle="modal" data-target="#menu-detail">Chocolate Cheese Ball</a></h3>\n' +
-    '                    <p>Lorem ipsum dolor sit amet</p>\n' +
-    '                  </div>\n' +
-    '                </div>\n' +
-    '                <div class="col-xs-3 col-sm-4 col-md-3"> <a href="#" data-toggle="modal" data-target="#menu-detail"><i class="fa fa-shopping-cart fa-lg"></i></a> <span class="price">$59</span> </div>\n' +
+    '                <div class="col-xs-3 col-sm-4 col-md-3"> <a title="Add to cart" href="#" data-toggle="modal" data-target="#menu-detail"><i class="fa fa-shopping-cart fa-lg"></i></a> <span class="price">${{menu.price}}</span> </div>\n' +
     '              </div>\n' +
     '            </div>\n' +
     '          </div>\n' +

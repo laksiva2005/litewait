@@ -3445,14 +3445,58 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	'use strict';
 	angular.module('litewait.ui').controller('MerchantMenuCtrl', MerchantMenuCtrl);
 
-	MerchantMenuCtrl.$inject = ['$scope', 'User'];
+	MerchantMenuCtrl.$inject = ['$scope', 'User', 'MenuService'];
 
-	function MerchantMenuCtrl($scope, User) {
+	function MerchantMenuCtrl($scope, User, MenuService) {
 		var vm = this;
 		vm.data = {};
-		vm.data['merchant'] = User.data || {};
+		vm.data.merchant = User.data || {};
+		vm.data.menuParams = {
+			busy: false,
+			offset: 0,
+			limit: 10,
+			merchant_id: vm.data.merchant.id
+		};
+		vm.data.menu = [];
+		vm.nextPage = nextPage;
 
-		// TODO: have to get menu list
+		function searchMenu() {
+			var param = getMenuParams();
+			menuService.getByMerchantId(param).then(function(res) {
+				assignMenus(res.data);
+			});
+		}
+
+		function assignMenus(items) {
+			for (var i = 0; i < items.length; i++) {
+	            var index = _.findIndex(vm.data.menu, {item_id: items[i].item_id});
+	            if (-1 === index) {
+	              vm.data.menu.push(items[i]);
+	            }
+	        }
+	        vm.data.menuParams.offset = vm.data.menu.length;
+		}
+
+		function getMenuParams() {
+			return {
+				offset: vm.data.menuParams.offset,
+				limit: vm.data.menuParams.limit,
+				merchant_id: vm.data.merchant.id
+			};
+		}
+
+		function initializeMenuList() {
+			vm.data.menuParams.offset = 0;
+			vm.data.menuParams.busy = false;
+			seachMenu();
+		}
+
+		function nextPage() {
+			if (!vm.data.menuParams.busy) {
+				vm.menuParams.busy = true;
+				searchMenu();
+			}
+		}
 	}
 })(angular);
 /*
@@ -4527,6 +4571,93 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 */
 ;(function() {
 	'use strict';
+
+	angular.module('litewait.ui').factory('MenuService', MenuService);
+
+	angular.$inject = ['$http', 'RouteConfig'];
+
+	function MenuService($http, RouteConfig) {
+		var apiBase = RouteConfig.apiBase + '/menu';
+		var service = {};
+		service.getByMerchantId = getByMerchantId;
+		service.uploadByExcel = uploadByExcel;
+		service.getCategoryByMerchantId = getCategoryByMerchantId;
+		service.getByMandC = getByMandC;
+
+		function getByMerchantId(id) {
+			var data = {
+				params: {
+					merchant_id: id
+				}
+			};
+
+			return $http.get(apiBase, data).then(function(res) {
+				var objArr = [];
+				var data = response.data.data;
+				if (!res.data.error) {
+					return formatMenu(data);
+				} else {
+					return [];
+				}
+			});
+		}
+
+		function formatMenu(data) {
+			var objArr = [];
+			for (var i = 0; i < data.category.length; i++) {
+				for (var j=0;j<data.category[i].menu_items.length;j++) {
+					var menu_item = data.category[i].menu_items[j];
+					var obj = {
+						item_id: menu_item.item_id,
+						item_name: menu_item.item_name,
+						description: menu_item.description,
+						price: menu_item.price,
+						merchant_id: data.merchant_id,
+						category_id: data.category[i].category_id,
+						category_name: data.category[i].category_name 
+					};
+
+					objArr.push(obj);
+				}
+			}
+			return objArr;
+		}
+
+		function uploadByExcel() {
+
+		}
+
+		function getCategoryByMerchantId(id) {
+			var url = apiBase + '/category';
+			var params = {
+				params: {
+					merchant_id: id
+				}
+			};
+
+			return $http.get(url, params);
+		}
+
+		function getByMandC(data) {
+			var url = apiBase + '/category/items';
+			var params = {
+				params: {
+					merchant_id: data.merchant_id,
+					category_id: data.category_id
+				}
+			};
+
+			return $http.get(url, params);
+		}
+
+		return service;
+	}
+})();
+/*
+*
+*/
+;(function() {
+	'use strict';
 	angular.module('litewait.services').factory('Merchant', Merchant);
 
 	Merchant.$inject = ['$http', '$q', 'RouteConfig'];
@@ -4840,27 +4971,57 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	'use strict';
 	angular.module('litewait.ui').controller('ShopDetailMenuCtrl', ShopDetailMenuCtrl);
 
-	ShopDetailMenuCtrl.$inject = ['$scope', '$state', '$stateParams', 'Merchant'];
+	ShopDetailMenuCtrl.$inject = ['$scope', '$state', '$stateParams', 'PubSub', 'Merchant', 'MenuService'];
 
-	function ShopDetailMenuCtrl($scope, $state, $stateParams, Merchant) {
+	function ShopDetailMenuCtrl($scope, $state, $stateParams, PubSub, Merchant, MenuService) {
 		var vm = this;
 		vm.nest = {};
 		vm.nest.merchantDetail = {};
 		vm.nest.merchantId = $stateParams.id;
+		vm.getMenuByMandC = getMenuByMandC;
 
 		function getMerchant(id) {
 			Merchant.get(id).then(function(response) {
-				vm.nest.merchantDetail = response.data;
+				vm.nest.merchantDetail = response.data.data;
+				vm.nest.merchantDetail.categories = [];
 				vm.nest.merchantId = vm.nest.merchantDetail.id;
-			}, function(error) {
-				vm.nest.merchantDetail = {};
-				vm.nest.merchantId = '';
+				return MenuService.getCategoryByMerchantId(vm.nest.merchantId);
+			}).then(function(response) {
+				if (!response.data.error) {
+					vm.nest.merchantDetail.categories = response.data.data.item_categories || [];
+					if (vm.nest.merchantDetail.categories.length) {
+						for(var i=0;i<vm.nest.merchantDetail.categories.length; i++) {
+							vm.nest.merchantDetail.categories[i].menu_items = [];
+						}
+						PubSub.publish('getfirstmenu', vm.nest.merchantDetail.categories[0]);
+					}
+				}
 			});
+		}
+
+		function getMenuByMandC(category_id) {
+			var data = {
+				category_id: category_id,
+				merchant_id: vm.nest.merchantId
+			};
+
+			var index = _.findIndex(vm.nest.merchantDetail.categories, {id: category_id});
+			if (index !== -1 && vm.nest.merchantDetail.categories[index].menu_items.length == 0) {
+				MenuService.getByMandC(data).then(function(res) {
+					
+					vm.nest.merchantDetail.categories[index].menu_items = res.data.data.menu_items || [];
+				});
+			}
 		}
 
 		if (vm.nest.merchantId) {
 			getMerchant(vm.nest.merchantId);
 		}
+
+		PubSub.subscribe('getfirstmenu', function(event, obj) {
+			var category_id = obj.args.id;
+			getMenuByMandC(category_id);
+		});
 	}
 })();
 
