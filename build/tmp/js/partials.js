@@ -671,6 +671,40 @@ try {
   module = angular.module('litewait.ui', []);
 }
 module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('merchant/merchant-category.html',
+    '<div id="mer-category" infinite-scroll="mcc.nextPage()"\n' +
+    '      infinite-scroll-distance="0"\n' +
+    '      infinite-scroll-immediate-check="false">\n' +
+    '   <table class="table">\n' +
+    '      <thead>\n' +
+    '         <tr>\n' +
+    '            <th>Id</th>\n' +
+    '            <th>Name</th>\n' +
+    '            <th>Action</th>\n' +
+    '         </tr>\n' +
+    '      </thead>\n' +
+    '      <tbody>\n' +
+    '         <tr ng-repeat="category in mcc.data.category">\n' +
+    '            <td>{{category.id}}</td>\n' +
+    '            <td>{{category.category_name}}</td>\n' +
+    '            <td>\n' +
+    '              <a href="#/mercant/category/edit/{{category.id}}/{{mcc.data.merchant_id}}" class="edit"><i class="fa fa-pencil"></i></a>\n' +
+    '              <a class="delete" ng-click="mcc.deleteCategory(category.id)"><i class="fa fa-trash"></i></a>\n' +
+    '            </td>\n' +
+    '         </tr>\n' +
+    '      </tbody>\n' +
+    '   </table>\n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
   $templateCache.put('merchant/merchant-landing.html',
     '<div class="container merchant-landing">\n' +
     '   <div class="col-md-12 product-detail">\n' +
@@ -694,6 +728,7 @@ module.run(['$templateCache', function($templateCache) {
     '                  <li ng-class="{active: mlc.data.active == \'pastorder\'}"><a ng-click="mlc.go(\'merchant.pastorder\', \'past\')">Past orders</a></li>\n' +
     '                  <li ng-class="{active: mlc.data.active == \'review\'}"><a ng-click="mlc.go(\'merchant.review\', \'review\')">Reviews</a></li>\n' +
     '                  <li ng-class="{active: mlc.data.active == \'menu\'}"><a ng-click="mlc.go(\'merchant.menu\', \'menu\')">Merchant Menu</a></li>\n' +
+    '                  <li ng-class="{active: mlc.data.active == \'category\'}"><a ng-click="mlc.go(\'merchant.category\', \'category\')">Merchant Category</a></li>\n' +
     '               </ul>\n' +
     '               <div ui-view="merchant-landing"></div> \n' +
     '            </div>\n' +
@@ -702,6 +737,18 @@ module.run(['$templateCache', function($templateCache) {
     '      </div>\n' +
     '   </div>\n' +
     '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('merchant/merchant-menu-new.html',
+    '');
 }]);
 })();
 
@@ -818,40 +865,28 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('merchant/merchant-review.html',
-    '<div id="mer-review">\n' +
-    '                           <table class="table">\n' +
-    '                              <thead>\n' +
-    '                                 <tr>\n' +
-    '                                    <th>Name</th>\n' +
-    '                                    <th>Rating </th>\n' +
-    '\n' +
-    '                                 </tr>\n' +
-    '                              </thead>\n' +
-    '                              <tbody>\n' +
-    '                                 <tr>\n' +
-    '                                    <td>David</td>\n' +
-    '                                    <td><div class="rating"><span class="pull-left"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>\n' +
-    '              <div class="clearfix"></div>\n' +
-    '            </div></td>\n' +
-    '                                   \n' +
-    '                                 </tr>\n' +
-    '                                 <tr>\n' +
-    '                                    <td>John</td>\n' +
-    '                                    <td><div class="rating"><span class="pull-left"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span>\n' +
-    '              <div class="clearfix"></div>\n' +
-    '            </div></td>\n' +
-    '                                    \n' +
-    '                                 </tr>\n' +
-    '                                 <tr>\n' +
-    '                                    <td>Peter james</td>\n' +
-    '                                    <td><div class="rating"><span class="pull-left"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span>\n' +
-    '              <div class="clearfix"></div>\n' +
-    '            </div></td>\n' +
-    '                                  \n' +
-    '                                 </tr>\n' +
-    '                              </tbody>\n' +
-    '                           </table>\n' +
-    '                        </div>');
+    '<div id="mer-review" infinite-scroll="mrc.nextPage()"\n' +
+    '      infinite-scroll-distance="0"\n' +
+    '      infinite-scroll-immediate-check="false">\n' +
+    '   <table class="table">\n' +
+    '      <thead>\n' +
+    '         <tr>\n' +
+    '            <th>Name</th>\n' +
+    '            <th>Rating </th>\n' +
+    '         </tr>\n' +
+    '      </thead>\n' +
+    '      <tbody>\n' +
+    '         <tr ng-repeat="review in mrc.data.review">\n' +
+    '            <td>{{review.user}}</td>\n' +
+    '            <td>\n' +
+    '              <div class="rating">\n' +
+    '                <uib-rating ng-model="review.rating" read-only="true" aria-labelledby="default-rating"></uib-rating>\n' +
+    '              </div>\n' +
+    '            </td>\n' +
+    '         </tr>\n' +
+    '      </tbody>\n' +
+    '   </table>\n' +
+    '</div>');
 }]);
 })();
 

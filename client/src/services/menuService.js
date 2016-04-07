@@ -4,7 +4,7 @@
 ;(function() {
 	'use strict';
 
-	angular.module('litewait.ui').factory('MenuService', MenuService);
+	angular.module('litewait.services').factory('MenuService', MenuService);
 
 	angular.$inject = ['$http', 'RouteConfig'];
 
@@ -15,13 +15,50 @@
 		service.uploadByExcel = uploadByExcel;
 		service.getCategoryByMerchantId = getCategoryByMerchantId;
 		service.getByMandC = getByMandC;
+		service.featuredByMerchant = featuredByMerchant;
+		service.deleteMenu = deleteMenu;
+		service.update = update;
+		service.add = add;
 
-		function getByMerchantId(id) {
+		function add(data) {
+			var url = apiBase + '/category/items';
+			return $http.post(url, data);
+		}
+
+		function update(data) {
+			var url = apiBase + '/category/items';
+
+			return $http.put(url, data);
+		}
+
+		function deleteMenu(data) {
+			var params = {
+				params: data
+			};
+
+			var url = apiBase + '/category/items';
+
+			$http.delete(url, params);
+		}
+
+		function featuredByMerchant(id) {
 			var data = {
 				params: {
 					merchant_id: id
 				}
 			};
+
+			var url = apiBase + '/items/featured';
+
+			return $http.get(url, data);
+		}
+
+		function getByMerchantId(id) {
+			var data = {
+					params: {
+						merchant_id: id
+					}
+				};
 
 			return $http.get(apiBase, data).then(function(res) {
 				var objArr = [];
@@ -61,13 +98,20 @@
 
 		function getCategoryByMerchantId(id) {
 			var url = apiBase + '/category';
-			var params = {
-				params: {
-					merchant_id: id
-				}
-			};
+			var data;
+			if (angular.isObject(id)) {
+				data = {
+					params: id
+				};	
+			} else {
+				data = {
+					params: {
+						merchant_id: id
+					}
+				};
+			}
 
-			return $http.get(url, params);
+			return $http.get(url, data);
 		}
 
 		function getByMandC(data) {

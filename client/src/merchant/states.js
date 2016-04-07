@@ -62,6 +62,16 @@
                         controllerAs: 'mmc'
                     }
                 }
+            })
+            .state('merchant.category', {
+                url: '/category',
+                views: {
+                    'merchant-landing': {
+                        templateUrl: 'merchant/merchant-category.html',
+                        controller: 'MerchantCategoryCtrl',
+                        controllerAs: 'mcc'
+                    }
+                }
             });
     }
 })(angular);

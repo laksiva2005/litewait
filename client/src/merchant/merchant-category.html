@@ -1,0 +1,23 @@
+<div id="mer-category" infinite-scroll="mcc.nextPage()"
+      infinite-scroll-distance="0"
+      infinite-scroll-immediate-check="false">
+   <table class="table">
+      <thead>
+         <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Action</th>
+         </tr>
+      </thead>
+      <tbody>
+         <tr ng-repeat="category in mcc.data.category">
+            <td>{{category.id}}</td>
+            <td>{{category.category_name}}</td>
+            <td>
+              <a href="#/mercant/category/edit/{{category.id}}/{{mcc.data.merchant_id}}" class="edit"><i class="fa fa-pencil"></i></a>
+              <a class="delete" ng-click="mcc.deleteCategory(category.id)"><i class="fa fa-trash"></i></a>
+            </td>
+         </tr>
+      </tbody>
+   </table>
+</div>

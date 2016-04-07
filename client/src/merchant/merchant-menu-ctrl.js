@@ -48,14 +48,17 @@
 		function initializeMenuList() {
 			vm.data.menuParams.offset = 0;
 			vm.data.menuParams.busy = false;
+			vm.data.menu.length = 0;
 			seachMenu();
 		}
 
 		function nextPage() {
 			if (!vm.data.menuParams.busy) {
-				vm.menuParams.busy = true;
+				vm.data.menuParams.busy = true;
 				searchMenu();
 			}
 		}
+
+		searchMenu();
 	}
 })(angular);

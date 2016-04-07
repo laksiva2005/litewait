@@ -3418,6 +3418,87 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 /*
 *
 */
+;(function () {
+	'use strict';
+	angular.module('litewait.ui').controller('MerchantCategoryCtrl', MerchantCategoryCtrl);
+
+	MerchantCategoryCtrl.$inject = ['$state', 'MenuService', 'User'];
+
+	function MerchantCategoryCtrl($state, MenuService, User) {
+		var vm = this;
+		vm.data = {};
+		vm.data.merchant = User.data || {};
+		vm.data.categoryParams = {
+			busy: false,
+			offset: 0,
+			limit: 10,
+			merchant_id: vm.data.merchant.id
+		};
+		vm.data.category = [];
+		vm.nextPage = nextPage;
+		vm.deleteCategory = deleteCategory;
+
+		function deleteCategory(id) {
+
+		}
+
+		function searchCategory() {
+			var param = getCategoryParams();
+			MenuService.getCategoryByMerchantId(param).then(function(res) {
+				if (!res.data.error) {
+					var a = [];
+					for (var i = 0; i < res.data.data.item_categories.length; i++) {
+						a.push({
+							merchant_id: res.data.data.merchant_id,
+							_id: res.data.data.id,
+							id: res.data.data.item_categories[i].id,
+							is_active: res.data.data.item_categories[i].is_active,
+							category_name: res.data.data.item_categories[i].category_name
+						});
+					}
+					assignCategorys(a);
+				}
+			});
+		}
+
+		function assignCategorys(items) {
+			for (var i = 0; i < items.length; i++) {
+	            var index = _.findIndex(vm.data.category, {id: items[i].id});
+	            if (-1 === index) {
+	              vm.data.category.push(items[i]);
+	            }
+	        }
+	        vm.data.categoryParams.offset = vm.data.category.length;
+		}
+
+		function getCategoryParams() {
+			return {
+				offset: vm.data.categoryParams.offset,
+				limit: vm.data.categoryParams.limit,
+				merchant_id: vm.data.merchant.id
+			};
+		}
+
+		function initializeCategoryList() {
+			vm.data.categoryParams.offset = 0;
+			vm.data.categoryParams.busy = false;
+			vm.data.category.length = 0;
+			seachCategory();
+		}
+
+		function nextPage() {
+			if (!vm.data.categoryParams.busy) {
+				vm.data.categoryParams.busy = true;
+				searchCategory();
+			}
+		}
+
+		searchCategory();
+	}
+})();
+/*
+*
+*/
 ;(function(angular) {
 	'use strict';
 	angular.module('litewait.ui').controller('MerchantLandingCtrl', MerchantLandingCtrl);
@@ -3488,17 +3569,35 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		function initializeMenuList() {
 			vm.data.menuParams.offset = 0;
 			vm.data.menuParams.busy = false;
+			vm.data.menu.length = 0;
 			seachMenu();
 		}
 
 		function nextPage() {
 			if (!vm.data.menuParams.busy) {
-				vm.menuParams.busy = true;
+				vm.data.menuParams.busy = true;
 				searchMenu();
 			}
 		}
+
+		searchMenu();
 	}
 })(angular);
+/*
+*
+*/
+;(function() {
+	'use strict';
+	angular.module('litewait.ui').controller('NewMenuCtrl', NewMenuCtrl);
+
+	NewMenuCtrl.$inject = ['$state', 'MenuService', 'User'];
+
+	function NewMenuCtrl($state, MenuService, User) {
+		var vm = this;
+		vm.data = {};
+		vam.data.merchant = User.data;
+	}
+})();
 /*
 *
 */
@@ -3523,14 +3622,64 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
    'use strict';
    angular.module('litewait.ui').controller('MerchantReviewCtrl', MerchantReviewCtrl);
 
-   MerchantReviewCtrl.$inject = ['$scope', 'User'];
+   MerchantReviewCtrl.$inject = ['$scope', 'User', 'ReviewService'];
 
-   function MerchantReviewCtrl($scope, User) {
+   function MerchantReviewCtrl($scope, User, ReviewService) {
       var vm = this;
       vm.data = {};
-      vm.data['merchant'] = User.data || {};
+      vm.data.merchant = User.data || {};
 
-      // TODO: have to get review list
+      vm.data.reviewParams = {
+			busy: false,
+			offset: 0,
+			limit: 10,
+			merchant: vm.data.merchant.username
+		};
+		vm.data.review = [];
+		vm.nextPage = nextPage;
+
+		function searchReview() {
+			var param = getReviewParams();
+			ReviewService.getMerchantReviews(param).then(function(res) {
+				if (!res.data.error) {
+					assignReviews(res.data.data);
+				}
+			});
+		}
+
+		function assignReviews(items) {
+			for (var i = 0; i < items.length; i++) {
+	            var index = _.findIndex(vm.data.review, {date: items[i].date});
+	            if (-1 === index) {
+	              vm.data.review.push(items[i]);
+	            }
+	        }
+	        vm.data.reviewParams.offset = vm.data.review.length;
+		}
+
+		function getReviewParams() {
+			return {
+				offset: vm.data.reviewParams.offset,
+				limit: vm.data.reviewParams.limit,
+				merchant: vm.data.merchant.username
+			};
+		}
+
+		function initializeReviewList() {
+			vm.data.reviewParams.offset = 0;
+			vm.data.reviewParams.busy = false;
+			vm.data.review.length = 0;
+			seachReview();
+		}
+
+		function nextPage() {
+			if (!vm.data.reviewParams.busy) {
+				vm.data.reviewParams.busy = true;
+				searchReview();
+			}
+		}
+
+		searchReview();
    }
 })(angular);
 
@@ -3595,6 +3744,16 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         templateUrl: 'merchant/merchant-menu.html',
                         controller: 'MerchantMenuCtrl',
                         controllerAs: 'mmc'
+                    }
+                }
+            })
+            .state('merchant.category', {
+                url: '/category',
+                views: {
+                    'merchant-landing': {
+                        templateUrl: 'merchant/merchant-category.html',
+                        controller: 'MerchantCategoryCtrl',
+                        controllerAs: 'mcc'
                     }
                 }
             });
@@ -4572,7 +4731,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 ;(function() {
 	'use strict';
 
-	angular.module('litewait.ui').factory('MenuService', MenuService);
+	angular.module('litewait.services').factory('MenuService', MenuService);
 
 	angular.$inject = ['$http', 'RouteConfig'];
 
@@ -4583,13 +4742,50 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		service.uploadByExcel = uploadByExcel;
 		service.getCategoryByMerchantId = getCategoryByMerchantId;
 		service.getByMandC = getByMandC;
+		service.featuredByMerchant = featuredByMerchant;
+		service.deleteMenu = deleteMenu;
+		service.update = update;
+		service.add = add;
 
-		function getByMerchantId(id) {
+		function add(data) {
+			var url = apiBase + '/category/items';
+			return $http.post(url, data);
+		}
+
+		function update(data) {
+			var url = apiBase + '/category/items';
+
+			return $http.put(url, data);
+		}
+
+		function deleteMenu(data) {
+			var params = {
+				params: data
+			};
+
+			var url = apiBase + '/category/items';
+
+			$http.delete(url, params);
+		}
+
+		function featuredByMerchant(id) {
 			var data = {
 				params: {
 					merchant_id: id
 				}
 			};
+
+			var url = apiBase + '/items/featured';
+
+			return $http.get(url, data);
+		}
+
+		function getByMerchantId(id) {
+			var data = {
+					params: {
+						merchant_id: id
+					}
+				};
 
 			return $http.get(apiBase, data).then(function(res) {
 				var objArr = [];
@@ -4629,13 +4825,20 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 		function getCategoryByMerchantId(id) {
 			var url = apiBase + '/category';
-			var params = {
-				params: {
-					merchant_id: id
-				}
-			};
+			var data;
+			if (angular.isObject(id)) {
+				data = {
+					params: id
+				};	
+			} else {
+				data = {
+					params: {
+						merchant_id: id
+					}
+				};
+			}
 
-			return $http.get(url, params);
+			return $http.get(url, data);
 		}
 
 		function getByMandC(data) {
@@ -4716,6 +4919,28 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		return obj;
 	}
 })();
+/*
+*
+*/
+;(function() {
+	'use strict';
+	angular.module('litewait.services').factory('OrderService', OrderService);
+
+	OrderService.$inject = ['$http', 'RouteConfig'];
+
+	function OrderService($http, RouteConfig) {
+		var service = {};
+		var apiBase = RouteConfig.apiBase + '/order/search';
+		service.get = get;
+
+
+		function get(data) {
+			return $http.post(apiBase, data);
+		}
+
+		return service;
+	}
+})();
 /**
  *
  */
@@ -4782,6 +5007,31 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 
 
+/*
+*
+*/
+;(function() {
+	'use strict';
+	angular.module('litewait.services').factory('ReviewService', ReviewService);
+
+	ReviewService.$inject = ['$http', 'RouteConfig'];
+
+	function ReviewService($http, RouteConfig) {
+		var service = {};
+		var apiBase = RouteConfig.apiBase + '/merchantratings';
+
+		service.getMerchantReviews = getMerchantReviews;
+
+		function getMerchantReviews(data) {
+			var params = {
+				params: data
+			};
+			return $http.get(apiBase, params);
+		}
+
+		return service;
+	}
+})();
 /*
 *
 */
