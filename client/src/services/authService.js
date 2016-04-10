@@ -6,6 +6,12 @@
     'use strict';
     var USER_KEY = 'USER:KEY';
     angular.module('litewait.services')
+        .constant('MSG', {
+            addCategorySuccess: 'Category has been added successfully',
+            addCategoryFailed: 'Adding Category failed',
+            updateCategorySuccess: 'Category has been updated successfully',
+            updateCategoryFailed: 'Update category has been failed'
+        })
         .constant('AUTH_EVENTS', {
             loginSuccess: 'auth:login-success',
             loginFailed: 'auth:login-failed',

@@ -13,12 +13,84 @@
 		var service = {};
 		service.getByMerchantId = getByMerchantId;
 		service.uploadByExcel = uploadByExcel;
+		service.addCategory = addCategory;
+		service.updateCategory = updateCategory;
+		service.checkCategoryExists = checkCategoryExists;
+		service.deleteCategory = deleteCategory;
 		service.getCategoryByMerchantId = getCategoryByMerchantId;
+		service.getCategoryByMandCId = getCategoryByMandCId;
 		service.getByMandC = getByMandC;
 		service.featuredByMerchant = featuredByMerchant;
 		service.deleteMenu = deleteMenu;
 		service.update = update;
 		service.add = add;
+
+		function addCategory(data) {
+			var params = {
+				params: {
+					merchant_id: data.merchant_id
+				},
+				data: {
+					category_name: data.category_name
+				}
+			};
+			var url = apiBase + '/category';
+
+			return $http.post(url, params);
+		}
+
+		function updateCategory(data) {
+			var params = {
+				params: {
+					merchant_id: data.merchant_id
+				},
+				data: {
+					id: data.id,
+					category_name: data.category_name
+				}
+			};
+			var url = apiBase + '/category';
+
+			return $http.put(url, params);
+		}
+
+		function deleteCategory(data) {
+			var params = {
+				params: {
+					merchant_id: data.merchant_id,
+					category_id: data.category_id
+				}
+			};
+			var url = apiBase + '/category';
+
+			return $http.delete(url, params);
+		}
+
+		function checkCategoryExists(data) {
+			var params = {params: {
+					merchant_id: data.merchant_id,
+					category_name: data.category_name
+				}
+			};
+			var url = apiBase + '/category/nameAvailability';
+			if (data.id >= 0) {
+				params.params.id = data.id;
+			}
+
+			return $http.get(url, params);
+		}
+
+		function getCategoryByMandCId(data) {
+			var url = apiBase + '/category';
+			var params = {
+				params: {
+					merchant_id: data.merchant_id,
+					category_id: data.category_id
+				}
+			};
+
+			return $http.get(url, params);
+		}
 
 		function add(data) {
 			var url = apiBase + '/category/items';

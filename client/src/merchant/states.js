@@ -72,6 +72,41 @@
                         controllerAs: 'mcc'
                     }
                 }
+            })
+            .state('merchant.categoryadd', {
+                url: '/category/add',
+                views: {
+                    'merchant-landing': {
+                        templateUrl: 'merchant/merchant-category-new.html',
+                        controller: 'NewCategoryCtrl',
+                        controllerAs: 'ncc'
+                    }
+                },
+                resolve: {
+                    category: function() {
+                        return false;
+                    }
+                }
+            })
+            .state('merchant.categoryedit', {
+                url: '/category/edit/:category_id',
+                views: {
+                    'merchant-landing': {
+                        templateUrl: 'merchant/merchant-category-new.html',
+                        controller: 'NewCategoryCtrl',
+                        controllerAs: 'ncc'
+                    }
+                },
+                resolve: {
+                    category: function(MenuService, $stateParams) {
+                        var data = {
+                            merchant_id: $stateParams.merchant_id,
+                            category_id: $stateParams.category_id
+                        };
+
+                        return MenuService.getCategoryByMandCId(data);
+                    }
+                }
             });
     }
 })(angular);

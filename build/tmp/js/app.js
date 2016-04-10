@@ -3224,6 +3224,40 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
     }
 })(angular);
 /*
+*
+*/
+;(function() {
+	'use strict';
+	function checkCategoryExists(MenuService, $q) {
+		return {
+			restrict: 'A',
+			require: 'ngModel',
+			scope: {
+				categoryData: '='
+			},
+			link: function(scope, element, attrs, ngModel) {
+				ngModel.$asyncValidators.checkCategoryExists = function(value) {
+					var data = scope.categoryData;
+					if (data.id === '') {
+						delete data['id'];
+					}
+					data.category_name = value;
+					return MenuService.checkCategoryExists(data).then(function(response) {
+						if (!response.data.error && response.data.data != null) {
+							return $q.reject(false);
+						}
+						return response;
+					});
+				};
+			}
+		};
+	}
+
+	checkCategoryExists.$inject = ['MenuService', '$q'];
+
+	angular.module('litewait.directives').directive('checkCategoryExists', checkCategoryExists);
+})();
+/*
  *
  */
 ;(function (angular) {
@@ -3439,7 +3473,34 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		vm.deleteCategory = deleteCategory;
 
 		function deleteCategory(id) {
-
+			var params = {
+				merchant_id: vm.data.merchant.id,
+				category_id: id
+			};
+			MenuService.deleteCategory(params).then(function(response){
+				if (!response.dta.error) {
+					toaster.pop({
+                        type: 'success', 
+                        title:'Success', 
+                        body: MSG.deleteCategorySuccess, 
+                        toasterId: 1
+                    });
+				} else {
+					toaster.pop({
+                        type: 'error', 
+                        title:'Error', 
+                        body: MSG.deleteCategoryFailed, 
+                        toasterId: 1
+                    });
+				}
+			}, function(error) {
+				toaster.pop({
+                    type: 'error', 
+                    title:'Error', 
+                    body: MSG.deleteCategoryFailed, 
+                    toasterId: 1
+                });
+			});
 		}
 
 		function searchCategory() {
@@ -3494,6 +3555,88 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		}
 
 		searchCategory();
+	}
+})();
+/*
+*
+*/
+;(function(){
+	'use strict';
+	angular.module('litewait.ui').controller('NewCategoryCtrl', NewCategoryCtrl);
+
+	NewCategoryCtrl.$inject = ['$scope', 'User', 'MenuService', '$stateParams', '$state', 'MSG', 'toaster', 'category'];
+
+	function NewCategoryCtrl($scope, User, MenuService, $stateParams, $state, MSG, toaster, category) {
+		var vm = this;
+
+		vm.data = {};
+		vm.data.modelOptions = {
+			debounce: {
+				default: 500,
+				blur: 0
+			}
+		};
+		vm.data.merchant = User.data;
+		vm.data.action = ($stateParams.id === '') ? 'Update' : 'Add';
+		vm.category = {
+			id: '',
+			category_name: '',
+			merchant_id: User.data.id
+		};
+		vm.addCategory = addCategory;
+		vm.cancel = cancel;
+
+		if (category) {
+			vm.category.category_name = category.category_name;
+			vm.category.id = category.id;
+		}
+
+		function cancel(event) {
+			event.preventDefault();
+			$state.go('merchant.category');
+		}
+
+		function addCategory(valid, data) {
+			if (valid) {
+				var action = (data.id > 0) ? MenuService.updateCategory : MenuService.addCategory;
+				var smsg = vm.data.action == 'Add' ? MSG.addCategorySuccess : MSG.updateCategorySuccess;
+				var fmsg = vm.data.action == 'Add' ? MSG.addCategoryFailed : MSG.updateCategoryFailed;
+				var params = {
+					merchant_id: vm.data.merchant.id,
+					category_name: data.category_name
+				};
+
+				if (vm.data.action === 'Update' && vm.category.id !== '') {
+					params.id = vm.category.id;
+				}
+
+				action(params).then(function(response) {
+					if ( ! response.data.error) {
+						toaster.pop({
+	                        type: 'success', 
+	                        title:'Success', 
+	                        body: smsg, 
+	                        toasterId: 1
+	                    });
+	                    $state.go('merchant.category');
+					} else {
+						toaster.pop({
+	                        type: 'error', 
+	                        title:'Error', 
+	                        body: fmsg, 
+	                        toasterId: 1
+	                    });
+					}
+				}, function(err) {
+						toaster.pop({
+	                        type: 'error', 
+	                        title:'Error', 
+	                        body: fmsg, 
+	                        toasterId: 1
+	                    });
+				});
+			}
+		}
 	}
 })();
 /*
@@ -3754,6 +3897,41 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         templateUrl: 'merchant/merchant-category.html',
                         controller: 'MerchantCategoryCtrl',
                         controllerAs: 'mcc'
+                    }
+                }
+            })
+            .state('merchant.categoryadd', {
+                url: '/category/add',
+                views: {
+                    'merchant-landing': {
+                        templateUrl: 'merchant/merchant-category-new.html',
+                        controller: 'NewCategoryCtrl',
+                        controllerAs: 'ncc'
+                    }
+                },
+                resolve: {
+                    category: function() {
+                        return false;
+                    }
+                }
+            })
+            .state('merchant.categoryedit', {
+                url: '/category/edit/:category_id',
+                views: {
+                    'merchant-landing': {
+                        templateUrl: 'merchant/merchant-category-new.html',
+                        controller: 'NewCategoryCtrl',
+                        controllerAs: 'ncc'
+                    }
+                },
+                resolve: {
+                    category: function(MenuService, $stateParams) {
+                        var data = {
+                            merchant_id: $stateParams.merchant_id,
+                            category_id: $stateParams.category_id
+                        };
+
+                        return MenuService.getCategoryByMandCId(data);
                     }
                 }
             });
@@ -4301,6 +4479,12 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
     'use strict';
     var USER_KEY = 'USER:KEY';
     angular.module('litewait.services')
+        .constant('MSG', {
+            addCategorySuccess: 'Category has been added successfully',
+            addCategoryFailed: 'Adding Category failed',
+            updateCategorySuccess: 'Category has been updated successfully',
+            updateCategoryFailed: 'Update category has been failed'
+        })
         .constant('AUTH_EVENTS', {
             loginSuccess: 'auth:login-success',
             loginFailed: 'auth:login-failed',
@@ -4740,12 +4924,84 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		var service = {};
 		service.getByMerchantId = getByMerchantId;
 		service.uploadByExcel = uploadByExcel;
+		service.addCategory = addCategory;
+		service.updateCategory = updateCategory;
+		service.checkCategoryExists = checkCategoryExists;
+		service.deleteCategory = deleteCategory;
 		service.getCategoryByMerchantId = getCategoryByMerchantId;
+		service.getCategoryByMandCId = getCategoryByMandCId;
 		service.getByMandC = getByMandC;
 		service.featuredByMerchant = featuredByMerchant;
 		service.deleteMenu = deleteMenu;
 		service.update = update;
 		service.add = add;
+
+		function addCategory(data) {
+			var params = {
+				params: {
+					merchant_id: data.merchant_id
+				},
+				data: {
+					category_name: data.category_name
+				}
+			};
+			var url = apiBase + '/category';
+
+			return $http.post(url, params);
+		}
+
+		function updateCategory(data) {
+			var params = {
+				params: {
+					merchant_id: data.merchant_id
+				},
+				data: {
+					id: data.id,
+					category_name: data.category_name
+				}
+			};
+			var url = apiBase + '/category';
+
+			return $http.put(url, params);
+		}
+
+		function deleteCategory(data) {
+			var params = {
+				params: {
+					merchant_id: data.merchant_id,
+					category_id: data.category_id
+				}
+			};
+			var url = apiBase + '/category';
+
+			return $http.delete(url, params);
+		}
+
+		function checkCategoryExists(data) {
+			var params = {params: {
+					merchant_id: data.merchant_id,
+					category_name: data.category_name
+				}
+			};
+			var url = apiBase + '/category/nameAvailability';
+			if (data.id >= 0) {
+				params.params.id = data.id;
+			}
+
+			return $http.get(url, params);
+		}
+
+		function getCategoryByMandCId(data) {
+			var url = apiBase + '/category';
+			var params = {
+				params: {
+					merchant_id: data.merchant_id,
+					category_id: data.category_id
+				}
+			};
+
+			return $http.get(url, params);
+		}
 
 		function add(data) {
 			var url = apiBase + '/category/items';

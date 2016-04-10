@@ -671,6 +671,39 @@ try {
   module = angular.module('litewait.ui', []);
 }
 module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('merchant/merchant-category-new.html',
+    '<div class="container edit-category">\n' +
+    '	<div>\n' +
+    '		<form novalidate name="ncc.editCategoryForm" ng-submit="ncc.addCategory(ncc.editCategoryForm.$valid, ncc.category)" role="form">\n' +
+    '        	<div class="col-md-12">\n' +
+    '        		<h1>{{ncc.data.action}} Category</h1>\n' +
+    '	            <div class="form-group">\n' +
+    '	            	<input type="hidden" name="id" ng-model="ncc.category.id">\n' +
+    '	               <input check-category-exists category-data="ncc.category" ng-model-options="ncc.data.modelOptions" type="text" name="category_name" maxlength="50" ng-model="ncc.category.category_name" class="form-control"  placeholder="Name">\n' +
+    '	               <div ng-if="ncc.editCategoryForm.$submitted && ncc.editCategoryForm.category_name.$invalid" ng-messages="ncc.editCategoryForm.category_name.$error" class="alert alert-danger">\n' +
+    '	                  <div ng-message="maxlength">Please enter a valid category name</div>\n' +
+    '	                  <div ng-message="checkCategoryExists">The category name already exists</div>\n' +
+    '	               </div>\n' +
+    '	            </div>\n' +
+    '	            <div class="col-md-12">\n' +
+    '		            <button type="submit" class="btn btn-default pull-right">{{ncc.data.action}}</button>\n' +
+    '		            <button ng-click="ncc.cancel($event)" class="btn btn-default pull-right">Cancel</button>\n' +
+    '		            <div class="clearfix"></div>\n' +
+    '		        </div>\n' +
+    '            </div>\n' +
+    '        </form>\n' +
+    '	</div>\n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
   $templateCache.put('merchant/merchant-category.html',
     '<div id="mer-category" infinite-scroll="mcc.nextPage()"\n' +
     '      infinite-scroll-distance="0"\n' +
@@ -688,7 +721,7 @@ module.run(['$templateCache', function($templateCache) {
     '            <td>{{category.id}}</td>\n' +
     '            <td>{{category.category_name}}</td>\n' +
     '            <td>\n' +
-    '              <a href="#/mercant/category/edit/{{category.id}}/{{mcc.data.merchant_id}}" class="edit"><i class="fa fa-pencil"></i></a>\n' +
+    '              <a href="#/mercant/category/edit/{{category.id}}" class="edit"><i class="fa fa-pencil"></i></a>\n' +
     '              <a class="delete" ng-click="mcc.deleteCategory(category.id)"><i class="fa fa-trash"></i></a>\n' +
     '            </td>\n' +
     '         </tr>\n' +

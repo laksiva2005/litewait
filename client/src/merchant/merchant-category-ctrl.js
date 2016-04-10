@@ -22,7 +22,34 @@
 		vm.deleteCategory = deleteCategory;
 
 		function deleteCategory(id) {
-
+			var params = {
+				merchant_id: vm.data.merchant.id,
+				category_id: id
+			};
+			MenuService.deleteCategory(params).then(function(response){
+				if (!response.dta.error) {
+					toaster.pop({
+                        type: 'success', 
+                        title:'Success', 
+                        body: MSG.deleteCategorySuccess, 
+                        toasterId: 1
+                    });
+				} else {
+					toaster.pop({
+                        type: 'error', 
+                        title:'Error', 
+                        body: MSG.deleteCategoryFailed, 
+                        toasterId: 1
+                    });
+				}
+			}, function(error) {
+				toaster.pop({
+                    type: 'error', 
+                    title:'Error', 
+                    body: MSG.deleteCategoryFailed, 
+                    toasterId: 1
+                });
+			});
 		}
 
 		function searchCategory() {
