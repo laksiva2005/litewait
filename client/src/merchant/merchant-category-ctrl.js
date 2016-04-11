@@ -28,6 +28,11 @@
 			};
 			MenuService.deleteCategory(params).then(function(response){
 				if (!response.dta.error) {
+					var index = _.findIndex(vm.data.category, {id: id});
+					
+					if (index !== -1) {
+						delete vm.data.category[index];
+					}
 					toaster.pop({
                         type: 'success', 
                         title:'Success', 

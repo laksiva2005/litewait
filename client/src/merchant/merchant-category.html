@@ -1,6 +1,8 @@
 <div id="mer-category" infinite-scroll="mcc.nextPage()"
       infinite-scroll-distance="0"
       infinite-scroll-immediate-check="false">
+      <a href="#/merchant/category/add" class="add-btn-1"><i class="fa fa-plus"></i>Add</a>
+      <a href="#/merchant/category/add" class="add-btn-2"><i class="fa fa-plus"></i>Add</a>
    <table class="table">
       <thead>
          <tr>
@@ -14,7 +16,7 @@
             <td>{{category.id}}</td>
             <td>{{category.category_name}}</td>
             <td>
-              <a href="#/mercant/category/edit/{{category.id}}" class="edit"><i class="fa fa-pencil"></i></a>
+              <a href="#/merchant/category/edit/{{category.id}}" class="edit"><i class="fa fa-pencil"></i></a>
               <a class="delete" ng-click="mcc.deleteCategory(category.id)"><i class="fa fa-trash"></i></a>
             </td>
          </tr>

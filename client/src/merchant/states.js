@@ -63,6 +63,47 @@
                     }
                 }
             })
+            .state('merchant.menuadd', {
+                url: '/menu/add',
+                views: {
+                    'merchant-landing': {
+                        templateUrl: 'merchant/merchant-menu-new.html',
+                        controller: 'NewMenuCtrl',
+                        controllerAs: 'nmc'
+                    }
+                },
+                resolve: {
+                    menu: function() {
+                        return false;
+                    }
+                }
+            })
+            .state('merchant.menuedit', {
+                url: '/menu/edit/:id',
+                views: {
+                    'merchant-landing': {
+                        templateUrl: 'merchant/merchant-menu-new.html',
+                        controller: 'NewMenuCtrl',
+                        controllerAs: 'nmc'
+                    }
+                },
+                resolve: {
+                    menu: function(MenuService, $stateParams, User) {
+                        var data = {
+                            merchant_id: User.data.id,
+                            item_id: $stateParams.id
+                        };
+
+                        return MenuService.getCategoryByMandMId(data).then(function(response) {
+                            if (!response.error && response.data !== null) {
+                                return response.data.data;
+                            } else {
+                                return false;
+                            }
+                        });
+                    }
+                }
+            })
             .state('merchant.category', {
                 url: '/category',
                 views: {
@@ -98,13 +139,23 @@
                     }
                 },
                 resolve: {
-                    category: function(MenuService, $stateParams) {
+                    category: function(MenuService, $stateParams, User, $state) {
                         var data = {
-                            merchant_id: $stateParams.merchant_id,
+                            merchant_id: User.data.id,
                             category_id: $stateParams.category_id
                         };
 
-                        return MenuService.getCategoryByMandCId(data);
+                        return MenuService.getCategoryByMandCId(data).then(function(res){
+                            if (!res.data.error) {
+                                var index = _.findIndex(res.data.data.item_categories, {id: $stateParams.category_id});
+                                if (index == -1) {
+                                    $state.go('merchant.category');
+                                }
+                                return res.data.data.item_categories[index];
+                            }
+
+                            return false;
+                        });
                     }
                 }
             });

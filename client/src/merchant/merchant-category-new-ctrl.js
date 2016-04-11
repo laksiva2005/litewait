@@ -18,7 +18,7 @@
 			}
 		};
 		vm.data.merchant = User.data;
-		vm.data.action = ($stateParams.id === '') ? 'Update' : 'Add';
+		vm.data.action = ($stateParams.category_id === '') ? 'Add' : 'Update';
 		vm.category = {
 			id: '',
 			category_name: '',

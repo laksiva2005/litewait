@@ -1,8 +1,8 @@
 <div id="mer-info" infinite-scroll="mmc.nextPage()"
       infinite-scroll-distance="0"
       infinite-scroll-immediate-check="false">
-	<a href="#" class="add-btn-1"><i class="fa fa-plus"></i>Add</a>
-   <a href="#" class="add-btn-2"><i class="fa fa-plus"></i>Add</a>
+	<a href="#/merchant/menu/add" class="add-btn-1"><i class="fa fa-plus"></i>Add</a>
+   <a href="#/merchant/menu/add" class="add-btn-2"><i class="fa fa-plus"></i>Add</a>
    <table class="table">
       <thead>
          <tr> 
@@ -12,8 +12,8 @@
             <th>Item Category</th>
             <th>Item Add Ons</th>
             <th>Item Price</th>
-            <th>Edit </th>
             <th>Upload Image</th>
+            <th>Action</th>
          </tr>
       </thead>
       <tbody>
@@ -24,8 +24,11 @@
             <td>{{menu.category_name}}</td>
             <td>Lorem ipsum </td>
             <td>{{menu.price}}</td>
-            <td><a href="#/mercant/menu/{{menu.item_id}}/{{menu.category_id}}" class="edit"><i class="fa fa-pencil"></i></a> </td>
-            <td><a href="#">Lorem ipsum.jpg</a> </td>
+            <td><a href="#/merchant/menu/add">Lorem ipsum.jpg</a> </td>
+            <td>
+               <a href="#/merchant/menu/edit/{{menu.item_id}}" class="edit"><i class="fa fa-pencil"></i></a>
+               <a ng-click="mmc.deleteMenu(menu.item_id)" class="delete"><i class="fa fa-trash"></i></a>
+            </td>
          </tr>
       </tbody>
    </table>

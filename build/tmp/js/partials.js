@@ -674,6 +674,7 @@ module.run(['$templateCache', function($templateCache) {
   $templateCache.put('merchant/merchant-category-new.html',
     '<div class="container edit-category">\n' +
     '	<div>\n' +
+    '		<a href="#/merchant/category" class="btn btn-primary"><i class="fa fa-plus"></i>Category</a>\n' +
     '		<form novalidate name="ncc.editCategoryForm" ng-submit="ncc.addCategory(ncc.editCategoryForm.$valid, ncc.category)" role="form">\n' +
     '        	<div class="col-md-12">\n' +
     '        		<h1>{{ncc.data.action}} Category</h1>\n' +
@@ -708,6 +709,8 @@ module.run(['$templateCache', function($templateCache) {
     '<div id="mer-category" infinite-scroll="mcc.nextPage()"\n' +
     '      infinite-scroll-distance="0"\n' +
     '      infinite-scroll-immediate-check="false">\n' +
+    '      <a href="#/merchant/category/add" class="add-btn-1"><i class="fa fa-plus"></i>Add</a>\n' +
+    '      <a href="#/merchant/category/add" class="add-btn-2"><i class="fa fa-plus"></i>Add</a>\n' +
     '   <table class="table">\n' +
     '      <thead>\n' +
     '         <tr>\n' +
@@ -721,7 +724,7 @@ module.run(['$templateCache', function($templateCache) {
     '            <td>{{category.id}}</td>\n' +
     '            <td>{{category.category_name}}</td>\n' +
     '            <td>\n' +
-    '              <a href="#/mercant/category/edit/{{category.id}}" class="edit"><i class="fa fa-pencil"></i></a>\n' +
+    '              <a href="#/merchant/category/edit/{{category.id}}" class="edit"><i class="fa fa-pencil"></i></a>\n' +
     '              <a class="delete" ng-click="mcc.deleteCategory(category.id)"><i class="fa fa-trash"></i></a>\n' +
     '            </td>\n' +
     '         </tr>\n' +
@@ -781,7 +784,69 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('merchant/merchant-menu-new.html',
-    '');
+    '<div class="container edit-menu">\n' +
+    '	<div>\n' +
+    '		<a href="#/merchant/menu" class="btn btn-primary"><i class="fa fa-plus"></i>Menu</a>\n' +
+    '		<form novalidate name="nmc.editMenuForm" ng-submit="nmc.addMenu(nmc.editMenuForm.$valid, nmc.menu)" role="form">\n' +
+    '        	<div class="col-md-12 col-sm-6">\n' +
+    '        		<h1>{{nmc.data.action}} Menu</h1>\n' +
+    '	            <div class="form-group">\n' +
+    '	            	<input type="hidden" name="id" ng-model="nmc.menu.id">\n' +
+    '	            	<input type="hidden" name="category_id" ng-model="nmc.menu.category.category_id">\n' +
+    '	            	<input type="text" name="category" ng-model="nmc.menu.category" uib-typeahead="category as category.category_name for category in nmc.getCategory($viewValue)" typeahead-loading="loadingCategories" typeahead-no-results="noCategory" class="form-control" typeahead-on-select="nmc.onSelectCategory($item, $modal, $label, $event)">\n' +
+    '	            	<i ng-show="loadingCategories" class="glyphicon glyphicon-refresh"></i>\n' +
+    '				    <div ng-show="noCategory">\n' +
+    '				      <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
+    '				    </div>\n' +
+    '	            	<div ng-if="nmc.editMenuForm.$submitted && nmc.editMenuForm.category_id.$invalid" ng-messages="nmc.editMenuForm.category_id.$error" class="alert alert-danger">\n' +
+    '	                  <div ng-message="maxlength">Please enter a valid category name</div>\n' +
+    '	                  <div ng-message="required">The category is required</div>\n' +
+    '	                </div>\n' +
+    '	            </div>\n' +
+    '	            <div class="form-group">\n' +
+    '	                <input check-menu-exists menu-data="nmc.menu" ng-model-options="{debounce: {default: 500, blur: 0}}" type="text" name="item_name" maxlength="50" ng-model="nmc.menu.item_name" class="form-control"  placeholder="Name">\n' +
+    '	                <div ng-if="nmc.editMenuForm.$submitted && nmc.editMenuForm.item_name.$invalid" ng-messages="nmc.editMenuForm.item_name.$error" class="alert alert-danger">\n' +
+    '	                  <div ng-message="maxlength">Please enter a valid menu name</div>\n' +
+    '	                  <div ng-message="checkCategoryExists">The menu name already exists</div>\n' +
+    '	                </div>\n' +
+    '	            </div>\n' +
+    '	            <div class="form-group">\n' +
+    '	            	<textarea name="description" ng-model="nmc.menu.description" class="form-control" required placeholder="Description"></textarea>\n' +
+    '	                <div ng-if="nmc.editMenuForm.$submitted && nmc.editMenuForm.description.$invalid" ng-messages="nmc.editMenuForm.description.$error" class="alert alert-danger">\n' +
+    '	                  <div ng-message="required">Menu description is required</div>\n' +
+    '	                </div>\n' +
+    '	            </div>\n' +
+    '	            <div class="form-group">\n' +
+    '	                <input required type="number" name="price" maxlength="50" ng-model="nmc.menu.price" class="form-control"  placeholder="Price">\n' +
+    '	                <div ng-if="nmc.editMenuForm.$submitted && nmc.editMenuForm.price.$invalid" ng-messages="nmc.editMenuForm.price.$error" class="alert alert-danger">\n' +
+    '	                  <div ng-message="maxlength">Please enter a valid price</div>\n' +
+    '	                  <div ng-message="required">Menu price is required</div>\n' +
+    '	                </div>\n' +
+    '	            </div>\n' +
+    '	            <div class="form-group">\n' +
+    '	            	<input type="text" name="picture" ng-model="nmc.menu.picture" class="form-control" Placeholder="Picture">\n' +
+    '	            </div>\n' +
+    '	            <div class="form-group">\n' +
+    '	            	<!--input type="text" name="addons" ng-model="nmc.menu.addons" class="form-control" Placeholder="Addons"-->\n' +
+    '	            	<tags-input ng-model="nmc.menu.addons"\n' +
+    '			                    display-property="name"\n' +
+    '			                    key-property="name"\n' +
+    '			                    add-from-autocomplete-only="true">\n' +
+    '			            <auto-complete source="nmc.searchAddons($query)"></auto-complete>\n' +
+    '			        </tags-input>\n' +
+    '	            </div>\n' +
+    '	            <div class="form-group">\n' +
+    '	            	<input type="checkbox" name="featured" ng-true-value="1" ng-false-value="0" ng-model="nmc.menu.featured"><label for="is_active">Featured</label>\n' +
+    '	            </div>\n' +
+    '	            <div class="col-md-12">\n' +
+    '		            <button type="submit" class="btn btn-default pull-right">{{nmc.data.action}}</button>\n' +
+    '		            <button ng-click="nmc.cancel($event)" class="btn btn-default pull-right">Cancel</button>\n' +
+    '		            <div class="clearfix"></div>\n' +
+    '		        </div>\n' +
+    '            </div>\n' +
+    '        </form>\n' +
+    '	</div>\n' +
+    '</div>');
 }]);
 })();
 
@@ -796,8 +861,8 @@ module.run(['$templateCache', function($templateCache) {
     '<div id="mer-info" infinite-scroll="mmc.nextPage()"\n' +
     '      infinite-scroll-distance="0"\n' +
     '      infinite-scroll-immediate-check="false">\n' +
-    '	<a href="#" class="add-btn-1"><i class="fa fa-plus"></i>Add</a>\n' +
-    '   <a href="#" class="add-btn-2"><i class="fa fa-plus"></i>Add</a>\n' +
+    '	<a href="#/merchant/menu/add" class="add-btn-1"><i class="fa fa-plus"></i>Add</a>\n' +
+    '   <a href="#/merchant/menu/add" class="add-btn-2"><i class="fa fa-plus"></i>Add</a>\n' +
     '   <table class="table">\n' +
     '      <thead>\n' +
     '         <tr> \n' +
@@ -807,8 +872,8 @@ module.run(['$templateCache', function($templateCache) {
     '            <th>Item Category</th>\n' +
     '            <th>Item Add Ons</th>\n' +
     '            <th>Item Price</th>\n' +
-    '            <th>Edit </th>\n' +
     '            <th>Upload Image</th>\n' +
+    '            <th>Action</th>\n' +
     '         </tr>\n' +
     '      </thead>\n' +
     '      <tbody>\n' +
@@ -819,8 +884,11 @@ module.run(['$templateCache', function($templateCache) {
     '            <td>{{menu.category_name}}</td>\n' +
     '            <td>Lorem ipsum </td>\n' +
     '            <td>{{menu.price}}</td>\n' +
-    '            <td><a href="#/mercant/menu/{{menu.item_id}}/{{menu.category_id}}" class="edit"><i class="fa fa-pencil"></i></a> </td>\n' +
-    '            <td><a href="#">Lorem ipsum.jpg</a> </td>\n' +
+    '            <td><a href="#/merchant/menu/add">Lorem ipsum.jpg</a> </td>\n' +
+    '            <td>\n' +
+    '               <a href="#/merchant/menu/edit/{{menu.item_id}}" class="edit"><i class="fa fa-pencil"></i></a>\n' +
+    '               <a ng-click="mmc.deleteMenu(menu.item_id)" class="delete"><i class="fa fa-trash"></i></a>\n' +
+    '            </td>\n' +
     '         </tr>\n' +
     '      </tbody>\n' +
     '   </table>\n' +

@@ -2761,7 +2761,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	'use strict';	
 
 	angular.module('litewait.services', []);
-	angular.module('litewait.directives', ['ngMessages']);
+	angular.module('litewait.directives', ['ngMessages', 'ngTagsInput']);
 	angular.module('litewait.ui', ['ui.bootstrap', 'litewait.directives', 'cgBusy', 'toaster', 'infinite-scroll', 'satellizer']);
 	angular.module('litewait', ['ui.router', 'litewait.services', 'litewait.ui']);
 
@@ -3479,6 +3479,11 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			};
 			MenuService.deleteCategory(params).then(function(response){
 				if (!response.dta.error) {
+					var index = _.findIndex(vm.data.category, {id: id});
+					
+					if (index !== -1) {
+						delete vm.data.category[index];
+					}
 					toaster.pop({
                         type: 'success', 
                         title:'Success', 
@@ -3577,7 +3582,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			}
 		};
 		vm.data.merchant = User.data;
-		vm.data.action = ($stateParams.id === '') ? 'Update' : 'Add';
+		vm.data.action = ($stateParams.category_id === '') ? 'Add' : 'Update';
 		vm.category = {
 			id: '',
 			category_name: '',
@@ -3683,11 +3688,12 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		};
 		vm.data.menu = [];
 		vm.nextPage = nextPage;
+		vm.deleteMenu = deleteMenu;
 
 		function searchMenu() {
 			var param = getMenuParams();
-			menuService.getByMerchantId(param).then(function(res) {
-				assignMenus(res.data);
+			MenuService.getByMerchantId(param).then(function(res) {
+				assignMenus(res);
 			});
 		}
 
@@ -3723,22 +3729,180 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			}
 		}
 
+		function deleteMenu(id) {
+			var params = {
+				merchant_id: vm.data.merchant.id,
+				item_id: id
+			};
+			MenuService.deleteMenu(params).then(function(response){
+				if (!response.data.error) {
+					var index = _.findIndex(vm.data.menu, {item_id: id});
+					
+					if (index !== -1) {
+						delete vm.data.menu[index];
+					}
+
+					toaster.pop({
+                        type: 'success', 
+                        title:'Success', 
+                        body: MSG.deleteMenuSuccess, 
+                        toasterId: 1
+                    });
+				} else {
+					toaster.pop({
+                        type: 'error', 
+                        title:'Error', 
+                        body: MSG.deleteMenuFailed, 
+                        toasterId: 1
+                    });
+				}
+			}, function(error) {
+				toaster.pop({
+                    type: 'error', 
+                    title:'Error', 
+                    body: MSG.deleteMenuFailed, 
+                    toasterId: 1
+                });
+			});
+		}
+
 		searchMenu();
 	}
 })(angular);
 /*
 *
 */
-;(function() {
+;(function(){
 	'use strict';
 	angular.module('litewait.ui').controller('NewMenuCtrl', NewMenuCtrl);
 
-	NewMenuCtrl.$inject = ['$state', 'MenuService', 'User'];
+	NewMenuCtrl.$inject = ['$scope', 'User', 'MenuService', '$stateParams', '$state', 'MSG', 'toaster', '$filter', 'menu'];
 
-	function NewMenuCtrl($state, MenuService, User) {
+	function NewMenuCtrl($scope, User, MenuService, $stateParams, $state, MSG, toaster, $filter, menu) {
 		var vm = this;
 		vm.data = {};
-		vam.data.merchant = User.data;
+		vm.data.merchant = User.data;
+		vm.data.action = ($stateParams.id === '') ? 'Update' : 'Add';
+
+		vm.menu = {
+			item_id: '',
+			category_id: '',
+			category: '',
+			item_name: '',
+			description: '',
+			price: '',
+			picture: '',
+			featured: false,
+			addons: [],
+			merchant_id: User.data.id
+		};
+		vm.addMenu = addMenu;
+		vm.cancel = cancel;
+		vm.getCategory = getCategory;
+		vm.onSelectCategory = onSelectCategory;
+		vm.searchAddons = searchAddons;
+		assignMenu();
+
+		function searchAddons(query) {
+			var data = [{
+			  "name":"Tomato Chatni",
+			  "price":"20",
+			  "picture":"amazon.com/s3/pics/tomato_chatni.png"
+			}, {
+			  "name":"Pudina Chatni",
+			  "price":"25",
+			  "picture":"amazon.com/s3/pics/Pudina_chatni.png"
+			}];
+
+			return $filter('filter')(data, { name: query });
+		}
+
+		function onSelectCategory() {
+			vm.menu.category_id = vm.menu.category.category_id;
+		}
+
+		function getCategory(str) {
+			var param = {
+				merchant_id: vm.menu.merchant_id,
+				offset: 0,
+				limit: 20,
+				search: str
+			};
+			return MenuService.getCategoryByMerchantId(param).then(function(res) {
+				if (!res.data.error) {
+					var a = [];
+					for (var i = 0; i < res.data.data.item_categories.length; i++) {
+						a.push({
+							category_id: res.data.data.item_categories[i].id,
+							category_name: res.data.data.item_categories[i].category_name
+						});
+					}
+					return a;
+				}
+				return [];
+			});
+		}
+			
+		function assignMenu() {
+			if (menu) {
+				vm.menu.item_id = menu.item_id;
+				vm.menu.category_id = menu.category_id;
+				vm.menu.category = {
+					category_id: menu.category_id,
+					category_name: menu.category_name || ''
+				};
+				vm.menu.item_name = menu.item_name;
+				vm.menu.description = menu.description;
+				vm.menu.price = menu.price;
+				vm.menu.picture = menu.picture;
+				vm.menu.featured = menu.featured;
+				vm.menu.addons = menu.addons || [];
+			}
+		}
+
+		function cancel(event) {
+			event.preventDefault();
+			$state.go('merchant.menu');
+		}
+
+		function addMenu(valid, data) {
+			if (valid) {
+				var action = (data.id > 0) ? MenuService.update : MenuService.add;
+				var smsg = vm.data.action == 'Add' ? MSG.addMenuSuccess : MSG.updateMenuSuccess;
+				var fmsg = vm.data.action == 'Add' ? MSG.addMenuFailed : MSG.updateMenuFailed;
+				var params = angular.copy(data);
+				delete params.category;
+				if (!(vm.data.action === 'Update' && data.item_id !== '')) {
+					delete params.item_id;
+				}
+
+				action(params).then(function(response) {
+					if ( ! response.data.error) {
+						toaster.pop({
+	                        type: 'success', 
+	                        title:'Success', 
+	                        body: smsg, 
+	                        toasterId: 1
+	                    });
+	                    $state.go('merchant.menu');
+					} else {
+						toaster.pop({
+	                        type: 'error', 
+	                        title:'Error', 
+	                        body: fmsg, 
+	                        toasterId: 1
+	                    });
+					}
+				}, function(err) {
+						toaster.pop({
+	                        type: 'error', 
+	                        title:'Error', 
+	                        body: fmsg, 
+	                        toasterId: 1
+	                    });
+				});
+			}
+		}
 	}
 })();
 /*
@@ -3890,6 +4054,47 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     }
                 }
             })
+            .state('merchant.menuadd', {
+                url: '/menu/add',
+                views: {
+                    'merchant-landing': {
+                        templateUrl: 'merchant/merchant-menu-new.html',
+                        controller: 'NewMenuCtrl',
+                        controllerAs: 'nmc'
+                    }
+                },
+                resolve: {
+                    menu: function() {
+                        return false;
+                    }
+                }
+            })
+            .state('merchant.menuedit', {
+                url: '/menu/edit/:id',
+                views: {
+                    'merchant-landing': {
+                        templateUrl: 'merchant/merchant-menu-new.html',
+                        controller: 'NewMenuCtrl',
+                        controllerAs: 'nmc'
+                    }
+                },
+                resolve: {
+                    menu: function(MenuService, $stateParams, User) {
+                        var data = {
+                            merchant_id: User.data.id,
+                            item_id: $stateParams.id
+                        };
+
+                        return MenuService.getCategoryByMandMId(data).then(function(response) {
+                            if (!response.error && response.data !== null) {
+                                return response.data.data;
+                            } else {
+                                return false;
+                            }
+                        });
+                    }
+                }
+            })
             .state('merchant.category', {
                 url: '/category',
                 views: {
@@ -3925,13 +4130,23 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     }
                 },
                 resolve: {
-                    category: function(MenuService, $stateParams) {
+                    category: function(MenuService, $stateParams, User, $state) {
                         var data = {
-                            merchant_id: $stateParams.merchant_id,
+                            merchant_id: User.data.id,
                             category_id: $stateParams.category_id
                         };
 
-                        return MenuService.getCategoryByMandCId(data);
+                        return MenuService.getCategoryByMandCId(data).then(function(res){
+                            if (!res.data.error) {
+                                var index = _.findIndex(res.data.data.item_categories, {id: $stateParams.category_id});
+                                if (index == -1) {
+                                    $state.go('merchant.category');
+                                }
+                                return res.data.data.item_categories[index];
+                            }
+
+                            return false;
+                        });
                     }
                 }
             });
@@ -4483,7 +4698,15 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             addCategorySuccess: 'Category has been added successfully',
             addCategoryFailed: 'Adding Category failed',
             updateCategorySuccess: 'Category has been updated successfully',
-            updateCategoryFailed: 'Update category has been failed'
+            updateCategoryFailed: 'Update category has been failed',
+            deleteCategorySuccess: 'Category has been deleted successfully',
+            deleteCategoryFailed: 'Category delete has been failed',
+            addMenuSuccess: 'Menu has been added successfully',
+            addMenuFailed: 'Adding Menu failed',
+            updateMenuSuccess: 'Menu has been updated successfully',
+            updateMenuFailed: 'Update menu has been failed',
+            deleteMenuSuccess: 'Menu has been deleted successfully',
+            deleteMenuFailed: 'Menu delete has been failed',
         })
         .constant('AUTH_EVENTS', {
             loginSuccess: 'auth:login-success',
@@ -4930,6 +5153,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		service.deleteCategory = deleteCategory;
 		service.getCategoryByMerchantId = getCategoryByMerchantId;
 		service.getCategoryByMandCId = getCategoryByMandCId;
+		service.getCategoryByMandMId = getCategoryByMandMId;
 		service.getByMandC = getByMandC;
 		service.featuredByMerchant = featuredByMerchant;
 		service.deleteMenu = deleteMenu;
@@ -5003,6 +5227,18 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			return $http.get(url, params);
 		}
 
+		function getCategoryByMandMId(data) {
+			var url = apiBase + '/category/item/details';
+			var params = {
+				params: {
+					merchant_id: data.merchant_id,
+					item_id: data.item_id
+				}
+			};
+
+			return $http.get(url, params);
+		}
+
 		function add(data) {
 			var url = apiBase + '/category/items';
 			return $http.post(url, data);
@@ -5045,7 +5281,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 			return $http.get(apiBase, data).then(function(res) {
 				var objArr = [];
-				var data = response.data.data;
+				var data = res.data.data;
 				if (!res.data.error) {
 					return formatMenu(data);
 				} else {
@@ -5082,15 +5318,13 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		function getCategoryByMerchantId(id) {
 			var url = apiBase + '/category';
 			var data;
-			if (angular.isObject(id)) {
+			if (!angular.isObject(id)) {
 				data = {
 					params: id
 				};	
 			} else {
 				data = {
-					params: {
-						merchant_id: id
-					}
+					params: id
 				};
 			}
 

@@ -10,7 +10,15 @@
             addCategorySuccess: 'Category has been added successfully',
             addCategoryFailed: 'Adding Category failed',
             updateCategorySuccess: 'Category has been updated successfully',
-            updateCategoryFailed: 'Update category has been failed'
+            updateCategoryFailed: 'Update category has been failed',
+            deleteCategorySuccess: 'Category has been deleted successfully',
+            deleteCategoryFailed: 'Category delete has been failed',
+            addMenuSuccess: 'Menu has been added successfully',
+            addMenuFailed: 'Adding Menu failed',
+            updateMenuSuccess: 'Menu has been updated successfully',
+            updateMenuFailed: 'Update menu has been failed',
+            deleteMenuSuccess: 'Menu has been deleted successfully',
+            deleteMenuFailed: 'Menu delete has been failed',
         })
         .constant('AUTH_EVENTS', {
             loginSuccess: 'auth:login-success',

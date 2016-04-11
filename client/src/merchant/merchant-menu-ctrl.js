@@ -19,11 +19,12 @@
 		};
 		vm.data.menu = [];
 		vm.nextPage = nextPage;
+		vm.deleteMenu = deleteMenu;
 
 		function searchMenu() {
 			var param = getMenuParams();
-			menuService.getByMerchantId(param).then(function(res) {
-				assignMenus(res.data);
+			MenuService.getByMerchantId(param).then(function(res) {
+				assignMenus(res);
 			});
 		}
 
@@ -57,6 +58,43 @@
 				vm.data.menuParams.busy = true;
 				searchMenu();
 			}
+		}
+
+		function deleteMenu(id) {
+			var params = {
+				merchant_id: vm.data.merchant.id,
+				item_id: id
+			};
+			MenuService.deleteMenu(params).then(function(response){
+				if (!response.data.error) {
+					var index = _.findIndex(vm.data.menu, {item_id: id});
+					
+					if (index !== -1) {
+						delete vm.data.menu[index];
+					}
+
+					toaster.pop({
+                        type: 'success', 
+                        title:'Success', 
+                        body: MSG.deleteMenuSuccess, 
+                        toasterId: 1
+                    });
+				} else {
+					toaster.pop({
+                        type: 'error', 
+                        title:'Error', 
+                        body: MSG.deleteMenuFailed, 
+                        toasterId: 1
+                    });
+				}
+			}, function(error) {
+				toaster.pop({
+                    type: 'error', 
+                    title:'Error', 
+                    body: MSG.deleteMenuFailed, 
+                    toasterId: 1
+                });
+			});
 		}
 
 		searchMenu();

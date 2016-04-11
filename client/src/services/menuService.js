@@ -19,6 +19,7 @@
 		service.deleteCategory = deleteCategory;
 		service.getCategoryByMerchantId = getCategoryByMerchantId;
 		service.getCategoryByMandCId = getCategoryByMandCId;
+		service.getCategoryByMandMId = getCategoryByMandMId;
 		service.getByMandC = getByMandC;
 		service.featuredByMerchant = featuredByMerchant;
 		service.deleteMenu = deleteMenu;
@@ -92,6 +93,18 @@
 			return $http.get(url, params);
 		}
 
+		function getCategoryByMandMId(data) {
+			var url = apiBase + '/category/item/details';
+			var params = {
+				params: {
+					merchant_id: data.merchant_id,
+					item_id: data.item_id
+				}
+			};
+
+			return $http.get(url, params);
+		}
+
 		function add(data) {
 			var url = apiBase + '/category/items';
 			return $http.post(url, data);
@@ -134,7 +147,7 @@
 
 			return $http.get(apiBase, data).then(function(res) {
 				var objArr = [];
-				var data = response.data.data;
+				var data = res.data.data;
 				if (!res.data.error) {
 					return formatMenu(data);
 				} else {
@@ -171,15 +184,13 @@
 		function getCategoryByMerchantId(id) {
 			var url = apiBase + '/category';
 			var data;
-			if (angular.isObject(id)) {
+			if (!angular.isObject(id)) {
 				data = {
 					params: id
 				};	
 			} else {
 				data = {
-					params: {
-						merchant_id: id
-					}
+					params: id
 				};
 			}
 
