@@ -19,6 +19,8 @@
             updateMenuFailed: 'Update menu has been failed',
             deleteMenuSuccess: 'Menu has been deleted successfully',
             deleteMenuFailed: 'Menu delete has been failed',
+            changeStatusSuccess: 'Order status has been changed successfully',
+            changeStatusFailed: 'Order status change has been failed'
         })
         .constant('AUTH_EVENTS', {
             loginSuccess: 'auth:login-success',

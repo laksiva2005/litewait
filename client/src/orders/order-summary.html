@@ -1,0 +1,89 @@
+<div class="container shopping-cart">
+
+  <div class="row">
+    <div class="col-md-8 cart-left"> 
+    	 <h1>Order id : <span>{{osc.data.order.order_id}}</span></h1>
+         <div class="table-responsive">
+          <table class="table">
+          	<thead>
+             <tr>
+                <th>Item</th>
+                <th class="right">Price</th>
+                <th class="right">Quantity</th>
+             </tr>
+   			    </thead>
+            <tbody>
+              <tr ng-repeat="orderDetail in osc.data.order.orderDetails">
+                <td>
+                	<table class="sub-table">
+                    	<tr>
+                        	<td><img src="img/cart-1.jpg" class="product img-responsive" /></td>
+                            <td> <h3>{{orderDetail.item_name}}</h3>
+                    <p>Lorem ipsum dolor sit amet <br/> consectetuer adipiscing elit.</p></td>
+                        
+                        </tr>
+                      
+                    </table>
+                </td>
+                <td class="">${{orderDetail.price}}</td>
+                <td class="">{{orderDetail.qty}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="table">
+            <tfoot>
+              <tr>
+                <td colspan="3">Subtotal ({{orderDetail.total_quantity}} items):   <span class="value">${{orderDetail.total_gross}}</span></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+    
+    
+    </div>
+    <div class="col-md-4 cart-right">
+
+      <div class="order-summary no-border">
+        <h2>Order summary</h2>
+        <div class="col-md-12 table-wrap">
+          <table class="table">
+            <tbody>
+              <tr>
+                <td class="sub">Subtotal ({{orderDetail.total_quantity}} items) :</td>
+                <td class="value right">${{orderDetail.total_gross}}</td>
+              </tr>
+              <tr>
+                <td>Convenience Fee : </td>
+                <td class="sub-total-end right">$0.00</td>
+              </tr>
+              <tr>
+                <td>Total before Tax : </td>
+                <td class="right">${{orderDetail.total_gross}}</td>
+              </tr>
+              <tr>
+                <td>Estimated tax to be collected : </td>
+                <td class="right">${{orderDetail.total_tax}}</td>
+              </tr>
+              <tr class="total">
+                <td class="sub">Order total: </td>
+                <td class="value right">${{orderDetail.total_net}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="product-widget">
+        <h2><a href="shop-detail-menu.html">Charlie's Sandwich</a></h2>
+        <img src="img/search-result-1.jpg" />
+        
+        <div class="cnt"> <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>
+          <p>0.98 mi Distance from search location</p>
+          <p class="wait">20 m Wait Time</p>
+          <p>Open 11:00 AM to 4:00 AM</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</div>

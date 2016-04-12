@@ -13,8 +13,14 @@
 			link: function(scope, element, attrs, ngModel) {
 				ngModel.$asyncValidators.checkCategoryExists = function(value) {
 					var data = scope.categoryData;
-					if (data.id === '') {
-						delete data['id'];
+					if (data.id) {
+
+						if (data.id === '') {
+							delete data['id'];
+						} else {
+							data.category_id = data.id;
+							delete data.id;
+						}
 					}
 					data.category_name = value;
 					return MenuService.checkCategoryExists(data).then(function(response) {

@@ -179,128 +179,6 @@ try {
   module = angular.module('litewait.ui', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('cart/cart-summary.html',
-    '<div class="container shopping-cart">\n' +
-    '\n' +
-    '  <div class="row">\n' +
-    '    <div class="col-md-8 cart-left"> \n' +
-    '    	 <h1>Order id : <span>4269-2215</span></h1>\n' +
-    '         <div class="table-responsive">\n' +
-    '          <table class="table">\n' +
-    '          	<thead>\n' +
-    '             <tr>\n' +
-    '                <th>Item</th>\n' +
-    '                <th class="right">Price</th>\n' +
-    '                <th class="right">Quantity</th>\n' +
-    '             </tr>\n' +
-    '   			</thead>\n' +
-    '            <tbody>\n' +
-    '              <tr>\n' +
-    '                <td>\n' +
-    '                	<table class="sub-table">\n' +
-    '                    	<tr>\n' +
-    '                        	<td><img src="img/cart-1.jpg" class="product img-responsive" /></td>\n' +
-    '                            <td> <h3>Egg rol 2</h3>\n' +
-    '                    <p>Lorem ipsum dolor sit amet <br/> consectetuer adipiscing elit.</p></td>\n' +
-    '                        \n' +
-    '                        </tr>\n' +
-    '                      \n' +
-    '                    </table>\n' +
-    '                </td>\n' +
-    '                <td class="">$59.00</td>\n' +
-    '                <td class="">2</td>\n' +
-    '              </tr>\n' +
-    '              <tr>\n' +
-    '              	<td colspan="3" class="blank">&nbsp; </td>\n' +
-    '              </tr>\n' +
-    '              <tr>\n' +
-    '                <td>\n' +
-    '                	<table class="sub-table">\n' +
-    '                    	<tr>\n' +
-    '                        	<td><img src="img/cart-1.jpg" class="product img-responsive" /></td>\n' +
-    '                            <td> <h3>Egg rol 2</h3>\n' +
-    '                    <p>Lorem ipsum dolor sit amet <br/> consectetuer adipiscing elit.</p></td>\n' +
-    '                        \n' +
-    '                        </tr>\n' +
-    '                      \n' +
-    '                    </table>\n' +
-    '                </td>\n' +
-    '                <td class="">$59.00</td>\n' +
-    '                <td class="">2</td>\n' +
-    '              </tr>\n' +
-    '               <tfoot>\n' +
-    '                <tr>\n' +
-    '                  <td colspan="3">Subtotal (2 items):   <span class="value">$177.00</span></td>\n' +
-    '                </tr>\n' +
-    ' 			 </tfoot>\n' +
-    '              \n' +
-    '            </tbody>\n' +
-    '          </table>\n' +
-    '        </div>\n' +
-    '    \n' +
-    '    \n' +
-    '    </div>\n' +
-    '    <div class="col-md-4 cart-right">\n' +
-    '\n' +
-    '      <div class="order-summary no-border">\n' +
-    '        <h2>Order summary</h2>\n' +
-    '        <div class="col-md-12 table-wrap">\n' +
-    '          <table class="table">\n' +
-    '            <tbody>\n' +
-    '              <tr>\n' +
-    '                <td class="sub">Subtotal (2 items) :</td>\n' +
-    '                <td class="value right">$177.00</td>\n' +
-    '              </tr>\n' +
-    '              <tr>\n' +
-    '                <td>Convenience Fee : </td>\n' +
-    '                <td class="sub-total-end right">$0.00</td>\n' +
-    '              </tr>\n' +
-    '              <tr>\n' +
-    '                <td>Total before Tax : </td>\n' +
-    '                <td class="right">$177.00</td>\n' +
-    '              </tr>\n' +
-    '              <tr>\n' +
-    '                <td>Estimated tax to be collected : </td>\n' +
-    '                <td class="right">$0.00</td>\n' +
-    '              </tr>\n' +
-    '              <tr class="total">\n' +
-    '                <td class="sub">Order total: </td>\n' +
-    '                <td class="value right">$177.00</td>\n' +
-    '              </tr>\n' +
-    '            </tbody>\n' +
-    '          </table>\n' +
-    '        </div>\n' +
-    '        <div class="clearfix"></div>\n' +
-    '      </div>\n' +
-    '      \n' +
-    '      \n' +
-    '      <div class="product-widget">\n' +
-    '            <h2><a href="shop-detail-menu.html">Charlie\'s Sandwich</a></h2>\n' +
-    '            <img src="img/search-result-1.jpg" />\n' +
-    '            \n' +
-    '            <div class="cnt"> <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>\n' +
-    '              <p>0.98 mi Distance from search location</p>\n' +
-    '              <p class="wait">20 m Wait Time</p>\n' +
-    '              <p>Open 11:00 AM to 4:00 AM</p>\n' +
-    '            </div>\n' +
-    '   \n' +
-    '      \n' +
-    '      \n' +
-    '      </div>\n' +
-    '    </div>\n' +
-    '  </div>\n' +
-    '  \n' +
-    '</div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
   $templateCache.put('cart/cart.html',
     '<div class="container shopping-cart">\n' +
     '\n' +
@@ -616,61 +494,6 @@ try {
   module = angular.module('litewait.ui', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('html/spinner.html',
-    '<div class="spinner">\n' +
-    '  <div>\n' +
-    '    <i class="fa fa-spinner fa-spin"></i>\n' +
-    '  </div>\n' +
-    '  <div class="spinner-text">{{$message}}</div>\n' +
-    '</div>\n' +
-    '');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('html/tab-template-merchant.html',
-    '<li ng-class="[{active: active, disabled: disabled}, classes]" class="uib-tab nav-item">\n' +
-    '	<a href ng-click="select()" class="nav-link" uib-tab-heading-transclude>{{heading}}</a>\n' +
-    '</li>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('html/tabset-template-merchant.html',
-    '<div class="menu-detail-wrap">\n' +
-    '	<div class="col-md-4 menu-items">\n' +
-    '		<ul class="nav nav-{{tabset.type || \'tabs\'}}" ng-class="{\'nav-stacked\': vertical, \'nav-justified\': justified}" ng-transclude></ul>\n' +
-    '	</div>\n' +
-    '	<div class="tab-content col-md-8 popular-items">\n' +
-    '	  <div class="tab-pane"\n' +
-    '	       ng-repeat="tab in tabset.tabs"\n' +
-    '	       ng-class="{active: tabset.active === tab.index}"\n' +
-    '	       uib-tab-content-transclude="tab">\n' +
-    '	  </div>\n' +
-    '	</div>\n' +
-    '</div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
   $templateCache.put('merchant/merchant-category-new.html',
     '<div class="container edit-category">\n' +
     '	<div>\n' +
@@ -680,7 +503,7 @@ module.run(['$templateCache', function($templateCache) {
     '        		<h1>{{ncc.data.action}} Category</h1>\n' +
     '	            <div class="form-group">\n' +
     '	            	<input type="hidden" name="id" ng-model="ncc.category.id">\n' +
-    '	               <input check-category-exists category-data="ncc.category" ng-model-options="ncc.data.modelOptions" type="text" name="category_name" maxlength="50" ng-model="ncc.category.category_name" class="form-control"  placeholder="Name">\n' +
+    '	               <input check-category-exists category-data="ncc.category" ng-model-options="{debounce: {default: 500, blur: 0}}" type="text" name="category_name" maxlength="50" ng-model="ncc.category.category_name" class="form-control"  placeholder="Name">\n' +
     '	               <div ng-if="ncc.editCategoryForm.$submitted && ncc.editCategoryForm.category_name.$invalid" ng-messages="ncc.editCategoryForm.category_name.$error" class="alert alert-danger">\n' +
     '	                  <div ng-message="maxlength">Please enter a valid category name</div>\n' +
     '	                  <div ng-message="checkCategoryExists">The category name already exists</div>\n' +
@@ -744,7 +567,7 @@ module.run(['$templateCache', function($templateCache) {
   $templateCache.put('merchant/merchant-landing.html',
     '<div class="container merchant-landing">\n' +
     '   <div class="col-md-12 product-detail">\n' +
-    '      <div class="col-sm-3 col-md-2"><img class="img-responsive" ng-src="mlc.data.merchant.photo"></div>\n' +
+    '      <div class="col-sm-3 col-md-2"><img class="img-responsive" src="{{mlc.data.merchant.photo}}"></div>\n' +
     '      <div class="col-sm-9 col-md-8">\n' +
     '         <h2>{{mlc.data.merchant.business_name}}</h2>\n' +
     '         <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>\n' +
@@ -793,7 +616,7 @@ module.run(['$templateCache', function($templateCache) {
     '	            <div class="form-group">\n' +
     '	            	<input type="hidden" name="id" ng-model="nmc.menu.id">\n' +
     '	            	<input type="hidden" name="category_id" ng-model="nmc.menu.category.category_id">\n' +
-    '	            	<input type="text" name="category" ng-model="nmc.menu.category" uib-typeahead="category as category.category_name for category in nmc.getCategory($viewValue)" typeahead-loading="loadingCategories" typeahead-no-results="noCategory" class="form-control" typeahead-on-select="nmc.onSelectCategory($item, $modal, $label, $event)">\n' +
+    '	            	<input type="text" name="category" ng-model="nmc.menu.category" autocomplete="off" uib-typeahead="category as category.category_name for category in nmc.getCategory($viewValue)" typeahead-loading="loadingCategories" typeahead-no-results="noCategory" class="form-control" typeahead-on-select="nmc.onSelectCategory($item, $modal, $label, $event)">\n' +
     '	            	<i ng-show="loadingCategories" class="glyphicon glyphicon-refresh"></i>\n' +
     '				    <div ng-show="noCategory">\n' +
     '				      <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
@@ -903,58 +726,74 @@ try {
   module = angular.module('litewait.ui', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('merchant/merchant-order.html',
-    '<div id="mer-in-progress">\n' +
-    '                           <table class="table">\n' +
-    '                              <thead>\n' +
-    '                                 <tr>\n' +
-    '                                    <th>Order ID</th>\n' +
-    '                                    <th>Order</th>\n' +
-    '                                    <th>Time Remaining</th>\n' +
-    '                                    <th>Current Status</th>\n' +
-    '                                    <th>Change state</th>\n' +
-    '                                 </tr>\n' +
-    '                              </thead>\n' +
-    '                              <tbody>\n' +
-    '                                 <tr>\n' +
-    '                                    <td><a class="orderid" href="shopping-cart-summary.html">4269-2215</a></td>\n' +
-    '                                    <td>2. Lorem ipsum dolor\n' +
-    '                                       sit amet \n' +
-    '                                    </td>\n' +
-    '                                    <td>30 mnts</td>\n' +
-    '                                    <td>\n' +
-    '                                       <a class="ready-pick" href="#">\n' +
-    '                                          Ready for pick-up\n' +
-    '                                    </td>\n' +
-    '                                    <td><a class="btn btn-complete btn-block">Complete</a></td>\n' +
-    '                                 </tr>\n' +
-    '                                 <tr>\n' +
-    '                                    <td><a class="orderid" href="shopping-cart-summary.html">4269-2215</a></td>\n' +
-    '                                    <td>\n' +
-    '                                       <ol>\n' +
-    '                                          <li>Lorem ipsum dolor sit amet</li>\n' +
-    '                                          <li>Lorem ipsum dolor sit amet</li>\n' +
-    '                                       </ol>\n' +
-    '                                    </td>\n' +
-    '                                    <td>30 mnts</td>\n' +
-    '                                    <td><a href="#" class="in-progress">In progress</a></td>\n' +
-    '                                    <td><a class="btn btn-ready-for-pick btn-block" href="#">Ready for pick up</a></td>\n' +
-    '                                 </tr>\n' +
-    '                                 <tr>\n' +
-    '                                    <td><a class="orderid" href="shopping-cart-summary.html">4269-2215</a></td>\n' +
-    '                                    <td>2. Lorem ipsum dolor\n' +
-    '                                       sit amet \n' +
-    '                                    </td>\n' +
-    '                                    <td>30 mnts</td>\n' +
-    '                                    <td>\n' +
-    '                                       <a class="ready-pick" href="#">\n' +
-    '                                          Ready for pick-up\n' +
-    '                                    </td>\n' +
-    '                                    <td><a class="btn btn-complete btn-block">Complete</a></td>\n' +
-    '                                 </tr>\n' +
-    '                              </tbody>\n' +
-    '                           </table>\n' +
-    '                        </div>');
+  $templateCache.put('merchant/merchant-order-in-progress.html',
+    '<div id="mer-in-progress" infinite-scroll="moc.nextPage()"\n' +
+    '      infinite-scroll-distance="0"\n' +
+    '      infinite-scroll-immediate-check="false">\n' +
+    '   <table class="table">\n' +
+    '      <thead>\n' +
+    '         <tr>\n' +
+    '            <th>Order ID</th>\n' +
+    '            <th>Order</th>\n' +
+    '            <th>Time Remaining</th>\n' +
+    '            <th>Current Status</th>\n' +
+    '            <th>Change state</th>\n' +
+    '         </tr>\n' +
+    '      </thead>\n' +
+    '      <tbody>\n' +
+    '         <tr ng-repeat="order in moc.data.orders">\n' +
+    '            <td><a class="orderid" href="/order-summary/{{order.order_id}}">{{order.order_id}}</a></td>\n' +
+    '            <td>{{order.orderDetails[0].qty}} {{order.orderDetails[0].item_name}}</td>\n' +
+    '            <td>30 mnts</td>\n' +
+    '            <td>\n' +
+    '               <a \n' +
+    '                  ng-class="{\'ready-pick\': order.order_status==\'Ready To Pickup\', \'in-progress\': order.order_status ==\'In Progress\', \'new-order\': order.order_status == \'New\', \'complete\': order.order_status == \'Complete\'}" >{{order.order_status}}</a>\n' +
+    '            </td>\n' +
+    '            <td>\n' +
+    '               <a ng-class="{\'btn-ready-for-pick\': order.order_status == \'In Progress\', \'btn-in-progress\': order.order_status == \'New\', \'btn-complete\': order.order_status == \'Ready To Pickup\'}" class="btn btn-block" ng-click="moc.changeStatus(moc.orderStatus.nextStatus[order.order_status])">{{moc.orderStatus.nextStatus[order.order_status].label}}</a>\n' +
+    '            </td>\n' +
+    '         </tr>\n' +
+    '      </tbody>\n' +
+    '   </table>\n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('merchant/merchant-past-order.html',
+    '<div id="mer-in-progress" infinite-scroll="mpoc.nextPage()"\n' +
+    '      infinite-scroll-distance="0"\n' +
+    '      infinite-scroll-immediate-check="false">\n' +
+    '   <table class="table">\n' +
+    '      <thead>\n' +
+    '         <tr>\n' +
+    '            <th>Order ID</th>\n' +
+    '            <th>Order</th>\n' +
+    '            <th>Total Items</th>\n' +
+    '            <th>Tax</th>\n' +
+    '            <th>Gross</th>\n' +
+    '            <th>Net</th>\n' +
+    '         </tr>\n' +
+    '      </thead>\n' +
+    '      <tbody>\n' +
+    '         <tr ng-repeat="order in mpoc.data.orders">\n' +
+    '            <td><a class="orderid" href="/order-summary/{{order.order_id}}">{{order.order_id}}</a></td>\n' +
+    '            <td>{{order.orderDetails[0].qty}} {{order.orderDetails[0].item_name}}</td>\n' +
+    '            <td>30 mnts</td>\n' +
+    '            <td>{{order.total_quantity}}</td>\n' +
+    '            <td>{{order.total_tax}}</td>\n' +
+    '            <td>{{order.total_gross}}</td>\n' +
+    '            <td>{{order.total_net}}</td>\n' +
+    '         </tr>\n' +
+    '      </tbody>\n' +
+    '   </table>\n' +
+    '</div>');
 }]);
 })();
 
@@ -987,6 +826,61 @@ module.run(['$templateCache', function($templateCache) {
     '         </tr>\n' +
     '      </tbody>\n' +
     '   </table>\n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('html/spinner.html',
+    '<div class="spinner">\n' +
+    '  <div>\n' +
+    '    <i class="fa fa-spinner fa-spin"></i>\n' +
+    '  </div>\n' +
+    '  <div class="spinner-text">{{$message}}</div>\n' +
+    '</div>\n' +
+    '');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('html/tab-template-merchant.html',
+    '<li ng-class="[{active: active, disabled: disabled}, classes]" class="uib-tab nav-item">\n' +
+    '	<a href ng-click="select()" class="nav-link" uib-tab-heading-transclude>{{heading}}</a>\n' +
+    '</li>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('html/tabset-template-merchant.html',
+    '<div class="menu-detail-wrap">\n' +
+    '	<div class="col-md-4 menu-items">\n' +
+    '		<ul class="nav nav-{{tabset.type || \'tabs\'}}" ng-class="{\'nav-stacked\': vertical, \'nav-justified\': justified}" ng-transclude></ul>\n' +
+    '	</div>\n' +
+    '	<div class="tab-content col-md-8 popular-items">\n' +
+    '	  <div class="tab-pane"\n' +
+    '	       ng-repeat="tab in tabset.tabs"\n' +
+    '	       ng-class="{active: tabset.active === tab.index}"\n' +
+    '	       uib-tab-content-transclude="tab">\n' +
+    '	  </div>\n' +
+    '	</div>\n' +
     '</div>');
 }]);
 })();
@@ -1077,64 +971,135 @@ module.run(['$templateCache', function($templateCache) {
     '               </ul>\n' +
     '            </div>\n' +
     '         </div>\n' +
-    '         <div class="col-md-9 order-status">\n' +
+    '         <div class="col-md-9 order-status" infinite-scroll="mlc.nextPage()"\n' +
+    '      infinite-scroll-distance="0"\n' +
+    '      infinite-scroll-immediate-check="false">\n' +
     '            <div class="table-responsive">\n' +
-    '               \n' +
-    '\n' +
-    '                     <table class="table">\n' +
-    '                        <thead>\n' +
-    '                           <tr>\n' +
-    '                              <th>Date / Time</th>\n' +
-    '                              <th>Order ID</th>\n' +
-    '                              <th>Merchant</th>\n' +
-    '                              <th>Order Status</th>\n' +
-    '                              <th>&nbsp;</th>\n' +
-    '                           </tr>\n' +
-    '                        </thead>\n' +
-    '                        <tbody>\n' +
-    '                           <tr>\n' +
-    '                              <td>10/26/2015 12:30 PM </td>\n' +
-    '                              <td><a class="orderid" ng-click="vm.go(\'cart.summary\')">4269-2215</a></td>\n' +
-    '                              <td><a ng-click="vm.go(\'shop.detail\')" class="merchant">Charlie\'s Sandwich Shoppe</a></td>\n' +
-    '                              <td class="inprogress"> In progress</td>\n' +
-    '                              <td>&nbsp;</td>\n' +
-    '                           </tr>\n' +
-    '                           <tr>\n' +
-    '                              <td>10/26/2015 12:30 PM </td>\n' +
-    '                              <td><a class="orderid" ng-click="vm.go(\'cart.summary\')">4269-2215</a></td>\n' +
-    '                              <td><a ng-click="vm.go(\'shop.detail\')" class="merchant">Charlie\'s Sandwich Shoppe</a></td>\n' +
-    '                              <td class="ready-pickup"> Ready for pick-up</td>\n' +
-    '                              <td>&nbsp;</td>\n' +
-    '                           </tr>\n' +
-    '                           <tr>\n' +
-    '                              <td>10/26/2015 12:30 PM </td>\n' +
-    '                              <td><a class="orderid" ng-click="vm.go(\'cart.summary\')">4269-2215</a></td>\n' +
-    '                              <td><a ng-click="vm.go(\'shop.detail\')" class="merchant">Charlie\'s Sandwich Shoppe</a></td>\n' +
-    '                              <td class="complete"> Completed</td>\n' +
-    '                              <td>&nbsp;</td>\n' +
-    '                           </tr>\n' +
-    '                           <tr>\n' +
-    '                              <td>10/26/2015 12:30 PM </td>\n' +
-    '                              <td><a class="orderid" ng-click="vm.go(\'cart.summary\')">4269-2215</a></td>\n' +
-    '                              <td><a ng-click="vm.go(\'shop.detail\')" class="merchant">Charlie\'s Sandwich Shoppe</a></td>\n' +
-    '                              <td class="complete"> Completed</td>\n' +
-    '                              <td>&nbsp;</td>\n' +
-    '                           </tr>\n' +
-    '                           <tr>\n' +
-    '                              <td>10/26/2015 12:30 PM </td>\n' +
-    '                              <td><a class="orderid" ng-click="vm.go(\'cart.summary\')">4269-2215</a></td>\n' +
-    '                              <td><a ng-click="vm.go(\'shop.detail\')" class="merchant">Charlie\'s Sandwich Shoppe</a></td>\n' +
-    '                              <td class="complete"> Completed</td>\n' +
-    '                              <td>&nbsp;</td>\n' +
-    '                           </tr>\n' +
-    '                        </tbody>\n' +
-    '                     </table>\n' +
-    '\n' +
+    '               <table class="table">\n' +
+    '                  <thead>\n' +
+    '                     <tr>\n' +
+    '                        <th>Date / Time</th>\n' +
+    '                        <th>Order ID</th>\n' +
+    '                        <th>Merchant</th>\n' +
+    '                        <th>Order Status</th>\n' +
+    '                        <th>&nbsp;</th>\n' +
+    '                     </tr>\n' +
+    '                  </thead>\n' +
+    '                  <tbody>\n' +
+    '                     <tr ng-repeat="order in moc.data.orders">\n' +
+    '                        <td>{{order.order_date_string}}</td>\n' +
+    '                        <td><a class="orderid" href="/order-summary/order.order_id">{{order.order_id}}</a></td>\n' +
+    '                        <td><a ng-click="vm.go(\'shop.detail\')" class="merchant">Charlie\'s Sandwich Shoppe</a></td>\n' +
+    '                        <td class="inprogress">{{order.order_status}}</td>\n' +
+    '                        <td>&nbsp;</td>\n' +
+    '                     </tr>\n' +
+    '                  </tbody>\n' +
+    '               </table>\n' +
     '            </div>\n' +
     '         </div>\n' +
     '         <div class="clearfix"></div>\n' +
     '      </div>\n' +
     '   </div>\n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('orders/order-summary.html',
+    '<div class="container shopping-cart">\n' +
+    '\n' +
+    '  <div class="row">\n' +
+    '    <div class="col-md-8 cart-left"> \n' +
+    '    	 <h1>Order id : <span>{{osc.data.order.order_id}}</span></h1>\n' +
+    '         <div class="table-responsive">\n' +
+    '          <table class="table">\n' +
+    '          	<thead>\n' +
+    '             <tr>\n' +
+    '                <th>Item</th>\n' +
+    '                <th class="right">Price</th>\n' +
+    '                <th class="right">Quantity</th>\n' +
+    '             </tr>\n' +
+    '   			    </thead>\n' +
+    '            <tbody>\n' +
+    '              <tr ng-repeat="orderDetail in osc.data.order.orderDetails">\n' +
+    '                <td>\n' +
+    '                	<table class="sub-table">\n' +
+    '                    	<tr>\n' +
+    '                        	<td><img src="img/cart-1.jpg" class="product img-responsive" /></td>\n' +
+    '                            <td> <h3>{{orderDetail.item_name}}</h3>\n' +
+    '                    <p>Lorem ipsum dolor sit amet <br/> consectetuer adipiscing elit.</p></td>\n' +
+    '                        \n' +
+    '                        </tr>\n' +
+    '                      \n' +
+    '                    </table>\n' +
+    '                </td>\n' +
+    '                <td class="">${{orderDetail.price}}</td>\n' +
+    '                <td class="">{{orderDetail.qty}}</td>\n' +
+    '              </tr>\n' +
+    '            </tbody>\n' +
+    '          </table>\n' +
+    '          <table class="table">\n' +
+    '            <tfoot>\n' +
+    '              <tr>\n' +
+    '                <td colspan="3">Subtotal ({{orderDetail.total_quantity}} items):   <span class="value">${{orderDetail.total_gross}}</span></td>\n' +
+    '              </tr>\n' +
+    '            </tfoot>\n' +
+    '          </table>\n' +
+    '        </div>\n' +
+    '    \n' +
+    '    \n' +
+    '    </div>\n' +
+    '    <div class="col-md-4 cart-right">\n' +
+    '\n' +
+    '      <div class="order-summary no-border">\n' +
+    '        <h2>Order summary</h2>\n' +
+    '        <div class="col-md-12 table-wrap">\n' +
+    '          <table class="table">\n' +
+    '            <tbody>\n' +
+    '              <tr>\n' +
+    '                <td class="sub">Subtotal ({{orderDetail.total_quantity}} items) :</td>\n' +
+    '                <td class="value right">${{orderDetail.total_gross}}</td>\n' +
+    '              </tr>\n' +
+    '              <tr>\n' +
+    '                <td>Convenience Fee : </td>\n' +
+    '                <td class="sub-total-end right">$0.00</td>\n' +
+    '              </tr>\n' +
+    '              <tr>\n' +
+    '                <td>Total before Tax : </td>\n' +
+    '                <td class="right">${{orderDetail.total_gross}}</td>\n' +
+    '              </tr>\n' +
+    '              <tr>\n' +
+    '                <td>Estimated tax to be collected : </td>\n' +
+    '                <td class="right">${{orderDetail.total_tax}}</td>\n' +
+    '              </tr>\n' +
+    '              <tr class="total">\n' +
+    '                <td class="sub">Order total: </td>\n' +
+    '                <td class="value right">${{orderDetail.total_net}}</td>\n' +
+    '              </tr>\n' +
+    '            </tbody>\n' +
+    '          </table>\n' +
+    '        </div>\n' +
+    '        <div class="clearfix"></div>\n' +
+    '      </div>\n' +
+    '      <div class="product-widget">\n' +
+    '        <h2><a href="shop-detail-menu.html">Charlie\'s Sandwich</a></h2>\n' +
+    '        <img src="img/search-result-1.jpg" />\n' +
+    '        \n' +
+    '        <div class="cnt"> <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>\n' +
+    '          <p>0.98 mi Distance from search location</p>\n' +
+    '          <p class="wait">20 m Wait Time</p>\n' +
+    '          <p>Open 11:00 AM to 4:00 AM</p>\n' +
+    '        </div>\n' +
+    '      </div>\n' +
+    '    </div>\n' +
+    '  </div>\n' +
+    '  \n' +
     '</div>');
 }]);
 })();

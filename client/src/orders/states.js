@@ -17,9 +17,10 @@
                     "@": {
                         templateUrl: "orders/myorder.html",
                         controller: "MyOrderCtrl",
-                        controllerAs: "vm"
+                        controllerAs: "olc"
                     }
                 },
+                params: { status: [1,2,3,4]},
                 resolve: {
                     authentication: function (AuthService, $q, $timeout) {
                         var deferred = $q.defer();
@@ -35,6 +36,29 @@
                         }, 0);
                         
                         return deferred.promise;
+                    }
+                }
+            })
+            .state('order.summary', {
+                url: "/order-summary/:orderId",
+                views: {
+                    "@": {
+                        templateUrl: "order/order-summary.html",
+                        controller: "OrderSummaryCtrl",
+                        controllerAs: "osc"
+                    }
+                },
+                resolve: {
+                    orderdetails: function($stateParams, OrderService) {
+                        if ($stateParams.orderId) {
+                            return OrderService.getById($stateParams.orderId).then(function(response) {
+                                if (!response.data.error) {
+                                    return response.data.data;
+                                }
+                                return false;
+                            });
+                        }
+                        return false;
                     }
                 }
             });

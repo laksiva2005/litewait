@@ -19,15 +19,6 @@
                         controller: "CartCtrl"
                     }
                 }
-            })
-            .state('cart.summary', {
-                url: "/cart-summary",
-                views: {
-                    "@": {
-                        templateUrl: "cart/cart-summary.html",
-                        controller: "CartSummaryCtrl"
-                    }
-                }
             });
     }
 })(angular);

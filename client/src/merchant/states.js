@@ -12,7 +12,7 @@
                 url: '/merchant',
                 views: {
                     "merchant-landing@merchant": {
-                        templateUrl: 'merchant/merchant-order.html',
+                        templateUrl: 'merchant/merchant-order-in-progress.html',
                         controller: 'MerchantOrderCtrl',
                         controllerAs: 'moc'
                     },
@@ -27,21 +27,23 @@
                 url: '/order',
                 views: {
                     'merchant-landing': {
-                        templateUrl: 'merchant/merchant-order.html',
+                        templateUrl: 'merchant/merchant-order-in-progress.html',
                         controller: 'MerchantOrderCtrl',
                         controllerAs: 'moc'
                     }
-                }
+                },
+                params: { status: [1,2,3] },
             })
             .state('merchant.pastorder', {
                 url: '/pastorder',
                 views: {
                     'merchant-landing': {
-                        templateUrl: 'merchant/merchant-order.html',
+                        templateUrl: 'merchant/merchant-past-order.html',
                         controller: 'MerchantOrderCtrl',
-                        controllerAs: 'moc'
+                        controllerAs: 'mpoc'
                     }
-                }
+                },
+                params: {status: [4]}
             })
             .state('merchant.review', {
                 url: '/review',

@@ -18,9 +18,9 @@
 			}
 		};
 		vm.data.merchant = User.data;
-		vm.data.action = ($stateParams.category_id === '') ? 'Add' : 'Update';
+		vm.data.action = ($stateParams.category_id) ? 'Update' : 'Add';
 		vm.category = {
-			id: '',
+			category_id: '',
 			category_name: '',
 			merchant_id: User.data.id
 		};
@@ -29,7 +29,7 @@
 
 		if (category) {
 			vm.category.category_name = category.category_name;
-			vm.category.id = category.id;
+			vm.category.category_id = category.id;
 		}
 
 		function cancel(event) {
@@ -39,7 +39,7 @@
 
 		function addCategory(valid, data) {
 			if (valid) {
-				var action = (data.id > 0) ? MenuService.updateCategory : MenuService.addCategory;
+				var action = (vm.data.action=='Update') ? MenuService.updateCategory : MenuService.addCategory;
 				var smsg = vm.data.action == 'Add' ? MSG.addCategorySuccess : MSG.updateCategorySuccess;
 				var fmsg = vm.data.action == 'Add' ? MSG.addCategoryFailed : MSG.updateCategoryFailed;
 				var params = {
@@ -47,8 +47,8 @@
 					category_name: data.category_name
 				};
 
-				if (vm.data.action === 'Update' && vm.category.id !== '') {
-					params.id = vm.category.id;
+				if (vm.data.action === 'Update' && vm.category.category_id !== '') {
+					params.category_id = vm.category.category_id;
 				}
 
 				action(params).then(function(response) {

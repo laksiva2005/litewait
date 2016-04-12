@@ -3177,19 +3177,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		
 	}
 })();
-/*
- *
- */
-;(function () {
-	'use strict';
-	angular.module('litewait.ui').controller('CartSummaryCtrl', CartSummaryCtrl);
-
-	CartSummaryCtrl.$inject = ['$scope'];
-
-	function CartSummaryCtrl($scope) {
-		
-	}
-})();
 
 ;(function(angular) {
     'use strict';
@@ -3211,15 +3198,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         controller: "CartCtrl"
                     }
                 }
-            })
-            .state('cart.summary', {
-                url: "/cart-summary",
-                views: {
-                    "@": {
-                        templateUrl: "cart/cart-summary.html",
-                        controller: "CartSummaryCtrl"
-                    }
-                }
             });
     }
 })(angular);
@@ -3238,8 +3216,14 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			link: function(scope, element, attrs, ngModel) {
 				ngModel.$asyncValidators.checkCategoryExists = function(value) {
 					var data = scope.categoryData;
-					if (data.id === '') {
-						delete data['id'];
+					if (data.id) {
+
+						if (data.id === '') {
+							delete data['id'];
+						} else {
+							data.category_id = data.id;
+							delete data.id;
+						}
 					}
 					data.category_name = value;
 					return MenuService.checkCategoryExists(data).then(function(response) {
@@ -3483,6 +3467,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 					
 					if (index !== -1) {
 						delete vm.data.category[index];
+						vm.data.categoryParams.offset--;
 					}
 					toaster.pop({
                         type: 'success', 
@@ -3582,9 +3567,9 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			}
 		};
 		vm.data.merchant = User.data;
-		vm.data.action = ($stateParams.category_id === '') ? 'Add' : 'Update';
+		vm.data.action = ($stateParams.category_id) ? 'Update' : 'Add';
 		vm.category = {
-			id: '',
+			category_id: '',
 			category_name: '',
 			merchant_id: User.data.id
 		};
@@ -3593,7 +3578,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 		if (category) {
 			vm.category.category_name = category.category_name;
-			vm.category.id = category.id;
+			vm.category.category_id = category.id;
 		}
 
 		function cancel(event) {
@@ -3603,7 +3588,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 		function addCategory(valid, data) {
 			if (valid) {
-				var action = (data.id > 0) ? MenuService.updateCategory : MenuService.addCategory;
+				var action = (vm.data.action=='Update') ? MenuService.updateCategory : MenuService.addCategory;
 				var smsg = vm.data.action == 'Add' ? MSG.addCategorySuccess : MSG.updateCategorySuccess;
 				var fmsg = vm.data.action == 'Add' ? MSG.addCategoryFailed : MSG.updateCategoryFailed;
 				var params = {
@@ -3611,8 +3596,8 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 					category_name: data.category_name
 				};
 
-				if (vm.data.action === 'Update' && vm.category.id !== '') {
-					params.id = vm.category.id;
+				if (vm.data.action === 'Update' && vm.category.category_id !== '') {
+					params.category_id = vm.category.category_id;
 				}
 
 				action(params).then(function(response) {
@@ -3740,6 +3725,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 					
 					if (index !== -1) {
 						delete vm.data.menu[index];
+						vm.data.menuParams.offset--;
 					}
 
 					toaster.pop({
@@ -3776,9 +3762,9 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	'use strict';
 	angular.module('litewait.ui').controller('NewMenuCtrl', NewMenuCtrl);
 
-	NewMenuCtrl.$inject = ['$scope', 'User', 'MenuService', '$stateParams', '$state', 'MSG', 'toaster', '$filter', 'menu'];
+	NewMenuCtrl.$inject = ['$scope', 'User', 'MenuService', '$stateParams', '$state', 'MSG', 'toaster', '$filter', 'AddonService', 'menu'];
 
-	function NewMenuCtrl($scope, User, MenuService, $stateParams, $state, MSG, toaster, $filter, menu) {
+	function NewMenuCtrl($scope, User, MenuService, $stateParams, $state, MSG, toaster, $filter, AddonService, menu) {
 		var vm = this;
 		vm.data = {};
 		vm.data.merchant = User.data;
@@ -3804,17 +3790,27 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		assignMenu();
 
 		function searchAddons(query) {
-			var data = [{
-			  "name":"Tomato Chatni",
-			  "price":"20",
-			  "picture":"amazon.com/s3/pics/tomato_chatni.png"
-			}, {
-			  "name":"Pudina Chatni",
-			  "price":"25",
-			  "picture":"amazon.com/s3/pics/Pudina_chatni.png"
-			}];
+			var data = {
+				page_no: 1,
+				page_size: 20,
+				search: query
+			};
 
-			return $filter('filter')(data, { name: query });
+			return AddonService.get(data).then(function(response) {
+				if (!response.data.error && response.data.data !== null) {
+					var res = response.data.data;
+					var a = [];
+					for(var i=0;i<res.length;i++) {
+						a.push({
+							name: res[i].name,
+							price: res[i].price,
+							picture: res[i].picture
+						});
+					}
+					return a;
+				}
+				return [];
+			});
 		}
 
 		function onSelectCategory() {
@@ -3912,14 +3908,99 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	'use strict';
 	angular.module('litewait.ui').controller('MerchantOrderCtrl', MerchantOrderCtrl);
 
-	MerchantOrderCtrl.$inject = ['$scope', 'User'];
+	MerchantOrderCtrl.$inject = ['$scope', 'User', 'OrderService', 'OrderStatus', 'MSG', '$stateParams'];
 
-	function MerchantOrderCtrl($scope, User) {
+	function MerchantOrderCtrl($scope, User, OrderService, OrderStatus, MSG, $stateParams) {
 		var vm = this;
 		vm.data = {};
-		vm.data['merchant'] = User.data || {};
+		vm.orderStatus = OrderStatus;
+		vm.data.merchant = User.data || {};
+		vm.data.orderParams = {
+			busy: false,
+			offset: 0,
+			limit: 10,
+			merchant_id: vm.data.merchant.id,
+			status: $stateParams.status
+		};
+		vm.data.orders = [];
+		vm.nextPage = nextPage;
+		vm.changeStatus = changeStatus;
 
-		// TODO: have to get order list
+		function changeStatus(status, id) {
+			var param = {
+				status: status,
+				order_id: id
+			};
+
+			OrderService.changeStatus(param).then(function(response) {
+				if (!response.data.error) {
+					var index = _.findIndex(vm.data.orders, {order_id: id});
+					if (index !== -1) {
+						if (status !=4) {
+							vm.data.orders[index].order_status = status;
+						} else {
+							delete vm.data.orders[index];
+							vm.data.orderParams.offset--;
+						}
+					}
+				} else {
+					toaster.pop({
+                        type: 'error', 
+                        title:'Error', 
+                        body: MSG.statusChangeFailed, 
+                        toasterId: 1
+                    });
+				}
+			}, function(error) {
+				toaster.pop({
+                    type: 'error', 
+                    title:'Error', 
+                    body: MSG.statusChangeFailed, 
+                    toasterId: 1
+                });
+			});
+		}
+
+		function searchOrder() {
+			var param = getOrderParams();
+			OrderService.get(param).then(function(res) {
+				assignOrders(res);
+			});
+		}
+
+		function assignOrders(items) {
+			for (var i = 0; i < items.length; i++) {
+	            var index = _.findIndex(vm.data.orders, {id: items[i].id});
+	            if (-1 === index) {
+	              vm.data.orders.push(items[i]);
+	            }
+	        }
+	        vm.data.orderParams.offset = vm.data.orders.length;
+		}
+
+		function getOrderParams() {
+			return {
+				offset: vm.data.orderParams.offset,
+				limit: vm.data.orderParams.limit,
+				status: vm.data.orderParams.status
+			};
+		}
+
+		function initializeOrderList() {
+			vm.data.orderParams.offset = 0;
+			vm.data.orderParams.busy = false;
+			vm.data.orders.length = 0;
+			seachOrder();
+		}
+
+		function nextPage() {
+			if (!vm.data.orderParams.busy) {
+				vm.data.orderParams.busy = true;
+				searchOrder();
+			}
+		}
+
+		searchOrder();
 	}
 })(angular);
 /*
@@ -4003,7 +4084,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                 url: '/merchant',
                 views: {
                     "merchant-landing@merchant": {
-                        templateUrl: 'merchant/merchant-order.html',
+                        templateUrl: 'merchant/merchant-order-in-progress.html',
                         controller: 'MerchantOrderCtrl',
                         controllerAs: 'moc'
                     },
@@ -4018,21 +4099,23 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                 url: '/order',
                 views: {
                     'merchant-landing': {
-                        templateUrl: 'merchant/merchant-order.html',
+                        templateUrl: 'merchant/merchant-order-in-progress.html',
                         controller: 'MerchantOrderCtrl',
                         controllerAs: 'moc'
                     }
-                }
+                },
+                params: { status: [1,2,3] },
             })
             .state('merchant.pastorder', {
                 url: '/pastorder',
                 views: {
                     'merchant-landing': {
-                        templateUrl: 'merchant/merchant-order.html',
+                        templateUrl: 'merchant/merchant-past-order.html',
                         controller: 'MerchantOrderCtrl',
-                        controllerAs: 'moc'
+                        controllerAs: 'mpoc'
                     }
-                }
+                },
+                params: {status: [4]}
             })
             .state('merchant.review', {
                 url: '/review',
@@ -4475,16 +4558,86 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 	angular.module('litewait.ui').controller('MyOrderCtrl', MyOrderCtrl);
 
-	MyOrderCtrl.$inject = ['$scope', 'authentication'];
+	MyOrderCtrl.$inject = ['$scope', 'User', 'OrderService', 'OrderStatus', 'MSG', '$stateParams', '$filter', 'authentication'];
 
-	function MyOrderCtrl($scope, authentication) {
+	function MyOrderCtrl($scope, User, OrderService, OrderStatus, MSG, $stateParams, $filter, authentication) {
 		var vm = this;
-		console.log(authentication);
-		// TODO: Need to change things dynamically
+		vm.data = {};
+		vm.orderStatus = orderStatus;
+		vm.data.merchant = User.data || {};
+		vm.data.orderParams = {
+			busy: false,
+			offset: 0,
+			limit: 10,
+			merchant_id: vm.data.merchant.id,
+			status: $stateParams.status
+		};
+		vm.data.orders = [];
+		vm.nextPage = nextPage;
+
+		function searchOrder() {
+			var param = getOrderParams();
+			OrderService.get(param).then(function(res) {
+				assignOrders(res);
+			});
+		}
+
+		function assignOrders(items) {
+			for (var i = 0; i < items.length; i++) {
+	            var index = _.findIndex(vm.data.orders, {id: items[i].id});
+	            if (-1 === index) {
+	            	var date = items[i].order_date;
+	            	var dateString = $filter('date')(date, 'dd/MM/yyyy hh:mm a');
+	            	items[i].order_date_string = dateString;
+	            	vm.data.orders.push(items[i]);
+	            }
+	        }
+	        vm.data.orderParams.offset = vm.data.orders.length;
+		}
+
+		function getOrderParams() {
+			return {
+				offset: vm.data.orderParams.offset,
+				limit: vm.data.orderParams.limit,
+				status: vm.data.orderParams.status
+			};
+		}
+
+		function initializeOrderList() {
+			vm.data.orderParams.offset = 0;
+			vm.data.orderParams.busy = false;
+			vm.data.orders.length = 0;
+			seachOrder();
+		}
+
+		function nextPage() {
+			if (!vm.data.orderParams.busy) {
+				vm.data.orderParams.busy = true;
+				searchOrder();
+			}
+		}
+
+		searchOrder();
 	}
 
 
 })(angular);
+/*
+ *
+ */
+;(function () {
+	'use strict';
+	angular.module('litewait.ui').controller('OrderSummaryCtrl', OrderSummaryCtrl);
+
+	OrderSummaryCtrl.$inject = ['$scope', 'orderdetails'];
+
+	function OrderSummaryCtrl($scope, orderdetails) {
+		var vm = this;
+		vm.data = {
+			order: orderdetails
+		};
+	}
+})();
 
 ;(function(angular) {
     'use strict';
@@ -4504,9 +4657,10 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     "@": {
                         templateUrl: "orders/myorder.html",
                         controller: "MyOrderCtrl",
-                        controllerAs: "vm"
+                        controllerAs: "olc"
                     }
                 },
+                params: { status: [1,2,3,4]},
                 resolve: {
                     authentication: function (AuthService, $q, $timeout) {
                         var deferred = $q.defer();
@@ -4522,6 +4676,29 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         }, 0);
                         
                         return deferred.promise;
+                    }
+                }
+            })
+            .state('order.summary', {
+                url: "/order-summary/:orderId",
+                views: {
+                    "@": {
+                        templateUrl: "order/order-summary.html",
+                        controller: "OrderSummaryCtrl",
+                        controllerAs: "osc"
+                    }
+                },
+                resolve: {
+                    orderdetails: function($stateParams, OrderService) {
+                        if ($stateParams.orderId) {
+                            return OrderService.getById($stateParams.orderId).then(function(response) {
+                                if (!response.data.error) {
+                                    return response.data.data;
+                                }
+                                return false;
+                            });
+                        }
+                        return false;
                     }
                 }
             });
@@ -4686,6 +4863,32 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             });
     }
 })(angular);
+/*
+*
+*/
+;(function() {
+	'use strict';
+	angular.module('litewait.services').factory('AddonService', AddonService);
+
+	AddonService.$inject = ['$http', 'RouteConfig'];
+
+	function AddonService($http, RouteConfig) {
+		var apiBase = RouteConfig.apiBase + '/menu/addons';
+		var service = {};
+
+		service.get = get;
+
+		function get(data) {
+			var params = {
+				params: data
+			};
+
+			return $http.get(apiBase, params);
+		}
+
+		return service;
+	}
+})();
 /**
  *
  */
@@ -4707,6 +4910,8 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             updateMenuFailed: 'Update menu has been failed',
             deleteMenuSuccess: 'Menu has been deleted successfully',
             deleteMenuFailed: 'Menu delete has been failed',
+            changeStatusSuccess: 'Order status has been changed successfully',
+            changeStatusFailed: 'Order status change has been failed'
         })
         .constant('AUTH_EVENTS', {
             loginSuccess: 'auth:login-success',
@@ -5162,29 +5367,19 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 		function addCategory(data) {
 			var params = {
-				params: {
-					merchant_id: data.merchant_id
-				},
-				data: {
-					category_name: data.category_name
-				}
+				category_name: data.category_name
 			};
-			var url = apiBase + '/category';
+			var url = apiBase + '/category?merchant_id=' + data.merchant_id;
 
 			return $http.post(url, params);
 		}
 
 		function updateCategory(data) {
 			var params = {
-				params: {
-					merchant_id: data.merchant_id
-				},
-				data: {
-					id: data.id,
-					category_name: data.category_name
-				}
+				id: data.category_id,
+				category_name: data.category_name
 			};
-			var url = apiBase + '/category';
+			var url = apiBase + '/category?merchant_id='+data.merchant_id;
 
 			return $http.put(url, params);
 		}
@@ -5208,8 +5403,8 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 				}
 			};
 			var url = apiBase + '/category/nameAvailability';
-			if (data.id >= 0) {
-				params.params.id = data.id;
+			if (data.category_id) {
+				params.params.category_id = data.category_id;
 			}
 
 			return $http.get(url, params);
@@ -5274,9 +5469,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 		function getByMerchantId(id) {
 			var data = {
-					params: {
-						merchant_id: id
-					}
+					params: id
 				};
 
 			return $http.get(apiBase, data).then(function(res) {
@@ -5422,13 +5615,61 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		var service = {};
 		var apiBase = RouteConfig.apiBase + '/order/search';
 		service.get = get;
+		service.getById = getById;
+		service.changeStatus = changeStatus;
 
+		function changeStatus(data) {
+			var params = {
+				params: data
+			};
+
+			var url = RouteConfig.apiBase + '/order/changeStatus';
+			return $http.put(url, params);
+		}
+
+		function getById(id) {
+			var params = {
+				params: {
+					order_id: id
+				}
+			};
+
+			return $http.get(apiBase, params);
+		}
 
 		function get(data) {
 			return $http.post(apiBase, data);
 		}
 
 		return service;
+	}
+})();
+/*
+*
+*/
+;(function() {
+	'use strict';
+	angular.module('litewait.services').factory('OrderStatus', OrderStatus);
+
+	OrderStatus.$inject = [];
+
+	function OrderStatus() {
+		return {
+			nextStatus: {
+				"New": {
+					label: "In Progress",
+					key: 2
+				},
+				"In Progress": {
+					label: "Ready To Pickup",
+					key: 3
+				},
+				"Ready To Pickup": {
+					label: "Complete",
+					key: 4
+				},
+			}
+		};
 	}
 })();
 /**

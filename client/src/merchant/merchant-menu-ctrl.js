@@ -71,6 +71,7 @@
 					
 					if (index !== -1) {
 						delete vm.data.menu[index];
+						vm.data.menuParams.offset--;
 					}
 
 					toaster.pop({

@@ -32,6 +32,7 @@
 					
 					if (index !== -1) {
 						delete vm.data.category[index];
+						vm.data.categoryParams.offset--;
 					}
 					toaster.pop({
                         type: 'success', 

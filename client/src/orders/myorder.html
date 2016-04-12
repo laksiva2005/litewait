@@ -33,59 +33,30 @@
                </ul>
             </div>
          </div>
-         <div class="col-md-9 order-status">
+         <div class="col-md-9 order-status" infinite-scroll="mlc.nextPage()"
+      infinite-scroll-distance="0"
+      infinite-scroll-immediate-check="false">
             <div class="table-responsive">
-               
-
-                     <table class="table">
-                        <thead>
-                           <tr>
-                              <th>Date / Time</th>
-                              <th>Order ID</th>
-                              <th>Merchant</th>
-                              <th>Order Status</th>
-                              <th>&nbsp;</th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           <tr>
-                              <td>10/26/2015 12:30 PM </td>
-                              <td><a class="orderid" ng-click="vm.go('cart.summary')">4269-2215</a></td>
-                              <td><a ng-click="vm.go('shop.detail')" class="merchant">Charlie's Sandwich Shoppe</a></td>
-                              <td class="inprogress"> In progress</td>
-                              <td>&nbsp;</td>
-                           </tr>
-                           <tr>
-                              <td>10/26/2015 12:30 PM </td>
-                              <td><a class="orderid" ng-click="vm.go('cart.summary')">4269-2215</a></td>
-                              <td><a ng-click="vm.go('shop.detail')" class="merchant">Charlie's Sandwich Shoppe</a></td>
-                              <td class="ready-pickup"> Ready for pick-up</td>
-                              <td>&nbsp;</td>
-                           </tr>
-                           <tr>
-                              <td>10/26/2015 12:30 PM </td>
-                              <td><a class="orderid" ng-click="vm.go('cart.summary')">4269-2215</a></td>
-                              <td><a ng-click="vm.go('shop.detail')" class="merchant">Charlie's Sandwich Shoppe</a></td>
-                              <td class="complete"> Completed</td>
-                              <td>&nbsp;</td>
-                           </tr>
-                           <tr>
-                              <td>10/26/2015 12:30 PM </td>
-                              <td><a class="orderid" ng-click="vm.go('cart.summary')">4269-2215</a></td>
-                              <td><a ng-click="vm.go('shop.detail')" class="merchant">Charlie's Sandwich Shoppe</a></td>
-                              <td class="complete"> Completed</td>
-                              <td>&nbsp;</td>
-                           </tr>
-                           <tr>
-                              <td>10/26/2015 12:30 PM </td>
-                              <td><a class="orderid" ng-click="vm.go('cart.summary')">4269-2215</a></td>
-                              <td><a ng-click="vm.go('shop.detail')" class="merchant">Charlie's Sandwich Shoppe</a></td>
-                              <td class="complete"> Completed</td>
-                              <td>&nbsp;</td>
-                           </tr>
-                        </tbody>
-                     </table>
-
+               <table class="table">
+                  <thead>
+                     <tr>
+                        <th>Date / Time</th>
+                        <th>Order ID</th>
+                        <th>Merchant</th>
+                        <th>Order Status</th>
+                        <th>&nbsp;</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr ng-repeat="order in moc.data.orders">
+                        <td>{{order.order_date_string}}</td>
+                        <td><a class="orderid" href="/order-summary/order.order_id">{{order.order_id}}</a></td>
+                        <td><a ng-click="vm.go('shop.detail')" class="merchant">Charlie's Sandwich Shoppe</a></td>
+                        <td class="inprogress">{{order.order_status}}</td>
+                        <td>&nbsp;</td>
+                     </tr>
+                  </tbody>
+               </table>
             </div>
          </div>
          <div class="clearfix"></div>

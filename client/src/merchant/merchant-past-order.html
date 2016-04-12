@@ -1,0 +1,27 @@
+<div id="mer-in-progress" infinite-scroll="mpoc.nextPage()"
+      infinite-scroll-distance="0"
+      infinite-scroll-immediate-check="false">
+   <table class="table">
+      <thead>
+         <tr>
+            <th>Order ID</th>
+            <th>Order</th>
+            <th>Total Items</th>
+            <th>Tax</th>
+            <th>Gross</th>
+            <th>Net</th>
+         </tr>
+      </thead>
+      <tbody>
+         <tr ng-repeat="order in mpoc.data.orders">
+            <td><a class="orderid" href="/order-summary/{{order.order_id}}">{{order.order_id}}</a></td>
+            <td>{{order.orderDetails[0].qty}} {{order.orderDetails[0].item_name}}</td>
+            <td>30 mnts</td>
+            <td>{{order.total_quantity}}</td>
+            <td>{{order.total_tax}}</td>
+            <td>{{order.total_gross}}</td>
+            <td>{{order.total_net}}</td>
+         </tr>
+      </tbody>
+   </table>
+</div>

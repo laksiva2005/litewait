@@ -28,29 +28,19 @@
 
 		function addCategory(data) {
 			var params = {
-				params: {
-					merchant_id: data.merchant_id
-				},
-				data: {
-					category_name: data.category_name
-				}
+				category_name: data.category_name
 			};
-			var url = apiBase + '/category';
+			var url = apiBase + '/category?merchant_id=' + data.merchant_id;
 
 			return $http.post(url, params);
 		}
 
 		function updateCategory(data) {
 			var params = {
-				params: {
-					merchant_id: data.merchant_id
-				},
-				data: {
-					id: data.id,
-					category_name: data.category_name
-				}
+				id: data.category_id,
+				category_name: data.category_name
 			};
-			var url = apiBase + '/category';
+			var url = apiBase + '/category?merchant_id='+data.merchant_id;
 
 			return $http.put(url, params);
 		}
@@ -74,8 +64,8 @@
 				}
 			};
 			var url = apiBase + '/category/nameAvailability';
-			if (data.id >= 0) {
-				params.params.id = data.id;
+			if (data.category_id) {
+				params.params.category_id = data.category_id;
 			}
 
 			return $http.get(url, params);
@@ -140,9 +130,7 @@
 
 		function getByMerchantId(id) {
 			var data = {
-					params: {
-						merchant_id: id
-					}
+					params: id
 				};
 
 			return $http.get(apiBase, data).then(function(res) {

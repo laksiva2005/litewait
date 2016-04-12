@@ -7,7 +7,7 @@
 	            <div class="form-group">
 	            	<input type="hidden" name="id" ng-model="nmc.menu.id">
 	            	<input type="hidden" name="category_id" ng-model="nmc.menu.category.category_id">
-	            	<input type="text" name="category" ng-model="nmc.menu.category" uib-typeahead="category as category.category_name for category in nmc.getCategory($viewValue)" typeahead-loading="loadingCategories" typeahead-no-results="noCategory" class="form-control" typeahead-on-select="nmc.onSelectCategory($item, $modal, $label, $event)">
+	            	<input type="text" name="category" ng-model="nmc.menu.category" autocomplete="off" uib-typeahead="category as category.category_name for category in nmc.getCategory($viewValue)" typeahead-loading="loadingCategories" typeahead-no-results="noCategory" class="form-control" typeahead-on-select="nmc.onSelectCategory($item, $modal, $label, $event)">
 	            	<i ng-show="loadingCategories" class="glyphicon glyphicon-refresh"></i>
 				    <div ng-show="noCategory">
 				      <i class="glyphicon glyphicon-remove"></i> No Results Found

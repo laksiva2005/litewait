@@ -5,9 +5,9 @@
 	'use strict';
 	angular.module('litewait.ui').controller('NewMenuCtrl', NewMenuCtrl);
 
-	NewMenuCtrl.$inject = ['$scope', 'User', 'MenuService', '$stateParams', '$state', 'MSG', 'toaster', '$filter', 'menu'];
+	NewMenuCtrl.$inject = ['$scope', 'User', 'MenuService', '$stateParams', '$state', 'MSG', 'toaster', '$filter', 'AddonService', 'menu'];
 
-	function NewMenuCtrl($scope, User, MenuService, $stateParams, $state, MSG, toaster, $filter, menu) {
+	function NewMenuCtrl($scope, User, MenuService, $stateParams, $state, MSG, toaster, $filter, AddonService, menu) {
 		var vm = this;
 		vm.data = {};
 		vm.data.merchant = User.data;
@@ -33,17 +33,27 @@
 		assignMenu();
 
 		function searchAddons(query) {
-			var data = [{
-			  "name":"Tomato Chatni",
-			  "price":"20",
-			  "picture":"amazon.com/s3/pics/tomato_chatni.png"
-			}, {
-			  "name":"Pudina Chatni",
-			  "price":"25",
-			  "picture":"amazon.com/s3/pics/Pudina_chatni.png"
-			}];
+			var data = {
+				page_no: 1,
+				page_size: 20,
+				search: query
+			};
 
-			return $filter('filter')(data, { name: query });
+			return AddonService.get(data).then(function(response) {
+				if (!response.data.error && response.data.data !== null) {
+					var res = response.data.data;
+					var a = [];
+					for(var i=0;i<res.length;i++) {
+						a.push({
+							name: res[i].name,
+							price: res[i].price,
+							picture: res[i].picture
+						});
+					}
+					return a;
+				}
+				return [];
+			});
 		}
 
 		function onSelectCategory() {
