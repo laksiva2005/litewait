@@ -100,7 +100,7 @@
 			vm.data.categoryParams.offset = 0;
 			vm.data.categoryParams.busy = false;
 			vm.data.category.length = 0;
-			seachCategory();
+			searchCategory();
 		}
 
 		function nextPage() {
@@ -109,5 +109,7 @@
 				searchCategory();
 			}
 		}
+
+		initializeCategoryList();
 	}
 })();

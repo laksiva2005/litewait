@@ -157,21 +157,19 @@
 
 		function formatMenu(data) {
 			var objArr = [];
-			for (var i = 0; i < data.category.length; i++) {
-				for (var j=0;j<data.category[i].menu_items.length;j++) {
-					var menu_item = data.category[i].menu_items[j];
-					var obj = {
-						item_id: menu_item.item_id,
-						item_name: menu_item.item_name,
-						description: menu_item.description,
-						price: menu_item.price,
-						merchant_id: data.merchant_id,
-						category_id: data.category[i].category_id,
-						category_name: data.category[i].category_name 
-					};
+			for (var i = 0; i < data.menu_items.length; i++) {
+				var menu_item = data.menu_items[i];
+				var obj = {
+					item_id: menu_item.item_id,
+					item_name: menu_item.item_name,
+					description: menu_item.description,
+					price: menu_item.price,
+					merchant_id: data.merchant_id,
+					category_id: menu_item.category_id,
+					category_name: menu_item.category_name || ''
+				};
 
-					objArr.push(obj);
-				}
+				objArr.push(obj);
 			}
 			return objArr;
 		}

@@ -88,7 +88,7 @@
 			vm.data.orderParams.offset = 0;
 			vm.data.orderParams.busy = false;
 			vm.data.orders.length = 0;
-			seachOrder();
+			searchOrder();
 		}
 
 		function nextPage() {
@@ -97,5 +97,7 @@
 				searchOrder();
 			}
 		}
+
+		initializeOrderList();
 	}
 })(angular);

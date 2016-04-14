@@ -3667,7 +3667,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			vm.data.categoryParams.offset = 0;
 			vm.data.categoryParams.busy = false;
 			vm.data.category.length = 0;
-			seachCategory();
+			searchCategory();
 		}
 
 		function nextPage() {
@@ -3676,6 +3676,8 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 				searchCategory();
 			}
 		}
+
+		initializeCategoryList();
 	}
 })();
 /*
@@ -3836,7 +3838,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			vm.data.menuParams.offset = 0;
 			vm.data.menuParams.busy = false;
 			vm.data.menu.length = 0;
-			seachMenu();
+			searchMenu();
 		}
 
 		function nextPage() {
@@ -3883,6 +3885,8 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                 });
 			});
 		}
+
+		initializeMenuList();
 	}
 })(angular);
 /*
@@ -4121,7 +4125,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			vm.data.orderParams.offset = 0;
 			vm.data.orderParams.busy = false;
 			vm.data.orders.length = 0;
-			seachOrder();
+			searchOrder();
 		}
 
 		function nextPage() {
@@ -4130,6 +4134,8 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 				searchOrder();
 			}
 		}
+
+		initializeOrderList();
 	}
 })(angular);
 /*
@@ -4187,7 +4193,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			vm.data.reviewParams.offset = 0;
 			vm.data.reviewParams.busy = false;
 			vm.data.review.length = 0;
-			seachReview();
+			searchReview();
 		}
 
 		function nextPage() {
@@ -4196,6 +4202,8 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 				searchReview();
 			}
 		}
+
+		initializeReviewList();
    }
 })(angular);
 
@@ -4358,160 +4366,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
                             return false;
                         });
-                    }
-                }
-            });
-    }
-})(angular);
-/*
- *
- */
-;(function(angular) {
-	'use strict';
-
-	angular.module('litewait.ui').controller('MyOrderCtrl', MyOrderCtrl);
-
-	MyOrderCtrl.$inject = ['$scope', 'User', 'OrderService', 'OrderStatus', 'MSG', '$stateParams', '$filter', 'authentication'];
-
-	function MyOrderCtrl($scope, User, OrderService, OrderStatus, MSG, $stateParams, $filter, authentication) {
-		var vm = this;
-		vm.data = {};
-		vm.orderStatus = orderStatus;
-		vm.data.merchant = User.data || {};
-		vm.data.orderParams = {
-			busy: false,
-			offset: 0,
-			limit: 10,
-			merchant_id: vm.data.merchant.id,
-			status: $stateParams.status
-		};
-		vm.data.orders = [];
-		vm.nextPage = nextPage;
-
-		function searchOrder() {
-			var param = getOrderParams();
-			OrderService.get(param).then(function(res) {
-				assignOrders(res);
-			});
-		}
-
-		function assignOrders(items) {
-			for (var i = 0; i < items.length; i++) {
-	            var index = _.findIndex(vm.data.orders, {id: items[i].id});
-	            if (-1 === index) {
-	            	var date = items[i].order_date;
-	            	var dateString = $filter('date')(date, 'dd/MM/yyyy hh:mm a');
-	            	items[i].order_date_string = dateString;
-	            	vm.data.orders.push(items[i]);
-	            }
-	        }
-	        vm.data.orderParams.offset = vm.data.orders.length;
-		}
-
-		function getOrderParams() {
-			return {
-				offset: vm.data.orderParams.offset,
-				limit: vm.data.orderParams.limit,
-				status: vm.data.orderParams.status
-			};
-		}
-
-		function initializeOrderList() {
-			vm.data.orderParams.offset = 0;
-			vm.data.orderParams.busy = false;
-			vm.data.orders.length = 0;
-			seachOrder();
-		}
-
-		function nextPage() {
-			if (!vm.data.orderParams.busy) {
-				vm.data.orderParams.busy = true;
-				searchOrder();
-			}
-		}
-
-		searchOrder();
-	}
-
-
-})(angular);
-/*
- *
- */
-;(function () {
-	'use strict';
-	angular.module('litewait.ui').controller('OrderSummaryCtrl', OrderSummaryCtrl);
-
-	OrderSummaryCtrl.$inject = ['$scope', 'orderdetails'];
-
-	function OrderSummaryCtrl($scope, orderdetails) {
-		var vm = this;
-		vm.data = {
-			order: orderdetails
-		};
-	}
-})();
-
-;(function(angular) {
-    'use strict';
-
-    angular.module('litewait').config(config);
-
-    config.$inject = ['$stateProvider'];
-
-    function config($stateProvider) {
-        $stateProvider
-            .state('order', {
-                abstract: true
-            })
-            .state('order.myorder', {
-            	url: "/myorder",
-                views: {
-                    "@": {
-                        templateUrl: "orders/myorder.html",
-                        controller: "MyOrderCtrl",
-                        controllerAs: "olc"
-                    }
-                },
-                params: { status: [1,2,3,4]},
-                resolve: {
-                    authentication: function (AuthService, $q, $timeout) {
-                        var deferred = $q.defer();
-                        
-                        var handler = $timeout(function() {
-                            var auth = AuthService.isAuthenticated();
-                            if (auth) {
-                                deferred.resolve(true);
-                            } else {
-                                deferred.reject(true);
-                            }
-                            $timeout.cancel(handler);
-                        }, 0);
-                        
-                        return deferred.promise;
-                    }
-                }
-            })
-            .state('order.summary', {
-                url: "/order-summary/:orderId",
-                views: {
-                    "@": {
-                        templateUrl: "order/order-summary.html",
-                        controller: "OrderSummaryCtrl",
-                        controllerAs: "osc"
-                    }
-                },
-                resolve: {
-                    orderdetails: function($stateParams, OrderService) {
-                        if ($stateParams.orderId) {
-                            return OrderService.getById($stateParams.orderId).then(function(response) {
-                                if (!response.data.error) {
-                                    return response.data.data;
-                                }
-                                return false;
-                            });
-                        }
-                        return false;
                     }
                 }
             });
@@ -4832,6 +4686,160 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
         }
 	}
 })();
+/*
+ *
+ */
+;(function(angular) {
+	'use strict';
+
+	angular.module('litewait.ui').controller('MyOrderCtrl', MyOrderCtrl);
+
+	MyOrderCtrl.$inject = ['$scope', 'User', 'OrderService', 'OrderStatus', 'MSG', '$stateParams', '$filter', 'authentication'];
+
+	function MyOrderCtrl($scope, User, OrderService, OrderStatus, MSG, $stateParams, $filter, authentication) {
+		var vm = this;
+		vm.data = {};
+		vm.orderStatus = orderStatus;
+		vm.data.merchant = User.data || {};
+		vm.data.orderParams = {
+			busy: false,
+			offset: 0,
+			limit: 10,
+			merchant_id: vm.data.merchant.id,
+			status: $stateParams.status
+		};
+		vm.data.orders = [];
+		vm.nextPage = nextPage;
+
+		function searchOrder() {
+			var param = getOrderParams();
+			OrderService.get(param).then(function(res) {
+				assignOrders(res);
+			});
+		}
+
+		function assignOrders(items) {
+			for (var i = 0; i < items.length; i++) {
+	            var index = _.findIndex(vm.data.orders, {id: items[i].id});
+	            if (-1 === index) {
+	            	var date = items[i].order_date;
+	            	var dateString = $filter('date')(date, 'dd/MM/yyyy hh:mm a');
+	            	items[i].order_date_string = dateString;
+	            	vm.data.orders.push(items[i]);
+	            }
+	        }
+	        vm.data.orderParams.offset = vm.data.orders.length;
+		}
+
+		function getOrderParams() {
+			return {
+				offset: vm.data.orderParams.offset,
+				limit: vm.data.orderParams.limit,
+				status: vm.data.orderParams.status
+			};
+		}
+
+		function initializeOrderList() {
+			vm.data.orderParams.offset = 0;
+			vm.data.orderParams.busy = false;
+			vm.data.orders.length = 0;
+			seachOrder();
+		}
+
+		function nextPage() {
+			if (!vm.data.orderParams.busy) {
+				vm.data.orderParams.busy = true;
+				searchOrder();
+			}
+		}
+
+		searchOrder();
+	}
+
+
+})(angular);
+/*
+ *
+ */
+;(function () {
+	'use strict';
+	angular.module('litewait.ui').controller('OrderSummaryCtrl', OrderSummaryCtrl);
+
+	OrderSummaryCtrl.$inject = ['$scope', 'orderdetails'];
+
+	function OrderSummaryCtrl($scope, orderdetails) {
+		var vm = this;
+		vm.data = {
+			order: orderdetails
+		};
+	}
+})();
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('order', {
+                abstract: true
+            })
+            .state('order.myorder', {
+            	url: "/myorder",
+                views: {
+                    "@": {
+                        templateUrl: "orders/myorder.html",
+                        controller: "MyOrderCtrl",
+                        controllerAs: "olc"
+                    }
+                },
+                params: { status: [1,2,3,4]},
+                resolve: {
+                    authentication: function (AuthService, $q, $timeout) {
+                        var deferred = $q.defer();
+                        
+                        var handler = $timeout(function() {
+                            var auth = AuthService.isAuthenticated();
+                            if (auth) {
+                                deferred.resolve(true);
+                            } else {
+                                deferred.reject(true);
+                            }
+                            $timeout.cancel(handler);
+                        }, 0);
+                        
+                        return deferred.promise;
+                    }
+                }
+            })
+            .state('order.summary', {
+                url: "/order-summary/:orderId",
+                views: {
+                    "@": {
+                        templateUrl: "order/order-summary.html",
+                        controller: "OrderSummaryCtrl",
+                        controllerAs: "osc"
+                    }
+                },
+                resolve: {
+                    orderdetails: function($stateParams, OrderService) {
+                        if ($stateParams.orderId) {
+                            return OrderService.getById($stateParams.orderId).then(function(response) {
+                                if (!response.data.error) {
+                                    return response.data.data;
+                                }
+                                return false;
+                            });
+                        }
+                        return false;
+                    }
+                }
+            });
+    }
+})(angular);
 /*
  *
  */
@@ -5672,21 +5680,19 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 		function formatMenu(data) {
 			var objArr = [];
-			for (var i = 0; i < data.category.length; i++) {
-				for (var j=0;j<data.category[i].menu_items.length;j++) {
-					var menu_item = data.category[i].menu_items[j];
-					var obj = {
-						item_id: menu_item.item_id,
-						item_name: menu_item.item_name,
-						description: menu_item.description,
-						price: menu_item.price,
-						merchant_id: data.merchant_id,
-						category_id: data.category[i].category_id,
-						category_name: data.category[i].category_name 
-					};
+			for (var i = 0; i < data.menu_items.length; i++) {
+				var menu_item = data.menu_items[i];
+				var obj = {
+					item_id: menu_item.item_id,
+					item_name: menu_item.item_name,
+					description: menu_item.description,
+					price: menu_item.price,
+					merchant_id: data.merchant_id,
+					category_id: menu_item.category_id,
+					category_name: menu_item.category_name || ''
+				};
 
-					objArr.push(obj);
-				}
+				objArr.push(obj);
 			}
 			return objArr;
 		}
