@@ -33,7 +33,10 @@
                     merchant: function($timeout, $q, Merchant, $stateParams) {
                         if ($stateParams.id) {
                             return Merchant.get($stateParams.id).then(function(response) {
-                                return response.data;
+                                if (!response.data.error) {
+                                    return response.data;
+                                }
+                                return false;
                             }).catch(function(error) {
                                 return false;
                             });

@@ -38,6 +38,7 @@
 	            }
 	        }
 	        vm.data.reviewParams.offset = vm.data.review.length;
+	        vm.data.reviewParams.busy = false;
 		}
 
 		function getReviewParams() {
@@ -61,7 +62,5 @@
 				searchReview();
 			}
 		}
-
-		searchReview();
    }
 })(angular);

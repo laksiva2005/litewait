@@ -27,19 +27,19 @@
 		service.add = add;
 
 		function addCategory(data) {
-			var params = {
+			var params = [{
 				category_name: data.category_name
-			};
+			}];
 			var url = apiBase + '/category?merchant_id=' + data.merchant_id;
 
 			return $http.post(url, params);
 		}
 
 		function updateCategory(data) {
-			var params = {
+			var params = [{
 				id: data.category_id,
 				category_name: data.category_name
-			};
+			}];
 			var url = apiBase + '/category?merchant_id='+data.merchant_id;
 
 			return $http.put(url, params);
@@ -97,13 +97,24 @@
 
 		function add(data) {
 			var url = apiBase + '/category/items';
-			return $http.post(url, data);
+			var params = {
+				merchant_id: data.merchant_id,
+				menu_items: []
+			};
+			delete data.merchant_id;
+			params.menu_items.push(data);
+			return $http.post(url, params);
 		}
 
 		function update(data) {
 			var url = apiBase + '/category/items';
-
-			return $http.put(url, data);
+			var params = {
+				merchant_id: data.merchant_id,
+				menu_items: []
+			};
+			delete data.merchant_id;
+			params.menu_items.push(data);
+			return $http.put(url, params);
 		}
 
 		function deleteMenu(data) {

@@ -36,6 +36,7 @@
 	            }
 	        }
 	        vm.data.menuParams.offset = vm.data.menu.length;
+	        vm.data.menuParams.busy = false;
 		}
 
 		function getMenuParams() {
@@ -97,7 +98,5 @@
                 });
 			});
 		}
-
-		searchMenu();
 	}
 })(angular);

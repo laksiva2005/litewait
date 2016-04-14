@@ -17,7 +17,7 @@
                     "@": {
                         templateUrl: "user/profile.html",
                         controller: "ProfileCtrl",
-                        controllerAs: "vm"
+                        controllerAs: "epc"
                     }
                 },
                 resolve: {

@@ -5,12 +5,17 @@
 	'use strict';
 	angular.module('litewait.ui').controller('ProfileCtrl', ProfileCtrl);
 
-	ProfileCtrl.$inject = ['$scope', 'User', '$state', 'toaster', 'AUTH_MSG', 'AUTH_PROPS', 'authentication'];
+	ProfileCtrl.$inject = ['$scope', 'User', '$state', 'toaster', 'AUTH_MSG', 'AUTH_PROPS', 'GeoService', 'authentication'];
 
-	function ProfileCtrl($scope, User, $state, toaster, AUTH_MSG, AUTH_PROPS, authentication) {
+	function ProfileCtrl($scope, User, $state, toaster, AUTH_MSG, AUTH_PROPS, GeoService, authentication) {
 		var vm = this;
 		vm.AUTH_PROPS = AUTH_PROPS;
 		vm.user = User;
+		vm.geo = {
+			country: {name: '', id: ''},
+			state: {name: '', id: ''},
+			city: {name: '', id: ''}
+		};
 		vm.profile = {
 			user_name: '',
 			contact: {
@@ -45,12 +50,99 @@
 			onOpenFocus: true
 		};
 
+		// functions exposed to view
 		vm.updateProfile = updateProfile;
 		vm.assignProfile = assignProfile;
 		vm.cancel = cancel;
 		vm.savePayment = savePayment;
 		vm.assignPayment = assignPayment;
 		vm.open1 = open1;
+		vm.getCountries = getCountries;
+		vm.getStates = getStates;
+		vm.getCities = getCities;
+		vm.onSelectCountry = onSelectCountry;
+		vm.onSelectState = onSelectState;
+		vm.onSelectCity = onSelectCity;
+
+		function onSelectCountry() {
+			vm.profile.contact.country = vm.geo.country.name;
+			vm.profile.contact.countryId = vm.geo.country.id;
+		}
+
+		function onSelectState() {
+			vm.profile.contact.state = vm.geo.state.name;
+			vm.profile.contact.stateId = vm.geo.state.id;
+		}
+
+		function onSelectCity() {
+			vm.profile.contact.city = vm.geo.city.name;
+			vm.profile.contact.cityId = vm.geo.city.id;
+		}
+
+		function getCountries(str) {
+			return GeoService.getCountries(str).then(function(res) {
+				var a = [];
+				if (!res.data.error && res.data.data !== null) {
+					for (var i=0;i<res.data.data.length;i++) {
+						a.push({
+							id: res.data.data[i].id,
+							name: res.data.data[i].name
+						});
+					}
+					return a;
+				}
+				return [];
+			});
+		}
+
+		function getStates(str) {
+			if (vm.profile.contact.countryId) {
+				var params = {
+					search: str,
+					country: vm.geo.country.name
+				};
+
+				return GeoService.getStates(params).then(function(res) {
+					var a = [];
+					if (!res.data.error && res.data.data !== null) {
+						for (var i=0;i<res.data.data.length;i++) {
+							a.push({
+								id: res.data.data[i].id,
+								name: res.data.data[i].name
+							});
+						}
+						return a;
+					}
+					return [];
+				});
+			}
+			return [];
+		}
+
+		function getCities(str) {
+			if (vm.profile.contact.stateId) {
+				var params = {
+					search: str,
+					country: vm.geo.country.name,
+					state: vm.geo.state.name
+				};
+
+				return GeoService.getCities(params).then(function(res) {
+					var a = [];
+					if (!res.data.error && res.data.data !== null) {
+						for (var i=0;i<res.data.data.length;i++) {
+							a.push({
+								id: res.data.data[i].city_name,
+								name: res.data.data[i].city_name
+							});
+						}
+						return a;
+					}
+					return [];
+				});
+			}
+			return [];
+		}
 
 		function open1() {
 			vm.pay.opened = true;
@@ -80,12 +172,15 @@
 		}
 
 		function assignProfile() {
-			vm.profile.user_name = vm.user.data.user_name;
+			vm.profile.user_name = vm.user.data.username || vm.user.data.user_name;
 			vm.profile.contact.address_1 = vm.user.data.contact.address_1;
 			vm.profile.contact.phone = vm.user.data.contact.phone;
-			vm.profile.contact.city = vm.user.data.contact.city;
-			vm.profile.contact.state = vm.user.data.contact.state;
-			vm.profile.contact.country = vm.user.data.contact.country;
+			vm.geo.city.name = vm.profile.contact.city = vm.user.data.contact.city;
+			vm.geo.city.id = vm.profile.contact.cityId = vm.user.data.contact.cityId || '';
+			vm.geo.state.name = vm.profile.contact.state = vm.user.data.contact.state;
+			vm.geo.state.id = vm.profile.contact.stateId = vm.user.data.contact.stateId || '';
+			vm.geo.country.name = vm.profile.contact.country = vm.user.data.contact.country;
+			vm.geo.country.id = vm.profile.contact.countryId = vm.user.data.contact.countryId || '';
 			vm.profile.contact.zip_code = vm.user.data.contact.zip_code;
 			vm.profile.contact.mail_id = vm.user.data.contact.mail_id;
 			vm.profile.user_type = User.role;

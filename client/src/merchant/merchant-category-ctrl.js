@@ -27,7 +27,7 @@
 				category_id: id
 			};
 			MenuService.deleteCategory(params).then(function(response){
-				if (!response.dta.error) {
+				if (!response.data.error) {
 					var index = _.findIndex(vm.data.category, {id: id});
 					
 					if (index !== -1) {
@@ -85,6 +85,7 @@
 	            }
 	        }
 	        vm.data.categoryParams.offset = vm.data.category.length;
+	        vm.data.categoryParams.busy = false;
 		}
 
 		function getCategoryParams() {
@@ -108,7 +109,5 @@
 				searchCategory();
 			}
 		}
-
-		searchCategory();
 	}
 })();

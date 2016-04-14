@@ -13,9 +13,9 @@
 			list: [],
 			busy: false,
 			offset: 0,
-			limit: 10,
+			limit: 20,
 			totalRecords: 0,
-			search: ''
+			keyword: ''
 		};
 		vm.initializeMerchant = initializeMerchant;
 		vm.nextPage = nextPage;
@@ -66,7 +66,33 @@
           for (var i = 0; i < items.length; i++) {
             var index = _.findIndex(vm.merchant.list, {id: items[i].id});
             if (-1 === index) {
-              vm.merchant.list.push(items[i]);
+            	var data = items[i];
+            	var addrArr = [];
+            	var addrArr1 = [];
+            	if (data.contact !== null) {
+            		if (data.contact.address_1) {
+            			addrArr.push(data.contact.address_1);
+            		}
+            		if (data.region) {
+            			addrArr.push(data.region);
+            		}
+            		if (data.contact.city) {
+            			addrArr.push(data.contact.city);
+            		}
+            		if (data.contact.state) {
+            			addrArr1.push(data.contact.state);
+            		}
+            		if (data.contact.zip_code) {
+            			addrArr1.push(data.contact.zip_code);
+            		}
+            		if (data.contact.country) {
+            			addrArr1.push(data.contact.country);
+            		}
+            	}
+
+            	data.addr_line_1 = addrArr.join(', ');
+            	data.addr_line_2 = addrArr1.join(', ');
+              	vm.merchant.list.push(data);
             }
           }
           vm.merchant.offset = vm.merchant.list.length;
@@ -76,7 +102,7 @@
           	return {
 				page_no: vm.merchant.offset,
 				page_size: vm.merchant.limit,
-				search: vm.merchant.search
+				search: vm.merchant.keyword
 			};
         }
 

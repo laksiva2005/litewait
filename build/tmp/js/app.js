@@ -2902,11 +2902,18 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	'use strict';
 	angular.module('litewait.ui').controller('MerchantCreateCtrl', MerchantCreateCtrl);
 
-	angular.$inject = ['$scope', 'Merchant', 'merchant', 'toaster'];
+	angular.$inject = ['$scope', 'Merchant', 'merchant', 'toaster', 'GeoService'];
 
-	function MerchantCreateCtrl($scope, Merchant, merchant, toaster) {
+	function MerchantCreateCtrl($scope, Merchant, merchant, toaster, GeoService) {
 		var vm = this;
 		vm.type = merchant ? 'Edit' : 'Add';
+		vm.data = {
+			geo: {
+				country: {name: '', id: ''},
+				state: {name: '', id: ''},
+				city: {name: '', id: ''}
+			}
+		};
 		vm.merchant = {
 			id: '',
 			password: '',
@@ -2920,6 +2927,9 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 				city: '',
 				state: '',
 				country: '',
+				cityId: '',
+				stateId: '',
+				countryId: '',
 				zip_code: '',
 				mail_id: ''
 			},
@@ -2938,6 +2948,92 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		vm.updateMerchant = updateMerchant;
 		vm.assignMerchant = assignMerchant;
 		vm.cancel = cancel;
+		vm.getCountries = getCountries;
+		vm.getStates = getStates;
+		vm.getCities = getCities;
+		vm.onSelectCountry = onSelectCountry;
+		vm.onSelectState = onSelectState;
+		vm.onSelectCity = onSelectCity;
+
+		function onSelectCountry() {
+			vm.merchant.contact_details.country = vm.data.geo.country.name;
+			vm.merchant.contact_details.countryId = vm.data.geo.country.id;
+		}
+
+		function onSelectState() {
+			vm.merchant.contact_details.state = vm.data.geo.state.name;
+			vm.merchant.contact_details.stateId = vm.data.geo.state.id;
+		}
+
+		function onSelectCity() {
+			vm.merchant.contact_details.city = vm.data.geo.city.name;
+			vm.merchant.contact_details.cityId = vm.data.geo.city.id;
+		}
+
+		function getCountries(str) {
+			return GeoService.getCountries(str).then(function(res) {
+				var a = [];
+				if (!res.data.error && res.data.data !== null) {
+					for (var i=0;i<res.data.data.length;i++) {
+						a.push({
+							id: res.data.data[i].id,
+							name: res.data.data[i].name
+						});
+					}
+					return a;
+				}
+				return [];
+			});
+		}
+
+		function getStates(str) {
+			if (vm.merchant.contact_details.countryId) {
+				var params = {
+					search: str,
+					country: vm.data.geo.country.name
+				};
+
+				return GeoService.getStates(params).then(function(res) {
+					var a = [];
+					if (!res.data.error && res.data.data !== null) {
+						for (var i=0;i<res.data.data.length;i++) {
+							a.push({
+								id: res.data.data[i].id,
+								name: res.data.data[i].name
+							});
+						}
+						return a;
+					}
+					return [];
+				});
+			}
+			return [];
+		}
+
+		function getCities(str) {
+			if (vm.merchant.contact_details.stateId) {
+				var params = {
+					search: str,
+					country: vm.data.geo.country.name,
+					state: vm.data.geo.state.name
+				};
+
+				return GeoService.getCities(params).then(function(res) {
+					var a = [];
+					if (!res.data.error && res.data.data !== null) {
+						for (var i=0;i<res.data.data.length;i++) {
+							a.push({
+								id: res.data.data[i].city_name,
+								name: res.data.data[i].city_name
+							});
+						}
+						return a;
+					}
+					return [];
+				});
+			}
+			return [];
+		}
 
 		function updateMerchant(valid) {
 			if (valid) {
@@ -2975,13 +3071,20 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 				vm.merchant.business_name = merchant.data.business_name;
 				vm.merchant.business_type = merchant.data.business_type;
 				vm.merchant.contact_person = merchant.data.contact_person;
-				vm.merchant.contact_details.address_1 = merchant.data.contact_details.address_1;
-				vm.merchant.contact_details.phone = merchant.data.contact_details.phone;
-				vm.merchant.contact_details.city = merchant.data.contact_details.city;
-				vm.merchant.contact_details.state = merchant.data.contact_details.state;
-				vm.merchant.contact_details.country = merchant.data.contact_details.country;
-				vm.merchant.contact_details.zip_code = merchant.data.contact_details.zip_code;
-				vm.merchant.contact_details.mail_id = merchant.data.contact_details.mail_id;
+								
+				if (merchant.data.contact !== null) {
+					vm.merchant.contact_details.address_1 = merchant.data.contact.address_1;
+					vm.merchant.contact_details.phone = merchant.data.contact.phone;
+					vm.data.geo.city.name = vm.merchant.contact_details.city = merchant.data.contact.city || '';
+					vm.data.geo.state.name = vm.merchant.contact_details.state = merchant.data.contact.state || '';
+					vm.data.geo.country.name = vm.merchant.contact_details.country = merchant.data.contact.country || '';
+					vm.data.geo.city.id = vm.merchant.contact_details.cityId = merchant.data.contact.cityId || '';
+					vm.data.geo.state.id = vm.merchant.contact_details.stateId = merchant.data.contact.stateId || '';
+					vm.data.geo.country.id = vm.merchant.contact_details.countryId = merchant.data.contact.countryId || '';
+					vm.merchant.contact_details.zip_code = merchant.data.contact.zip_code;
+					vm.merchant.contact_details.mail_id = merchant.data.contact.mail_id;
+				}
+
 				vm.merchant.region = merchant.data.region;
 				vm.merchant.region_id = merchant.data.region_id;
 				vm.merchant.city = merchant.data.city;
@@ -3018,9 +3121,9 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			list: [],
 			busy: false,
 			offset: 0,
-			limit: 10,
+			limit: 20,
 			totalRecords: 0,
-			search: ''
+			keyword: ''
 		};
 		vm.initializeMerchant = initializeMerchant;
 		vm.nextPage = nextPage;
@@ -3071,7 +3174,33 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
           for (var i = 0; i < items.length; i++) {
             var index = _.findIndex(vm.merchant.list, {id: items[i].id});
             if (-1 === index) {
-              vm.merchant.list.push(items[i]);
+            	var data = items[i];
+            	var addrArr = [];
+            	var addrArr1 = [];
+            	if (data.contact !== null) {
+            		if (data.contact.address_1) {
+            			addrArr.push(data.contact.address_1);
+            		}
+            		if (data.region) {
+            			addrArr.push(data.region);
+            		}
+            		if (data.contact.city) {
+            			addrArr.push(data.contact.city);
+            		}
+            		if (data.contact.state) {
+            			addrArr1.push(data.contact.state);
+            		}
+            		if (data.contact.zip_code) {
+            			addrArr1.push(data.contact.zip_code);
+            		}
+            		if (data.contact.country) {
+            			addrArr1.push(data.contact.country);
+            		}
+            	}
+
+            	data.addr_line_1 = addrArr.join(', ');
+            	data.addr_line_2 = addrArr1.join(', ');
+              	vm.merchant.list.push(data);
             }
           }
           vm.merchant.offset = vm.merchant.list.length;
@@ -3081,7 +3210,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
           	return {
 				page_no: vm.merchant.offset,
 				page_size: vm.merchant.limit,
-				search: vm.merchant.search
+				search: vm.merchant.keyword
 			};
         }
 
@@ -3138,7 +3267,10 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     merchant: function($timeout, $q, Merchant, $stateParams) {
                         if ($stateParams.id) {
                             return Merchant.get($stateParams.id).then(function(response) {
-                                return response.data;
+                                if (!response.data.error) {
+                                    return response.data;
+                                }
+                                return false;
                             }).catch(function(error) {
                                 return false;
                             });
@@ -3462,7 +3594,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 				category_id: id
 			};
 			MenuService.deleteCategory(params).then(function(response){
-				if (!response.dta.error) {
+				if (!response.data.error) {
 					var index = _.findIndex(vm.data.category, {id: id});
 					
 					if (index !== -1) {
@@ -3520,6 +3652,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	            }
 	        }
 	        vm.data.categoryParams.offset = vm.data.category.length;
+	        vm.data.categoryParams.busy = false;
 		}
 
 		function getCategoryParams() {
@@ -3543,8 +3676,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 				searchCategory();
 			}
 		}
-
-		searchCategory();
 	}
 })();
 /*
@@ -3690,6 +3821,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	            }
 	        }
 	        vm.data.menuParams.offset = vm.data.menu.length;
+	        vm.data.menuParams.busy = false;
 		}
 
 		function getMenuParams() {
@@ -3751,8 +3883,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                 });
 			});
 		}
-
-		searchMenu();
 	}
 })(angular);
 /*
@@ -3976,6 +4106,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	            }
 	        }
 	        vm.data.orderParams.offset = vm.data.orders.length;
+	        vm.data.orderParams.busy = false;
 		}
 
 		function getOrderParams() {
@@ -3999,8 +4130,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 				searchOrder();
 			}
 		}
-
-		searchOrder();
 	}
 })(angular);
 /*
@@ -4043,6 +4172,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	            }
 	        }
 	        vm.data.reviewParams.offset = vm.data.review.length;
+	        vm.data.reviewParams.busy = false;
 		}
 
 		function getReviewParams() {
@@ -4066,8 +4196,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 				searchReview();
 			}
 		}
-
-		searchReview();
    }
 })(angular);
 
@@ -4230,6 +4358,160 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
                             return false;
                         });
+                    }
+                }
+            });
+    }
+})(angular);
+/*
+ *
+ */
+;(function(angular) {
+	'use strict';
+
+	angular.module('litewait.ui').controller('MyOrderCtrl', MyOrderCtrl);
+
+	MyOrderCtrl.$inject = ['$scope', 'User', 'OrderService', 'OrderStatus', 'MSG', '$stateParams', '$filter', 'authentication'];
+
+	function MyOrderCtrl($scope, User, OrderService, OrderStatus, MSG, $stateParams, $filter, authentication) {
+		var vm = this;
+		vm.data = {};
+		vm.orderStatus = orderStatus;
+		vm.data.merchant = User.data || {};
+		vm.data.orderParams = {
+			busy: false,
+			offset: 0,
+			limit: 10,
+			merchant_id: vm.data.merchant.id,
+			status: $stateParams.status
+		};
+		vm.data.orders = [];
+		vm.nextPage = nextPage;
+
+		function searchOrder() {
+			var param = getOrderParams();
+			OrderService.get(param).then(function(res) {
+				assignOrders(res);
+			});
+		}
+
+		function assignOrders(items) {
+			for (var i = 0; i < items.length; i++) {
+	            var index = _.findIndex(vm.data.orders, {id: items[i].id});
+	            if (-1 === index) {
+	            	var date = items[i].order_date;
+	            	var dateString = $filter('date')(date, 'dd/MM/yyyy hh:mm a');
+	            	items[i].order_date_string = dateString;
+	            	vm.data.orders.push(items[i]);
+	            }
+	        }
+	        vm.data.orderParams.offset = vm.data.orders.length;
+		}
+
+		function getOrderParams() {
+			return {
+				offset: vm.data.orderParams.offset,
+				limit: vm.data.orderParams.limit,
+				status: vm.data.orderParams.status
+			};
+		}
+
+		function initializeOrderList() {
+			vm.data.orderParams.offset = 0;
+			vm.data.orderParams.busy = false;
+			vm.data.orders.length = 0;
+			seachOrder();
+		}
+
+		function nextPage() {
+			if (!vm.data.orderParams.busy) {
+				vm.data.orderParams.busy = true;
+				searchOrder();
+			}
+		}
+
+		searchOrder();
+	}
+
+
+})(angular);
+/*
+ *
+ */
+;(function () {
+	'use strict';
+	angular.module('litewait.ui').controller('OrderSummaryCtrl', OrderSummaryCtrl);
+
+	OrderSummaryCtrl.$inject = ['$scope', 'orderdetails'];
+
+	function OrderSummaryCtrl($scope, orderdetails) {
+		var vm = this;
+		vm.data = {
+			order: orderdetails
+		};
+	}
+})();
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('order', {
+                abstract: true
+            })
+            .state('order.myorder', {
+            	url: "/myorder",
+                views: {
+                    "@": {
+                        templateUrl: "orders/myorder.html",
+                        controller: "MyOrderCtrl",
+                        controllerAs: "olc"
+                    }
+                },
+                params: { status: [1,2,3,4]},
+                resolve: {
+                    authentication: function (AuthService, $q, $timeout) {
+                        var deferred = $q.defer();
+                        
+                        var handler = $timeout(function() {
+                            var auth = AuthService.isAuthenticated();
+                            if (auth) {
+                                deferred.resolve(true);
+                            } else {
+                                deferred.reject(true);
+                            }
+                            $timeout.cancel(handler);
+                        }, 0);
+                        
+                        return deferred.promise;
+                    }
+                }
+            })
+            .state('order.summary', {
+                url: "/order-summary/:orderId",
+                views: {
+                    "@": {
+                        templateUrl: "order/order-summary.html",
+                        controller: "OrderSummaryCtrl",
+                        controllerAs: "osc"
+                    }
+                },
+                resolve: {
+                    orderdetails: function($stateParams, OrderService) {
+                        if ($stateParams.orderId) {
+                            return OrderService.getById($stateParams.orderId).then(function(response) {
+                                if (!response.data.error) {
+                                    return response.data.data;
+                                }
+                                return false;
+                            });
+                        }
+                        return false;
                     }
                 }
             });
@@ -4550,160 +4832,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
         }
 	}
 })();
-/*
- *
- */
-;(function(angular) {
-	'use strict';
-
-	angular.module('litewait.ui').controller('MyOrderCtrl', MyOrderCtrl);
-
-	MyOrderCtrl.$inject = ['$scope', 'User', 'OrderService', 'OrderStatus', 'MSG', '$stateParams', '$filter', 'authentication'];
-
-	function MyOrderCtrl($scope, User, OrderService, OrderStatus, MSG, $stateParams, $filter, authentication) {
-		var vm = this;
-		vm.data = {};
-		vm.orderStatus = orderStatus;
-		vm.data.merchant = User.data || {};
-		vm.data.orderParams = {
-			busy: false,
-			offset: 0,
-			limit: 10,
-			merchant_id: vm.data.merchant.id,
-			status: $stateParams.status
-		};
-		vm.data.orders = [];
-		vm.nextPage = nextPage;
-
-		function searchOrder() {
-			var param = getOrderParams();
-			OrderService.get(param).then(function(res) {
-				assignOrders(res);
-			});
-		}
-
-		function assignOrders(items) {
-			for (var i = 0; i < items.length; i++) {
-	            var index = _.findIndex(vm.data.orders, {id: items[i].id});
-	            if (-1 === index) {
-	            	var date = items[i].order_date;
-	            	var dateString = $filter('date')(date, 'dd/MM/yyyy hh:mm a');
-	            	items[i].order_date_string = dateString;
-	            	vm.data.orders.push(items[i]);
-	            }
-	        }
-	        vm.data.orderParams.offset = vm.data.orders.length;
-		}
-
-		function getOrderParams() {
-			return {
-				offset: vm.data.orderParams.offset,
-				limit: vm.data.orderParams.limit,
-				status: vm.data.orderParams.status
-			};
-		}
-
-		function initializeOrderList() {
-			vm.data.orderParams.offset = 0;
-			vm.data.orderParams.busy = false;
-			vm.data.orders.length = 0;
-			seachOrder();
-		}
-
-		function nextPage() {
-			if (!vm.data.orderParams.busy) {
-				vm.data.orderParams.busy = true;
-				searchOrder();
-			}
-		}
-
-		searchOrder();
-	}
-
-
-})(angular);
-/*
- *
- */
-;(function () {
-	'use strict';
-	angular.module('litewait.ui').controller('OrderSummaryCtrl', OrderSummaryCtrl);
-
-	OrderSummaryCtrl.$inject = ['$scope', 'orderdetails'];
-
-	function OrderSummaryCtrl($scope, orderdetails) {
-		var vm = this;
-		vm.data = {
-			order: orderdetails
-		};
-	}
-})();
-
-;(function(angular) {
-    'use strict';
-
-    angular.module('litewait').config(config);
-
-    config.$inject = ['$stateProvider'];
-
-    function config($stateProvider) {
-        $stateProvider
-            .state('order', {
-                abstract: true
-            })
-            .state('order.myorder', {
-            	url: "/myorder",
-                views: {
-                    "@": {
-                        templateUrl: "orders/myorder.html",
-                        controller: "MyOrderCtrl",
-                        controllerAs: "olc"
-                    }
-                },
-                params: { status: [1,2,3,4]},
-                resolve: {
-                    authentication: function (AuthService, $q, $timeout) {
-                        var deferred = $q.defer();
-                        
-                        var handler = $timeout(function() {
-                            var auth = AuthService.isAuthenticated();
-                            if (auth) {
-                                deferred.resolve(true);
-                            } else {
-                                deferred.reject(true);
-                            }
-                            $timeout.cancel(handler);
-                        }, 0);
-                        
-                        return deferred.promise;
-                    }
-                }
-            })
-            .state('order.summary', {
-                url: "/order-summary/:orderId",
-                views: {
-                    "@": {
-                        templateUrl: "order/order-summary.html",
-                        controller: "OrderSummaryCtrl",
-                        controllerAs: "osc"
-                    }
-                },
-                resolve: {
-                    orderdetails: function($stateParams, OrderService) {
-                        if ($stateParams.orderId) {
-                            return OrderService.getById($stateParams.orderId).then(function(response) {
-                                if (!response.data.error) {
-                                    return response.data.data;
-                                }
-                                return false;
-                            });
-                        }
-                        return false;
-                    }
-                }
-            });
-    }
-})(angular);
 /*
  *
  */
@@ -5323,6 +5451,54 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 */
 ;(function() {
 	'use strict';
+	angular.module('litewait.services').factory('GeoService', GeoService);
+
+	GeoService.$inject = ['$http', 'RouteConfig'];
+
+	function GeoService($http, RouteConfig) {
+		var apiBase = RouteConfig.apiBase;
+		var service = {};
+		service.getCountries = getCountries;
+		service.getStates = getStates;
+		service.getCities = getCities;
+
+		function getCountries(str) {
+			var params = {
+				params: {
+					search: str
+				}
+			};
+
+			var url = apiBase + '/countries';
+			return $http.get(url, params);
+		}
+
+		function getStates(data) {
+			var params = {
+				params: data
+			};
+
+			var url = apiBase + '/states';
+			return $http.get(url, params);
+		}
+
+		function getCities(data) {
+			var params = {
+				params: data
+			};
+
+			var url = apiBase + '/cities';
+			return $http.get(url, params);
+		}
+
+		return service;
+	}
+})();
+/*
+*
+*/
+;(function() {
+	'use strict';
 	angular.module('litewait.services').factory('Location', Location);
 	
 	Location.$inject = [];
@@ -5366,19 +5542,19 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		service.add = add;
 
 		function addCategory(data) {
-			var params = {
+			var params = [{
 				category_name: data.category_name
-			};
+			}];
 			var url = apiBase + '/category?merchant_id=' + data.merchant_id;
 
 			return $http.post(url, params);
 		}
 
 		function updateCategory(data) {
-			var params = {
+			var params = [{
 				id: data.category_id,
 				category_name: data.category_name
-			};
+			}];
 			var url = apiBase + '/category?merchant_id='+data.merchant_id;
 
 			return $http.put(url, params);
@@ -5436,13 +5612,24 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 		function add(data) {
 			var url = apiBase + '/category/items';
-			return $http.post(url, data);
+			var params = {
+				merchant_id: data.merchant_id,
+				menu_items: []
+			};
+			delete data.merchant_id;
+			params.menu_items.push(data);
+			return $http.post(url, params);
 		}
 
 		function update(data) {
 			var url = apiBase + '/category/items';
-
-			return $http.put(url, data);
+			var params = {
+				merchant_id: data.merchant_id,
+				menu_items: []
+			};
+			delete data.merchant_id;
+			params.menu_items.push(data);
+			return $http.put(url, params);
 		}
 
 		function deleteMenu(data) {
@@ -6098,12 +6285,17 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	'use strict';
 	angular.module('litewait.ui').controller('ProfileCtrl', ProfileCtrl);
 
-	ProfileCtrl.$inject = ['$scope', 'User', '$state', 'toaster', 'AUTH_MSG', 'AUTH_PROPS', 'authentication'];
+	ProfileCtrl.$inject = ['$scope', 'User', '$state', 'toaster', 'AUTH_MSG', 'AUTH_PROPS', 'GeoService', 'authentication'];
 
-	function ProfileCtrl($scope, User, $state, toaster, AUTH_MSG, AUTH_PROPS, authentication) {
+	function ProfileCtrl($scope, User, $state, toaster, AUTH_MSG, AUTH_PROPS, GeoService, authentication) {
 		var vm = this;
 		vm.AUTH_PROPS = AUTH_PROPS;
 		vm.user = User;
+		vm.geo = {
+			country: {name: '', id: ''},
+			state: {name: '', id: ''},
+			city: {name: '', id: ''}
+		};
 		vm.profile = {
 			user_name: '',
 			contact: {
@@ -6138,12 +6330,99 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			onOpenFocus: true
 		};
 
+		// functions exposed to view
 		vm.updateProfile = updateProfile;
 		vm.assignProfile = assignProfile;
 		vm.cancel = cancel;
 		vm.savePayment = savePayment;
 		vm.assignPayment = assignPayment;
 		vm.open1 = open1;
+		vm.getCountries = getCountries;
+		vm.getStates = getStates;
+		vm.getCities = getCities;
+		vm.onSelectCountry = onSelectCountry;
+		vm.onSelectState = onSelectState;
+		vm.onSelectCity = onSelectCity;
+
+		function onSelectCountry() {
+			vm.profile.contact.country = vm.geo.country.name;
+			vm.profile.contact.countryId = vm.geo.country.id;
+		}
+
+		function onSelectState() {
+			vm.profile.contact.state = vm.geo.state.name;
+			vm.profile.contact.stateId = vm.geo.state.id;
+		}
+
+		function onSelectCity() {
+			vm.profile.contact.city = vm.geo.city.name;
+			vm.profile.contact.cityId = vm.geo.city.id;
+		}
+
+		function getCountries(str) {
+			return GeoService.getCountries(str).then(function(res) {
+				var a = [];
+				if (!res.data.error && res.data.data !== null) {
+					for (var i=0;i<res.data.data.length;i++) {
+						a.push({
+							id: res.data.data[i].id,
+							name: res.data.data[i].name
+						});
+					}
+					return a;
+				}
+				return [];
+			});
+		}
+
+		function getStates(str) {
+			if (vm.profile.contact.countryId) {
+				var params = {
+					search: str,
+					country: vm.geo.country.name
+				};
+
+				return GeoService.getStates(params).then(function(res) {
+					var a = [];
+					if (!res.data.error && res.data.data !== null) {
+						for (var i=0;i<res.data.data.length;i++) {
+							a.push({
+								id: res.data.data[i].id,
+								name: res.data.data[i].name
+							});
+						}
+						return a;
+					}
+					return [];
+				});
+			}
+			return [];
+		}
+
+		function getCities(str) {
+			if (vm.profile.contact.stateId) {
+				var params = {
+					search: str,
+					country: vm.geo.country.name,
+					state: vm.geo.state.name
+				};
+
+				return GeoService.getCities(params).then(function(res) {
+					var a = [];
+					if (!res.data.error && res.data.data !== null) {
+						for (var i=0;i<res.data.data.length;i++) {
+							a.push({
+								id: res.data.data[i].city_name,
+								name: res.data.data[i].city_name
+							});
+						}
+						return a;
+					}
+					return [];
+				});
+			}
+			return [];
+		}
 
 		function open1() {
 			vm.pay.opened = true;
@@ -6173,12 +6452,15 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		}
 
 		function assignProfile() {
-			vm.profile.user_name = vm.user.data.user_name;
+			vm.profile.user_name = vm.user.data.username || vm.user.data.user_name;
 			vm.profile.contact.address_1 = vm.user.data.contact.address_1;
 			vm.profile.contact.phone = vm.user.data.contact.phone;
-			vm.profile.contact.city = vm.user.data.contact.city;
-			vm.profile.contact.state = vm.user.data.contact.state;
-			vm.profile.contact.country = vm.user.data.contact.country;
+			vm.geo.city.name = vm.profile.contact.city = vm.user.data.contact.city;
+			vm.geo.city.id = vm.profile.contact.cityId = vm.user.data.contact.cityId || '';
+			vm.geo.state.name = vm.profile.contact.state = vm.user.data.contact.state;
+			vm.geo.state.id = vm.profile.contact.stateId = vm.user.data.contact.stateId || '';
+			vm.geo.country.name = vm.profile.contact.country = vm.user.data.contact.country;
+			vm.geo.country.id = vm.profile.contact.countryId = vm.user.data.contact.countryId || '';
 			vm.profile.contact.zip_code = vm.user.data.contact.zip_code;
 			vm.profile.contact.mail_id = vm.user.data.contact.mail_id;
 			vm.profile.user_type = User.role;
@@ -6261,7 +6543,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     "@": {
                         templateUrl: "user/profile.html",
                         controller: "ProfileCtrl",
-                        controllerAs: "vm"
+                        controllerAs: "epc"
                     }
                 },
                 resolve: {

@@ -73,6 +73,7 @@
 	            }
 	        }
 	        vm.data.orderParams.offset = vm.data.orders.length;
+	        vm.data.orderParams.busy = false;
 		}
 
 		function getOrderParams() {
@@ -96,7 +97,5 @@
 				searchOrder();
 			}
 		}
-
-		searchOrder();
 	}
 })(angular);
