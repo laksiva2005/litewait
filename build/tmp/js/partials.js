@@ -608,49 +608,6 @@ try {
   module = angular.module('litewait.ui', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('navigation/navbar.html',
-    '');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('navigation/search-box.html',
-    '<div class="container search">\n' +
-    '  <h1>SEARCH FOR YOUR FAVORITE RETAILER</h1>\n' +
-    '  <div class="row">\n' +
-    '    <div class="col-md-5 less-padding">\n' +
-    '      <input ng-model="sbc.searchCriteria.location" type="text" placeholder="Location" uib-typeahead="address as address.city_region_name for address in sbc.getLocation($viewValue)" typeahead-loading="loadingLocations" typeahead-no-results="noLocations" class="form-control" typeahead-on-select="sbc.onSelectRegion($item, $modal, $label, $event)"/>\n' +
-    '      <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>\n' +
-    '      <div ng-show="noLocations">\n' +
-    '        <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
-    '      </div>\n' +
-    '    </div>\n' +
-    '    <div class="col-md-5 less-padding">\n' +
-    '      <input type="text" class="form-control" ng-disabled="!sbc.isLocation" ng-model="sbc.searchCriteria.keyword" placeholder="Keyword" uib-typeahead="keyword as keyword.category for keyword in sbc.getKeywords($viewValue)" typeahead-loading="loadingKeywords" typeahead-no-results="noKeywords" class="form-control" typeahead-on-select="sbc.onSelectKeyword($item, $modal, $label, $event)"/>\n' +
-    '      <i ng-show="loadingKeywords" class="glyphicon glyphicon-refresh"></i>\n' +
-    '      <div ng-show="noKeywords">\n' +
-    '        <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
-    '      </div>\n' +
-    '    </div>\n' +
-    '    <div class="col-md-2 less-padding"><a ng-disabled="!sbc.isLocation" class="btn btn-block" ng-click="sbc.searchFn($event)"><i class="fa fa-search"></i> Search</a></div>\n' +
-    '  </div>\n' +
-    '</div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
   $templateCache.put('merchant/merchant-category-new.html',
     '<div class="container edit-category">\n' +
     '	<div>\n' +
@@ -988,6 +945,49 @@ module.run(['$templateCache', function($templateCache) {
     '         </tr>\n' +
     '      </tbody>\n' +
     '   </table>\n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('navigation/navbar.html',
+    '');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('navigation/search-box.html',
+    '<div class="container search">\n' +
+    '  <h1>SEARCH FOR YOUR FAVORITE RETAILER</h1>\n' +
+    '  <div class="row">\n' +
+    '    <div class="col-md-5 less-padding">\n' +
+    '      <input ng-model="sbc.searchCriteria.location" type="text" placeholder="Location" uib-typeahead="address as address.city_region_name for address in sbc.getLocation($viewValue)" typeahead-loading="loadingLocations" typeahead-no-results="noLocations" class="form-control" typeahead-on-select="sbc.onSelectRegion($item, $modal, $label, $event)"/>\n' +
+    '      <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>\n' +
+    '      <div ng-show="noLocations">\n' +
+    '        <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
+    '      </div>\n' +
+    '    </div>\n' +
+    '    <div class="col-md-5 less-padding">\n' +
+    '      <input type="text" class="form-control" ng-disabled="!sbc.isLocation" ng-model="sbc.searchCriteria.keyword" placeholder="Keyword" uib-typeahead="keyword as keyword.category for keyword in sbc.getKeywords($viewValue)" typeahead-loading="loadingKeywords" typeahead-no-results="noKeywords" class="form-control" typeahead-on-select="sbc.onSelectKeyword($item, $modal, $label, $event)"/>\n' +
+    '      <i ng-show="loadingKeywords" class="glyphicon glyphicon-refresh"></i>\n' +
+    '      <div ng-show="noKeywords">\n' +
+    '        <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
+    '      </div>\n' +
+    '    </div>\n' +
+    '    <div class="col-md-2 less-padding"><a ng-disabled="!sbc.isLocation" class="btn btn-block" ng-click="sbc.searchFn($event)"><i class="fa fa-search"></i> Search</a></div>\n' +
+    '  </div>\n' +
     '</div>');
 }]);
 })();
