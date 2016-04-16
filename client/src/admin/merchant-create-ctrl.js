@@ -24,7 +24,7 @@
 			business_type: '',
 			contact_person: '',
 			username: '',
-			contact_details: {
+			contact: {
 				address_1: '',
 				phone: '',
 				city: '',
@@ -59,18 +59,18 @@
 		vm.onSelectCity = onSelectCity;
 
 		function onSelectCountry() {
-			vm.merchant.contact_details.country = vm.data.geo.country.name;
-			vm.merchant.contact_details.countryId = vm.data.geo.country.id;
+			vm.merchant.contact.country = vm.data.geo.country.name;
+			vm.merchant.contact.countryId = vm.data.geo.country.id;
 		}
 
 		function onSelectState() {
-			vm.merchant.contact_details.state = vm.data.geo.state.name;
-			vm.merchant.contact_details.stateId = vm.data.geo.state.id;
+			vm.merchant.contact.state = vm.data.geo.state.name;
+			vm.merchant.contact.stateId = vm.data.geo.state.id;
 		}
 
 		function onSelectCity() {
-			vm.merchant.contact_details.city = vm.data.geo.city.name;
-			vm.merchant.contact_details.cityId = vm.data.geo.city.id;
+			vm.merchant.contact.city = vm.data.geo.city.name;
+			vm.merchant.contact.cityId = vm.data.geo.city.id;
 		}
 
 		function getCountries(str) {
@@ -90,7 +90,7 @@
 		}
 
 		function getStates(str) {
-			if (vm.merchant.contact_details.countryId) {
+			if (vm.merchant.contact.country) {
 				var params = {
 					search: str,
 					country: vm.data.geo.country.name
@@ -114,7 +114,7 @@
 		}
 
 		function getCities(str) {
-			if (vm.merchant.contact_details.stateId) {
+			if (vm.merchant.contact.state) {
 				var params = {
 					search: str,
 					country: vm.data.geo.country.name,
@@ -138,15 +138,17 @@
 			return [];
 		}
 
-		function updateMerchant(valid) {
+		function updateMerchant(valid, data) {
 			if (valid) {
+				var params = angular.copy(data);
 				var action;
 				if (vm.merchant.id) {
 					action = Merchant.update;
 				} else {
 					action = Merchant.add;
+					delete params.id;
 				}
-				action(vm.merchant).then(function(response) {
+				action(params).then(function(response) {
 					if (!(response.error)) {
 						toaster.pop({
                             type: 'success', 
@@ -176,16 +178,16 @@
 				vm.merchant.contact_person = merchant.data.contact_person;
 								
 				if (merchant.data.contact !== null) {
-					vm.merchant.contact_details.address_1 = merchant.data.contact.address_1;
-					vm.merchant.contact_details.phone = merchant.data.contact.phone;
-					vm.data.geo.city.name = vm.merchant.contact_details.city = merchant.data.contact.city || '';
-					vm.data.geo.state.name = vm.merchant.contact_details.state = merchant.data.contact.state || '';
-					vm.data.geo.country.name = vm.merchant.contact_details.country = merchant.data.contact.country || '';
-					vm.data.geo.city.id = vm.merchant.contact_details.cityId = merchant.data.contact.cityId || '';
-					vm.data.geo.state.id = vm.merchant.contact_details.stateId = merchant.data.contact.stateId || '';
-					vm.data.geo.country.id = vm.merchant.contact_details.countryId = merchant.data.contact.countryId || '';
-					vm.merchant.contact_details.zip_code = merchant.data.contact.zip_code;
-					vm.merchant.contact_details.mail_id = merchant.data.contact.mail_id;
+					vm.merchant.contact.address_1 = merchant.data.contact.address_1;
+					vm.merchant.contact.phone = merchant.data.contact.phone;
+					vm.data.geo.city.name = vm.merchant.contact.city = merchant.data.contact.city || '';
+					vm.data.geo.state.name = vm.merchant.contact.state = merchant.data.contact.state || '';
+					vm.data.geo.country.name = vm.merchant.contact.country = merchant.data.contact.country || '';
+					vm.data.geo.city.id = vm.merchant.contact.cityId = merchant.data.contact.cityId || '';
+					vm.data.geo.state.id = vm.merchant.contact.stateId = merchant.data.contact.stateId || '';
+					vm.data.geo.country.id = vm.merchant.contact.countryId = merchant.data.contact.countryId || '';
+					vm.merchant.contact.zip_code = merchant.data.contact.zip_code;
+					vm.merchant.contact.mail_id = merchant.data.contact.mail_id;
 				}
 
 				vm.merchant.region = merchant.data.region;

@@ -16,7 +16,8 @@ SAVE MONEY!!</p>
     <div class="col-md-12">
       <div class="list-wrap" infinite-scroll="sc.nextPage()"
       infinite-scroll-distance="0"
-      infinite-scroll-immediate-check="false">
+      infinite-scroll-immediate-check="false"
+      infinite-scroll-use-document-bottom="true">
         <div class="list-item" ng-repeat="(key, value) in sc.merchant.list">
           <div class="col-xs-12 col-sm-8 col-md-8" >
             <h2><a href="shop-detail-menu.html">{{value.business_name}}</a></h2>

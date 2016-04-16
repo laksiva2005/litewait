@@ -11,12 +11,11 @@ module.run(['$templateCache', function($templateCache) {
     '      <div id="edit-merchant" >\n' +
     '         <h1>{{mcr.type}} merchant</h1>      \n' +
     '         <div class="col-md-12 form-wrap">\n' +
-    '            <form novalidate name="mcr.merchantForm" ng-submit="mcr.updateMerchant(mcr.merchantForm.$valid)" role="form">\n' +
+    '            <form novalidate name="mcr.merchantForm" ng-submit="mcr.updateMerchant(mcr.merchantForm.$valid, mcr.merchant)" role="form">\n' +
     '               <div class="col-md-6">\n' +
     '                  <div class="form-group">\n' +
-    '                     <input required type="hidden" name="id" ng-model="mcr.merchant.id">\n' +
     '                     <label for="username">Username</label>\n' +
-    '                     <input type="text" name="username" maxlength="50" ng-model="mcr.merchant.username" class="form-control"  placeholder="Enter username">\n' +
+    '                     <input required type="text" name="username" maxlength="50" ng-model="mcr.merchant.username" class="form-control"  placeholder="Enter username">\n' +
     '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.username.$invalid" ng-messages="mcr.merchantForm.username.$error" class="alert alert-danger">\n' +
     '                        <div ng-message="maxlength">Please enter a valid Username</div>\n' +
     '                        <div ng-message="required">Please enter username</div>\n' +
@@ -55,7 +54,7 @@ module.run(['$templateCache', function($templateCache) {
     '                  </div>\n' +
     '                  <div class="form-group">\n' +
     '                     <label for="mail_id">Email</label>\n' +
-    '                     <input required type="email" name="mail_id" ng-model="mcr.merchant.contact_details.mail_id" class="form-control" placeholder="Enter email">\n' +
+    '                     <input required type="email" name="mail_id" ng-model="mcr.merchant.contact.mail_id" class="form-control" placeholder="Enter email">\n' +
     '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.mail_id.$invalid" ng-messages="mcr.merchantForm.mail_id.$error" class="alert alert-danger">\n' +
     '                        <div ng-message="email">Please enter a valid Email Id</div>\n' +
     '                        <div ng-message="required">Please enter email</div>\n' +
@@ -63,7 +62,7 @@ module.run(['$templateCache', function($templateCache) {
     '                  </div>\n' +
     '                  <div class="form-group">\n' +
     '                     <label for="phone">Phone</label>\n' +
-    '                     <input required type="text" name="phone" ng-model="mcr.merchant.contact_details.phone" class="form-control" placeholder="Enter phone">\n' +
+    '                     <input required type="text" name="phone" ng-model="mcr.merchant.contact.phone" class="form-control" placeholder="Enter phone">\n' +
     '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.phone.$invalid" ng-messages="mcr.merchantForm.phone.$error" class="alert alert-danger">\n' +
     '                        <div ng-message="required">Please enter phone</div>\n' +
     '                      </div>\n' +
@@ -111,7 +110,7 @@ module.run(['$templateCache', function($templateCache) {
     '                  </div>\n' +
     '                  <div class="form-group">\n' +
     '                     <label for="address_1">Address 1</label>\n' +
-    '                     <textarea required name="address_1" ng-model="mcr.merchant.contact_details.address_1" class="form-control"  placeholder="Address"></textarea>\n' +
+    '                     <textarea required name="address_1" ng-model="mcr.merchant.contact.address_1" class="form-control"  placeholder="Address"></textarea>\n' +
     '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.address_1.$invalid" ng-messages="mcr.merchantForm.address_1.$error" class="alert alert-danger">\n' +
     '                        <div ng-message="maxlength">Address should contain maximum 50 characters</div>\n' +
     '                        <div ng-message="required">Address field is required</div>\n' +
@@ -149,15 +148,15 @@ module.run(['$templateCache', function($templateCache) {
     '                     <div ng-show="noCity">\n' +
     '                       <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
     '                     </div>\n' +
-    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.contact_details.city.$invalid" ng-messages="mcr.merchantForm.contact_details.city.$error" class="alert alert-danger">\n' +
+    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.contact.city.$invalid" ng-messages="mcr.merchantForm.contact.city.$error" class="alert alert-danger">\n' +
     '                        <div ng-message="maxlength">City should contain maximum 50 characters</div>\n' +
     '                        <div ng-message="maxlength">City is required</div>\n' +
     '                     </div>\n' +
     '                  </div>\n' +
     '                  <div class="form-group">\n' +
     '                     <label for="zip_code">Zip code</label>\n' +
-    '                     <input required type="text" name="zip_code" ng-model="mcr.merchant.contact_details.zip_code" class="form-control" placeholder="Enter zipcode">\n' +
-    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.contact_details.zip_code.$invalid" ng-messages="mcr.merchantForm.contact_details.zip_code.$error" class="alert alert-danger">\n' +
+    '                     <input required type="text" name="zip_code" ng-model="mcr.merchant.contact.zip_code" class="form-control" placeholder="Enter zipcode">\n' +
+    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.contact.zip_code.$invalid" ng-messages="mcr.merchantForm.contact.zip_code.$error" class="alert alert-danger">\n' +
     '                        <div ng-message="maxlength">Zip code should contain maximum 50 characters</div>\n' +
     '                        <div ng-message="maxlength">Zip code is required</div>\n' +
     '                     </div>\n' +
@@ -213,7 +212,8 @@ module.run(['$templateCache', function($templateCache) {
     '	</div>\n' +
     '	<div infinite-scroll="ml.nextPage()"\n' +
     '      infinite-scroll-distance="0"\n' +
-    '      infinite-scroll-immediate-check="false">\n' +
+    '      infinite-scroll-immediate-check="false"\n' +
+    '      infinite-scroll-use-document-bottom="true">\n' +
     '		<div class="col-md-12 merchant-list" ng-repeat="(key, value) in ml.merchant.list">\n' +
     '	        <div class="col-sm-3 col-md-2"><img class="img-responsive" src="{{value.photo}}"></div>\n' +
     '	        <div class="col-sm-9 col-md-8">\n' +
@@ -608,6 +608,49 @@ try {
   module = angular.module('litewait.ui', []);
 }
 module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('navigation/navbar.html',
+    '');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('navigation/search-box.html',
+    '<div class="container search">\n' +
+    '  <h1>SEARCH FOR YOUR FAVORITE RETAILER</h1>\n' +
+    '  <div class="row">\n' +
+    '    <div class="col-md-5 less-padding">\n' +
+    '      <input ng-model="sbc.searchCriteria.location" type="text" placeholder="Location" uib-typeahead="address as address.city_region_name for address in sbc.getLocation($viewValue)" typeahead-loading="loadingLocations" typeahead-no-results="noLocations" class="form-control" typeahead-on-select="sbc.onSelectRegion($item, $modal, $label, $event)"/>\n' +
+    '      <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>\n' +
+    '      <div ng-show="noLocations">\n' +
+    '        <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
+    '      </div>\n' +
+    '    </div>\n' +
+    '    <div class="col-md-5 less-padding">\n' +
+    '      <input type="text" class="form-control" ng-disabled="!sbc.isLocation" ng-model="sbc.searchCriteria.keyword" placeholder="Keyword" uib-typeahead="keyword as keyword.category for keyword in sbc.getKeywords($viewValue)" typeahead-loading="loadingKeywords" typeahead-no-results="noKeywords" class="form-control" typeahead-on-select="sbc.onSelectKeyword($item, $modal, $label, $event)"/>\n' +
+    '      <i ng-show="loadingKeywords" class="glyphicon glyphicon-refresh"></i>\n' +
+    '      <div ng-show="noKeywords">\n' +
+    '        <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
+    '      </div>\n' +
+    '    </div>\n' +
+    '    <div class="col-md-2 less-padding"><a ng-disabled="!sbc.isLocation" class="btn btn-block" ng-click="sbc.searchFn($event)"><i class="fa fa-search"></i> Search</a></div>\n' +
+    '  </div>\n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
   $templateCache.put('merchant/merchant-category-new.html',
     '<div class="container edit-category">\n' +
     '	<div>\n' +
@@ -645,7 +688,8 @@ module.run(['$templateCache', function($templateCache) {
   $templateCache.put('merchant/merchant-category.html',
     '<div id="mer-category" infinite-scroll="mcc.nextPage()"\n' +
     '      infinite-scroll-distance="0"\n' +
-    '      infinite-scroll-immediate-check="false">\n' +
+    '      infinite-scroll-immediate-check="false"\n' +
+    '      infinite-scroll-use-document-bottom="true">\n' +
     '      <a href="#/merchant/category/add" class="add-btn-1"><i class="fa fa-plus"></i>Add</a>\n' +
     '      <a href="#/merchant/category/add" class="add-btn-2"><i class="fa fa-plus"></i>Add</a>\n' +
     '   <table class="table">\n' +
@@ -797,7 +841,8 @@ module.run(['$templateCache', function($templateCache) {
   $templateCache.put('merchant/merchant-menu.html',
     '<div id="mer-info" infinite-scroll="mmc.nextPage()"\n' +
     '      infinite-scroll-distance="0"\n' +
-    '      infinite-scroll-immediate-check="false">\n' +
+    '      infinite-scroll-immediate-check="false"\n' +
+    '      infinite-scroll-use-document-bottom="true">\n' +
     '	<a href="#/merchant/menu/add" class="add-btn-1"><i class="fa fa-plus"></i>Add</a>\n' +
     '   <a href="#/merchant/menu/add" class="add-btn-2"><i class="fa fa-plus"></i>Add</a>\n' +
     '   <table class="table">\n' +
@@ -843,7 +888,8 @@ module.run(['$templateCache', function($templateCache) {
   $templateCache.put('merchant/merchant-order-in-progress.html',
     '<div id="mer-in-progress" infinite-scroll="moc.nextPage()"\n' +
     '      infinite-scroll-distance="0"\n' +
-    '      infinite-scroll-immediate-check="false">\n' +
+    '      infinite-scroll-immediate-check="false"\n' +
+    '      infinite-scroll-use-document-bottom="true">\n' +
     '   <table class="table">\n' +
     '      <thead>\n' +
     '         <tr>\n' +
@@ -883,7 +929,8 @@ module.run(['$templateCache', function($templateCache) {
   $templateCache.put('merchant/merchant-past-order.html',
     '<div id="mer-in-progress" infinite-scroll="mpoc.nextPage()"\n' +
     '      infinite-scroll-distance="0"\n' +
-    '      infinite-scroll-immediate-check="false">\n' +
+    '      infinite-scroll-immediate-check="false"\n' +
+    '      infinite-scroll-use-document-bottom="true">\n' +
     '   <table class="table">\n' +
     '      <thead>\n' +
     '         <tr>\n' +
@@ -921,7 +968,8 @@ module.run(['$templateCache', function($templateCache) {
   $templateCache.put('merchant/merchant-review.html',
     '<div id="mer-review" infinite-scroll="mrc.nextPage()"\n' +
     '      infinite-scroll-distance="0"\n' +
-    '      infinite-scroll-immediate-check="false">\n' +
+    '      infinite-scroll-immediate-check="false"\n' +
+    '      infinite-scroll-use-document-bottom="true">\n' +
     '   <table class="table">\n' +
     '      <thead>\n' +
     '         <tr>\n' +
@@ -940,49 +988,6 @@ module.run(['$templateCache', function($templateCache) {
     '         </tr>\n' +
     '      </tbody>\n' +
     '   </table>\n' +
-    '</div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('navigation/navbar.html',
-    '');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('navigation/search-box.html',
-    '<div class="container search">\n' +
-    '  <h1>SEARCH FOR YOUR FAVORITE RETAILER</h1>\n' +
-    '  <div class="row">\n' +
-    '    <div class="col-md-5 less-padding">\n' +
-    '      <input ng-model="sbc.searchCriteria.location" type="text" placeholder="Location" uib-typeahead="address as address.city_region_name for address in sbc.getLocation($viewValue)" typeahead-loading="loadingLocations" typeahead-no-results="noLocations" class="form-control" typeahead-on-select="sbc.onSelectRegion($item, $modal, $label, $event)"/>\n' +
-    '      <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>\n' +
-    '      <div ng-show="noLocations">\n' +
-    '        <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
-    '      </div>\n' +
-    '    </div>\n' +
-    '    <div class="col-md-5 less-padding">\n' +
-    '      <input type="text" class="form-control" ng-disabled="!sbc.isLocation" ng-model="sbc.searchCriteria.keyword" placeholder="Keyword" uib-typeahead="keyword as keyword.category for keyword in sbc.getKeywords($viewValue)" typeahead-loading="loadingKeywords" typeahead-no-results="noKeywords" class="form-control" typeahead-on-select="sbc.onSelectKeyword($item, $modal, $label, $event)"/>\n' +
-    '      <i ng-show="loadingKeywords" class="glyphicon glyphicon-refresh"></i>\n' +
-    '      <div ng-show="noKeywords">\n' +
-    '        <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
-    '      </div>\n' +
-    '    </div>\n' +
-    '    <div class="col-md-2 less-padding"><a ng-disabled="!sbc.isLocation" class="btn btn-block" ng-click="sbc.searchFn($event)"><i class="fa fa-search"></i> Search</a></div>\n' +
-    '  </div>\n' +
     '</div>');
 }]);
 })();
@@ -1032,7 +1037,8 @@ module.run(['$templateCache', function($templateCache) {
     '         </div>\n' +
     '         <div class="col-md-9 order-status" infinite-scroll="mlc.nextPage()"\n' +
     '      infinite-scroll-distance="0"\n' +
-    '      infinite-scroll-immediate-check="false">\n' +
+    '      infinite-scroll-immediate-check="false"\n' +
+    '      infinite-scroll-use-document-bottom="true">\n' +
     '            <div class="table-responsive">\n' +
     '               <table class="table">\n' +
     '                  <thead>\n' +
@@ -1189,7 +1195,8 @@ module.run(['$templateCache', function($templateCache) {
     '    <div class="col-md-12">\n' +
     '      <div class="list-wrap" infinite-scroll="sc.nextPage()"\n' +
     '      infinite-scroll-distance="0"\n' +
-    '      infinite-scroll-immediate-check="false">\n' +
+    '      infinite-scroll-immediate-check="false"\n' +
+    '      infinite-scroll-use-document-bottom="true">\n' +
     '        <div class="list-item" ng-repeat="(key, value) in sc.merchant.list">\n' +
     '          <div class="col-xs-12 col-sm-8 col-md-8" >\n' +
     '            <h2><a href="shop-detail-menu.html">{{value.business_name}}</a></h2>\n' +

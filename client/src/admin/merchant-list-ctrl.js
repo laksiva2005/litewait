@@ -96,11 +96,13 @@
             }
           }
           vm.merchant.offset = vm.merchant.list.length;
+          vm.merchant.busy = false;
         }
 
         function getMerchantParams() {
+        	var page_no = parseInt(vm.merchant.offset/vm.merchant.limit) + 1;
           	return {
-				page_no: vm.merchant.offset,
+				page_no: page_no,
 				page_size: vm.merchant.limit,
 				search: vm.merchant.keyword
 			};

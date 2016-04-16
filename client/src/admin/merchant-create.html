@@ -3,12 +3,11 @@
       <div id="edit-merchant" >
          <h1>{{mcr.type}} merchant</h1>      
          <div class="col-md-12 form-wrap">
-            <form novalidate name="mcr.merchantForm" ng-submit="mcr.updateMerchant(mcr.merchantForm.$valid)" role="form">
+            <form novalidate name="mcr.merchantForm" ng-submit="mcr.updateMerchant(mcr.merchantForm.$valid, mcr.merchant)" role="form">
                <div class="col-md-6">
                   <div class="form-group">
-                     <input required type="hidden" name="id" ng-model="mcr.merchant.id">
                      <label for="username">Username</label>
-                     <input type="text" name="username" maxlength="50" ng-model="mcr.merchant.username" class="form-control"  placeholder="Enter username">
+                     <input required type="text" name="username" maxlength="50" ng-model="mcr.merchant.username" class="form-control"  placeholder="Enter username">
                      <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.username.$invalid" ng-messages="mcr.merchantForm.username.$error" class="alert alert-danger">
                         <div ng-message="maxlength">Please enter a valid Username</div>
                         <div ng-message="required">Please enter username</div>
@@ -47,7 +46,7 @@
                   </div>
                   <div class="form-group">
                      <label for="mail_id">Email</label>
-                     <input required type="email" name="mail_id" ng-model="mcr.merchant.contact_details.mail_id" class="form-control" placeholder="Enter email">
+                     <input required type="email" name="mail_id" ng-model="mcr.merchant.contact.mail_id" class="form-control" placeholder="Enter email">
                      <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.mail_id.$invalid" ng-messages="mcr.merchantForm.mail_id.$error" class="alert alert-danger">
                         <div ng-message="email">Please enter a valid Email Id</div>
                         <div ng-message="required">Please enter email</div>
@@ -55,7 +54,7 @@
                   </div>
                   <div class="form-group">
                      <label for="phone">Phone</label>
-                     <input required type="text" name="phone" ng-model="mcr.merchant.contact_details.phone" class="form-control" placeholder="Enter phone">
+                     <input required type="text" name="phone" ng-model="mcr.merchant.contact.phone" class="form-control" placeholder="Enter phone">
                      <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.phone.$invalid" ng-messages="mcr.merchantForm.phone.$error" class="alert alert-danger">
                         <div ng-message="required">Please enter phone</div>
                       </div>
@@ -103,7 +102,7 @@
                   </div>
                   <div class="form-group">
                      <label for="address_1">Address 1</label>
-                     <textarea required name="address_1" ng-model="mcr.merchant.contact_details.address_1" class="form-control"  placeholder="Address"></textarea>
+                     <textarea required name="address_1" ng-model="mcr.merchant.contact.address_1" class="form-control"  placeholder="Address"></textarea>
                      <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.address_1.$invalid" ng-messages="mcr.merchantForm.address_1.$error" class="alert alert-danger">
                         <div ng-message="maxlength">Address should contain maximum 50 characters</div>
                         <div ng-message="required">Address field is required</div>
@@ -141,15 +140,15 @@
                      <div ng-show="noCity">
                        <i class="glyphicon glyphicon-remove"></i> No Results Found
                      </div>
-                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.contact_details.city.$invalid" ng-messages="mcr.merchantForm.contact_details.city.$error" class="alert alert-danger">
+                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.contact.city.$invalid" ng-messages="mcr.merchantForm.contact.city.$error" class="alert alert-danger">
                         <div ng-message="maxlength">City should contain maximum 50 characters</div>
                         <div ng-message="maxlength">City is required</div>
                      </div>
                   </div>
                   <div class="form-group">
                      <label for="zip_code">Zip code</label>
-                     <input required type="text" name="zip_code" ng-model="mcr.merchant.contact_details.zip_code" class="form-control" placeholder="Enter zipcode">
-                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.contact_details.zip_code.$invalid" ng-messages="mcr.merchantForm.contact_details.zip_code.$error" class="alert alert-danger">
+                     <input required type="text" name="zip_code" ng-model="mcr.merchant.contact.zip_code" class="form-control" placeholder="Enter zipcode">
+                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.contact.zip_code.$invalid" ng-messages="mcr.merchantForm.contact.zip_code.$error" class="alert alert-danger">
                         <div ng-message="maxlength">Zip code should contain maximum 50 characters</div>
                         <div ng-message="maxlength">Zip code is required</div>
                      </div>
