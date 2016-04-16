@@ -2790,6 +2790,10 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                 $state.go('home');
             }
         });
+
+        //$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options){
+            //console.log(arguments);
+        //});
     });
 
     app.config(function ($httpProvider, $authProvider) {
@@ -3307,9 +3311,9 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	'use strict';
 	angular.module('litewait.ui').controller('CartCtrl', CartCtrl);
 
-	CartCtrl.$inject = ['$scope'];
+	CartCtrl.$inject = ['$scope', 'CartService', 'User'];
 
-	function CartCtrl($scope) {
+	function CartCtrl($scope, CartService, User) {
 		
 	}
 })();
@@ -4233,7 +4237,8 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         controller: 'MerchantLandingCtrl',
                         controllerAs: 'mlc'
                     }
-                }
+                },
+                params: { status: [1,2,3] }
             })
             .state('merchant.order', {
                 url: '/order',
@@ -4383,13 +4388,14 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 	angular.module('litewait.ui').controller('navbarCtrl', navbarCtrl);
 
-	navbarCtrl.$inject = ['$scope', '$q', '$state', '$uibModal', 'User', 'AuthService', 'PubSub', 'Spinner', 'SPINING_EVENTS', 'HTTPEvent'];
+	navbarCtrl.$inject = ['$scope', '$q', '$state', '$uibModal', 'User', 'AuthService', 'PubSub', 'Spinner', 'SPINING_EVENTS', 'HTTPEvent', 'CartService'];
 
-	function navbarCtrl($scope, $q, $state, $uibModal, User, AuthService, PubSub, Spinner, SPINING_EVENTS, HTTPEvent) {
+	function navbarCtrl($scope, $q, $state, $uibModal, User, AuthService, PubSub, Spinner, SPINING_EVENTS, HTTPEvent, CartService) {
         var vm = this;
         vm.form = {};
 		vm.user = User;
 		vm.auth = AuthService;
+        vm.cart = CartService;
 		vm.notifyToggle = false;
 		$scope.signin = vm.signin = 1;
         $scope.signup = vm.signup = 2;
@@ -4405,6 +4411,10 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			$scope.activeTab = 1;
 			userModal();
 		}
+
+        PubSub.subscribe('open:login', function() {
+            openUserModal();                
+        });
 
 		function openSignUpModal(event) {
             if (event) {
@@ -4430,7 +4440,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             var modalInstance = $uibModal.open({
                 templateUrl: 'userModal.html',
                 backdrop: 'static',
-                size: 'lg',
+                size: 'sm',
                 windowClass: 'signin-modal',
                 keyboard: false,
                 scope: $scope,
@@ -5004,92 +5014,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
     }
 })(angular);
 /*
- *
- */
-;(function () {
-	'use strict';
-	angular.module('litewait.ui').controller('ShopDetailMenuCtrl', ShopDetailMenuCtrl);
-
-	ShopDetailMenuCtrl.$inject = ['$scope', '$state', '$stateParams', 'PubSub', 'Merchant', 'MenuService'];
-
-	function ShopDetailMenuCtrl($scope, $state, $stateParams, PubSub, Merchant, MenuService) {
-		var vm = this;
-		vm.nest = {};
-		vm.nest.merchantDetail = {};
-		vm.nest.merchantId = $stateParams.id;
-		vm.getMenuByMandC = getMenuByMandC;
-
-		function getMerchant(id) {
-			Merchant.get(id).then(function(response) {
-				vm.nest.merchantDetail = response.data.data;
-				vm.nest.merchantDetail.categories = [];
-				vm.nest.merchantId = vm.nest.merchantDetail.id;
-				return MenuService.getCategoryByMerchantId(vm.nest.merchantId);
-			}).then(function(response) {
-				if (!response.data.error) {
-					vm.nest.merchantDetail.categories = response.data.data.item_categories || [];
-					if (vm.nest.merchantDetail.categories.length) {
-						for(var i=0;i<vm.nest.merchantDetail.categories.length; i++) {
-							vm.nest.merchantDetail.categories[i].menu_items = [];
-						}
-						PubSub.publish('getfirstmenu', vm.nest.merchantDetail.categories[0]);
-					}
-				}
-			});
-		}
-
-		function getMenuByMandC(category_id) {
-			var data = {
-				category_id: category_id,
-				merchant_id: vm.nest.merchantId
-			};
-
-			var index = _.findIndex(vm.nest.merchantDetail.categories, {id: category_id});
-			if (index !== -1 && vm.nest.merchantDetail.categories[index].menu_items.length == 0) {
-				MenuService.getByMandC(data).then(function(res) {
-					
-					vm.nest.merchantDetail.categories[index].menu_items = res.data.data.menu_items || [];
-				});
-			}
-		}
-
-		if (vm.nest.merchantId) {
-			getMerchant(vm.nest.merchantId);
-		}
-
-		PubSub.subscribe('getfirstmenu', function(event, obj) {
-			var category_id = obj.args.id;
-			getMenuByMandC(category_id);
-		});
-	}
-})();
-
-;(function(angular) {
-    'use strict';
-
-    angular.module('litewait').config(config);
-
-    config.$inject = ['$stateProvider'];
-
-    function config($stateProvider) {
-        $stateProvider
-            .state('shop', {
-                abstract: true
-            })
-            .state('shop.detail', {
-            	url: "/shop/:id",
-                views: {
-                    "@": {
-                        templateUrl: "shop/shop-detail-menu.html",
-                        controller: "ShopDetailMenuCtrl",
-                        controllerAs: "sdm"
-                    }
-                },
-                params: {id: ''}
-            });
-    }
-})(angular);
-/*
 *
 */
 ;(function() {
@@ -5174,11 +5098,11 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
         .factory('AuthInterceptor', AuthInterceptor)
         .provider('AuthService', AuthService);
 
-    User.$inject = ['$http', 'RouteConfig', '$q', 'AUTH_MSG', 'toaster'];
+    User.$inject = ['$http', 'RouteConfig', '$q', 'AUTH_MSG', 'toaster', 'session'];
     config.$inject = ['$httpProvider'];
     AuthInterceptor.$inject = ['$rootScope', '$q', 'AUTH_EVENTS'];
 
-    function User ($http, RouteConfig, $q, AUTH_MSG, toaster) {
+    function User ($http, RouteConfig, $q, AUTH_MSG, toaster, session) {
 
         var urlBase = RouteConfig.apiBase;
         var sessionUser = {
@@ -5266,9 +5190,9 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
         sessionUser.resetUser = function(data) {
             if (data) {
-                sessionStorage.setItem(USER_KEY, angular.toJson(data));
+                session.setItem(USER_KEY, data);
             } else {
-                sessionStorage.removeItem(USER_KEY);
+                session.removeItem(USER_KEY);
             }
         };
 
@@ -5321,13 +5245,12 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             LOGOUT_ENDPOINT = '/logout';
 
         this.$get = [
-            '$q', '$rootScope', '$http', 'User', 'RouteConfig', 'AUTH_EVENTS', '$auth',
+            '$q', '$rootScope', '$http', 'User', 'RouteConfig', 'AUTH_EVENTS', 'AUTH_MSG', '$auth', 'toaster', 'session',
 
-            function($q, $rootScope, $http, User, RouteConfig, AUTH_EVENTS, $auth) {
+            function($q, $rootScope, $http, User, RouteConfig, AUTH_EVENTS, AUTH_MSG, $auth, toaster, session) {
 
                 var TOKEN_KEY = 'AUTH:TOKEN';
                 var USER_KEY = 'USER:KEY';
-                var session = window.sessionStorage;
 
                 var getUrl = function(path) {
                     return RouteConfig.apiBase + path;
@@ -5367,7 +5290,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     var deferred = $q.defer(),
                         authUrl = getUrl(WHOAMI_ENDPOINT);
 
-                    var userVal = angular.fromJson(getUser());
+                    var userVal = getUser();
                     User.assign(userVal);
                     var data = {};
                     deferred.resolve(User);
@@ -5511,6 +5434,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                                 
                                 setToken(null);
                                 User.clear();
+                                session.clear();
                                 raise(AUTH_EVENTS.logoutSuccess, saveUser);
                                 toaster.pop({
                                     type: 'success', 
@@ -5544,6 +5468,118 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
     }
 
 })(angular);
+/*
+*
+*/
+;(function() {
+	'use strict';
+	angular.module('litewait.services').factory('CartService', CartService);
+
+	CartService.$inject = ['$q', 'session', 'User', 'PubSub'];
+
+	function CartService($q, session, User, PubSub) {
+		var storeKey = 'cart:data';
+		var service = {
+			init: init,
+			remove: remove,
+			add: add,
+			get: get,
+			process: process,
+			user: User.username,
+			total_quantity: 0,
+			merchantId: '',
+			order_details: []
+		};
+
+		function add(obj, merchantId) {
+			if (merchantId && merchantId != service.merchantId) {
+				service.order_details.length = 0;
+				service.merchantId = merchantId;
+			}
+
+			var index = _.findIndex(service.order_details, {item_id: obj.item_id});
+			var cartObject;
+			if (index !== -1) {
+				service.order_details[index].qty = parseInt(obj.qty);
+				cartObject = service.order_details[index];
+			} else {
+				cartObject = {
+					category_id: obj.category_id,
+					item_id: obj.item_id,
+					item_name: obj.item_name,
+					qty: parseInt(obj.qty),
+					price: obj.price,
+					addons: obj.addons,
+					original: obj
+				};
+				service.order_details.push(cartObject);
+				service.total_quantity += 1;
+			}
+
+			PubSub.publish('cart:added', cartObject);
+
+			storeCartToSession();
+		}
+
+		function storeCartToSession() {
+			session.setItem(storeKey, {
+				order_details: service.order_details,
+				merchantId: service.merchantId,
+				total_quantity: service.total_quantity
+			});
+		}
+
+		function getCartFromSession() {
+			var data = {
+				order_details: [],
+				merchantId: '',
+				total_quantity: 0
+			};
+			return session.getItem(storeKey) || data;
+		}
+
+		function remove(item_id) {
+			var index = _.findIndex(service.order_details, {item_id: item_id});
+
+			if (index !== -1) {
+				var save = service.order_details[index];
+				delete service.order_details[index];
+				service.total_quantity -= 1;
+				PubSub.publish('cart:removed', save);
+
+				storeCartToSession();
+			}
+		}
+
+		function get(item_id) {
+			var index = _.findIndex(service.order_details, {item_id: item_id});
+
+			if (index != -1) {
+				return service.order_details[index];
+			}
+			return false;
+		}
+
+		function init() {
+			var data = getCartFromSession();
+			service.total_quantity = data.total_quantity || 0;
+			service.order_details = data.order_details || [];
+			service.merchantId = data.merchantId || '';
+		}
+
+		function process() {
+			var data = getCartFromSession();
+			for(var i=0;i<data.order_details.length;i++) {
+				PubSub.publish('cart:added', data.order_details[i]);				
+			}
+		}
+
+		init();
+
+		return service;
+
+	}
+})();
 /*
 *
 */
@@ -5796,7 +5832,9 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			var data;
 			if (!angular.isObject(id)) {
 				data = {
-					params: id
+					params: {
+						merchant_id: id
+					}
 				};	
 			} else {
 				data = {
@@ -5921,7 +5959,11 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		}
 
 		function get(data) {
-			return $http.post(apiBase, data);
+			var url = apiBase + '?offset='+data.offset+'&limit='+data.limit;
+			var params = {
+				status: data.status
+			};
+			return $http.post(url, params);
 		}
 
 		return service;
@@ -6146,6 +6188,50 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		return search;
 	}
 })(angular);
+/*
+*
+*/
+;(function() {
+	'use strict';
+
+	angular.module('litewait.services').factory('session', session);
+
+	session.$inject = ['$window'];
+
+	function session($window) {
+		var service = {};
+		var storage = $window.sessionStorage;
+
+		service.setItem = function(key, val) {
+			storage.setItem(key, angular.toJson(val));
+		};
+
+		service.getItem = function(key) {
+			var data;
+			try {
+				data = angular.fromJson(storage.getItem(key));
+			} catch(e) {
+				data = storage.getItem(key);
+			}
+
+			return data;
+		};
+
+		service.removeItem = function(key) {
+			storage.removeItem(key);
+		};
+
+		service.clear = function() {
+			var i = storage.length;
+			while(i--) {
+			  var key = storage.key(i);
+			  storage.removeItem(key);
+			}
+		};
+
+		return service;
+	}
+})();
 /**
  * created by kanagu on 11/05/2015
  */
@@ -6228,6 +6314,188 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 })(angular);
 
+/*
+ *
+ */
+;(function () {
+	'use strict';
+	angular.module('litewait.ui').controller('ShopDetailMenuCtrl', ShopDetailMenuCtrl);
+
+	ShopDetailMenuCtrl.$inject = ['$scope', '$state', '$uibModal', '$stateParams', 'PubSub', 'Merchant', 'MenuService', 'User', 'CartService'];
+
+	function ShopDetailMenuCtrl($scope, $state, $uibModal, $stateParams, PubSub, Merchant, MenuService, User, CartService) {
+		var vm = this;
+		vm.nest = {};
+		vm.nest.merchantDetail = {};
+		vm.nest.merchantId = $stateParams.id;
+		vm.getMenuByMandC = getMenuByMandC;
+		vm.addToCart = addToCart;
+		vm.openCartModal = openCartModal;
+		$scope.menu = {};
+
+		function openCartModal(data) {
+			var menu = angular.copy(data);
+			if (!User.isLoggedIn) {
+				PubSub.publish('open:login');
+				return;
+			}
+
+			var cartmenu = CartService.get(menu.item_id);
+			if (cartmenu) {
+				menu.qty = cartmenu.qty;
+				menu.isCart = true;
+			} else {
+				menu.qty = 1;
+				menu.isCart = false;
+			}
+
+			$scope.menu = menu;
+			$scope.nest = vm.nest;
+			var modalInstance = $uibModal.open({
+                templateUrl: 'cartModal.html',
+                backdrop: 'static',
+                size: 'lg',
+                windowClass: 'menu-modal',
+                keyboard: false,
+                scope: $scope,
+                bindToController: true,
+                controllerAs: 'cartModal',
+                controller: function($scope, $uibModalInstance, PubSub, AuthService, toaster, User, CartService) {
+                    var vm = this;
+                    vm.nest = $scope.nest;
+                    vm.menu = angular.copy($scope.menu);
+
+                    vm.addToCart = addToCart;
+                    vm.close = close;
+
+                    function addToCart() {
+                    	CartService.add(vm.menu, vm.nest.merchantId);
+                    	close();
+                    }
+
+                    function close() {
+                    	$uibModalInstance.close();
+                    }
+                }
+            });
+		}
+
+		function addToCart(obj) {
+			if (!User.isLoggedIn) {
+				PubSub.publish('open:login');
+				return;
+			}
+
+			CartService.add(obj, vm.nest.merchantId);
+		}
+
+		function getMerchant(id) {
+			Merchant.get(id).then(function(response) {
+				vm.nest.merchantDetail = response.data.data;
+				vm.nest.merchantDetail.categories = [];
+				vm.nest.merchantId = vm.nest.merchantDetail.id;
+				return MenuService.getCategoryByMerchantId(vm.nest.merchantId);
+			}).then(function(response) {
+				if (!response.data.error) {
+					vm.nest.merchantDetail.categories = response.data.data.item_categories || [];
+					if (vm.nest.merchantDetail.categories.length) {
+						for(var i=0;i<vm.nest.merchantDetail.categories.length; i++) {
+							vm.nest.merchantDetail.categories[i].menu_items = [];
+						}
+						PubSub.publish('getfirstmenu', vm.nest.merchantDetail.categories[0]);
+					}
+				}
+			});
+		}
+
+		function getMenuByMandC(category_id) {
+			var data = {
+				category_id: category_id,
+				merchant_id: vm.nest.merchantId
+			};
+
+			var index = _.findIndex(vm.nest.merchantDetail.categories, {id: category_id+''});
+			if (index !== -1 && vm.nest.merchantDetail.categories[index].menu_items.length === 0) {
+				MenuService.getByMandC(data).then(function(res) {
+					
+					vm.nest.merchantDetail.categories[index].menu_items = res.data.data.menu_items || [];
+					CartService.process();
+				});
+			}
+			console.log(vm.nest);
+			
+		}
+
+		if (vm.nest.merchantId) {
+			getMerchant(vm.nest.merchantId);
+		}
+
+		function processCartRemove(data) {
+			var cindex = _.findIndex(vm.nest.merchantDetail.categories, {id: data.category_id+''});
+			if (cindex !== -1) {
+				var category = vm.nest.merchantDetail.categories[cindex];
+				var index = _.findIndex(category.menu_items, {item_id: data.item_id});
+				if (index !== -1) {
+					vm.nest.merchantDetail.categories[cindex].menu_items[index].isCart = false;
+					vm.nest.merchantDetail.categories[cindex].menu_items[index].qty = '';
+				}
+			}
+		}
+
+		function processCartAdd(data) {
+			var cindex = _.findIndex(vm.nest.merchantDetail.categories, {id: data.category_id+''});
+			if (cindex !== -1) {
+				var category = vm.nest.merchantDetail.categories[cindex];
+				var index = _.findIndex(category.menu_items, {item_id: data.item_id});
+				if (index !== -1) {
+					vm.nest.merchantDetail.categories[cindex].menu_items[index].isCart = true;
+					vm.nest.merchantDetail.categories[cindex].menu_items[index].qty = data.qty;
+				}
+			}
+		}
+
+		PubSub.subscribe('getfirstmenu', function(event, obj) {
+			var category_id = obj.args.id;
+			getMenuByMandC(category_id);
+		});
+
+		PubSub.subscribe('cart:added', function(event, obj) {
+			var data = obj.args;
+			processCartAdd(data);
+		});
+
+		PubSub.subscribe('cart:removed', function(event, obj) {
+			var data = obj.args;
+			processCartRemove(data);
+		});
+	}
+})();
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('shop', {
+                abstract: true
+            })
+            .state('shop.detail', {
+            	url: "/shop/:id",
+                views: {
+                    "@": {
+                        templateUrl: "shop/shop-detail-menu.html",
+                        controller: "ShopDetailMenuCtrl",
+                        controllerAs: "sdm"
+                    }
+                },
+                params: {id: ''}
+            });
+    }
+})(angular);
 /*
  *
  */

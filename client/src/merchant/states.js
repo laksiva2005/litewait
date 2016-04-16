@@ -21,7 +21,8 @@
                         controller: 'MerchantLandingCtrl',
                         controllerAs: 'mlc'
                     }
-                }
+                },
+                params: { status: [1,2,3] }
             })
             .state('merchant.order', {
                 url: '/order',

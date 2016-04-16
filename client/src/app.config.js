@@ -21,6 +21,10 @@
                 $state.go('home');
             }
         });
+
+        //$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options){
+            //console.log(arguments);
+        //});
     });
 
     app.config(function ($httpProvider, $authProvider) {

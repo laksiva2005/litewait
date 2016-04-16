@@ -57,11 +57,11 @@
         .factory('AuthInterceptor', AuthInterceptor)
         .provider('AuthService', AuthService);
 
-    User.$inject = ['$http', 'RouteConfig', '$q', 'AUTH_MSG', 'toaster'];
+    User.$inject = ['$http', 'RouteConfig', '$q', 'AUTH_MSG', 'toaster', 'session'];
     config.$inject = ['$httpProvider'];
     AuthInterceptor.$inject = ['$rootScope', '$q', 'AUTH_EVENTS'];
 
-    function User ($http, RouteConfig, $q, AUTH_MSG, toaster) {
+    function User ($http, RouteConfig, $q, AUTH_MSG, toaster, session) {
 
         var urlBase = RouteConfig.apiBase;
         var sessionUser = {
@@ -149,9 +149,9 @@
 
         sessionUser.resetUser = function(data) {
             if (data) {
-                sessionStorage.setItem(USER_KEY, angular.toJson(data));
+                session.setItem(USER_KEY, data);
             } else {
-                sessionStorage.removeItem(USER_KEY);
+                session.removeItem(USER_KEY);
             }
         };
 
@@ -204,13 +204,12 @@
             LOGOUT_ENDPOINT = '/logout';
 
         this.$get = [
-            '$q', '$rootScope', '$http', 'User', 'RouteConfig', 'AUTH_EVENTS', '$auth',
+            '$q', '$rootScope', '$http', 'User', 'RouteConfig', 'AUTH_EVENTS', 'AUTH_MSG', '$auth', 'toaster', 'session',
 
-            function($q, $rootScope, $http, User, RouteConfig, AUTH_EVENTS, $auth) {
+            function($q, $rootScope, $http, User, RouteConfig, AUTH_EVENTS, AUTH_MSG, $auth, toaster, session) {
 
                 var TOKEN_KEY = 'AUTH:TOKEN';
                 var USER_KEY = 'USER:KEY';
-                var session = window.sessionStorage;
 
                 var getUrl = function(path) {
                     return RouteConfig.apiBase + path;
@@ -250,7 +249,7 @@
                     var deferred = $q.defer(),
                         authUrl = getUrl(WHOAMI_ENDPOINT);
 
-                    var userVal = angular.fromJson(getUser());
+                    var userVal = getUser();
                     User.assign(userVal);
                     var data = {};
                     deferred.resolve(User);
@@ -394,6 +393,7 @@
                                 
                                 setToken(null);
                                 User.clear();
+                                session.clear();
                                 raise(AUTH_EVENTS.logoutSuccess, saveUser);
                                 toaster.pop({
                                     type: 'success', 

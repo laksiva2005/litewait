@@ -34,7 +34,11 @@
 		}
 
 		function get(data) {
-			return $http.post(apiBase, data);
+			var url = apiBase + '?offset='+data.offset+'&limit='+data.limit;
+			var params = {
+				status: data.status
+			};
+			return $http.post(url, params);
 		}
 
 		return service;

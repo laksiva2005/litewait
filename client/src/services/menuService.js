@@ -183,7 +183,9 @@
 			var data;
 			if (!angular.isObject(id)) {
 				data = {
-					params: id
+					params: {
+						merchant_id: id
+					}
 				};	
 			} else {
 				data = {

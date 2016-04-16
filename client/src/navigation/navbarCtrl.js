@@ -6,13 +6,14 @@
 
 	angular.module('litewait.ui').controller('navbarCtrl', navbarCtrl);
 
-	navbarCtrl.$inject = ['$scope', '$q', '$state', '$uibModal', 'User', 'AuthService', 'PubSub', 'Spinner', 'SPINING_EVENTS', 'HTTPEvent'];
+	navbarCtrl.$inject = ['$scope', '$q', '$state', '$uibModal', 'User', 'AuthService', 'PubSub', 'Spinner', 'SPINING_EVENTS', 'HTTPEvent', 'CartService'];
 
-	function navbarCtrl($scope, $q, $state, $uibModal, User, AuthService, PubSub, Spinner, SPINING_EVENTS, HTTPEvent) {
+	function navbarCtrl($scope, $q, $state, $uibModal, User, AuthService, PubSub, Spinner, SPINING_EVENTS, HTTPEvent, CartService) {
         var vm = this;
         vm.form = {};
 		vm.user = User;
 		vm.auth = AuthService;
+        vm.cart = CartService;
 		vm.notifyToggle = false;
 		$scope.signin = vm.signin = 1;
         $scope.signup = vm.signup = 2;
@@ -28,6 +29,10 @@
 			$scope.activeTab = 1;
 			userModal();
 		}
+
+        PubSub.subscribe('open:login', function() {
+            openUserModal();                
+        });
 
 		function openSignUpModal(event) {
             if (event) {
@@ -53,7 +58,7 @@
             var modalInstance = $uibModal.open({
                 templateUrl: 'userModal.html',
                 backdrop: 'static',
-                size: 'lg',
+                size: 'sm',
                 windowClass: 'signin-modal',
                 keyboard: false,
                 scope: $scope,

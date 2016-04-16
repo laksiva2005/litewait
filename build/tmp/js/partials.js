@@ -1270,11 +1270,11 @@ module.run(['$templateCache', function($templateCache) {
     '              <div class="row list">\n' +
     '                <div class="col-xs-9 col-sm-8 col-md-9"> <img src="{{menu.picture}}" class="pull-left" />\n' +
     '                  <div class="content">\n' +
-    '                    <h3><a href="#" data-toggle="modal" data-target="#menu-detail">{{menu.item_name}}</a></h3>\n' +
+    '                    <h3><a ng-click="sdm.openCartModal(menu)">{{menu.item_name}}</a></h3>\n' +
     '                    <p>{{menu.description}}</p>\n' +
     '                  </div>\n' +
     '                </div>\n' +
-    '                <div class="col-xs-3 col-sm-4 col-md-3"> <a title="Add to cart" href="#" data-toggle="modal" data-target="#menu-detail"><i class="fa fa-shopping-cart fa-lg"></i></a> <span class="price">${{menu.price}}</span> </div>\n' +
+    '                <div class="col-xs-3 col-sm-4 col-md-3"> <a title="Add to cart" ng-click="sdm.openCartModal(menu)"><i class="fa fa-shopping-cart fa-lg"><span ng-if="menu.isCart"> ({{menu.qty}})</span></i></a> <span class="price">${{menu.price}}</span> </div>\n' +
     '              </div>\n' +
     '            </div>\n' +
     '          </div>\n' +
@@ -1283,7 +1283,54 @@ module.run(['$templateCache', function($templateCache) {
     '    </uib-tabset>\n' +
     '  </div>\n' +
     '  <div class="clearfix clear"></div>\n' +
-    '</div>');
+    '</div>\n' +
+    '<script type="text/ng-template" id="cartModal.html">\n' +
+    '<div id="menu-detail">\n' +
+    '    <button type="button" class="close" ng-click="cartModal.close()">&times;</button>\n' +
+    '      <h1>{{cartModal.menu.item_name}}</h1>\n' +
+    '      <div class="row">\n' +
+    '        <div class="col-sm-4"><img src="{{cartModal.menu.picture}}" class="img-responsive" /></div>\n' +
+    '        <div class="col-sm-8">\n' +
+    '          <h2>Description</h2>\n' +
+    '          <p>{{cartModal.menu.description}}</p>\n' +
+    '        </div>\n' +
+    '      </div>\n' +
+    '      <div class="col-sm-12 item-spec">\n' +
+    '        <form class="form-inline" role="form">\n' +
+    '          <div class="form-group">\n' +
+    '            <label>Wait Time</label>\n' +
+    '            <label>{{cartModal.menu.waiting_time}}</label>\n' +
+    '          </div>\n' +
+    '          <div class="form-group">\n' +
+    '            <label>No of items:</label>\n' +
+    '            <input type="text" ng-model="cartModal.menu.qty" class="form-control" >\n' +
+    '          </div>\n' +
+    '          <div class="form-group">\n' +
+    '            <label> Price</label>\n' +
+    '            <label>${{cartModal.menu.price}}</label>\n' +
+    '          </div>\n' +
+    '          <button ng-click="cartModal.addToCart()" class="btn btn-default"><i class="fa fa-shopping-cart fa-lg"></i> Add to cart</button>\n' +
+    '          <div class=clearfix></div>\n' +
+    '        </form>\n' +
+    '      </div>\n' +
+    '      <div class="clearfix"></div>\n' +
+    '      <div class="build-order">\n' +
+    '        <h3>Build Your Order - Sides</h3>\n' +
+    '        <label class="checkbox-inline">\n' +
+    '          <input type="checkbox" value="">\n' +
+    '          Dumpling</label>\n' +
+    '        <label class="checkbox-inline">\n' +
+    '          <input type="checkbox" value="">\n' +
+    '          Dumpling</label>\n' +
+    '        <label class="checkbox-inline">\n' +
+    '          <input type="checkbox" value="">\n' +
+    '          Dumpling</label>\n' +
+    '        <label class="checkbox-inline">\n' +
+    '          <input type="checkbox" value="">\n' +
+    '          Dumpling</label>\n' +
+    '      </div>\n' +
+    '</div>\n' +
+    '</script>');
 }]);
 })();
 
