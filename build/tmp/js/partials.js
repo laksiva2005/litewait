@@ -254,52 +254,32 @@ module.run(['$templateCache', function($templateCache) {
     '             </tr>\n' +
     '   			</thead>\n' +
     '            <tbody>\n' +
-    '              <tr>\n' +
+    '              <tr ng-repeat="order in cc.cart.order_details">\n' +
     '                <td>\n' +
     '                	<table class="sub-table">\n' +
     '                    	<tr>\n' +
-    '                        	<td><img src="img/cart-1.jpg" class="product img-responsive" /></td>\n' +
-    '                            <td> <h3>Egg rol 2</h3>\n' +
-    '                    <p>Lorem ipsum dolor sit amet <br/> consectetuer adipiscing elit.</p>\n' +
-    '                    </td>\n' +
-    '                        \n' +
-    '                        </tr>\n' +
-    '                      \n' +
+    '                        	<td><img src="{{order.original.picture}}" class="product img-responsive" /></td>\n' +
+    '                          <td>\n' +
+    '                            <h3>{{order.item_name}}</h3>\n' +
+    '                            <p>{{order.original.description}}</p>\n' +
+    '                          </td>\n' +
+    '                      </tr>\n' +
     '                    </table>\n' +
     '                </td>\n' +
-    '                <td class="">$59.00</td>\n' +
-    '                <td class="">2</td>\n' +
+    '                <td class="">${{order.price}}</td>\n' +
+    '                <td class="">{{order.qty}}</td>\n' +
     '              </tr>\n' +
-    '              <tr>\n' +
-    '              	<td colspan="3" class="blank">&nbsp; </td>\n' +
-    '              </tr>\n' +
-    '              <tr>\n' +
-    '                <td>\n' +
-    '                	<table class="sub-table">\n' +
-    '                    	<tr>\n' +
-    '                        	<td><img src="img/cart-1.jpg" class="product img-responsive" /></td>\n' +
-    '                            <td> <h3>Egg rol 2</h3>\n' +
-    '                    <p>Lorem ipsum dolor sit amet <br/> consectetuer adipiscing elit.</p>\n' +
-    '                    </td>\n' +
-    '                        \n' +
-    '                        </tr>\n' +
-    '                      \n' +
-    '                    </table>\n' +
-    '                </td>\n' +
-    '                <td class="">$59.00</td>\n' +
-    '                <td class="">2</td>\n' +
-    '              </tr>\n' +
-    '               <tfoot>\n' +
+    '              <tfoot>\n' +
     '                <tr>\n' +
-    '                  <td colspan="3">Subtotal (2 items):   <span class="value">$177.00</span></td>\n' +
+    '                  <td colspan="3">\n' +
+    '                    Subtotal ({{cc.cart.total_quantity}} items): \n' +
+    '                    <span class="value">${{cc.cart.total_price}}</span>\n' +
+    '                  </td>\n' +
     '                </tr>\n' +
-    ' 			 </tfoot>\n' +
-    '              \n' +
+    ' 			        </tfoot>\n' +
     '            </tbody>\n' +
     '          </table>\n' +
     '        </div>\n' +
-    '    \n' +
-    '    \n' +
     '    </div>\n' +
     '    <div class="col-md-4 cart-right">\n' +
     '      <h2>Check out</h2>\n' +
@@ -311,8 +291,8 @@ module.run(['$templateCache', function($templateCache) {
     '          <table class="table">\n' +
     '            <tbody>\n' +
     '              <tr>\n' +
-    '                <td class="sub">Subtotal (2 items) :</td>\n' +
-    '                <td class="value right">$177.00</td>\n' +
+    '                <td class="sub">Subtotal ({{cc.cart.total_quantity}} items) :</td>\n' +
+    '                <td class="value right">${{cc.cart.total_price}}</td>\n' +
     '              </tr>\n' +
     '              <tr>\n' +
     '                <td>Convenience Fee : </td>\n' +
@@ -320,7 +300,7 @@ module.run(['$templateCache', function($templateCache) {
     '              </tr>\n' +
     '              <tr>\n' +
     '                <td>Total before Tax : </td>\n' +
-    '                <td class="right">$177.00</td>\n' +
+    '                <td class="right">${{cc.cart.total_price}}</td>\n' +
     '              </tr>\n' +
     '              <tr>\n' +
     '                <td>Estimated tax to be collected : </td>\n' +
@@ -328,7 +308,7 @@ module.run(['$templateCache', function($templateCache) {
     '              </tr>\n' +
     '              <tr class="total">\n' +
     '                <td class="sub">Order total: </td>\n' +
-    '                <td class="value right">$177.00</td>\n' +
+    '                <td class="value right">${{cc.cart.total_price}}</td>\n' +
     '              </tr>\n' +
     '            </tbody>\n' +
     '          </table>\n' +
@@ -387,7 +367,6 @@ module.run(['$templateCache', function($templateCache) {
     '<div class="clearfix"></div>\n' +
     '             </div>\n' +
     '             <div class="col-md-4 list">\n' +
-    '            \n' +
     '            	<img src="img/recent-view-7.jpg" class="left" />\n' +
     '                <div class="right">\n' +
     '                <h3>Tom Kha Sou</h3>\n' +
@@ -398,11 +377,7 @@ module.run(['$templateCache', function($templateCache) {
     '<div class="clearfix"></div>\n' +
     '             </div>\n' +
     '             <div class="clearfix"></div>\n' +
-    '        \n' +
     '        </div>\n' +
-    '    	\n' +
-    '    \n' +
-    '    \n' +
     '    </div>\n' +
     '  </div>\n' +
     '</div>');

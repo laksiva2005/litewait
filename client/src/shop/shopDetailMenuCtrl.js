@@ -44,7 +44,7 @@
                 scope: $scope,
                 bindToController: true,
                 controllerAs: 'cartModal',
-                controller: function($scope, $uibModalInstance, PubSub, AuthService, toaster, User, CartService) {
+                controller: function($scope, $uibModalInstance, CartService) {
                     var vm = this;
                     vm.nest = $scope.nest;
                     vm.menu = angular.copy($scope.menu);

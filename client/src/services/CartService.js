@@ -16,6 +16,7 @@
 			get: get,
 			process: process,
 			user: User.username,
+			total_price: 0,
 			total_quantity: 0,
 			merchantId: '',
 			order_details: []
@@ -24,13 +25,17 @@
 		function add(obj, merchantId) {
 			if (merchantId && merchantId != service.merchantId) {
 				service.order_details.length = 0;
+				service.total_quantity = 0;
+				service.total_price = 0;
 				service.merchantId = merchantId;
 			}
 
 			var index = _.findIndex(service.order_details, {item_id: obj.item_id});
 			var cartObject;
 			if (index !== -1) {
+				service.total_price -= (service.order_details[index].qty * service.order_details[index].price);
 				service.order_details[index].qty = parseInt(obj.qty);
+				service.total_price += (service.order_details[index].qty * service.order_details[index].price);
 				cartObject = service.order_details[index];
 			} else {
 				cartObject = {
@@ -42,6 +47,7 @@
 					addons: obj.addons,
 					original: obj
 				};
+				service.total_price += cartObject.qty * cartObject.price;
 				service.order_details.push(cartObject);
 				service.total_quantity += 1;
 			}
@@ -73,6 +79,7 @@
 
 			if (index !== -1) {
 				var save = service.order_details[index];
+				service.total_price -= save.qty * save.price;
 				delete service.order_details[index];
 				service.total_quantity -= 1;
 				PubSub.publish('cart:removed', save);
@@ -92,6 +99,7 @@
 
 		function init() {
 			var data = getCartFromSession();
+			service.total_price = data.total_price || 0;
 			service.total_quantity = data.total_quantity || 0;
 			service.order_details = data.order_details || [];
 			service.merchantId = data.merchantId || '';

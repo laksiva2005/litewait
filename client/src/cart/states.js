@@ -16,7 +16,8 @@
                 views: {
                     "@": {
                         templateUrl: "cart/cart.html",
-                        controller: "CartCtrl"
+                        controller: "CartCtrl",
+                        controllarAs: "cc"
                     }
                 }
             });
