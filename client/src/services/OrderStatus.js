@@ -18,7 +18,7 @@
 					label: "Ready To Pickup",
 					key: 3
 				},
-				"Ready To Pickup": {
+				"Ready to Pickup": {
 					label: "Complete",
 					key: 4
 				},

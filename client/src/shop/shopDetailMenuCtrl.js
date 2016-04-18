@@ -53,7 +53,7 @@
                     vm.close = close;
 
                     function addToCart() {
-                    	CartService.add(vm.menu, vm.nest.merchantId);
+                    	CartService.add(vm.menu, vm.nest.merchantDetail);
                     	close();
                     }
 

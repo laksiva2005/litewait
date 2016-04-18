@@ -17,7 +17,7 @@
                     "@": {
                         templateUrl: "cart/cart.html",
                         controller: "CartCtrl",
-                        controllarAs: "cc"
+                        controllerAs: "cc"
                     }
                 }
             });

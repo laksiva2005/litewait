@@ -19,10 +19,10 @@
             <td>30 mnts</td>
             <td>
                <a 
-                  ng-class="{'ready-pick': order.order_status=='Ready To Pickup', 'in-progress': order.order_status =='In Progress', 'new-order': order.order_status == 'New', 'complete': order.order_status == 'Complete'}" >{{order.order_status}}</a>
+                  ng-class="{'ready-pick': order.order_status=='Ready to Pickup', 'in-progress': order.order_status =='In Progress', 'new-order': order.order_status == 'New', 'complete': order.order_status == 'Complete'}" >{{order.order_status}}</a>
             </td>
             <td>
-               <a ng-class="{'btn-ready-for-pick': order.order_status == 'In Progress', 'btn-in-progress': order.order_status == 'New', 'btn-complete': order.order_status == 'Ready To Pickup'}" class="btn btn-block" ng-click="moc.changeStatus(moc.orderStatus.nextStatus[order.order_status])">{{moc.orderStatus.nextStatus[order.order_status].label}}</a>
+               <a ng-class="{'btn-ready-for-pick': order.order_status == 'In Progress', 'btn-in-progress': order.order_status == 'New', 'btn-complete': order.order_status == 'Ready to Pickup'}" class="btn btn-block" ng-click="moc.changeStatus(moc.orderStatus.nextStatus[order.order_status], order.order_id)">{{moc.orderStatus.nextStatus[order.order_status].label}}</a>
             </td>
          </tr>
       </tbody>

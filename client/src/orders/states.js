@@ -39,11 +39,21 @@
                     }
                 }
             })
+            .state('order.thankyou', {
+                url: "/order/thankyou/:time",
+                views: {
+                    "@": {
+                        templateUrl: "orders/thankyou.html",
+                        controller: "ThankyouCtrl",
+                        controllerAs: "tuc"
+                    }
+                }
+            })
             .state('order.summary', {
                 url: "/order-summary/:orderId",
                 views: {
                     "@": {
-                        templateUrl: "order/order-summary.html",
+                        templateUrl: "orders/order-summary.html",
                         controller: "OrderSummaryCtrl",
                         controllerAs: "osc"
                     }

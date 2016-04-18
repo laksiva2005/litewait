@@ -5,9 +5,9 @@
 	'use strict';
 	angular.module('litewait.services').factory('CartService', CartService);
 
-	CartService.$inject = ['$q', 'session', 'User', 'PubSub'];
+	CartService.$inject = ['$q', 'session', 'User', 'PubSub', 'OrderService', 'EVENTS', 'MSG', 'toaster'];
 
-	function CartService($q, session, User, PubSub) {
+	function CartService($q, session, User, PubSub, OrderService, EVENTS, MSG, toaster) {
 		var storeKey = 'cart:data';
 		var service = {
 			init: init,
@@ -15,25 +15,103 @@
 			add: add,
 			get: get,
 			process: process,
+			addQty: addQty,
+			removeQty: removeQty,
+			placeOrder: placeOrder,
 			user: User.username,
 			total_price: 0,
 			total_quantity: 0,
 			merchantId: '',
+			merchantDetails: {},
 			order_details: []
 		};
 
-		function add(obj, merchantId) {
-			if (merchantId && merchantId != service.merchantId) {
+		function placeOrder() {
+			var cart = {
+				user: User.username,
+				merchant_id: service.merchantId,
+				total_quantity: service.total_quantity,
+				order_details: []
+			};
+
+			for(var i = 0;i < service.order_details.length;i++) {
+				var order_details = {
+					category_id: service.order_details[i].category_id,
+					item_id: service.order_details[i].item_id,
+					item_name: service.order_details[i].item_name,
+					qty: service.order_details[i].qty,
+					price: service.order_details[i].price,
+					addons: service.order_details[i].addons
+				};
+				cart.order_details.push(order_details);
+			}
+
+			if (!cart.order_details.length) {
+				return;
+			}
+
+			OrderService.placeOrder(cart).then(function(response) {
+				if (!response.data.error) {
+					service.clear();
+					toaster.pop({
+                        type: 'success', 
+                        title:'Success', 
+                        body: MSG.orderSuccess, 
+                        toasterId: 1
+                    });
+					PubSub.publish(EVENTS.ORDER_PLACED, {order_id: response.data.data.order_id, merchant: service.merchantDetails});
+				} else {
+					toaster.pop({
+                        type: 'error', 
+                        title:'Error', 
+                        body: MSG.orderFailed, 
+                        toasterId: 1
+                    });
+				}
+			}, function (err) {
+				toaster.pop({
+	                type: 'error', 
+	                title:'Error', 
+	                body: MSG.orderFailed, 
+	                toasterId: 1
+	            });
+			});
+		}
+
+		function addQty(item_id) {
+			var index = _.findIndex(service.order_details, {item_id: obj.item_id});
+			if (index !== -1) {
+				service.order_details[index].qty += 1;
+				service.total_price += (1 * service.order_details[index].price);
+			}			
+		}
+
+		function removeQty(item_id) {
+			var index = _.findIndex(service.order_details, {item_id: obj.item_id});
+			if (index !== -1) {
+				if (service.order_details[index].qty > 1) {
+					service.order_details[index].qty -= 1;
+					service.total_price -= (1 * service.order_details[index].price);
+				}
+			}	
+		}
+
+		function add(obj, merchant) {
+			if (merchant && merchant.id != service.merchantId) {
 				service.order_details.length = 0;
 				service.total_quantity = 0;
 				service.total_price = 0;
-				service.merchantId = merchantId;
+				service.merchantId = merchant.id;
+				service.merchantDetails = merchant;
 			}
 
 			var index = _.findIndex(service.order_details, {item_id: obj.item_id});
 			var cartObject;
 			if (index !== -1) {
 				service.total_price -= (service.order_details[index].qty * service.order_details[index].price);
+				if (service.total_price < 0) {
+					service.total_price = 0;
+				}
 				service.order_details[index].qty = parseInt(obj.qty);
 				service.total_price += (service.order_details[index].qty * service.order_details[index].price);
 				cartObject = service.order_details[index];
@@ -61,6 +139,8 @@
 			session.setItem(storeKey, {
 				order_details: service.order_details,
 				merchantId: service.merchantId,
+				merchantDetails: service.merchantDetails,
+				total_price: service.total_price,
 				total_quantity: service.total_quantity
 			});
 		}
@@ -69,6 +149,8 @@
 			var data = {
 				order_details: [],
 				merchantId: '',
+				merchantDetails: {},
+				total_price: 0,
 				total_quantity: 0
 			};
 			return session.getItem(storeKey) || data;
@@ -103,6 +185,16 @@
 			service.total_quantity = data.total_quantity || 0;
 			service.order_details = data.order_details || [];
 			service.merchantId = data.merchantId || '';
+			service.merchantDetails = data.merchantDetails || {};
+		}
+
+		function clear() {
+			service.total_price = 0;
+			service.total_quantity = 0;
+			service.order_details.length = 0;
+			service.merchantId = '';
+			service.merchantDetails = {};
+			storeCartToSession();	
 		}
 
 		function process() {

@@ -15,9 +15,8 @@
       </thead>
       <tbody>
          <tr ng-repeat="order in mpoc.data.orders">
-            <td><a class="orderid" href="/order-summary/{{order.order_id}}">{{order.order_id}}</a></td>
+            <td><a class="orderid" href="#/order-summary/{{order.order_id}}">{{order.order_id}}</a></td>
             <td>{{order.orderDetails[0].qty}} {{order.orderDetails[0].item_name}}</td>
-            <td>30 mnts</td>
             <td>{{order.total_quantity}}</td>
             <td>{{order.total_tax}}</td>
             <td>{{order.total_gross}}</td>

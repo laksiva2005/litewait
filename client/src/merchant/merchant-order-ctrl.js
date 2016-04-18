@@ -25,7 +25,7 @@
 
 		function changeStatus(status, id) {
 			var param = {
-				status: status,
+				status: status.key,
 				order_id: id
 			};
 
@@ -33,8 +33,8 @@
 				if (!response.data.error) {
 					var index = _.findIndex(vm.data.orders, {order_id: id});
 					if (index !== -1) {
-						if (status !=4) {
-							vm.data.orders[index].order_status = status;
+						if (status.key !=4) {
+							vm.data.orders[index].order_status = status.label;
 						} else {
 							delete vm.data.orders[index];
 							vm.data.orderParams.offset--;
@@ -61,7 +61,11 @@
 		function searchOrder() {
 			var param = getOrderParams();
 			OrderService.get(param).then(function(res) {
-				assignOrders(res);
+				if (!res.data.error) {
+					assignOrders(res.data.data);
+				} else {
+					assignOrders([]);
+				}
 			});
 		}
 

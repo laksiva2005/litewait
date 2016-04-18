@@ -247,24 +247,24 @@ module.run(['$templateCache', function($templateCache) {
     '         <div class="table-responsive">\n' +
     '          <table class="table">\n' +
     '          	<thead>\n' +
-    '             <tr>\n' +
+    '              <tr>\n' +
     '                <th>Item</th>\n' +
     '                <th class="right">Price</th>\n' +
     '                <th class="right">Quantity</th>\n' +
-    '             </tr>\n' +
-    '   			</thead>\n' +
+    '              </tr>\n' +
+    '   			    </thead>\n' +
     '            <tbody>\n' +
     '              <tr ng-repeat="order in cc.cart.order_details">\n' +
     '                <td>\n' +
     '                	<table class="sub-table">\n' +
-    '                    	<tr>\n' +
-    '                        	<td><img src="{{order.original.picture}}" class="product img-responsive" /></td>\n' +
-    '                          <td>\n' +
-    '                            <h3>{{order.item_name}}</h3>\n' +
-    '                            <p>{{order.original.description}}</p>\n' +
-    '                          </td>\n' +
-    '                      </tr>\n' +
-    '                    </table>\n' +
+    '                  	<tr>\n' +
+    '                      	<td><img src="{{order.original.picture}}" class="product img-responsive" /></td>\n' +
+    '                        <td>\n' +
+    '                          <h3>{{order.item_name}}</h3>\n' +
+    '                          <p>{{order.original.description}}</p>\n' +
+    '                        </td>\n' +
+    '                    </tr>\n' +
+    '                  </table>\n' +
     '                </td>\n' +
     '                <td class="">${{order.price}}</td>\n' +
     '                <td class="">{{order.qty}}</td>\n' +
@@ -283,7 +283,7 @@ module.run(['$templateCache', function($templateCache) {
     '    </div>\n' +
     '    <div class="col-md-4 cart-right">\n' +
     '      <h2>Check out</h2>\n' +
-    '      <a href="thankyou.html" class="btn place-order btn-block">Place your Order</a>\n' +
+    '      <a ng-click="cc.cart.placeOrder()" class="btn place-order btn-block">Place your Order</a>\n' +
     '      <p class="place-order-notify">By placing your order, you agree to litewait’s <a href="#">privacy notice</a> and <a href="#">conditions of use</a></p>\n' +
     '      <div class="order-summary">\n' +
     '        <h2>Order summary</h2>\n' +
@@ -321,18 +321,18 @@ module.run(['$templateCache', function($templateCache) {
     '      </div>\n' +
     '      <div class="billing-address">\n' +
     '      	<h3>Biling Address:</h3>\n' +
-    '        <p>Louise Jane Doe  <br/>\n' +
-    '5844 South Oak Street <br/>\n' +
-    'Chicago, Illinois 60667 </p>\n' +
+    '        <p>{{cc.user.contact.address_1}}<br/>\n' +
+    '{{cc.user.contact.city}} <br/>\n' +
+    '{{cc.user.contact.state}} {{cc.user.contact.zip_code}} {{cc.user.contact.country}} </p>\n' +
     '      </div>\n' +
     '      <div class="product-widget">\n' +
-    '            <h2><a href="shop-detail-menu.html">Charlie\'s Sandwich</a></h2>\n' +
-    '            <img src="img/search-result-1.jpg" />\n' +
+    '            <h2><a href="#/shop/{{cc.cart.merchantDetails.id}}">{{cc.cart.merchantDetails.business_name}}</a></h2>\n' +
+    '            <img src="{{cc.cart.merchantDetails.photo}}" />\n' +
     '            \n' +
     '            <div class="cnt"> <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>\n' +
     '              <p>0.98 mi Distance from search location</p>\n' +
-    '              <p class="wait">20 m Wait Time</p>\n' +
-    '              <p>Open 11:00 AM to 4:00 AM</p>\n' +
+    '              <p class="wait">{{cc.cart.merchantDetails.avg_waiting_time}} Wait Time</p>\n' +
+    '              <p>Open {{cc.cart.merchantDetails.open_time}} to {{cc.cart.merchantDetails.close_time}}</p>\n' +
     '            </div>\n' +
     '   \n' +
     '      \n' +
@@ -839,10 +839,10 @@ module.run(['$templateCache', function($templateCache) {
     '            <td>30 mnts</td>\n' +
     '            <td>\n' +
     '               <a \n' +
-    '                  ng-class="{\'ready-pick\': order.order_status==\'Ready To Pickup\', \'in-progress\': order.order_status ==\'In Progress\', \'new-order\': order.order_status == \'New\', \'complete\': order.order_status == \'Complete\'}" >{{order.order_status}}</a>\n' +
+    '                  ng-class="{\'ready-pick\': order.order_status==\'Ready to Pickup\', \'in-progress\': order.order_status ==\'In Progress\', \'new-order\': order.order_status == \'New\', \'complete\': order.order_status == \'Complete\'}" >{{order.order_status}}</a>\n' +
     '            </td>\n' +
     '            <td>\n' +
-    '               <a ng-class="{\'btn-ready-for-pick\': order.order_status == \'In Progress\', \'btn-in-progress\': order.order_status == \'New\', \'btn-complete\': order.order_status == \'Ready To Pickup\'}" class="btn btn-block" ng-click="moc.changeStatus(moc.orderStatus.nextStatus[order.order_status])">{{moc.orderStatus.nextStatus[order.order_status].label}}</a>\n' +
+    '               <a ng-class="{\'btn-ready-for-pick\': order.order_status == \'In Progress\', \'btn-in-progress\': order.order_status == \'New\', \'btn-complete\': order.order_status == \'Ready to Pickup\'}" class="btn btn-block" ng-click="moc.changeStatus(moc.orderStatus.nextStatus[order.order_status], order.order_id)">{{moc.orderStatus.nextStatus[order.order_status].label}}</a>\n' +
     '            </td>\n' +
     '         </tr>\n' +
     '      </tbody>\n' +
@@ -876,9 +876,8 @@ module.run(['$templateCache', function($templateCache) {
     '      </thead>\n' +
     '      <tbody>\n' +
     '         <tr ng-repeat="order in mpoc.data.orders">\n' +
-    '            <td><a class="orderid" href="/order-summary/{{order.order_id}}">{{order.order_id}}</a></td>\n' +
+    '            <td><a class="orderid" href="#/order-summary/{{order.order_id}}">{{order.order_id}}</a></td>\n' +
     '            <td>{{order.orderDetails[0].qty}} {{order.orderDetails[0].item_name}}</td>\n' +
-    '            <td>30 mnts</td>\n' +
     '            <td>{{order.total_quantity}}</td>\n' +
     '            <td>{{order.total_tax}}</td>\n' +
     '            <td>{{order.total_gross}}</td>\n' +
@@ -1087,7 +1086,7 @@ module.run(['$templateCache', function($templateCache) {
     '          <table class="table">\n' +
     '            <tfoot>\n' +
     '              <tr>\n' +
-    '                <td colspan="3">Subtotal ({{orderDetail.total_quantity}} items):   <span class="value">${{orderDetail.total_gross}}</span></td>\n' +
+    '                <td colspan="3">Subtotal ({{osc.data.order.total_quantity}} items):   <span class="value">${{osc.data.order.total_gross}}</span></td>\n' +
     '              </tr>\n' +
     '            </tfoot>\n' +
     '          </table>\n' +
@@ -1103,8 +1102,8 @@ module.run(['$templateCache', function($templateCache) {
     '          <table class="table">\n' +
     '            <tbody>\n' +
     '              <tr>\n' +
-    '                <td class="sub">Subtotal ({{orderDetail.total_quantity}} items) :</td>\n' +
-    '                <td class="value right">${{orderDetail.total_gross}}</td>\n' +
+    '                <td class="sub">Subtotal ({{osc.data.order.total_quantity}} items) :</td>\n' +
+    '                <td class="value right">${{osc.data.order.total_gross}}</td>\n' +
     '              </tr>\n' +
     '              <tr>\n' +
     '                <td>Convenience Fee : </td>\n' +
@@ -1112,15 +1111,15 @@ module.run(['$templateCache', function($templateCache) {
     '              </tr>\n' +
     '              <tr>\n' +
     '                <td>Total before Tax : </td>\n' +
-    '                <td class="right">${{orderDetail.total_gross}}</td>\n' +
+    '                <td class="right">${{osc.data.order.total_gross}}</td>\n' +
     '              </tr>\n' +
     '              <tr>\n' +
     '                <td>Estimated tax to be collected : </td>\n' +
-    '                <td class="right">${{orderDetail.total_tax}}</td>\n' +
+    '                <td class="right">${{osc.data.order.total_tax}}</td>\n' +
     '              </tr>\n' +
     '              <tr class="total">\n' +
     '                <td class="sub">Order total: </td>\n' +
-    '                <td class="value right">${{orderDetail.total_net}}</td>\n' +
+    '                <td class="value right">${{osc.data.order.total_net}}</td>\n' +
     '              </tr>\n' +
     '            </tbody>\n' +
     '          </table>\n' +
@@ -1128,18 +1127,56 @@ module.run(['$templateCache', function($templateCache) {
     '        <div class="clearfix"></div>\n' +
     '      </div>\n' +
     '      <div class="product-widget">\n' +
-    '        <h2><a href="shop-detail-menu.html">Charlie\'s Sandwich</a></h2>\n' +
-    '        <img src="img/search-result-1.jpg" />\n' +
+    '        <h2><a href="#/shop/{{osc.data.order.merchant.id">{{osc.data.order.merchant.business_name}}</a></h2>\n' +
+    '        <img src="{{osc.data.order.merchant.photo}}" />\n' +
     '        \n' +
     '        <div class="cnt"> <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>\n' +
     '          <p>0.98 mi Distance from search location</p>\n' +
-    '          <p class="wait">20 m Wait Time</p>\n' +
-    '          <p>Open 11:00 AM to 4:00 AM</p>\n' +
+    '          <p class="wait">{{osc.data.order.merchant.avg_waiting_time}} Wait Time</p>\n' +
+    '          <p>Open {{osc.data.order.merchant.open_time}} to {{osc.data.order.merchant.close_time}}</p>\n' +
     '        </div>\n' +
     '      </div>\n' +
     '    </div>\n' +
     '  </div>\n' +
-    '  \n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('orders/thankyou.html',
+    '<div class="container Thank-wrap">\n' +
+    '	<h1>Thank you...</h1>\n' +
+    '	<div class="col-md-12 thankyou">\n' +
+    '		<p class="welcome">\n' +
+    '			Thank you for placing order via LiteWait. Pleaese pick up your order when you get notification.<br/>\n' +
+    '		Your order id: \n' +
+    '			<a href="#/order-summary/{{tuc.data.order_id}}">{{tuc.data.order_id}}</a>\n' +
+    '		</p>\n' +
+    '		<h2>Merchant Info</h2>\n' +
+    '		<div class="col-md-12">\n' +
+    '			<div class="row">\n' +
+    '				<div class="col-sm-5 col-md-4 col-lg-3 left">\n' +
+    '					<img src="{{tuc.data.merchant.photo}}" />\n' +
+    '				</div>\n' +
+    '				<div class="col-sm-7 col-md-8 col-lg-9 right">\n' +
+    '					<h3><a href="#/shop/{{tuc.data.merchant.id}}">{{tuc.data.merchant.business_name}}</a></h3>\n' +
+    '					<p>\n' +
+    '						{{tuc.data.merchant.contact.address_1}} {{tuc.data.merchant.contact.city}}<br/>\n' +
+    '        {{tuc.data.merchant.contact.state}} {{tuc.data.merchant.contact.zip_code}} {{tuc.data.merchant.contact.country}}</p>\n' +
+    '					<p class="time">\n' +
+    '						<span>Open {{tuc.data.merchant.open_time}} to {{tuc.data.merchant.close_time}}</span><br/>\n' +
+    '						Wait Time: {{tuc.data.merchant.avg_waiting_time}}\n' +
+    '					</p>\n' +
+    '				</div>\n' +
+    '			</div>\n' +
+    '		</div>\n' +
+    '	</div>\n' +
     '</div>');
 }]);
 })();
@@ -1215,8 +1252,8 @@ module.run(['$templateCache', function($templateCache) {
     '    <div class="col-sm-6 col-md-3 info">\n' +
     '      <h2>{{sdm.nest.merchantDetail.business_name}}</h2>\n' +
     '	    <p><a href="{{sdm.nest.merchantDetail.website}}" target="_blank">{{sdm.nest.merchantDetail.website}}</a></p>\n' +
-    '      <p> {{sdm.nest.merchantDetail.contact_details.address_1}} {{sdm.nest.merchantDetail.contact_details.city}}<br/>\n' +
-    '        {{sdm.nest.merchantDetail.contact_details.state}} {{sdm.nest.merchantDetail.contact_details.zip_code}} {{sdm.nest.merchantDetail.contact_details.country}} </p>\n' +
+    '      <p> {{sdm.nest.merchantDetail.contact.address_1}} {{sdm.nest.merchantDetail.contact.city}}<br/>\n' +
+    '        {{sdm.nest.merchantDetail.contact.state}} {{sdm.nest.merchantDetail.contact.zip_code}} {{sdm.nest.merchantDetail.contact.country}} </p>\n' +
     '      <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>\n' +
     '      <p>0.98 mi Distance from search location</p>\n' +
     '      <p>{{sdm.nest.merchantDetail.avg_waiting_time}} Wait Time</p>\n' +

@@ -13,14 +13,15 @@
 		service.get = get;
 		service.getById = getById;
 		service.changeStatus = changeStatus;
+		service.placeOrder = placeOrder;
 
 		function changeStatus(data) {
 			var params = {
 				params: data
 			};
 
-			var url = RouteConfig.apiBase + '/order/changeStatus';
-			return $http.put(url, params);
+			var url = RouteConfig.apiBase + '/order/changeStatus?status='+data.status+'&order_id='+data.order_id;
+			return $http.put(url);
 		}
 
 		function getById(id) {
@@ -38,7 +39,12 @@
 			var params = {
 				status: data.status
 			};
-			return $http.post(url, params);
+			return $http.post(url, data.status);
+		}
+
+		function placeOrder(data) {
+			var url = RouteConfig.apiBase + '/order';
+			return $http.post(url, data);
 		}
 
 		return service;

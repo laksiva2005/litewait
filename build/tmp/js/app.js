@@ -3305,6 +3305,53 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
     }
 })(angular);
 /*
+ *
+ */
+;(function () {
+	'use strict';
+	angular.module('litewait.ui').controller('CartCtrl', CartCtrl);
+
+	CartCtrl.$inject = ['$scope', 'CartService', 'User', 'PubSub', 'EVENTS', '$state', 'session'];
+
+	function CartCtrl($scope, CartService, User, PubSub, EVENTS, $state, session) {
+		var vm = this;
+		vm.cart = CartService;
+		vm.user = User;
+
+		PubSub.subscribe(EVENTS.ORDER_PLACED, function(event, obj) {
+			var data = obj.args;
+			var time = (new Date()).getTime();
+			session.setItem(time, data);
+			$state.go('orderthankyou', {time: time});
+		});
+	}
+})();
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('cart', {
+                abstract: true
+            })
+            .state('cart.detail', {
+            	url: "/cart",
+                views: {
+                    "@": {
+                        templateUrl: "cart/cart.html",
+                        controller: "CartCtrl",
+                        controllerAs: "cc"
+                    }
+                }
+            });
+    }
+})(angular);
+/*
 *
 */
 ;(function() {
@@ -3439,45 +3486,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             }
         };  
     });
-})(angular);
-/*
- *
- */
-;(function () {
-	'use strict';
-	angular.module('litewait.ui').controller('CartCtrl', CartCtrl);
-
-	CartCtrl.$inject = ['$scope', 'CartService', 'User'];
-
-	function CartCtrl($scope, CartService, User) {
-		var vm = this;
-		vm.cart = CartService;
-	}
-})();
-
-;(function(angular) {
-    'use strict';
-
-    angular.module('litewait').config(config);
-
-    config.$inject = ['$stateProvider'];
-
-    function config($stateProvider) {
-        $stateProvider
-            .state('cart', {
-                abstract: true
-            })
-            .state('cart.detail', {
-            	url: "/cart",
-                views: {
-                    "@": {
-                        templateUrl: "cart/cart.html",
-                        controller: "CartCtrl",
-                        controllarAs: "cc"
-                    }
-                }
-            });
-    }
 })(angular);
 /*
  *
@@ -4072,7 +4080,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 		function changeStatus(status, id) {
 			var param = {
-				status: status,
+				status: status.key,
 				order_id: id
 			};
 
@@ -4080,8 +4088,8 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 				if (!response.data.error) {
 					var index = _.findIndex(vm.data.orders, {order_id: id});
 					if (index !== -1) {
-						if (status !=4) {
-							vm.data.orders[index].order_status = status;
+						if (status.key !=4) {
+							vm.data.orders[index].order_status = status.label;
 						} else {
 							delete vm.data.orders[index];
 							vm.data.orderParams.offset--;
@@ -4108,7 +4116,11 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		function searchOrder() {
 			var param = getOrderParams();
 			OrderService.get(param).then(function(res) {
-				assignOrders(res);
+				if (!res.data.error) {
+					assignOrders(res.data.data);
+				} else {
+					assignOrders([]);
+				}
 			});
 		}
 
@@ -4831,11 +4843,21 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     }
                 }
             })
+            .state('order.thankyou', {
+                url: "/order/thankyou/:time",
+                views: {
+                    "@": {
+                        templateUrl: "orders/thankyou.html",
+                        controller: "ThankyouCtrl",
+                        controllerAs: "tuc"
+                    }
+                }
+            })
             .state('order.summary', {
                 url: "/order-summary/:orderId",
                 views: {
                     "@": {
-                        templateUrl: "order/order-summary.html",
+                        templateUrl: "orders/order-summary.html",
                         controller: "OrderSummaryCtrl",
                         controllerAs: "osc"
                     }
@@ -4856,6 +4878,27 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             });
     }
 })(angular);
+/*
+*
+*/
+;(function() {
+	'use strict';
+	angular.module('litewait.ui').controller('ThankyouCtrl', ThankyouCtrl);
+
+	ThankyouCtrl.$inject = ['$scope', '$stateParams', 'session'];
+
+	function ThankyouCtrl($scope, $stateParams, session) {
+		var vm = this;
+
+		vm.isThanks = false;
+
+		var time = $stateParams.time;
+		vm.data = session.getItem(time);
+		if (time && vm.data) {
+			vm.isThanks = true;
+		}
+	}
+})();
 /*
  *
  */
@@ -5063,7 +5106,9 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             deleteMenuSuccess: 'Menu has been deleted successfully',
             deleteMenuFailed: 'Menu delete has been failed',
             changeStatusSuccess: 'Order status has been changed successfully',
-            changeStatusFailed: 'Order status change has been failed'
+            changeStatusFailed: 'Order status change has been failed',
+            orderSuccess: 'Order has been failed',
+            orderFailed: 'Order has been placed successfully'
         })
         .constant('AUTH_EVENTS', {
             loginSuccess: 'auth:login-success',
@@ -5477,9 +5522,9 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	'use strict';
 	angular.module('litewait.services').factory('CartService', CartService);
 
-	CartService.$inject = ['$q', 'session', 'User', 'PubSub'];
+	CartService.$inject = ['$q', 'session', 'User', 'PubSub', 'OrderService', 'EVENTS', 'MSG', 'toaster'];
 
-	function CartService($q, session, User, PubSub) {
+	function CartService($q, session, User, PubSub, OrderService, EVENTS, MSG, toaster) {
 		var storeKey = 'cart:data';
 		var service = {
 			init: init,
@@ -5487,25 +5532,103 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			add: add,
 			get: get,
 			process: process,
+			addQty: addQty,
+			removeQty: removeQty,
+			placeOrder: placeOrder,
 			user: User.username,
 			total_price: 0,
 			total_quantity: 0,
 			merchantId: '',
+			merchantDetails: {},
 			order_details: []
 		};
 
-		function add(obj, merchantId) {
-			if (merchantId && merchantId != service.merchantId) {
+		function placeOrder() {
+			var cart = {
+				user: User.username,
+				merchant_id: service.merchantId,
+				total_quantity: service.total_quantity,
+				order_details: []
+			};
+
+			for(var i = 0;i < service.order_details.length;i++) {
+				var order_details = {
+					category_id: service.order_details[i].category_id,
+					item_id: service.order_details[i].item_id,
+					item_name: service.order_details[i].item_name,
+					qty: service.order_details[i].qty,
+					price: service.order_details[i].price,
+					addons: service.order_details[i].addons
+				};
+				cart.order_details.push(order_details);
+			}
+
+			if (!cart.order_details.length) {
+				return;
+			}
+
+			OrderService.placeOrder(cart).then(function(response) {
+				if (!response.data.error) {
+					service.clear();
+					toaster.pop({
+                        type: 'success', 
+                        title:'Success', 
+                        body: MSG.orderSuccess, 
+                        toasterId: 1
+                    });
+					PubSub.publish(EVENTS.ORDER_PLACED, {order_id: response.data.data.order_id, merchant: service.merchantDetails});
+				} else {
+					toaster.pop({
+                        type: 'error', 
+                        title:'Error', 
+                        body: MSG.orderFailed, 
+                        toasterId: 1
+                    });
+				}
+			}, function (err) {
+				toaster.pop({
+	                type: 'error', 
+	                title:'Error', 
+	                body: MSG.orderFailed, 
+	                toasterId: 1
+	            });
+			});
+		}
+
+		function addQty(item_id) {
+			var index = _.findIndex(service.order_details, {item_id: obj.item_id});
+			if (index !== -1) {
+				service.order_details[index].qty += 1;
+				service.total_price += (1 * service.order_details[index].price);
+			}			
+		}
+
+		function removeQty(item_id) {
+			var index = _.findIndex(service.order_details, {item_id: obj.item_id});
+			if (index !== -1) {
+				if (service.order_details[index].qty > 1) {
+					service.order_details[index].qty -= 1;
+					service.total_price -= (1 * service.order_details[index].price);
+				}
+			}	
+		}
+
+		function add(obj, merchant) {
+			if (merchant && merchant.id != service.merchantId) {
 				service.order_details.length = 0;
 				service.total_quantity = 0;
 				service.total_price = 0;
-				service.merchantId = merchantId;
+				service.merchantId = merchant.id;
+				service.merchantDetails = merchant;
 			}
 
 			var index = _.findIndex(service.order_details, {item_id: obj.item_id});
 			var cartObject;
 			if (index !== -1) {
 				service.total_price -= (service.order_details[index].qty * service.order_details[index].price);
+				if (service.total_price < 0) {
+					service.total_price = 0;
+				}
 				service.order_details[index].qty = parseInt(obj.qty);
 				service.total_price += (service.order_details[index].qty * service.order_details[index].price);
 				cartObject = service.order_details[index];
@@ -5533,6 +5656,8 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			session.setItem(storeKey, {
 				order_details: service.order_details,
 				merchantId: service.merchantId,
+				merchantDetails: service.merchantDetails,
+				total_price: service.total_price,
 				total_quantity: service.total_quantity
 			});
 		}
@@ -5541,6 +5666,8 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			var data = {
 				order_details: [],
 				merchantId: '',
+				merchantDetails: {},
+				total_price: 0,
 				total_quantity: 0
 			};
 			return session.getItem(storeKey) || data;
@@ -5575,6 +5702,16 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			service.total_quantity = data.total_quantity || 0;
 			service.order_details = data.order_details || [];
 			service.merchantId = data.merchantId || '';
+			service.merchantDetails = data.merchantDetails || {};
+		}
+
+		function clear() {
+			service.total_price = 0;
+			service.total_quantity = 0;
+			service.order_details.length = 0;
+			service.merchantId = '';
+			service.merchantDetails = {};
+			storeCartToSession();	
 		}
 
 		function process() {
@@ -5589,6 +5726,16 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		return service;
 
 	}
+})();
+/*
+*
+*/
+;(function() {
+	'use strict';
+	angular.module('litewait.services')
+        .constant('EVENTS', {
+        	ORDER_PLACED: 'order-placed'
+        });
 })();
 /*
 *
@@ -5948,14 +6095,15 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		service.get = get;
 		service.getById = getById;
 		service.changeStatus = changeStatus;
+		service.placeOrder = placeOrder;
 
 		function changeStatus(data) {
 			var params = {
 				params: data
 			};
 
-			var url = RouteConfig.apiBase + '/order/changeStatus';
-			return $http.put(url, params);
+			var url = RouteConfig.apiBase + '/order/changeStatus?status='+data.status+'&order_id='+data.order_id;
+			return $http.put(url);
 		}
 
 		function getById(id) {
@@ -5973,7 +6121,12 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			var params = {
 				status: data.status
 			};
-			return $http.post(url, params);
+			return $http.post(url, data.status);
+		}
+
+		function placeOrder(data) {
+			var url = RouteConfig.apiBase + '/order';
+			return $http.post(url, data);
 		}
 
 		return service;
@@ -5999,7 +6152,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 					label: "Ready To Pickup",
 					key: 3
 				},
-				"Ready To Pickup": {
+				"Ready to Pickup": {
 					label: "Complete",
 					key: 4
 				},
@@ -6379,7 +6532,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     vm.close = close;
 
                     function addToCart() {
-                    	CartService.add(vm.menu, vm.nest.merchantId);
+                    	CartService.add(vm.menu, vm.nest.merchantDetail);
                     	close();
                     }
 
