@@ -39,8 +39,10 @@
 					category_id: service.order_details[i].category_id,
 					item_id: service.order_details[i].item_id,
 					item_name: service.order_details[i].item_name,
+					description: service.order_details[i].description,
 					qty: service.order_details[i].qty,
 					price: service.order_details[i].price,
+					picture: service.order_details[i].picture,
 					addons: service.order_details[i].addons
 				};
 				cart.order_details.push(order_details);
@@ -120,8 +122,10 @@
 					category_id: obj.category_id,
 					item_id: obj.item_id,
 					item_name: obj.item_name,
+					description: obj.description,
 					qty: parseInt(obj.qty),
 					price: obj.price,
+					picture: obj.picture,
 					addons: obj.addons,
 					original: obj
 				};
