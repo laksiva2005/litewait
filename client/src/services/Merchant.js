@@ -33,10 +33,20 @@
 		}
 
 		function update(data) {
+			delete data.username;
+			delete data.password;
+			delete data.contact.cityId;
+			delete data.contact.stateId;
+			delete data.contact.countryId;
 			return $http.put(urlBase, data);
 		}
 
 		function add(data) {
+
+			delete data.contact.cityId;
+			delete data.contact.stateId;
+			delete data.contact.countryId;
+			
 			return $http.post(urlBase, data);
 		}
 

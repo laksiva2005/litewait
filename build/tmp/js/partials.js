@@ -973,6 +973,63 @@ try {
   module = angular.module('litewait.ui', []);
 }
 module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('search/search.html',
+    '<div class="container-fluid banner-wrap" ng-if="!user.isLoggedIn">\n' +
+    '	<div class="banner">\n' +
+    '    	<div class="col-md-10 cnt">\n' +
+    '    	<p class="title-1">SAVE YOUR TIME...INCREASE PRODUCTIVE TIME<br/>\n' +
+    'SAVE MONEY!!</p>\n' +
+    '		<p class="title-2">Tired of waiting in queue, come join us</p>\n' +
+    '        <a href="#" class="btn join"  ng-click="vm.openSignUpModal($event)">Join Now !!</a>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '</div>\n' +
+    '<div class="container-fluid search-wrap" ui-view="search-box">\n' +
+    '</div>\n' +
+    '<div class="container search-result">\n' +
+    '  <div class="col-md-12 best-bet">These retailers are your best bet for:<a href="#">{{sc.keyword}}</a></div>\n' +
+    '  <div class="row-fluid">\n' +
+    '    <div class="col-md-12">\n' +
+    '      <div class="list-wrap" infinite-scroll="sc.nextPage()"\n' +
+    '      infinite-scroll-distance="0"\n' +
+    '      infinite-scroll-immediate-check="false"\n' +
+    '      infinite-scroll-use-document-bottom="true">\n' +
+    '        <div class="list-item" ng-repeat="(key, value) in sc.merchant.list">\n' +
+    '          <div class="col-xs-12 col-sm-8 col-md-8" >\n' +
+    '            <h2><a href="shop-detail-menu.html">{{value.business_name}}</a></h2>\n' +
+    '            <img src="{{value.photo}}" class="pull-left" />\n' +
+    '            <div> <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>\n' +
+    '              <p>0.98 mi Distance from search location</p>\n' +
+    '              <p class="wait">{{value.avg_wait_time}} Wait Time</p>\n' +
+    '              <p>Open {{value.open_time}} to {{value.close_time}}</p>\n' +
+    '            </div>\n' +
+    '          </div>\n' +
+    '          <div class="col-xs-12 col-sm-4 col-md-4 menu">\n' +
+    '            <h2>Popular Items</h2>\n' +
+    '            <ul>\n' +
+    '              <li><a href="#">Chicken Parmesan Sub</a></li>\n' +
+    '              <li><a href="#">BBQ Chicken Sub</a></li>\n' +
+    '              <li><a href="#">Veggie Sub</a></li>\n' +
+    '              <li><a href="#">Chicken Ranch Hot Sandwich</a></li>\n' +
+    '              <li><a href="#">Cold Cut Hot Sandwich</a></li>\n' +
+    '            </ul>\n' +
+    '            <a ng-click="sc.viewMerchant(value.id)" class="btn btn-block">View Retailer</a></div>\n' +
+    '          <div class="clearfix"></div>\n' +
+    '        </div>\n' +
+    '      </div>\n' +
+    '    </div>\n' +
+    '  </div>\n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
   $templateCache.put('orders/myorder.html',
     '<div class="container my-order-wrap">\n' +
     '         \n' +
@@ -1188,53 +1245,104 @@ try {
   module = angular.module('litewait.ui', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('search/search.html',
-    '<div class="container-fluid banner-wrap" ng-if="!user.isLoggedIn">\n' +
-    '	<div class="banner">\n' +
-    '    	<div class="col-md-10 cnt">\n' +
-    '    	<p class="title-1">SAVE YOUR TIME...INCREASE PRODUCTIVE TIME<br/>\n' +
-    'SAVE MONEY!!</p>\n' +
-    '		<p class="title-2">Tired of waiting in queue, come join us</p>\n' +
-    '        <a href="#" class="btn join"  ng-click="vm.openSignUpModal($event)">Join Now !!</a>\n' +
+  $templateCache.put('shop/shop-detail-menu.html',
+    '<div class="container shop-detail-wrap">\n' +
+    '  <div class="shop-detail" ng-if="sdm.nest.merchantId">\n' +
+    '    <div class="col-sm-6 col-md-4"> <img src="{{sdm.nest.merchantDetail.photo}}" class="img-responsive"/> </div>\n' +
+    '    <div class="col-sm-6 col-md-3 info">\n' +
+    '      <h2>{{sdm.nest.merchantDetail.business_name}}</h2>\n' +
+    '	    <p><a href="{{sdm.nest.merchantDetail.website}}" target="_blank">{{sdm.nest.merchantDetail.website}}</a></p>\n' +
+    '      <p> {{sdm.nest.merchantDetail.contact.address_1}} {{sdm.nest.merchantDetail.contact.city}}<br/>\n' +
+    '        {{sdm.nest.merchantDetail.contact.state}} {{sdm.nest.merchantDetail.contact.zip_code}} {{sdm.nest.merchantDetail.contact.country}} </p>\n' +
+    '      <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>\n' +
+    '      <p>0.98 mi Distance from search location</p>\n' +
+    '      <p>{{sdm.nest.merchantDetail.avg_waiting_time}} Wait Time</p>\n' +
+    '      <p>Open {{sdm.nest.merchantDetail.open_time}} to {{sdm.nest.merchantDetail.close_time}}</p>\n' +
+    '    </div>\n' +
+    '    <div class="col-sm-12 col-md-5 location"> <img src="img/shop-map.jpg" class="img-responsive"/> </div>\n' +
+    '    <div class="clearfix"></div>\n' +
+    '  </div>\n' +
+    '  <div ng-if="sdm.nest.merchantId">\n' +
+    '    <div class="menu-detail-wrap">\n' +
+    '        <div class="col-md-4 menu-items">\n' +
+    '          <h2>Category</h2>\n' +
+    '        </div>\n' +
+    '        <div class="col-md-8 popular-items">\n' +
+    '          <h2>Detailed Items</h2>\n' +
     '        </div>\n' +
     '    </div>\n' +
-    '</div>\n' +
-    '<div class="container-fluid search-wrap" ui-view="search-box">\n' +
-    '</div>\n' +
-    '<div class="container search-result">\n' +
-    '  <div class="col-md-12 best-bet">These retailers are your best bet for:<a href="#">{{sc.keyword}}</a></div>\n' +
-    '  <div class="row-fluid">\n' +
-    '    <div class="col-md-12">\n' +
-    '      <div class="list-wrap" infinite-scroll="sc.nextPage()"\n' +
-    '      infinite-scroll-distance="0"\n' +
-    '      infinite-scroll-immediate-check="false"\n' +
-    '      infinite-scroll-use-document-bottom="true">\n' +
-    '        <div class="list-item" ng-repeat="(key, value) in sc.merchant.list">\n' +
-    '          <div class="col-xs-12 col-sm-8 col-md-8" >\n' +
-    '            <h2><a href="shop-detail-menu.html">{{value.business_name}}</a></h2>\n' +
-    '            <img src="{{value.photo}}" class="pull-left" />\n' +
-    '            <div> <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>\n' +
-    '              <p>0.98 mi Distance from search location</p>\n' +
-    '              <p class="wait">{{value.avg_wait_time}} Wait Time</p>\n' +
-    '              <p>Open {{value.open_time}} to {{value.close_time}}</p>\n' +
+    '    <uib-tabset vertical="true" type="tabs" template-url="html/tabset-template-merchant.html">\n' +
+    '      <uib-tab select="sdm.getMenuByMandC(category.id)" ng-repeat="category in sdm.nest.merchantDetail.categories" active="$index == 0" template-url="html/tab-template-merchant.html">\n' +
+    '        <uib-tab-heading>\n' +
+    '            <img src="img/ic-menuitem.png" />{{category.category_name}}\n' +
+    '        </uib-tab-heading>\n' +
+    '        <div class="tab-pane">\n' +
+    '          <div class="row-fluid">\n' +
+    '            <div ng-repeat="menu in category.menu_items" class="col-sm-6 col-md-6 item-left">\n' +
+    '              <div class="row list">\n' +
+    '                <div class="col-xs-9 col-sm-8 col-md-9"> <img src="{{menu.picture}}" class="pull-left" />\n' +
+    '                  <div class="content">\n' +
+    '                    <h3><a ng-click="sdm.openCartModal(menu)">{{menu.item_name}}</a></h3>\n' +
+    '                    <p>{{menu.description}}</p>\n' +
+    '                  </div>\n' +
+    '                </div>\n' +
+    '                <div class="col-xs-3 col-sm-4 col-md-3"> <a title="Add to cart" ng-click="sdm.openCartModal(menu)"><i class="fa fa-shopping-cart fa-lg"><span ng-if="menu.isCart"> ({{menu.qty}})</span></i></a> <span class="price">${{menu.price}}</span> </div>\n' +
+    '              </div>\n' +
     '            </div>\n' +
     '          </div>\n' +
-    '          <div class="col-xs-12 col-sm-4 col-md-4 menu">\n' +
-    '            <h2>Popular Items</h2>\n' +
-    '            <ul>\n' +
-    '              <li><a href="#">Chicken Parmesan Sub</a></li>\n' +
-    '              <li><a href="#">BBQ Chicken Sub</a></li>\n' +
-    '              <li><a href="#">Veggie Sub</a></li>\n' +
-    '              <li><a href="#">Chicken Ranch Hot Sandwich</a></li>\n' +
-    '              <li><a href="#">Cold Cut Hot Sandwich</a></li>\n' +
-    '            </ul>\n' +
-    '            <a ng-click="sc.viewMerchant(value.id)" class="btn btn-block">View Retailer</a></div>\n' +
-    '          <div class="clearfix"></div>\n' +
+    '        </div>\n' +
+    '      </uib-tab>\n' +
+    '    </uib-tabset>\n' +
+    '  </div>\n' +
+    '  <div class="clearfix clear"></div>\n' +
+    '</div>\n' +
+    '<script type="text/ng-template" id="cartModal.html">\n' +
+    '<div id="menu-detail">\n' +
+    '    <button type="button" class="close" ng-click="cartModal.close()">&times;</button>\n' +
+    '      <h1>{{cartModal.menu.item_name}}</h1>\n' +
+    '      <div class="row">\n' +
+    '        <div class="col-sm-4"><img src="{{cartModal.menu.picture}}" class="img-responsive" /></div>\n' +
+    '        <div class="col-sm-8">\n' +
+    '          <h2>Description</h2>\n' +
+    '          <p>{{cartModal.menu.description}}</p>\n' +
     '        </div>\n' +
     '      </div>\n' +
-    '    </div>\n' +
-    '  </div>\n' +
-    '</div>');
+    '      <div class="col-sm-12 item-spec">\n' +
+    '        <form class="form-inline" role="form">\n' +
+    '          <div class="form-group">\n' +
+    '            <label>Wait Time</label>\n' +
+    '            <label>{{cartModal.menu.waiting_time}}</label>\n' +
+    '          </div>\n' +
+    '          <div class="form-group">\n' +
+    '            <label>No of items:</label>\n' +
+    '            <input type="text" ng-model="cartModal.menu.qty" class="form-control" >\n' +
+    '          </div>\n' +
+    '          <div class="form-group">\n' +
+    '            <label> Price</label>\n' +
+    '            <label>${{cartModal.menu.price}}</label>\n' +
+    '          </div>\n' +
+    '          <button ng-click="cartModal.addToCart()" class="btn btn-default"><i class="fa fa-shopping-cart fa-lg"></i> Add to cart</button>\n' +
+    '          <div class=clearfix></div>\n' +
+    '        </form>\n' +
+    '      </div>\n' +
+    '      <div class="clearfix"></div>\n' +
+    '      <div class="build-order">\n' +
+    '        <h3>Build Your Order - Sides</h3>\n' +
+    '        <label class="checkbox-inline">\n' +
+    '          <input type="checkbox" value="">\n' +
+    '          Dumpling</label>\n' +
+    '        <label class="checkbox-inline">\n' +
+    '          <input type="checkbox" value="">\n' +
+    '          Dumpling</label>\n' +
+    '        <label class="checkbox-inline">\n' +
+    '          <input type="checkbox" value="">\n' +
+    '          Dumpling</label>\n' +
+    '        <label class="checkbox-inline">\n' +
+    '          <input type="checkbox" value="">\n' +
+    '          Dumpling</label>\n' +
+    '      </div>\n' +
+    '</div>\n' +
+    '</script>');
 }]);
 })();
 
@@ -1488,113 +1596,5 @@ module.run(['$templateCache', function($templateCache) {
     '	<div class="alert" ng-class="{\'alert-success\': !vusr.data.error, \'alert-danger\': vusr.data.error}">{{vusr.data.message}}</div>\n' +
     '	<div class="text-center"><a ng-click="nav.go(\'home\')" class="btn btn-default">Goto Home</a></div>\n' +
     '</div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('shop/shop-detail-menu.html',
-    '<div class="container shop-detail-wrap">\n' +
-    '  <div class="shop-detail" ng-if="sdm.nest.merchantId">\n' +
-    '    <div class="col-sm-6 col-md-4"> <img src="{{sdm.nest.merchantDetail.photo}}" class="img-responsive"/> </div>\n' +
-    '    <div class="col-sm-6 col-md-3 info">\n' +
-    '      <h2>{{sdm.nest.merchantDetail.business_name}}</h2>\n' +
-    '	    <p><a href="{{sdm.nest.merchantDetail.website}}" target="_blank">{{sdm.nest.merchantDetail.website}}</a></p>\n' +
-    '      <p> {{sdm.nest.merchantDetail.contact.address_1}} {{sdm.nest.merchantDetail.contact.city}}<br/>\n' +
-    '        {{sdm.nest.merchantDetail.contact.state}} {{sdm.nest.merchantDetail.contact.zip_code}} {{sdm.nest.merchantDetail.contact.country}} </p>\n' +
-    '      <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>\n' +
-    '      <p>0.98 mi Distance from search location</p>\n' +
-    '      <p>{{sdm.nest.merchantDetail.avg_waiting_time}} Wait Time</p>\n' +
-    '      <p>Open {{sdm.nest.merchantDetail.open_time}} to {{sdm.nest.merchantDetail.close_time}}</p>\n' +
-    '    </div>\n' +
-    '    <div class="col-sm-12 col-md-5 location"> <img src="img/shop-map.jpg" class="img-responsive"/> </div>\n' +
-    '    <div class="clearfix"></div>\n' +
-    '  </div>\n' +
-    '  <div ng-if="sdm.nest.merchantId">\n' +
-    '    <div class="menu-detail-wrap">\n' +
-    '        <div class="col-md-4 menu-items">\n' +
-    '          <h2>Category</h2>\n' +
-    '        </div>\n' +
-    '        <div class="col-md-8 popular-items">\n' +
-    '          <h2>Detailed Items</h2>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '    <uib-tabset vertical="true" type="tabs" template-url="html/tabset-template-merchant.html">\n' +
-    '      <uib-tab select="sdm.getMenuByMandC(category.id)" ng-repeat="category in sdm.nest.merchantDetail.categories" active="$index == 0" template-url="html/tab-template-merchant.html">\n' +
-    '        <uib-tab-heading>\n' +
-    '            <img src="img/ic-menuitem.png" />{{category.category_name}}\n' +
-    '        </uib-tab-heading>\n' +
-    '        <div class="tab-pane">\n' +
-    '          <div class="row-fluid">\n' +
-    '            <div ng-repeat="menu in category.menu_items" class="col-sm-6 col-md-6 item-left">\n' +
-    '              <div class="row list">\n' +
-    '                <div class="col-xs-9 col-sm-8 col-md-9"> <img src="{{menu.picture}}" class="pull-left" />\n' +
-    '                  <div class="content">\n' +
-    '                    <h3><a ng-click="sdm.openCartModal(menu)">{{menu.item_name}}</a></h3>\n' +
-    '                    <p>{{menu.description}}</p>\n' +
-    '                  </div>\n' +
-    '                </div>\n' +
-    '                <div class="col-xs-3 col-sm-4 col-md-3"> <a title="Add to cart" ng-click="sdm.openCartModal(menu)"><i class="fa fa-shopping-cart fa-lg"><span ng-if="menu.isCart"> ({{menu.qty}})</span></i></a> <span class="price">${{menu.price}}</span> </div>\n' +
-    '              </div>\n' +
-    '            </div>\n' +
-    '          </div>\n' +
-    '        </div>\n' +
-    '      </uib-tab>\n' +
-    '    </uib-tabset>\n' +
-    '  </div>\n' +
-    '  <div class="clearfix clear"></div>\n' +
-    '</div>\n' +
-    '<script type="text/ng-template" id="cartModal.html">\n' +
-    '<div id="menu-detail">\n' +
-    '    <button type="button" class="close" ng-click="cartModal.close()">&times;</button>\n' +
-    '      <h1>{{cartModal.menu.item_name}}</h1>\n' +
-    '      <div class="row">\n' +
-    '        <div class="col-sm-4"><img src="{{cartModal.menu.picture}}" class="img-responsive" /></div>\n' +
-    '        <div class="col-sm-8">\n' +
-    '          <h2>Description</h2>\n' +
-    '          <p>{{cartModal.menu.description}}</p>\n' +
-    '        </div>\n' +
-    '      </div>\n' +
-    '      <div class="col-sm-12 item-spec">\n' +
-    '        <form class="form-inline" role="form">\n' +
-    '          <div class="form-group">\n' +
-    '            <label>Wait Time</label>\n' +
-    '            <label>{{cartModal.menu.waiting_time}}</label>\n' +
-    '          </div>\n' +
-    '          <div class="form-group">\n' +
-    '            <label>No of items:</label>\n' +
-    '            <input type="text" ng-model="cartModal.menu.qty" class="form-control" >\n' +
-    '          </div>\n' +
-    '          <div class="form-group">\n' +
-    '            <label> Price</label>\n' +
-    '            <label>${{cartModal.menu.price}}</label>\n' +
-    '          </div>\n' +
-    '          <button ng-click="cartModal.addToCart()" class="btn btn-default"><i class="fa fa-shopping-cart fa-lg"></i> Add to cart</button>\n' +
-    '          <div class=clearfix></div>\n' +
-    '        </form>\n' +
-    '      </div>\n' +
-    '      <div class="clearfix"></div>\n' +
-    '      <div class="build-order">\n' +
-    '        <h3>Build Your Order - Sides</h3>\n' +
-    '        <label class="checkbox-inline">\n' +
-    '          <input type="checkbox" value="">\n' +
-    '          Dumpling</label>\n' +
-    '        <label class="checkbox-inline">\n' +
-    '          <input type="checkbox" value="">\n' +
-    '          Dumpling</label>\n' +
-    '        <label class="checkbox-inline">\n' +
-    '          <input type="checkbox" value="">\n' +
-    '          Dumpling</label>\n' +
-    '        <label class="checkbox-inline">\n' +
-    '          <input type="checkbox" value="">\n' +
-    '          Dumpling</label>\n' +
-    '      </div>\n' +
-    '</div>\n' +
-    '</script>');
 }]);
 })();

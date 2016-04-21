@@ -4717,6 +4717,165 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 /*
  *
  */
+;(function() {
+	'use strict';
+	angular.module('litewait.ui').controller('SearchCtrl', SearchCtrl);
+
+	SearchCtrl.$inject = ['$scope', '$state', 'PubSub', 'Location', 'Search', 'srch'];
+
+	function SearchCtrl($scope, $state, PubSub, Location, Search, srch) {
+		var vm = this;
+		vm.merchant = {
+			list: [],
+			busy: false,
+			offset: 0,
+			limit: 10,
+			searchCriteria: {},
+			totalRecords: 0
+		};
+		vm.keyword = '';
+		vm.viewMerchant = viewMerchant;
+		vm.initializeMerchant = initializeMerchant;
+		vm.nextPage = nextPage;
+
+		function viewMerchant(id) {
+			$state.go('shop.detail', {id: id});
+		}
+
+		function searchMerchant() {
+			var obj = getMerchantParams();
+			Search.getMerchantList(obj).then(function(response) {
+				assignMerchants(response.merchants);
+				vm.merchant.busy = false;
+			}, function() {
+				vm.merchant.busy = false;
+			});
+		}
+
+        function assignMerchants(items) {
+          for (var i = 0; i < items.length; i++) {
+            var index = _.findIndex(vm.merchant.list, {id: items[i].id});
+            if (-1 === index) {
+              vm.merchant.list.push(items[i]);
+            }
+          }
+          vm.merchant.offset = vm.merchant.list.length;
+        }
+
+        function getMerchantParams() {
+        	vm.keyword = vm.merchant.searchCriteria.keyword.category;
+          	return {
+				region_id: vm.merchant.searchCriteria.location.region_id,
+				city_id: vm.merchant.searchCriteria.location.city_id,
+				search_text: vm.merchant.searchCriteria.keyword.category,
+				page_no: vm.merchant.offset,
+				page_size: vm.merchant.limit
+			};
+        }
+
+        function initializeMerchant() {
+          vm.merchant.offset = 1;
+          vm.merchant.list.length = 0;
+          searchMerchant();
+        }
+
+        function nextPage() {
+          var params = getMerchantParams();
+
+          if ( ! vm.merchant.busy) {
+            vm.merchant.busy = true;
+            searchMerchant();
+          }
+        }
+
+        PubSub.subscribe('search', function(event, obj) {
+			vm.merchant.searchCriteria = obj.args;
+			initializeMerchant();
+		});
+	}
+})();
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('search', {
+            	url: "/serach",
+                views: {
+                    "search-box@search": {
+                      templateUrl: 'navigation/search-box.html',
+                      controller: "SearchBoxCtrl",
+                      controllerAs: "sbc"
+                    },
+                    "@": {
+                        templateUrl: "search/search.html",
+                        controller: "SearchCtrl",
+                        controllerAs: "sc"
+                    }
+                },
+                params: {location: '', keyword: ''},
+                resolve: {
+                    srch: function ($q, $timeout) {
+                        var deferred = $q.defer();
+                        
+                        var handler = $timeout(function() {
+                            deferred.resolve('search');
+                            $timeout.cancel(handler);
+                        }, 0);
+                        
+                        return deferred.promise;
+                    },
+                    geolocation: function ($q, Search, $timeout, Location) {
+                        var loc = {};
+                        var deferred = $q.defer();
+
+                        var handler = $timeout(function() { 
+                            Search.getRegionByGeo().then(function(response) {
+                                if (!response.data.error) {
+                                    Location.status = loc.status = true;
+                                    Location.data = loc.data = response.data.data;
+                                    deferred.resolve(loc);
+                                } else {
+                                    getByIp();
+                                }
+                            }, function(error) {
+                                getByIp();
+                            });
+
+                            function getByIp() {
+                                Search.getRegionByIP().then(function(res) {
+                                    if (!res.data.error) {
+                                        Location.status = loc.status = true;
+                                        Location.data = loc.data = res.data.data;
+                                        deferred.resolve(loc);
+                                    } else {
+                                        Location.status = loc.status = false;
+                                        Location.data = loc.data = null;
+                                        deferred.resolve(loc);
+                                    }
+                                }, function() {
+                                    Location.status = loc.status = false;
+                                    Location.data = loc.data = null;
+                                    deferred.resolve(loc);
+                                });
+                            }
+
+                            $timeout.cancel(handler);
+                        }, 0);
+                        return deferred.promise;
+                    }
+                }
+            });
+    }
+})(angular);
+/*
+ *
+ */
 ;(function(angular) {
 	'use strict';
 
@@ -4899,165 +5058,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		}
 	}
 })();
-/*
- *
- */
-;(function() {
-	'use strict';
-	angular.module('litewait.ui').controller('SearchCtrl', SearchCtrl);
-
-	SearchCtrl.$inject = ['$scope', '$state', 'PubSub', 'Location', 'Search', 'srch'];
-
-	function SearchCtrl($scope, $state, PubSub, Location, Search, srch) {
-		var vm = this;
-		vm.merchant = {
-			list: [],
-			busy: false,
-			offset: 0,
-			limit: 10,
-			searchCriteria: {},
-			totalRecords: 0
-		};
-		vm.keyword = '';
-		vm.viewMerchant = viewMerchant;
-		vm.initializeMerchant = initializeMerchant;
-		vm.nextPage = nextPage;
-
-		function viewMerchant(id) {
-			$state.go('shop.detail', {id: id});
-		}
-
-		function searchMerchant() {
-			var obj = getMerchantParams();
-			Search.getMerchantList(obj).then(function(response) {
-				assignMerchants(response.merchants);
-				vm.merchant.busy = false;
-			}, function() {
-				vm.merchant.busy = false;
-			});
-		}
-
-        function assignMerchants(items) {
-          for (var i = 0; i < items.length; i++) {
-            var index = _.findIndex(vm.merchant.list, {id: items[i].id});
-            if (-1 === index) {
-              vm.merchant.list.push(items[i]);
-            }
-          }
-          vm.merchant.offset = vm.merchant.list.length;
-        }
-
-        function getMerchantParams() {
-        	vm.keyword = vm.merchant.searchCriteria.keyword.category;
-          	return {
-				region_id: vm.merchant.searchCriteria.location.region_id,
-				city_id: vm.merchant.searchCriteria.location.city_id,
-				search_text: vm.merchant.searchCriteria.keyword.category,
-				page_no: vm.merchant.offset,
-				page_size: vm.merchant.limit
-			};
-        }
-
-        function initializeMerchant() {
-          vm.merchant.offset = 1;
-          vm.merchant.list.length = 0;
-          searchMerchant();
-        }
-
-        function nextPage() {
-          var params = getMerchantParams();
-
-          if ( ! vm.merchant.busy) {
-            vm.merchant.busy = true;
-            searchMerchant();
-          }
-        }
-
-        PubSub.subscribe('search', function(event, obj) {
-			vm.merchant.searchCriteria = obj.args;
-			initializeMerchant();
-		});
-	}
-})();
-
-;(function(angular) {
-    'use strict';
-
-    angular.module('litewait').config(config);
-
-    config.$inject = ['$stateProvider'];
-
-    function config($stateProvider) {
-        $stateProvider
-            .state('search', {
-            	url: "/serach",
-                views: {
-                    "search-box@search": {
-                      templateUrl: 'navigation/search-box.html',
-                      controller: "SearchBoxCtrl",
-                      controllerAs: "sbc"
-                    },
-                    "@": {
-                        templateUrl: "search/search.html",
-                        controller: "SearchCtrl",
-                        controllerAs: "sc"
-                    }
-                },
-                params: {location: '', keyword: ''},
-                resolve: {
-                    srch: function ($q, $timeout) {
-                        var deferred = $q.defer();
-                        
-                        var handler = $timeout(function() {
-                            deferred.resolve('search');
-                            $timeout.cancel(handler);
-                        }, 0);
-                        
-                        return deferred.promise;
-                    },
-                    geolocation: function ($q, Search, $timeout, Location) {
-                        var loc = {};
-                        var deferred = $q.defer();
-
-                        var handler = $timeout(function() { 
-                            Search.getRegionByGeo().then(function(response) {
-                                if (!response.data.error) {
-                                    Location.status = loc.status = true;
-                                    Location.data = loc.data = response.data.data;
-                                    deferred.resolve(loc);
-                                } else {
-                                    getByIp();
-                                }
-                            }, function(error) {
-                                getByIp();
-                            });
-
-                            function getByIp() {
-                                Search.getRegionByIP().then(function(res) {
-                                    if (!res.data.error) {
-                                        Location.status = loc.status = true;
-                                        Location.data = loc.data = res.data.data;
-                                        deferred.resolve(loc);
-                                    } else {
-                                        Location.status = loc.status = false;
-                                        Location.data = loc.data = null;
-                                        deferred.resolve(loc);
-                                    }
-                                }, function() {
-                                    Location.status = loc.status = false;
-                                    Location.data = loc.data = null;
-                                    deferred.resolve(loc);
-                                });
-                            }
-
-                            $timeout.cancel(handler);
-                        }, 0);
-                        return deferred.promise;
-                    }
-                }
-            });
-    }
-})(angular);
 /*
 *
 */
@@ -6052,10 +6052,20 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		}
 
 		function update(data) {
+			delete data.username;
+			delete data.password;
+			delete data.contact.cityId;
+			delete data.contact.stateId;
+			delete data.contact.countryId;
 			return $http.put(urlBase, data);
 		}
 
 		function add(data) {
+
+			delete data.contact.cityId;
+			delete data.contact.stateId;
+			delete data.contact.countryId;
+			
 			return $http.post(urlBase, data);
 		}
 
@@ -6477,6 +6487,188 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 })(angular);
 
+/*
+ *
+ */
+;(function () {
+	'use strict';
+	angular.module('litewait.ui').controller('ShopDetailMenuCtrl', ShopDetailMenuCtrl);
+
+	ShopDetailMenuCtrl.$inject = ['$scope', '$state', '$uibModal', '$stateParams', 'PubSub', 'Merchant', 'MenuService', 'User', 'CartService'];
+
+	function ShopDetailMenuCtrl($scope, $state, $uibModal, $stateParams, PubSub, Merchant, MenuService, User, CartService) {
+		var vm = this;
+		vm.nest = {};
+		vm.nest.merchantDetail = {};
+		vm.nest.merchantId = $stateParams.id;
+		vm.getMenuByMandC = getMenuByMandC;
+		vm.addToCart = addToCart;
+		vm.openCartModal = openCartModal;
+		$scope.menu = {};
+
+		function openCartModal(data) {
+			var menu = angular.copy(data);
+			if (!User.isLoggedIn) {
+				PubSub.publish('open:login');
+				return;
+			}
+
+			var cartmenu = CartService.get(menu.item_id);
+			if (cartmenu) {
+				menu.qty = cartmenu.qty;
+				menu.isCart = true;
+			} else {
+				menu.qty = 1;
+				menu.isCart = false;
+			}
+
+			$scope.menu = menu;
+			$scope.nest = vm.nest;
+			var modalInstance = $uibModal.open({
+                templateUrl: 'cartModal.html',
+                backdrop: 'static',
+                size: 'lg',
+                windowClass: 'menu-modal',
+                keyboard: false,
+                scope: $scope,
+                bindToController: true,
+                controllerAs: 'cartModal',
+                controller: function($scope, $uibModalInstance, CartService) {
+                    var vm = this;
+                    vm.nest = $scope.nest;
+                    vm.menu = angular.copy($scope.menu);
+
+                    vm.addToCart = addToCart;
+                    vm.close = close;
+
+                    function addToCart() {
+                    	CartService.add(vm.menu, vm.nest.merchantDetail);
+                    	close();
+                    }
+
+                    function close() {
+                    	$uibModalInstance.close();
+                    }
+                }
+            });
+		}
+
+		function addToCart(obj) {
+			if (!User.isLoggedIn) {
+				PubSub.publish('open:login');
+				return;
+			}
+
+			CartService.add(obj, vm.nest.merchantId);
+		}
+
+		function getMerchant(id) {
+			Merchant.get(id).then(function(response) {
+				vm.nest.merchantDetail = response.data.data;
+				vm.nest.merchantDetail.categories = [];
+				vm.nest.merchantId = vm.nest.merchantDetail.id;
+				return MenuService.getCategoryByMerchantId(vm.nest.merchantId);
+			}).then(function(response) {
+				if (!response.data.error) {
+					vm.nest.merchantDetail.categories = response.data.data.item_categories || [];
+					if (vm.nest.merchantDetail.categories.length) {
+						for(var i=0;i<vm.nest.merchantDetail.categories.length; i++) {
+							vm.nest.merchantDetail.categories[i].menu_items = [];
+						}
+						PubSub.publish('getfirstmenu', vm.nest.merchantDetail.categories[0]);
+					}
+				}
+			});
+		}
+
+		function getMenuByMandC(category_id) {
+			var data = {
+				category_id: category_id,
+				merchant_id: vm.nest.merchantId
+			};
+
+			var index = _.findIndex(vm.nest.merchantDetail.categories, {id: category_id+''});
+			if (index !== -1 && vm.nest.merchantDetail.categories[index].menu_items.length === 0) {
+				MenuService.getByMandC(data).then(function(res) {
+					
+					vm.nest.merchantDetail.categories[index].menu_items = res.data.data.menu_items || [];
+					CartService.process();
+				});
+			}
+			console.log(vm.nest);
+			
+		}
+
+		if (vm.nest.merchantId) {
+			getMerchant(vm.nest.merchantId);
+		}
+
+		function processCartRemove(data) {
+			var cindex = _.findIndex(vm.nest.merchantDetail.categories, {id: data.category_id+''});
+			if (cindex !== -1) {
+				var category = vm.nest.merchantDetail.categories[cindex];
+				var index = _.findIndex(category.menu_items, {item_id: data.item_id});
+				if (index !== -1) {
+					vm.nest.merchantDetail.categories[cindex].menu_items[index].isCart = false;
+					vm.nest.merchantDetail.categories[cindex].menu_items[index].qty = '';
+				}
+			}
+		}
+
+		function processCartAdd(data) {
+			var cindex = _.findIndex(vm.nest.merchantDetail.categories, {id: data.category_id+''});
+			if (cindex !== -1) {
+				var category = vm.nest.merchantDetail.categories[cindex];
+				var index = _.findIndex(category.menu_items, {item_id: data.item_id});
+				if (index !== -1) {
+					vm.nest.merchantDetail.categories[cindex].menu_items[index].isCart = true;
+					vm.nest.merchantDetail.categories[cindex].menu_items[index].qty = data.qty;
+				}
+			}
+		}
+
+		PubSub.subscribe('getfirstmenu', function(event, obj) {
+			var category_id = obj.args.id;
+			getMenuByMandC(category_id);
+		});
+
+		PubSub.subscribe('cart:added', function(event, obj) {
+			var data = obj.args;
+			processCartAdd(data);
+		});
+
+		PubSub.subscribe('cart:removed', function(event, obj) {
+			var data = obj.args;
+			processCartRemove(data);
+		});
+	}
+})();
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('shop', {
+                abstract: true
+            })
+            .state('shop.detail', {
+            	url: "/shop/:id",
+                views: {
+                    "@": {
+                        templateUrl: "shop/shop-detail-menu.html",
+                        controller: "ShopDetailMenuCtrl",
+                        controllerAs: "sdm"
+                    }
+                },
+                params: {id: ''}
+            });
+    }
+})(angular);
 /*
  *
  */
@@ -6902,186 +7094,4 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 		vm.data = verify;
 	}
-})(angular);
-/*
- *
- */
-;(function () {
-	'use strict';
-	angular.module('litewait.ui').controller('ShopDetailMenuCtrl', ShopDetailMenuCtrl);
-
-	ShopDetailMenuCtrl.$inject = ['$scope', '$state', '$uibModal', '$stateParams', 'PubSub', 'Merchant', 'MenuService', 'User', 'CartService'];
-
-	function ShopDetailMenuCtrl($scope, $state, $uibModal, $stateParams, PubSub, Merchant, MenuService, User, CartService) {
-		var vm = this;
-		vm.nest = {};
-		vm.nest.merchantDetail = {};
-		vm.nest.merchantId = $stateParams.id;
-		vm.getMenuByMandC = getMenuByMandC;
-		vm.addToCart = addToCart;
-		vm.openCartModal = openCartModal;
-		$scope.menu = {};
-
-		function openCartModal(data) {
-			var menu = angular.copy(data);
-			if (!User.isLoggedIn) {
-				PubSub.publish('open:login');
-				return;
-			}
-
-			var cartmenu = CartService.get(menu.item_id);
-			if (cartmenu) {
-				menu.qty = cartmenu.qty;
-				menu.isCart = true;
-			} else {
-				menu.qty = 1;
-				menu.isCart = false;
-			}
-
-			$scope.menu = menu;
-			$scope.nest = vm.nest;
-			var modalInstance = $uibModal.open({
-                templateUrl: 'cartModal.html',
-                backdrop: 'static',
-                size: 'lg',
-                windowClass: 'menu-modal',
-                keyboard: false,
-                scope: $scope,
-                bindToController: true,
-                controllerAs: 'cartModal',
-                controller: function($scope, $uibModalInstance, CartService) {
-                    var vm = this;
-                    vm.nest = $scope.nest;
-                    vm.menu = angular.copy($scope.menu);
-
-                    vm.addToCart = addToCart;
-                    vm.close = close;
-
-                    function addToCart() {
-                    	CartService.add(vm.menu, vm.nest.merchantDetail);
-                    	close();
-                    }
-
-                    function close() {
-                    	$uibModalInstance.close();
-                    }
-                }
-            });
-		}
-
-		function addToCart(obj) {
-			if (!User.isLoggedIn) {
-				PubSub.publish('open:login');
-				return;
-			}
-
-			CartService.add(obj, vm.nest.merchantId);
-		}
-
-		function getMerchant(id) {
-			Merchant.get(id).then(function(response) {
-				vm.nest.merchantDetail = response.data.data;
-				vm.nest.merchantDetail.categories = [];
-				vm.nest.merchantId = vm.nest.merchantDetail.id;
-				return MenuService.getCategoryByMerchantId(vm.nest.merchantId);
-			}).then(function(response) {
-				if (!response.data.error) {
-					vm.nest.merchantDetail.categories = response.data.data.item_categories || [];
-					if (vm.nest.merchantDetail.categories.length) {
-						for(var i=0;i<vm.nest.merchantDetail.categories.length; i++) {
-							vm.nest.merchantDetail.categories[i].menu_items = [];
-						}
-						PubSub.publish('getfirstmenu', vm.nest.merchantDetail.categories[0]);
-					}
-				}
-			});
-		}
-
-		function getMenuByMandC(category_id) {
-			var data = {
-				category_id: category_id,
-				merchant_id: vm.nest.merchantId
-			};
-
-			var index = _.findIndex(vm.nest.merchantDetail.categories, {id: category_id+''});
-			if (index !== -1 && vm.nest.merchantDetail.categories[index].menu_items.length === 0) {
-				MenuService.getByMandC(data).then(function(res) {
-					
-					vm.nest.merchantDetail.categories[index].menu_items = res.data.data.menu_items || [];
-					CartService.process();
-				});
-			}
-			console.log(vm.nest);
-			
-		}
-
-		if (vm.nest.merchantId) {
-			getMerchant(vm.nest.merchantId);
-		}
-
-		function processCartRemove(data) {
-			var cindex = _.findIndex(vm.nest.merchantDetail.categories, {id: data.category_id+''});
-			if (cindex !== -1) {
-				var category = vm.nest.merchantDetail.categories[cindex];
-				var index = _.findIndex(category.menu_items, {item_id: data.item_id});
-				if (index !== -1) {
-					vm.nest.merchantDetail.categories[cindex].menu_items[index].isCart = false;
-					vm.nest.merchantDetail.categories[cindex].menu_items[index].qty = '';
-				}
-			}
-		}
-
-		function processCartAdd(data) {
-			var cindex = _.findIndex(vm.nest.merchantDetail.categories, {id: data.category_id+''});
-			if (cindex !== -1) {
-				var category = vm.nest.merchantDetail.categories[cindex];
-				var index = _.findIndex(category.menu_items, {item_id: data.item_id});
-				if (index !== -1) {
-					vm.nest.merchantDetail.categories[cindex].menu_items[index].isCart = true;
-					vm.nest.merchantDetail.categories[cindex].menu_items[index].qty = data.qty;
-				}
-			}
-		}
-
-		PubSub.subscribe('getfirstmenu', function(event, obj) {
-			var category_id = obj.args.id;
-			getMenuByMandC(category_id);
-		});
-
-		PubSub.subscribe('cart:added', function(event, obj) {
-			var data = obj.args;
-			processCartAdd(data);
-		});
-
-		PubSub.subscribe('cart:removed', function(event, obj) {
-			var data = obj.args;
-			processCartRemove(data);
-		});
-	}
-})();
-
-;(function(angular) {
-    'use strict';
-
-    angular.module('litewait').config(config);
-
-    config.$inject = ['$stateProvider'];
-
-    function config($stateProvider) {
-        $stateProvider
-            .state('shop', {
-                abstract: true
-            })
-            .state('shop.detail', {
-            	url: "/shop/:id",
-                views: {
-                    "@": {
-                        templateUrl: "shop/shop-detail-menu.html",
-                        controller: "ShopDetailMenuCtrl",
-                        controllerAs: "sdm"
-                    }
-                },
-                params: {id: ''}
-            });
-    }
 })(angular);
