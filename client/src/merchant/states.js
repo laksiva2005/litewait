@@ -22,7 +22,16 @@
                         controllerAs: 'mlc'
                     }
                 },
-                params: { status: [1,2,3] }
+                params: { status: [1,2,3] },
+                resolve: {
+                    userrestriction: function(User, $state) {
+                        if (User.isLoggedIn && User.role !== 'm') {
+                            $state.go('home');
+                        } else {
+                            return true;
+                        }
+                    }
+                }
             })
             .state('merchant.order', {
                 url: '/order',
@@ -34,6 +43,15 @@
                     }
                 },
                 params: { status: [1,2,3] },
+                resolve: {
+                    userrestriction: function(User, $state) {
+                        if (User.isLoggedIn && User.role !== 'm') {
+                            $state.go('home');
+                        } else {
+                            return true;
+                        }
+                    }
+                }
             })
             .state('merchant.pastorder', {
                 url: '/pastorder',
@@ -44,7 +62,16 @@
                         controllerAs: 'mpoc'
                     }
                 },
-                params: {status: [4]}
+                params: {status: [4]},
+                resolve: {
+                    userrestriction: function(User, $state) {
+                        if (User.isLoggedIn && User.role !== 'm') {
+                            $state.go('home');
+                        } else {
+                            return true;
+                        }
+                    }
+                }
             })
             .state('merchant.review', {
                 url: '/review',
@@ -53,6 +80,15 @@
                         templateUrl: 'merchant/merchant-review.html',
                         controller: 'MerchantReviewCtrl',
                         controllerAs: 'mrc'
+                    }
+                },
+                resolve: {
+                    userrestriction: function(User, $state) {
+                        if (User.isLoggedIn && User.role !== 'm') {
+                            $state.go('home');
+                        } else {
+                            return true;
+                        }
                     }
                 }
             })
@@ -63,6 +99,15 @@
                         templateUrl: 'merchant/merchant-menu.html',
                         controller: 'MerchantMenuCtrl',
                         controllerAs: 'mmc'
+                    }
+                },
+                resolve: {
+                    userrestriction: function(User, $state) {
+                        if (User.isLoggedIn && User.role !== 'm') {
+                            $state.go('home');
+                        } else {
+                            return true;
+                        }
                     }
                 }
             })
@@ -76,6 +121,13 @@
                     }
                 },
                 resolve: {
+                    userrestriction: function(User, $state) {
+                        if (User.isLoggedIn && User.role !== 'm') {
+                            $state.go('home');
+                        } else {
+                            return true;
+                        }
+                    },
                     menu: function() {
                         return false;
                     }
@@ -91,6 +143,13 @@
                     }
                 },
                 resolve: {
+                    userrestriction: function(User, $state) {
+                        if (User.isLoggedIn && User.role !== 'm') {
+                            $state.go('home');
+                        } else {
+                            return true;
+                        }
+                    },
                     menu: function(MenuService, $stateParams, User) {
                         var data = {
                             merchant_id: User.data.id,
@@ -115,6 +174,15 @@
                         controller: 'MerchantCategoryCtrl',
                         controllerAs: 'mcc'
                     }
+                },
+                resolve: {
+                    userrestriction: function(User, $state) {
+                        if (User.isLoggedIn && User.role !== 'm') {
+                            $state.go('home');
+                        } else {
+                            return true;
+                        }
+                    }
                 }
             })
             .state('merchant.categoryadd', {
@@ -127,6 +195,13 @@
                     }
                 },
                 resolve: {
+                    userrestriction: function(User, $state) {
+                        if (User.isLoggedIn && User.role !== 'm') {
+                            $state.go('home');
+                        } else {
+                            return true;
+                        }
+                    },
                     category: function() {
                         return false;
                     }
@@ -142,6 +217,13 @@
                     }
                 },
                 resolve: {
+                    userrestriction: function(User, $state) {
+                        if (User.isLoggedIn && User.role !== 'm') {
+                            $state.go('home');
+                        } else {
+                            return true;
+                        }
+                    },
                     category: function(MenuService, $stateParams, User, $state) {
                         var data = {
                             merchant_id: User.data.id,

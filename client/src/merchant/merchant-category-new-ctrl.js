@@ -5,9 +5,9 @@
 	'use strict';
 	angular.module('litewait.ui').controller('NewCategoryCtrl', NewCategoryCtrl);
 
-	NewCategoryCtrl.$inject = ['$scope', 'User', 'MenuService', '$stateParams', '$state', 'MSG', 'toaster', 'category'];
+	NewCategoryCtrl.$inject = ['$scope', 'User', 'MenuService', '$stateParams', '$state', 'MSG', 'toaster', 'userrestriction', 'category'];
 
-	function NewCategoryCtrl($scope, User, MenuService, $stateParams, $state, MSG, toaster, category) {
+	function NewCategoryCtrl($scope, User, MenuService, $stateParams, $state, MSG, toaster, userrestriction, category) {
 		var vm = this;
 
 		vm.data = {};

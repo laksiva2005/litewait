@@ -5,9 +5,9 @@
 	'use strict';
 	angular.module('litewait.ui').controller('MerchantOrderCtrl', MerchantOrderCtrl);
 
-	MerchantOrderCtrl.$inject = ['$scope', 'User', 'OrderService', 'OrderStatus', 'MSG', '$stateParams'];
+	MerchantOrderCtrl.$inject = ['$scope', 'User', 'OrderService', 'OrderStatus', 'MSG', '$stateParams', 'userrestriction'];
 
-	function MerchantOrderCtrl($scope, User, OrderService, OrderStatus, MSG, $stateParams) {
+	function MerchantOrderCtrl($scope, User, OrderService, OrderStatus, MSG, $stateParams, userrestriction) {
 		var vm = this;
 		vm.data = {};
 		vm.orderStatus = OrderStatus;

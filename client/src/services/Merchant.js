@@ -38,6 +38,16 @@
 			delete data.contact.cityId;
 			delete data.contact.stateId;
 			delete data.contact.countryId;
+			if (typeof data.user_name != undefined) {
+				delete data.user_name;
+			}
+			if (typeof data.user_type != undefined) {
+				delete data.user_type;
+			}
+
+			if (typeof data.contact.address_2 != undefined) {
+				delete data.contact.address_2;
+			}
 			return $http.put(urlBase, data);
 		}
 

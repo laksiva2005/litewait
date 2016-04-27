@@ -22,7 +22,9 @@
             changeStatusSuccess: 'Order status has been changed successfully',
             changeStatusFailed: 'Order status change has been failed',
             orderSuccess: 'Order has been failed',
-            orderFailed: 'Order has been placed successfully'
+            orderFailed: 'Order has been placed successfully',
+            merchantUpdateFailed: 'Merchant update has been failed',
+            merchantUpdateSuccess: 'Merchant has been updated successfully'
         })
         .constant('AUTH_EVENTS', {
             loginSuccess: 'auth:login-success',

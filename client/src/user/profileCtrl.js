@@ -5,9 +5,9 @@
 	'use strict';
 	angular.module('litewait.ui').controller('ProfileCtrl', ProfileCtrl);
 
-	ProfileCtrl.$inject = ['$scope', 'User', '$state', 'toaster', 'AUTH_MSG', 'AUTH_PROPS', 'GeoService', 'authentication'];
+	ProfileCtrl.$inject = ['Merchant', '$scope', 'User', '$state', 'toaster', 'AUTH_MSG', 'MSG', 'AUTH_PROPS', 'GeoService', 'authentication'];
 
-	function ProfileCtrl($scope, User, $state, toaster, AUTH_MSG, AUTH_PROPS, GeoService, authentication) {
+	function ProfileCtrl(Merchant, $scope, User, $state, toaster, AUTH_MSG, MSG, AUTH_PROPS, GeoService, authentication) {
 		var vm = this;
 		vm.AUTH_PROPS = AUTH_PROPS;
 		vm.user = User;
@@ -150,24 +150,43 @@
 
 		function updateProfile(valid) {
 			if (valid) {
-				
-				vm.user.updateProfile(vm.profile).then(function(response) {
-					if (!(response.data.error || response.error)) {
-						toaster.pop({
-                            type: 'success', 
-                            title:'Success', 
-                            body: AUTH_MSG.profileUpdateSuccess, 
-                            toasterId: 1
-                        });
-					} else {
-						toaster.pop({
-                            type: 'error', 
-                            title:'Error', 
-                            body: AUTH_MSG.profileUpdateFailed, 
-                            toasterId: 1
-                        });
-					}
-				});
+				if (User.role == 'm') {
+					Merchant.update(vm.profile).then(function(response) {
+						if (!(response.error)) {
+							toaster.pop({
+	                            type: 'success', 
+	                            title:'Success', 
+	                            body: MSG.merchantUpdateSuccess, 
+	                            toasterId: 1
+	                        });
+						} else {
+							toaster.pop({
+	                            type: 'error', 
+	                            title:'Error', 
+	                            body: MSG.merchantUpdateFailed, 
+	                            toasterId: 1
+	                        });
+						}
+					});
+				} else {
+					vm.user.updateProfile(vm.profile).then(function(response) {
+						if (!(response.data.error || response.error)) {
+							toaster.pop({
+	                            type: 'success', 
+	                            title:'Success', 
+	                            body: AUTH_MSG.profileUpdateSuccess, 
+	                            toasterId: 1
+	                        });
+						} else {
+							toaster.pop({
+	                            type: 'error', 
+	                            title:'Error', 
+	                            body: AUTH_MSG.profileUpdateFailed, 
+	                            toasterId: 1
+	                        });
+						}
+					});
+				}
 			}
 		}
 
@@ -184,6 +203,24 @@
 			vm.profile.contact.zip_code = vm.user.data.contact.zip_code;
 			vm.profile.contact.mail_id = vm.user.data.contact.mail_id;
 			vm.profile.user_type = User.role;
+
+			if (User.role == 'm') {
+				vm.profile.id = vm.user.data.id;
+				vm.profile.username = vm.user.data.username;
+				vm.profile.business_name = vm.user.data.business_name;
+				vm.profile.business_type = vm.user.data.business_type;
+				vm.profile.contact_person = vm.user.data.contact_person;
+				vm.profile.region = vm.user.data.region;
+				vm.profile.region_id = vm.user.data.region_id;
+				vm.profile.city = vm.user.data.city;
+				vm.profile.city_id = vm.user.data.city_id;
+				vm.profile.open_time = vm.user.data.open_time;
+				vm.profile.close_time = vm.user.data.close_time;
+				vm.profile.avg_waiting_time = vm.user.data.avg_waiting_time;
+				vm.profile.photo = vm.user.data.photo;
+				vm.profile.website = vm.user.data.website;
+				vm.profile.is_active = vm.user.data.is_active;
+			}
 		}
 
 		function assignPayment(paymentConfig) {

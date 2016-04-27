@@ -5,9 +5,9 @@
 	'use strict';
 	angular.module('litewait.ui').controller('MerchantLandingCtrl', MerchantLandingCtrl);
 
-	MerchantLandingCtrl.$inject = ['$scope', 'User', '$state'];
+	MerchantLandingCtrl.$inject = ['$scope', 'User', '$state', 'userrestriction'];
 
-	function MerchantLandingCtrl($scope, User, $state) {
+	function MerchantLandingCtrl($scope, User, $state, userrestriction) {
 		var vm = this;
 		vm.data = {};
 		vm.data.active = $state.current.url.replace('/', '');

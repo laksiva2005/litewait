@@ -5,9 +5,9 @@
 	'use strict';
 	angular.module('litewait.ui').controller('NewMenuCtrl', NewMenuCtrl);
 
-	NewMenuCtrl.$inject = ['$scope', 'User', 'MenuService', '$stateParams', '$state', 'MSG', 'toaster', '$filter', 'AddonService', 'menu'];
+	NewMenuCtrl.$inject = ['$scope', 'User', 'MenuService', '$stateParams', '$state', 'MSG', 'toaster', '$filter', 'AddonService', 'userrestriction', 'menu'];
 
-	function NewMenuCtrl($scope, User, MenuService, $stateParams, $state, MSG, toaster, $filter, AddonService, menu) {
+	function NewMenuCtrl($scope, User, MenuService, $stateParams, $state, MSG, toaster, $filter, AddonService, userrestriction, menu) {
 		var vm = this;
 		vm.data = {};
 		vm.data.merchant = User.data;

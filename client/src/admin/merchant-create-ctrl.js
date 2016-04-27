@@ -5,9 +5,9 @@
 	'use strict';
 	angular.module('litewait.ui').controller('MerchantCreateCtrl', MerchantCreateCtrl);
 
-	angular.$inject = ['$scope', 'Merchant', 'merchant', 'toaster', 'GeoService'];
+	angular.$inject = ['$scope', 'Merchant', 'merchant', 'toaster', 'GeoService', 'MSG'];
 
-	function MerchantCreateCtrl($scope, Merchant, merchant, toaster, GeoService) {
+	function MerchantCreateCtrl($scope, Merchant, merchant, toaster, GeoService, MSG) {
 		var vm = this;
 		vm.type = merchant ? 'Edit' : 'Add';
 		vm.data = {
@@ -153,14 +153,14 @@
 						toaster.pop({
                             type: 'success', 
                             title:'Success', 
-                            body: AUTH_MSG.merchantUpdateSuccess, 
+                            body: MSG.merchantUpdateSuccess, 
                             toasterId: 1
                         });
 					} else {
 						toaster.pop({
                             type: 'error', 
                             title:'Error', 
-                            body: AUTH_MSG.merchantUpdateFailed, 
+                            body: MSG.merchantUpdateFailed, 
                             toasterId: 1
                         });
 					}

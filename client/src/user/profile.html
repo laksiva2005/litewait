@@ -1,183 +1,250 @@
 <div class="container edit-profile">
    <div>
-   			<div class="col-md-12">
-               <ul class="nav nav-tabs">
-                  <li class="active"><a data-toggle="tab" href="#edit-profile">Edit Profile</a></li>
-                  <li ng-if="nav.user.role=='c'"><a data-toggle="tab" href="#payment-config">Payment Configuration</a></li>
-                  <li ng-if="nav.user.role=='m'"><a data-toggle="tab" href="#merchant-data">Merchant</a></li>
-               </ul>
-               </div>
-               <div class="tab-content">
-                  <div id="edit-profile" class="tab-pane fade in active">
-                  <h1>Edit Profile</h1>
-                  
-                  <div class="col-md-12 form-wrap">
-      <form novalidate name="epc.editProfileForm" ng-submit="epc.updateProfile(epc.editProfileForm.$valid)" role="form">
-         <div class="col-md-6">
-            <div class="form-group">
-               <input type="text" name="user_name" maxlength="50" ng-model="epc.profile.user_name" class="form-control"  placeholder="Name">
-               <div ng-if="epc.editProfileForm.$submitted && epc.editProfileForm.user_name.$invalid" ng-messages="epc.editProfileForm.user_name.$error" class="alert alert-danger">
-                  <div ng-message="maxlength">Please enter a valid Username</div>
-               </div>
-            </div>
-            <div class="form-group">
-               <input type="email" name="mail_id" ng-model="epc.profile.contact.mail_id" class="form-control" placeholder="Email">
-               <div ng-if="epc.editProfileForm.$submitted && epc.editProfileForm.mail_id.$invalid" ng-messages="epc.editProfileForm.mail_id.$error" class="alert alert-danger">
-                  <div ng-message="email">Please enter a valid Email Id</div>
-                </div>
-            </div>
-            <div class="form-group">
-               <input type="text" name="phone" ng-model="epc.profile.contact.phone" class="form-control" placeholder="Phone">
-            </div>
-            <div class="form-group">
-            	<textarea name="address_1" ng-model="epc.profile.contact.address_1" class="form-control"  placeholder="Address"></textarea>
-            </div>
-         </div>
-         <div class="col-md-6">
-            <div class="form-group">
-               <input type="text" name="country" autocomplete="off" ng-model="epc.geo.country" class="form-control" placeholder="Country" uib-typeahead="country as country.name for country in epc.getCountries($viewValue)" typeahead-loading="loadingCountries" typeahead-no-results="noCountry" class="form-control" typeahead-on-select="epc.onSelectCountry($item, $modal, $label, $event)">
-               <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
-               <div ng-show="noCountry">
-                 <i class="glyphicon glyphicon-remove"></i> No Results Found
-               </div>
-            </div>
-            <div class="form-group">
-               <input type="text" name="state" autocomplete="off" ng-model="epc.geo.state" class="form-control" placeholder="State" uib-typeahead="state as state.name for state in epc.getStates($viewValue)" typeahead-loading="loadingStates" typeahead-no-results="noState" class="form-control" typeahead-on-select="epc.onSelectState($item, $modal, $label, $event)">
-               <i ng-show="loadingStates" class="glyphicon glyphicon-refresh"></i>
-               <div ng-show="noState">
-                 <i class="glyphicon glyphicon-remove"></i> No Results Found
-               </div>
-            </div>
-            <div class="form-group">
-               <input type="text" name="city" autocomplete="off" ng-model="epc.geo.city" class="form-control" placeholder="City" uib-typeahead="city as city.name for city in epc.getCities($viewValue)" typeahead-loading="loadingCities" typeahead-no-results="noCity" class="form-control" typeahead-on-select="epc.onSelectCity($item, $modal, $label, $event)">
-               <i ng-show="loadingCities" class="glyphicon glyphicon-refresh"></i>
-               <div ng-show="noCity">
-                 <i class="glyphicon glyphicon-remove"></i> No Results Found
-               </div>
-            </div>
-            <div class="form-group">
-               <input type="text" name="zip_code" ng-model="epc.profile.contact.zip_code" class="form-control" placeholder="Zipcode">
-            </div>
-         </div>
-         <div class="clearfix"></div>
-         <div class="col-md-12">
-            <button type="submit" class="btn btn-default pull-right">Submit</button>
-            <button type="submit" ng-click="epc.cancel($event)" class="btn btn-default pull-right">Cancel</button>
-            <div class="clearfix"></div>
-         </div>
-      </form>
-   </div>
-                     
-                  </div>
-                   <div  ng-if="nav.user.role=='c'" id="payment-config" class="tab-pane fade in">
-                    <h1>Payment Configuration</h1>
-                  
-                  <div class="col-md-12 form-wrap">
-      <form role="form" novalidate name="epc.editPaymentForm" ng-submit="epc.savePayment(epc.editPaymentForm.$valid)">
-         <div class="col-md-6">
-            <div class="form-group">
-               <select class="form-control" name="card_type" ng-model="epc.payment.card_type" required>
-                  <option value="" selected>Card Type</option>
-                  <option value="master">Mastercard</option>
-                  <option value="visa">Visa</option>
-               </select>
-               <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.card_type.$invalid" ng-messages="epc.editPaymentForm.mail_id.$error" class="alert alert-danger">
-                  <div ng-message="required">Card type is required</div>
-               </div>
-            </div>
-            <div class="form-group">
-            	<input required pattern="{{epc.AUTH_PROPS.CARD}}" type="text" class="form-control"  placeholder="Card Number" name="card_number" ng-model="epc.payment.card_number">
-               <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.card_number.$invalid" ng-messages="epc.editPaymentForm.card_number.$error" class="alert alert-danger">
-                  <div ng-message="required">Card number is required</div>
-                  <div ng-message="pattern">Please enter a valid Credit/Debit Card Number</div>
-               </div>
-            </div>
-            <div class="form-group">
-              	<input required maxlength="50" type="text" class="form-control"  placeholder="Name as in card" name="card_name" ng-model="epc.payment.card_name">
-               <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.card_name.$invalid" ng-messages="epc.editPaymentForm.card_name.$error" class="alert alert-danger">
-                  <div ng-message="required">Card name is required</div>
-                  <div ng-message="maxlength">Card number should have maximum 50 characters</div>
-               </div>
-            </div>
-            <div class="form-group">
-               <input date-as-ms required uib-datepicker-popup="MM/yyyy" min-mode="month" type="text" class="form-control" placeholder="Expiry date" name="card_expiry" ng-model="epc.payment.card_expiry" is-open="epc.pay.opened" on-open-focus="epc.pay.onOpenFocus">
-               <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="epc.open1()"><i class="glyphicon glyphicon-calendar"></i></button>
-              </span>
-               <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.card_expiry.$invalid" ng-messages="epc.editPaymentForm.card_expiry.$error" class="alert alert-danger">
-                  <div ng-message="required">Card Expiry is required</div>
-               </div>
-            </div>
-            <div class="form-group">
-               <input required pattern="{{AUTH_PROPS.CVV}}" type="text" class="form-control" placeholder="CVV" name="cvv" ng-model="epc.payment.cvv">
-               <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.cvv.$invalid" ng-messages="epc.editPaymentForm.cvv.$error" class="alert alert-danger">
-                  <div ng-message="required">CVV is required</div>
-                  <div ng-message="pattern">Please enter a valid CVV</div>
-               </div>
-            </div>
-            <div class="form-group">
-               <input required maxlength="100" type="text" class="form-control" placeholder="Address 1" name="address_1" ng-model="epc.payment.contact.address_1">
-               <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.address_1.$invalid" ng-messages="epc.editPaymentForm.address_1.$error" class="alert alert-danger">
-                  <div ng-message="required">Address 1 is required</div>
-                  <div ng-message="maxlength">Address 1 should have maximum 100 characters</div>
-               </div>
-            </div>
-            <div class="form-group">
-               <input required maxlength="50" type="text" class="form-control" placeholder="City" name="city" ng-model="epc.payment.contact.city">
-               <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.city.$invalid" ng-messages="epc.editPaymentForm.city.$error" class="alert alert-danger">
-                  <div ng-message="required">City is required</div>
-                  <div ng-message="maxlength">City should have maximum 50 characters</div>
-               </div>
-            </div>
-            <div class="form-group">
-               <select required class="form-control" name="state" ng-model="epc.payment.contact.state">
-                  <option value="" selected>State</option>
-                  <option value="Tamilnadu">tamil nadu</option>
-                  <option value="Kerala">Kerala</option>
-                  <option value="Karnataka">Karnataka</option>
-                  <option value="Andra">Andra</option>
-               </select>
-               <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.state.$invalid" ng-messages="epc.editPaymentForm.state.$error" class="alert alert-danger">
-                  <div ng-message="required">State is required</div>
-               </div>
-            </div>
-            <div class="form-group">
-               <input required type="text" class="form-control" placeholder="Zip Code" name="zip_code" ng-model="epc.payment.contact.zip_code">
-               <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.zip_code.$invalid" ng-messages="epc.editPaymentForm.zip_code.$error" class="alert alert-danger">
-                  <div ng-message="required">Zip Code is required</div>
-               </div>
-            </div>
-            
-            
-         </div>
-         <div class="col-md-6"></div>
-     
-         
-         <div class="clearfix"></div>
-  
-    
-
-         <div class="col-md-6">
-            <button type="submit" class="btn btn-default pull-right">Save</button>
-            <button type="submit" class="btn btn-default pull-right" ng-click="epc.cancel($event)">Cancel</button>
-            <div class="clearfix"></div>
-            
-         </div>
-         
-
-      </form>
-   </div>
-                     
-                  </div>
-                  <div ng-if="nav.user.role=='m'" id="merchant-data" class="tab-pane fade in">
-                     <h1>Update Merchant</h1>
-                     <div class="col-md-12 form-wrap">
-                        <form novalidate name="epc.editProfileForm" ng-submit="epc.updateProfile(epc.editProfileForm.$valid)" role="form"></form>
+      <div class="col-md-12">
+         <ul class="nav nav-tabs" role="tablist">
+            <li class="active"><a data-toggle="tab" aria-controls="edit-profile" role="tab" data-target="#edit-profile">Edit Profile</a></li>
+            <li ng-if="nav.user.role=='c'"><a data-toggle="tab" aria-controls="payment-config" role="tab" data-target="#payment-config">Payment Configuration</a></li>
+            <li ng-if="nav.user.role=='m'"><a data-toggle="tab" aria-controls="merchant-data" role="tab" data-target="#merchant-data">Merchant</a></li>
+         </ul>
+      </div>
+      <div class="tab-content">
+         <div role="tabpanel" id="edit-profile" class="tab-pane fade in active">
+            <h1>Edit Profile</h1>
+            <div class="col-md-12 form-wrap">
+               <form novalidate name="epc.editProfileForm" ng-submit="epc.updateProfile(epc.editProfileForm.$valid)" role="form">
+                  <div class="col-md-6">
+                     <div class="form-group">
+                        <input type="text" name="user_name" maxlength="50" ng-model="epc.profile.user_name" class="form-control"  placeholder="Name">
+                        <div ng-if="epc.editProfileForm.$submitted && epc.editProfileForm.user_name.$invalid" ng-messages="epc.editProfileForm.user_name.$error" class="alert alert-danger">
+                           <div ng-message="maxlength">Please enter a valid Username</div>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <input type="email" name="mail_id" ng-model="epc.profile.contact.mail_id" class="form-control" placeholder="Email">
+                        <div ng-if="epc.editProfileForm.$submitted && epc.editProfileForm.mail_id.$invalid" ng-messages="epc.editProfileForm.mail_id.$error" class="alert alert-danger">
+                           <div ng-message="email">Please enter a valid Email Id</div>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <input type="text" name="phone" ng-model="epc.profile.contact.phone" class="form-control" placeholder="Phone">
+                     </div>
+                     <div class="form-group">
+                        <textarea name="address_1" ng-model="epc.profile.contact.address_1" class="form-control"  placeholder="Address"></textarea>
                      </div>
                   </div>
-                  
-                  
-               </div>
+                  <div class="col-md-6">
+                     <div class="form-group">
+                        <input type="text" name="country" autocomplete="off" ng-model="epc.geo.country" class="form-control" placeholder="Country" uib-typeahead="country as country.name for country in epc.getCountries($viewValue)" typeahead-loading="loadingCountries" typeahead-no-results="noCountry" class="form-control" typeahead-on-select="epc.onSelectCountry($item, $modal, $label, $event)">
+                        <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+                        <div ng-show="noCountry">
+                        <i class="glyphicon glyphicon-remove"></i> No Results Found
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <input type="text" name="state" autocomplete="off" ng-model="epc.geo.state" class="form-control" placeholder="State" uib-typeahead="state as state.name for state in epc.getStates($viewValue)" typeahead-loading="loadingStates" typeahead-no-results="noState" class="form-control" typeahead-on-select="epc.onSelectState($item, $modal, $label, $event)">
+                        <i ng-show="loadingStates" class="glyphicon glyphicon-refresh"></i>
+                        <div ng-show="noState">
+                        <i class="glyphicon glyphicon-remove"></i> No Results Found
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <input type="text" name="city" autocomplete="off" ng-model="epc.geo.city" class="form-control" placeholder="City" uib-typeahead="city as city.name for city in epc.getCities($viewValue)" typeahead-loading="loadingCities" typeahead-no-results="noCity" class="form-control" typeahead-on-select="epc.onSelectCity($item, $modal, $label, $event)">
+                        <i ng-show="loadingCities" class="glyphicon glyphicon-refresh"></i>
+                        <div ng-show="noCity">
+                        <i class="glyphicon glyphicon-remove"></i> No Results Found
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <input type="text" name="zip_code" ng-model="epc.profile.contact.zip_code" class="form-control" placeholder="Zipcode">
+                     </div>
+                  </div>
+                  <div class="clearfix"></div>
+                  <div class="col-md-12">
+                     <button type="submit" class="btn btn-default pull-right">Submit</button>
+                     <button type="submit" ng-click="epc.cancel($event)" class="btn btn-default pull-right">Cancel</button>
+                     <div class="clearfix"></div>
+                  </div>
+               </form>
             </div>
-   
+         </div>
+         <div  role="tabpanel"  ng-if="nav.user.role=='c'" id="payment-config" class="tab-pane fade in">
+            <h1>Payment Configuration</h1>
+            <div class="col-md-12 form-wrap">
+               <form role="form" novalidate name="epc.editPaymentForm" ng-submit="epc.savePayment(epc.editPaymentForm.$valid)">
+                  <div class="col-md-6">
+                     <div class="form-group">
+                        <select class="form-control" name="card_type" ng-model="epc.payment.card_type" required>
+                           <option value="" selected>Card Type</option>
+                           <option value="master">Mastercard</option>
+                           <option value="visa">Visa</option>
+                        </select>
+                        <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.card_type.$invalid" ng-messages="epc.editPaymentForm.mail_id.$error" class="alert alert-danger">
+                           <div ng-message="required">Card type is required</div>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <input required pattern="{{epc.AUTH_PROPS.CARD}}" type="text" class="form-control"  placeholder="Card Number" name="card_number" ng-model="epc.payment.card_number">
+                        <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.card_number.$invalid" ng-messages="epc.editPaymentForm.card_number.$error" class="alert alert-danger">
+                           <div ng-message="required">Card number is required</div>
+                           <div ng-message="pattern">Please enter a valid Credit/Debit Card Number</div>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <input required maxlength="50" type="text" class="form-control"  placeholder="Name as in card" name="card_name" ng-model="epc.payment.card_name">
+                        <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.card_name.$invalid" ng-messages="epc.editPaymentForm.card_name.$error" class="alert alert-danger">
+                           <div ng-message="required">Card name is required</div>
+                           <div ng-message="maxlength">Card number should have maximum 50 characters</div>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <input date-as-ms required uib-datepicker-popup="MM/yyyy" min-mode="month" type="text" class="form-control" placeholder="Expiry date" name="card_expiry" ng-model="epc.payment.card_expiry" is-open="epc.pay.opened" on-open-focus="epc.pay.onOpenFocus">
+                        <span class="input-group-btn">
+                           <button type="button" class="btn btn-default" ng-click="epc.open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                        <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.card_expiry.$invalid" ng-messages="epc.editPaymentForm.card_expiry.$error" class="alert alert-danger">
+                           <div ng-message="required">Card Expiry is required</div>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <input required pattern="{{AUTH_PROPS.CVV}}" type="text" class="form-control" placeholder="CVV" name="cvv" ng-model="epc.payment.cvv">
+                        <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.cvv.$invalid" ng-messages="epc.editPaymentForm.cvv.$error" class="alert alert-danger">
+                           <div ng-message="required">CVV is required</div>
+                           <div ng-message="pattern">Please enter a valid CVV</div>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <input required maxlength="100" type="text" class="form-control" placeholder="Address 1" name="address_1" ng-model="epc.payment.contact.address_1">
+                        <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.address_1.$invalid" ng-messages="epc.editPaymentForm.address_1.$error" class="alert alert-danger">
+                           <div ng-message="required">Address 1 is required</div>
+                           <div ng-message="maxlength">Address 1 should have maximum 100 characters</div>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <input required maxlength="50" type="text" class="form-control" placeholder="City" name="city" ng-model="epc.payment.contact.city">
+                        <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.city.$invalid" ng-messages="epc.editPaymentForm.city.$error" class="alert alert-danger">
+                        <div ng-message="required">City is required</div>
+                        <div ng-message="maxlength">City should have maximum 50 characters</div>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <select required class="form-control" name="state" ng-model="epc.payment.contact.state">
+                           <option value="" selected>State</option>
+                           <option value="Tamilnadu">tamil nadu</option>
+                           <option value="Kerala">Kerala</option>
+                           <option value="Karnataka">Karnataka</option>
+                           <option value="Andra">Andra</option>
+                        </select>
+                        <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.state.$invalid" ng-messages="epc.editPaymentForm.state.$error" class="alert alert-danger">
+                           <div ng-message="required">State is required</div>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <input required type="text" class="form-control" placeholder="Zip Code" name="zip_code" ng-model="epc.payment.contact.zip_code">
+                        <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.zip_code.$invalid" ng-messages="epc.editPaymentForm.zip_code.$error" class="alert alert-danger">
+                           <div ng-message="required">Zip Code is required</div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-md-6"></div>
+                  <div class="clearfix"></div>
+                  <div class="col-md-6">
+                     <button type="submit" class="btn btn-default pull-right">Save</button>
+                     <button type="submit" class="btn btn-default pull-right" ng-click="epc.cancel($event)">Cancel</button>
+                     <div class="clearfix"></div>
+                  </div>
+               </form>
+            </div>
+         </div>
+         <div  role="tabpanel" ng-if="nav.user.role=='m'" id="merchant-data" class="tab-pane fade in">
+            <h1>Update Merchant</h1>
+            <div class="col-md-12 form-wrap">
+               <form novalidate name="epc.editProfileForm" ng-submit="epc.updateProfile(epc.editProfileForm.$valid)" role="form">
+                  <div class="col-md-6">
+                     <div class="form-group">
+                        <label for="business_name">Bussiness Name</label>
+                        <input required type="text" name="business_name" maxlength="50" ng-model="epc.profile.business_name" class="form-control"  placeholder="Enter bussiness name">
+                        <div ng-if="epc.editProfileForm.$submitted && epc.editProfileForm.business_name.$invalid" ng-messages="epc.editProfileForm.business_name.$error" class="alert alert-danger">
+                           <div ng-message="maxlength">Please enter a valid Business Name</div>
+                           <div ng-message="required">Please enter bussiness name</div>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <label for="bussiness_type">Bussiness Type</label>
+                        <input required type="text" name="business_type" maxlength="50" ng-model="epc.profile.business_type" class="form-control"  placeholder="Enter business type">
+                        <div ng-if="epc.editProfileForm.$submitted && epc.editProfileForm.business_type.$invalid" ng-messages="epc.editProfileForm.business_type.$error" class="alert alert-danger">
+                           <div ng-message="maxlength">Please enter a valid Business Type</div>
+                           <div ng-message="required">Please enter username</div>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <label for="contact_person">Contact Person</label>
+                        <input required type="text" name="contact_person" maxlength="50" ng-model="epc.profile.contact_person" class="form-control"  placeholder="Enter contact person name">
+                        <div ng-if="epc.editProfileForm.$submitted && epc.editProfileForm.contact_person.$invalid" ng-messages="epc.editProfileForm.contact_person.$error" class="alert alert-danger">
+                           <div ng-message="maxlength">Please enter a valid Contact Person</div>
+                           <div ng-message="required">Please enter contact person</div>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <label for="website">Website</label>
+                        <input required type="text" name="website" maxlength="150" ng-model="epc.profile.website" class="form-control"  placeholder="Enter website">
+                        <div ng-if="epc.editProfileForm.$submitted && epc.editProfileForm.website.$invalid" ng-messages="epc.editProfileForm.website.$error" class="alert alert-danger">
+                           <div ng-message="maxlength">Website should contain maximum 150 characters</div>
+                           <div ng-message="maxlength">Website is required</div>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <label for="photo">Photo</label>
+                        <input type="text" name="photo" maxlength="50" ng-model="epc.profile.photo" class="form-control"  placeholder="Enter photo">
+                        <div ng-if="epc.editProfileForm.$submitted && epc.editProfileForm.photo.$invalid" ng-messages="epc.editProfileForm.photo.$error" class="alert alert-danger">
+                           <div ng-message="maxlength">Please enter a valid photo url</div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-md-6">
+                     <div class="form-group">
+                        <label for="open_time">Open Time</label>
+                        <input required type="text" name="open_time" maxlength="50" ng-model="epc.profile.open_time" class="form-control"  placeholder="Enter open time">
+                        <div ng-if="epc.editProfileForm.$submitted && epc.editProfileForm.open_time.$invalid" ng-messages="epc.editProfileForm.open_time.$error" class="alert alert-danger">
+                           <div ng-message="maxlength">Please enter a valid Contact Person</div>
+                           <div ng-message="required">Please enter open time</div>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <label for="close_time">Close Time</label>
+                        <input required type="text" name="close_time" maxlength="50" ng-model="epc.profile.close_time" class="form-control"  placeholder="Enter close time">
+                        <div ng-if="epc.editProfileForm.$submitted && epc.editProfileForm.close_time.$invalid" ng-messages="epc.editProfileForm.close_time.$error" class="alert alert-danger">
+                           <div ng-message="maxlength">Please enter a valid Contact Person</div>
+                           <div ng-message="required">Please enter close time</div>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <label for="avg_waiting_time">Average Waiting Time</label>
+                        <input required type="text" name="avg_waiting_time" maxlength="50" ng-model="epc.profile.avg_waiting_time" class="form-control"  placeholder="Enter average waiting time">
+                        <div ng-if="epc.editProfileForm.$submitted && epc.editProfileForm.avg_waiting_time.$invalid" ng-messages="epc.editProfileForm.avg_waiting_time.$error" class="alert alert-danger">
+                           <div ng-message="maxlength">Avg waiting time should contain maximum 50 characters</div>
+                           <div ng-message="required">Please enter average waiting time</div>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <label for="region">Region</label>
+                        <input type="hidden" name="region_id" ng-model="epc.profile.region_id">
+                        <input type="text" name="region" maxlength="50" ng-model="epc.profile.region" class="form-control"  placeholder="Enter region">
+                        <div ng-if="epc.editProfileForm.$submitted && epc.editProfileForm.region.$invalid" ng-messages="epc.editProfileForm.region.$error" class="alert alert-danger">
+                           <div ng-message="maxlength">Please enter a valid Contact Person</div>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <input type="checkbox" name="is_active" ng-true-value="'Y'" ng-false-value="'N'" ng-model="epc.profile.is_active"><label for="is_active">Is Active</label>
+                     </div>
+                  </div>
+                  <div class="col-md-12">
+                     <button type="submit" class="btn btn-default pull-right">Submit</button>
+                     <button type="submit" ng-click="epc.cancel($event)" class="btn btn-default pull-right">Cancel</button>
+                     <div class="clearfix"></div>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
 </div>

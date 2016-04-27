@@ -583,6 +583,49 @@ try {
   module = angular.module('litewait.ui', []);
 }
 module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('navigation/navbar.html',
+    '');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('navigation/search-box.html',
+    '<div class="container search">\n' +
+    '  <h1>SEARCH FOR YOUR FAVORITE RETAILER</h1>\n' +
+    '  <div class="row">\n' +
+    '    <div class="col-md-5 less-padding">\n' +
+    '      <input ng-model="sbc.searchCriteria.location" type="text" placeholder="Location" uib-typeahead="address as address.city_region_name for address in sbc.getLocation($viewValue)" typeahead-loading="loadingLocations" typeahead-no-results="noLocations" class="form-control" typeahead-on-select="sbc.onSelectRegion($item, $modal, $label, $event)"/>\n' +
+    '      <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>\n' +
+    '      <div ng-show="noLocations">\n' +
+    '        <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
+    '      </div>\n' +
+    '    </div>\n' +
+    '    <div class="col-md-5 less-padding">\n' +
+    '      <input type="text" class="form-control" ng-disabled="!sbc.isLocation" ng-model="sbc.searchCriteria.keyword" placeholder="Keyword" uib-typeahead="keyword as keyword.category for keyword in sbc.getKeywords($viewValue)" typeahead-loading="loadingKeywords" typeahead-no-results="noKeywords" class="form-control" typeahead-on-select="sbc.onSelectKeyword($item, $modal, $label, $event)"/>\n' +
+    '      <i ng-show="loadingKeywords" class="glyphicon glyphicon-refresh"></i>\n' +
+    '      <div ng-show="noKeywords">\n' +
+    '        <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
+    '      </div>\n' +
+    '    </div>\n' +
+    '    <div class="col-md-2 less-padding"><a ng-disabled="!sbc.isLocation" class="btn btn-block" ng-click="sbc.searchFn($event)"><i class="fa fa-search"></i> Search</a></div>\n' +
+    '  </div>\n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
   $templateCache.put('merchant/merchant-category-new.html',
     '<div class="container edit-category">\n' +
     '	<div>\n' +
@@ -930,37 +973,51 @@ try {
   module = angular.module('litewait.ui', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('navigation/navbar.html',
-    '');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('navigation/search-box.html',
-    '<div class="container search">\n' +
-    '  <h1>SEARCH FOR YOUR FAVORITE RETAILER</h1>\n' +
-    '  <div class="row">\n' +
-    '    <div class="col-md-5 less-padding">\n' +
-    '      <input ng-model="sbc.searchCriteria.location" type="text" placeholder="Location" uib-typeahead="address as address.city_region_name for address in sbc.getLocation($viewValue)" typeahead-loading="loadingLocations" typeahead-no-results="noLocations" class="form-control" typeahead-on-select="sbc.onSelectRegion($item, $modal, $label, $event)"/>\n' +
-    '      <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>\n' +
-    '      <div ng-show="noLocations">\n' +
-    '        <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
+  $templateCache.put('search/search.html',
+    '<div class="container-fluid banner-wrap" ng-if="!user.isLoggedIn">\n' +
+    '	<div class="banner">\n' +
+    '    	<div class="col-md-10 cnt">\n' +
+    '    	<p class="title-1">SAVE YOUR TIME...INCREASE PRODUCTIVE TIME<br/>\n' +
+    'SAVE MONEY!!</p>\n' +
+    '		<p class="title-2">Tired of waiting in queue, come join us</p>\n' +
+    '        <a href="#" class="btn join"  ng-click="vm.openSignUpModal($event)">Join Now !!</a>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '</div>\n' +
+    '<div class="container-fluid search-wrap" ui-view="search-box">\n' +
+    '</div>\n' +
+    '<div class="container search-result">\n' +
+    '  <div class="col-md-12 best-bet">These retailers are your best bet for:<a href="#">{{sc.keyword}}</a></div>\n' +
+    '  <div class="row-fluid">\n' +
+    '    <div class="col-md-12">\n' +
+    '      <div class="list-wrap" infinite-scroll="sc.nextPage()"\n' +
+    '      infinite-scroll-distance="0"\n' +
+    '      infinite-scroll-immediate-check="false"\n' +
+    '      infinite-scroll-use-document-bottom="true">\n' +
+    '        <div class="list-item" ng-repeat="(key, value) in sc.merchant.list">\n' +
+    '          <div class="col-xs-12 col-sm-8 col-md-8" >\n' +
+    '            <h2><a href="shop-detail-menu.html">{{value.business_name}}</a></h2>\n' +
+    '            <img src="{{value.photo}}" class="pull-left" />\n' +
+    '            <div> <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>\n' +
+    '              <p>0.98 mi Distance from search location</p>\n' +
+    '              <p class="wait">{{value.avg_wait_time}} Wait Time</p>\n' +
+    '              <p>Open {{value.open_time}} to {{value.close_time}}</p>\n' +
+    '            </div>\n' +
+    '          </div>\n' +
+    '          <div class="col-xs-12 col-sm-4 col-md-4 menu">\n' +
+    '            <h2>Popular Items</h2>\n' +
+    '            <ul>\n' +
+    '              <li><a href="#">Chicken Parmesan Sub</a></li>\n' +
+    '              <li><a href="#">BBQ Chicken Sub</a></li>\n' +
+    '              <li><a href="#">Veggie Sub</a></li>\n' +
+    '              <li><a href="#">Chicken Ranch Hot Sandwich</a></li>\n' +
+    '              <li><a href="#">Cold Cut Hot Sandwich</a></li>\n' +
+    '            </ul>\n' +
+    '            <a ng-click="sc.viewMerchant(value.id)" class="btn btn-block">View Retailer</a></div>\n' +
+    '          <div class="clearfix"></div>\n' +
+    '        </div>\n' +
     '      </div>\n' +
     '    </div>\n' +
-    '    <div class="col-md-5 less-padding">\n' +
-    '      <input type="text" class="form-control" ng-disabled="!sbc.isLocation" ng-model="sbc.searchCriteria.keyword" placeholder="Keyword" uib-typeahead="keyword as keyword.category for keyword in sbc.getKeywords($viewValue)" typeahead-loading="loadingKeywords" typeahead-no-results="noKeywords" class="form-control" typeahead-on-select="sbc.onSelectKeyword($item, $modal, $label, $event)"/>\n' +
-    '      <i ng-show="loadingKeywords" class="glyphicon glyphicon-refresh"></i>\n' +
-    '      <div ng-show="noKeywords">\n' +
-    '        <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
-    '      </div>\n' +
-    '    </div>\n' +
-    '    <div class="col-md-2 less-padding"><a ng-disabled="!sbc.isLocation" class="btn btn-block" ng-click="sbc.searchFn($event)"><i class="fa fa-search"></i> Search</a></div>\n' +
     '  </div>\n' +
     '</div>');
 }]);
@@ -1188,63 +1245,6 @@ try {
   module = angular.module('litewait.ui', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('search/search.html',
-    '<div class="container-fluid banner-wrap" ng-if="!user.isLoggedIn">\n' +
-    '	<div class="banner">\n' +
-    '    	<div class="col-md-10 cnt">\n' +
-    '    	<p class="title-1">SAVE YOUR TIME...INCREASE PRODUCTIVE TIME<br/>\n' +
-    'SAVE MONEY!!</p>\n' +
-    '		<p class="title-2">Tired of waiting in queue, come join us</p>\n' +
-    '        <a href="#" class="btn join"  ng-click="vm.openSignUpModal($event)">Join Now !!</a>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '</div>\n' +
-    '<div class="container-fluid search-wrap" ui-view="search-box">\n' +
-    '</div>\n' +
-    '<div class="container search-result">\n' +
-    '  <div class="col-md-12 best-bet">These retailers are your best bet for:<a href="#">{{sc.keyword}}</a></div>\n' +
-    '  <div class="row-fluid">\n' +
-    '    <div class="col-md-12">\n' +
-    '      <div class="list-wrap" infinite-scroll="sc.nextPage()"\n' +
-    '      infinite-scroll-distance="0"\n' +
-    '      infinite-scroll-immediate-check="false"\n' +
-    '      infinite-scroll-use-document-bottom="true">\n' +
-    '        <div class="list-item" ng-repeat="(key, value) in sc.merchant.list">\n' +
-    '          <div class="col-xs-12 col-sm-8 col-md-8" >\n' +
-    '            <h2><a href="shop-detail-menu.html">{{value.business_name}}</a></h2>\n' +
-    '            <img src="{{value.photo}}" class="pull-left" />\n' +
-    '            <div> <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>\n' +
-    '              <p>0.98 mi Distance from search location</p>\n' +
-    '              <p class="wait">{{value.avg_wait_time}} Wait Time</p>\n' +
-    '              <p>Open {{value.open_time}} to {{value.close_time}}</p>\n' +
-    '            </div>\n' +
-    '          </div>\n' +
-    '          <div class="col-xs-12 col-sm-4 col-md-4 menu">\n' +
-    '            <h2>Popular Items</h2>\n' +
-    '            <ul>\n' +
-    '              <li><a href="#">Chicken Parmesan Sub</a></li>\n' +
-    '              <li><a href="#">BBQ Chicken Sub</a></li>\n' +
-    '              <li><a href="#">Veggie Sub</a></li>\n' +
-    '              <li><a href="#">Chicken Ranch Hot Sandwich</a></li>\n' +
-    '              <li><a href="#">Cold Cut Hot Sandwich</a></li>\n' +
-    '            </ul>\n' +
-    '            <a ng-click="sc.viewMerchant(value.id)" class="btn btn-block">View Retailer</a></div>\n' +
-    '          <div class="clearfix"></div>\n' +
-    '        </div>\n' +
-    '      </div>\n' +
-    '    </div>\n' +
-    '  </div>\n' +
-    '</div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
   $templateCache.put('shop/shop-detail-menu.html',
     '<div class="container shop-detail-wrap">\n' +
     '  <div class="shop-detail" ng-if="sdm.nest.merchantId">\n' +
@@ -1399,186 +1399,253 @@ module.run(['$templateCache', function($templateCache) {
   $templateCache.put('user/profile.html',
     '<div class="container edit-profile">\n' +
     '   <div>\n' +
-    '   			<div class="col-md-12">\n' +
-    '               <ul class="nav nav-tabs">\n' +
-    '                  <li class="active"><a data-toggle="tab" href="#edit-profile">Edit Profile</a></li>\n' +
-    '                  <li ng-if="nav.user.role==\'c\'"><a data-toggle="tab" href="#payment-config">Payment Configuration</a></li>\n' +
-    '                  <li ng-if="nav.user.role==\'m\'"><a data-toggle="tab" href="#merchant-data">Merchant</a></li>\n' +
-    '               </ul>\n' +
-    '               </div>\n' +
-    '               <div class="tab-content">\n' +
-    '                  <div id="edit-profile" class="tab-pane fade in active">\n' +
-    '                  <h1>Edit Profile</h1>\n' +
-    '                  \n' +
-    '                  <div class="col-md-12 form-wrap">\n' +
-    '      <form novalidate name="epc.editProfileForm" ng-submit="epc.updateProfile(epc.editProfileForm.$valid)" role="form">\n' +
-    '         <div class="col-md-6">\n' +
-    '            <div class="form-group">\n' +
-    '               <input type="text" name="user_name" maxlength="50" ng-model="epc.profile.user_name" class="form-control"  placeholder="Name">\n' +
-    '               <div ng-if="epc.editProfileForm.$submitted && epc.editProfileForm.user_name.$invalid" ng-messages="epc.editProfileForm.user_name.$error" class="alert alert-danger">\n' +
-    '                  <div ng-message="maxlength">Please enter a valid Username</div>\n' +
-    '               </div>\n' +
-    '            </div>\n' +
-    '            <div class="form-group">\n' +
-    '               <input type="email" name="mail_id" ng-model="epc.profile.contact.mail_id" class="form-control" placeholder="Email">\n' +
-    '               <div ng-if="epc.editProfileForm.$submitted && epc.editProfileForm.mail_id.$invalid" ng-messages="epc.editProfileForm.mail_id.$error" class="alert alert-danger">\n' +
-    '                  <div ng-message="email">Please enter a valid Email Id</div>\n' +
-    '                </div>\n' +
-    '            </div>\n' +
-    '            <div class="form-group">\n' +
-    '               <input type="text" name="phone" ng-model="epc.profile.contact.phone" class="form-control" placeholder="Phone">\n' +
-    '            </div>\n' +
-    '            <div class="form-group">\n' +
-    '            	<textarea name="address_1" ng-model="epc.profile.contact.address_1" class="form-control"  placeholder="Address"></textarea>\n' +
-    '            </div>\n' +
-    '         </div>\n' +
-    '         <div class="col-md-6">\n' +
-    '            <div class="form-group">\n' +
-    '               <input type="text" name="country" autocomplete="off" ng-model="epc.geo.country" class="form-control" placeholder="Country" uib-typeahead="country as country.name for country in epc.getCountries($viewValue)" typeahead-loading="loadingCountries" typeahead-no-results="noCountry" class="form-control" typeahead-on-select="epc.onSelectCountry($item, $modal, $label, $event)">\n' +
-    '               <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>\n' +
-    '               <div ng-show="noCountry">\n' +
-    '                 <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
-    '               </div>\n' +
-    '            </div>\n' +
-    '            <div class="form-group">\n' +
-    '               <input type="text" name="state" autocomplete="off" ng-model="epc.geo.state" class="form-control" placeholder="State" uib-typeahead="state as state.name for state in epc.getStates($viewValue)" typeahead-loading="loadingStates" typeahead-no-results="noState" class="form-control" typeahead-on-select="epc.onSelectState($item, $modal, $label, $event)">\n' +
-    '               <i ng-show="loadingStates" class="glyphicon glyphicon-refresh"></i>\n' +
-    '               <div ng-show="noState">\n' +
-    '                 <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
-    '               </div>\n' +
-    '            </div>\n' +
-    '            <div class="form-group">\n' +
-    '               <input type="text" name="city" autocomplete="off" ng-model="epc.geo.city" class="form-control" placeholder="City" uib-typeahead="city as city.name for city in epc.getCities($viewValue)" typeahead-loading="loadingCities" typeahead-no-results="noCity" class="form-control" typeahead-on-select="epc.onSelectCity($item, $modal, $label, $event)">\n' +
-    '               <i ng-show="loadingCities" class="glyphicon glyphicon-refresh"></i>\n' +
-    '               <div ng-show="noCity">\n' +
-    '                 <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
-    '               </div>\n' +
-    '            </div>\n' +
-    '            <div class="form-group">\n' +
-    '               <input type="text" name="zip_code" ng-model="epc.profile.contact.zip_code" class="form-control" placeholder="Zipcode">\n' +
-    '            </div>\n' +
-    '         </div>\n' +
-    '         <div class="clearfix"></div>\n' +
-    '         <div class="col-md-12">\n' +
-    '            <button type="submit" class="btn btn-default pull-right">Submit</button>\n' +
-    '            <button type="submit" ng-click="epc.cancel($event)" class="btn btn-default pull-right">Cancel</button>\n' +
-    '            <div class="clearfix"></div>\n' +
-    '         </div>\n' +
-    '      </form>\n' +
-    '   </div>\n' +
-    '                     \n' +
-    '                  </div>\n' +
-    '                   <div  ng-if="nav.user.role==\'c\'" id="payment-config" class="tab-pane fade in">\n' +
-    '                    <h1>Payment Configuration</h1>\n' +
-    '                  \n' +
-    '                  <div class="col-md-12 form-wrap">\n' +
-    '      <form role="form" novalidate name="epc.editPaymentForm" ng-submit="epc.savePayment(epc.editPaymentForm.$valid)">\n' +
-    '         <div class="col-md-6">\n' +
-    '            <div class="form-group">\n' +
-    '               <select class="form-control" name="card_type" ng-model="epc.payment.card_type" required>\n' +
-    '                  <option value="" selected>Card Type</option>\n' +
-    '                  <option value="master">Mastercard</option>\n' +
-    '                  <option value="visa">Visa</option>\n' +
-    '               </select>\n' +
-    '               <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.card_type.$invalid" ng-messages="epc.editPaymentForm.mail_id.$error" class="alert alert-danger">\n' +
-    '                  <div ng-message="required">Card type is required</div>\n' +
-    '               </div>\n' +
-    '            </div>\n' +
-    '            <div class="form-group">\n' +
-    '            	<input required pattern="{{epc.AUTH_PROPS.CARD}}" type="text" class="form-control"  placeholder="Card Number" name="card_number" ng-model="epc.payment.card_number">\n' +
-    '               <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.card_number.$invalid" ng-messages="epc.editPaymentForm.card_number.$error" class="alert alert-danger">\n' +
-    '                  <div ng-message="required">Card number is required</div>\n' +
-    '                  <div ng-message="pattern">Please enter a valid Credit/Debit Card Number</div>\n' +
-    '               </div>\n' +
-    '            </div>\n' +
-    '            <div class="form-group">\n' +
-    '              	<input required maxlength="50" type="text" class="form-control"  placeholder="Name as in card" name="card_name" ng-model="epc.payment.card_name">\n' +
-    '               <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.card_name.$invalid" ng-messages="epc.editPaymentForm.card_name.$error" class="alert alert-danger">\n' +
-    '                  <div ng-message="required">Card name is required</div>\n' +
-    '                  <div ng-message="maxlength">Card number should have maximum 50 characters</div>\n' +
-    '               </div>\n' +
-    '            </div>\n' +
-    '            <div class="form-group">\n' +
-    '               <input date-as-ms required uib-datepicker-popup="MM/yyyy" min-mode="month" type="text" class="form-control" placeholder="Expiry date" name="card_expiry" ng-model="epc.payment.card_expiry" is-open="epc.pay.opened" on-open-focus="epc.pay.onOpenFocus">\n' +
-    '               <span class="input-group-btn">\n' +
-    '                <button type="button" class="btn btn-default" ng-click="epc.open1()"><i class="glyphicon glyphicon-calendar"></i></button>\n' +
-    '              </span>\n' +
-    '               <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.card_expiry.$invalid" ng-messages="epc.editPaymentForm.card_expiry.$error" class="alert alert-danger">\n' +
-    '                  <div ng-message="required">Card Expiry is required</div>\n' +
-    '               </div>\n' +
-    '            </div>\n' +
-    '            <div class="form-group">\n' +
-    '               <input required pattern="{{AUTH_PROPS.CVV}}" type="text" class="form-control" placeholder="CVV" name="cvv" ng-model="epc.payment.cvv">\n' +
-    '               <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.cvv.$invalid" ng-messages="epc.editPaymentForm.cvv.$error" class="alert alert-danger">\n' +
-    '                  <div ng-message="required">CVV is required</div>\n' +
-    '                  <div ng-message="pattern">Please enter a valid CVV</div>\n' +
-    '               </div>\n' +
-    '            </div>\n' +
-    '            <div class="form-group">\n' +
-    '               <input required maxlength="100" type="text" class="form-control" placeholder="Address 1" name="address_1" ng-model="epc.payment.contact.address_1">\n' +
-    '               <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.address_1.$invalid" ng-messages="epc.editPaymentForm.address_1.$error" class="alert alert-danger">\n' +
-    '                  <div ng-message="required">Address 1 is required</div>\n' +
-    '                  <div ng-message="maxlength">Address 1 should have maximum 100 characters</div>\n' +
-    '               </div>\n' +
-    '            </div>\n' +
-    '            <div class="form-group">\n' +
-    '               <input required maxlength="50" type="text" class="form-control" placeholder="City" name="city" ng-model="epc.payment.contact.city">\n' +
-    '               <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.city.$invalid" ng-messages="epc.editPaymentForm.city.$error" class="alert alert-danger">\n' +
-    '                  <div ng-message="required">City is required</div>\n' +
-    '                  <div ng-message="maxlength">City should have maximum 50 characters</div>\n' +
-    '               </div>\n' +
-    '            </div>\n' +
-    '            <div class="form-group">\n' +
-    '               <select required class="form-control" name="state" ng-model="epc.payment.contact.state">\n' +
-    '                  <option value="" selected>State</option>\n' +
-    '                  <option value="Tamilnadu">tamil nadu</option>\n' +
-    '                  <option value="Kerala">Kerala</option>\n' +
-    '                  <option value="Karnataka">Karnataka</option>\n' +
-    '                  <option value="Andra">Andra</option>\n' +
-    '               </select>\n' +
-    '               <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.state.$invalid" ng-messages="epc.editPaymentForm.state.$error" class="alert alert-danger">\n' +
-    '                  <div ng-message="required">State is required</div>\n' +
-    '               </div>\n' +
-    '            </div>\n' +
-    '            <div class="form-group">\n' +
-    '               <input required type="text" class="form-control" placeholder="Zip Code" name="zip_code" ng-model="epc.payment.contact.zip_code">\n' +
-    '               <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.zip_code.$invalid" ng-messages="epc.editPaymentForm.zip_code.$error" class="alert alert-danger">\n' +
-    '                  <div ng-message="required">Zip Code is required</div>\n' +
-    '               </div>\n' +
-    '            </div>\n' +
-    '            \n' +
-    '            \n' +
-    '         </div>\n' +
-    '         <div class="col-md-6"></div>\n' +
-    '     \n' +
-    '         \n' +
-    '         <div class="clearfix"></div>\n' +
-    '  \n' +
-    '    \n' +
-    '\n' +
-    '         <div class="col-md-6">\n' +
-    '            <button type="submit" class="btn btn-default pull-right">Save</button>\n' +
-    '            <button type="submit" class="btn btn-default pull-right" ng-click="epc.cancel($event)">Cancel</button>\n' +
-    '            <div class="clearfix"></div>\n' +
-    '            \n' +
-    '         </div>\n' +
-    '         \n' +
-    '\n' +
-    '      </form>\n' +
-    '   </div>\n' +
-    '                     \n' +
-    '                  </div>\n' +
-    '                  <div ng-if="nav.user.role==\'m\'" id="merchant-data" class="tab-pane fade in">\n' +
-    '                     <h1>Update Merchant</h1>\n' +
-    '                     <div class="col-md-12 form-wrap">\n' +
-    '                        <form novalidate name="epc.editProfileForm" ng-submit="epc.updateProfile(epc.editProfileForm.$valid)" role="form"></form>\n' +
+    '      <div class="col-md-12">\n' +
+    '         <ul class="nav nav-tabs" role="tablist">\n' +
+    '            <li class="active"><a data-toggle="tab" aria-controls="edit-profile" role="tab" data-target="#edit-profile">Edit Profile</a></li>\n' +
+    '            <li ng-if="nav.user.role==\'c\'"><a data-toggle="tab" aria-controls="payment-config" role="tab" data-target="#payment-config">Payment Configuration</a></li>\n' +
+    '            <li ng-if="nav.user.role==\'m\'"><a data-toggle="tab" aria-controls="merchant-data" role="tab" data-target="#merchant-data">Merchant</a></li>\n' +
+    '         </ul>\n' +
+    '      </div>\n' +
+    '      <div class="tab-content">\n' +
+    '         <div role="tabpanel" id="edit-profile" class="tab-pane fade in active">\n' +
+    '            <h1>Edit Profile</h1>\n' +
+    '            <div class="col-md-12 form-wrap">\n' +
+    '               <form novalidate name="epc.editProfileForm" ng-submit="epc.updateProfile(epc.editProfileForm.$valid)" role="form">\n' +
+    '                  <div class="col-md-6">\n' +
+    '                     <div class="form-group">\n' +
+    '                        <input type="text" name="user_name" maxlength="50" ng-model="epc.profile.user_name" class="form-control"  placeholder="Name">\n' +
+    '                        <div ng-if="epc.editProfileForm.$submitted && epc.editProfileForm.user_name.$invalid" ng-messages="epc.editProfileForm.user_name.$error" class="alert alert-danger">\n' +
+    '                           <div ng-message="maxlength">Please enter a valid Username</div>\n' +
+    '                        </div>\n' +
+    '                     </div>\n' +
+    '                     <div class="form-group">\n' +
+    '                        <input type="email" name="mail_id" ng-model="epc.profile.contact.mail_id" class="form-control" placeholder="Email">\n' +
+    '                        <div ng-if="epc.editProfileForm.$submitted && epc.editProfileForm.mail_id.$invalid" ng-messages="epc.editProfileForm.mail_id.$error" class="alert alert-danger">\n' +
+    '                           <div ng-message="email">Please enter a valid Email Id</div>\n' +
+    '                        </div>\n' +
+    '                     </div>\n' +
+    '                     <div class="form-group">\n' +
+    '                        <input type="text" name="phone" ng-model="epc.profile.contact.phone" class="form-control" placeholder="Phone">\n' +
+    '                     </div>\n' +
+    '                     <div class="form-group">\n' +
+    '                        <textarea name="address_1" ng-model="epc.profile.contact.address_1" class="form-control"  placeholder="Address"></textarea>\n' +
     '                     </div>\n' +
     '                  </div>\n' +
-    '                  \n' +
-    '                  \n' +
-    '               </div>\n' +
+    '                  <div class="col-md-6">\n' +
+    '                     <div class="form-group">\n' +
+    '                        <input type="text" name="country" autocomplete="off" ng-model="epc.geo.country" class="form-control" placeholder="Country" uib-typeahead="country as country.name for country in epc.getCountries($viewValue)" typeahead-loading="loadingCountries" typeahead-no-results="noCountry" class="form-control" typeahead-on-select="epc.onSelectCountry($item, $modal, $label, $event)">\n' +
+    '                        <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>\n' +
+    '                        <div ng-show="noCountry">\n' +
+    '                        <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
+    '                        </div>\n' +
+    '                     </div>\n' +
+    '                     <div class="form-group">\n' +
+    '                        <input type="text" name="state" autocomplete="off" ng-model="epc.geo.state" class="form-control" placeholder="State" uib-typeahead="state as state.name for state in epc.getStates($viewValue)" typeahead-loading="loadingStates" typeahead-no-results="noState" class="form-control" typeahead-on-select="epc.onSelectState($item, $modal, $label, $event)">\n' +
+    '                        <i ng-show="loadingStates" class="glyphicon glyphicon-refresh"></i>\n' +
+    '                        <div ng-show="noState">\n' +
+    '                        <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
+    '                        </div>\n' +
+    '                     </div>\n' +
+    '                     <div class="form-group">\n' +
+    '                        <input type="text" name="city" autocomplete="off" ng-model="epc.geo.city" class="form-control" placeholder="City" uib-typeahead="city as city.name for city in epc.getCities($viewValue)" typeahead-loading="loadingCities" typeahead-no-results="noCity" class="form-control" typeahead-on-select="epc.onSelectCity($item, $modal, $label, $event)">\n' +
+    '                        <i ng-show="loadingCities" class="glyphicon glyphicon-refresh"></i>\n' +
+    '                        <div ng-show="noCity">\n' +
+    '                        <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
+    '                        </div>\n' +
+    '                     </div>\n' +
+    '                     <div class="form-group">\n' +
+    '                        <input type="text" name="zip_code" ng-model="epc.profile.contact.zip_code" class="form-control" placeholder="Zipcode">\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="clearfix"></div>\n' +
+    '                  <div class="col-md-12">\n' +
+    '                     <button type="submit" class="btn btn-default pull-right">Submit</button>\n' +
+    '                     <button type="submit" ng-click="epc.cancel($event)" class="btn btn-default pull-right">Cancel</button>\n' +
+    '                     <div class="clearfix"></div>\n' +
+    '                  </div>\n' +
+    '               </form>\n' +
     '            </div>\n' +
-    '   \n' +
+    '         </div>\n' +
+    '         <div  role="tabpanel"  ng-if="nav.user.role==\'c\'" id="payment-config" class="tab-pane fade in">\n' +
+    '            <h1>Payment Configuration</h1>\n' +
+    '            <div class="col-md-12 form-wrap">\n' +
+    '               <form role="form" novalidate name="epc.editPaymentForm" ng-submit="epc.savePayment(epc.editPaymentForm.$valid)">\n' +
+    '                  <div class="col-md-6">\n' +
+    '                     <div class="form-group">\n' +
+    '                        <select class="form-control" name="card_type" ng-model="epc.payment.card_type" required>\n' +
+    '                           <option value="" selected>Card Type</option>\n' +
+    '                           <option value="master">Mastercard</option>\n' +
+    '                           <option value="visa">Visa</option>\n' +
+    '                        </select>\n' +
+    '                        <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.card_type.$invalid" ng-messages="epc.editPaymentForm.mail_id.$error" class="alert alert-danger">\n' +
+    '                           <div ng-message="required">Card type is required</div>\n' +
+    '                        </div>\n' +
+    '                     </div>\n' +
+    '                     <div class="form-group">\n' +
+    '                        <input required pattern="{{epc.AUTH_PROPS.CARD}}" type="text" class="form-control"  placeholder="Card Number" name="card_number" ng-model="epc.payment.card_number">\n' +
+    '                        <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.card_number.$invalid" ng-messages="epc.editPaymentForm.card_number.$error" class="alert alert-danger">\n' +
+    '                           <div ng-message="required">Card number is required</div>\n' +
+    '                           <div ng-message="pattern">Please enter a valid Credit/Debit Card Number</div>\n' +
+    '                        </div>\n' +
+    '                     </div>\n' +
+    '                     <div class="form-group">\n' +
+    '                        <input required maxlength="50" type="text" class="form-control"  placeholder="Name as in card" name="card_name" ng-model="epc.payment.card_name">\n' +
+    '                        <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.card_name.$invalid" ng-messages="epc.editPaymentForm.card_name.$error" class="alert alert-danger">\n' +
+    '                           <div ng-message="required">Card name is required</div>\n' +
+    '                           <div ng-message="maxlength">Card number should have maximum 50 characters</div>\n' +
+    '                        </div>\n' +
+    '                     </div>\n' +
+    '                     <div class="form-group">\n' +
+    '                        <input date-as-ms required uib-datepicker-popup="MM/yyyy" min-mode="month" type="text" class="form-control" placeholder="Expiry date" name="card_expiry" ng-model="epc.payment.card_expiry" is-open="epc.pay.opened" on-open-focus="epc.pay.onOpenFocus">\n' +
+    '                        <span class="input-group-btn">\n' +
+    '                           <button type="button" class="btn btn-default" ng-click="epc.open1()"><i class="glyphicon glyphicon-calendar"></i></button>\n' +
+    '                        </span>\n' +
+    '                        <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.card_expiry.$invalid" ng-messages="epc.editPaymentForm.card_expiry.$error" class="alert alert-danger">\n' +
+    '                           <div ng-message="required">Card Expiry is required</div>\n' +
+    '                        </div>\n' +
+    '                     </div>\n' +
+    '                     <div class="form-group">\n' +
+    '                        <input required pattern="{{AUTH_PROPS.CVV}}" type="text" class="form-control" placeholder="CVV" name="cvv" ng-model="epc.payment.cvv">\n' +
+    '                        <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.cvv.$invalid" ng-messages="epc.editPaymentForm.cvv.$error" class="alert alert-danger">\n' +
+    '                           <div ng-message="required">CVV is required</div>\n' +
+    '                           <div ng-message="pattern">Please enter a valid CVV</div>\n' +
+    '                        </div>\n' +
+    '                     </div>\n' +
+    '                     <div class="form-group">\n' +
+    '                        <input required maxlength="100" type="text" class="form-control" placeholder="Address 1" name="address_1" ng-model="epc.payment.contact.address_1">\n' +
+    '                        <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.address_1.$invalid" ng-messages="epc.editPaymentForm.address_1.$error" class="alert alert-danger">\n' +
+    '                           <div ng-message="required">Address 1 is required</div>\n' +
+    '                           <div ng-message="maxlength">Address 1 should have maximum 100 characters</div>\n' +
+    '                        </div>\n' +
+    '                     </div>\n' +
+    '                     <div class="form-group">\n' +
+    '                        <input required maxlength="50" type="text" class="form-control" placeholder="City" name="city" ng-model="epc.payment.contact.city">\n' +
+    '                        <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.city.$invalid" ng-messages="epc.editPaymentForm.city.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="required">City is required</div>\n' +
+    '                        <div ng-message="maxlength">City should have maximum 50 characters</div>\n' +
+    '                        </div>\n' +
+    '                     </div>\n' +
+    '                     <div class="form-group">\n' +
+    '                        <select required class="form-control" name="state" ng-model="epc.payment.contact.state">\n' +
+    '                           <option value="" selected>State</option>\n' +
+    '                           <option value="Tamilnadu">tamil nadu</option>\n' +
+    '                           <option value="Kerala">Kerala</option>\n' +
+    '                           <option value="Karnataka">Karnataka</option>\n' +
+    '                           <option value="Andra">Andra</option>\n' +
+    '                        </select>\n' +
+    '                        <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.state.$invalid" ng-messages="epc.editPaymentForm.state.$error" class="alert alert-danger">\n' +
+    '                           <div ng-message="required">State is required</div>\n' +
+    '                        </div>\n' +
+    '                     </div>\n' +
+    '                     <div class="form-group">\n' +
+    '                        <input required type="text" class="form-control" placeholder="Zip Code" name="zip_code" ng-model="epc.payment.contact.zip_code">\n' +
+    '                        <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.zip_code.$invalid" ng-messages="epc.editPaymentForm.zip_code.$error" class="alert alert-danger">\n' +
+    '                           <div ng-message="required">Zip Code is required</div>\n' +
+    '                        </div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="col-md-6"></div>\n' +
+    '                  <div class="clearfix"></div>\n' +
+    '                  <div class="col-md-6">\n' +
+    '                     <button type="submit" class="btn btn-default pull-right">Save</button>\n' +
+    '                     <button type="submit" class="btn btn-default pull-right" ng-click="epc.cancel($event)">Cancel</button>\n' +
+    '                     <div class="clearfix"></div>\n' +
+    '                  </div>\n' +
+    '               </form>\n' +
+    '            </div>\n' +
+    '         </div>\n' +
+    '         <div  role="tabpanel" ng-if="nav.user.role==\'m\'" id="merchant-data" class="tab-pane fade in">\n' +
+    '            <h1>Update Merchant</h1>\n' +
+    '            <div class="col-md-12 form-wrap">\n' +
+    '               <form novalidate name="epc.editProfileForm" ng-submit="epc.updateProfile(epc.editProfileForm.$valid)" role="form">\n' +
+    '                  <div class="col-md-6">\n' +
+    '                     <div class="form-group">\n' +
+    '                        <label for="business_name">Bussiness Name</label>\n' +
+    '                        <input required type="text" name="business_name" maxlength="50" ng-model="epc.profile.business_name" class="form-control"  placeholder="Enter bussiness name">\n' +
+    '                        <div ng-if="epc.editProfileForm.$submitted && epc.editProfileForm.business_name.$invalid" ng-messages="epc.editProfileForm.business_name.$error" class="alert alert-danger">\n' +
+    '                           <div ng-message="maxlength">Please enter a valid Business Name</div>\n' +
+    '                           <div ng-message="required">Please enter bussiness name</div>\n' +
+    '                        </div>\n' +
+    '                     </div>\n' +
+    '                     <div class="form-group">\n' +
+    '                        <label for="bussiness_type">Bussiness Type</label>\n' +
+    '                        <input required type="text" name="business_type" maxlength="50" ng-model="epc.profile.business_type" class="form-control"  placeholder="Enter business type">\n' +
+    '                        <div ng-if="epc.editProfileForm.$submitted && epc.editProfileForm.business_type.$invalid" ng-messages="epc.editProfileForm.business_type.$error" class="alert alert-danger">\n' +
+    '                           <div ng-message="maxlength">Please enter a valid Business Type</div>\n' +
+    '                           <div ng-message="required">Please enter username</div>\n' +
+    '                        </div>\n' +
+    '                     </div>\n' +
+    '                     <div class="form-group">\n' +
+    '                        <label for="contact_person">Contact Person</label>\n' +
+    '                        <input required type="text" name="contact_person" maxlength="50" ng-model="epc.profile.contact_person" class="form-control"  placeholder="Enter contact person name">\n' +
+    '                        <div ng-if="epc.editProfileForm.$submitted && epc.editProfileForm.contact_person.$invalid" ng-messages="epc.editProfileForm.contact_person.$error" class="alert alert-danger">\n' +
+    '                           <div ng-message="maxlength">Please enter a valid Contact Person</div>\n' +
+    '                           <div ng-message="required">Please enter contact person</div>\n' +
+    '                        </div>\n' +
+    '                     </div>\n' +
+    '                     <div class="form-group">\n' +
+    '                        <label for="website">Website</label>\n' +
+    '                        <input required type="text" name="website" maxlength="150" ng-model="epc.profile.website" class="form-control"  placeholder="Enter website">\n' +
+    '                        <div ng-if="epc.editProfileForm.$submitted && epc.editProfileForm.website.$invalid" ng-messages="epc.editProfileForm.website.$error" class="alert alert-danger">\n' +
+    '                           <div ng-message="maxlength">Website should contain maximum 150 characters</div>\n' +
+    '                           <div ng-message="maxlength">Website is required</div>\n' +
+    '                        </div>\n' +
+    '                     </div>\n' +
+    '                     <div class="form-group">\n' +
+    '                        <label for="photo">Photo</label>\n' +
+    '                        <input type="text" name="photo" maxlength="50" ng-model="epc.profile.photo" class="form-control"  placeholder="Enter photo">\n' +
+    '                        <div ng-if="epc.editProfileForm.$submitted && epc.editProfileForm.photo.$invalid" ng-messages="epc.editProfileForm.photo.$error" class="alert alert-danger">\n' +
+    '                           <div ng-message="maxlength">Please enter a valid photo url</div>\n' +
+    '                        </div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="col-md-6">\n' +
+    '                     <div class="form-group">\n' +
+    '                        <label for="open_time">Open Time</label>\n' +
+    '                        <input required type="text" name="open_time" maxlength="50" ng-model="epc.profile.open_time" class="form-control"  placeholder="Enter open time">\n' +
+    '                        <div ng-if="epc.editProfileForm.$submitted && epc.editProfileForm.open_time.$invalid" ng-messages="epc.editProfileForm.open_time.$error" class="alert alert-danger">\n' +
+    '                           <div ng-message="maxlength">Please enter a valid Contact Person</div>\n' +
+    '                           <div ng-message="required">Please enter open time</div>\n' +
+    '                        </div>\n' +
+    '                     </div>\n' +
+    '                     <div class="form-group">\n' +
+    '                        <label for="close_time">Close Time</label>\n' +
+    '                        <input required type="text" name="close_time" maxlength="50" ng-model="epc.profile.close_time" class="form-control"  placeholder="Enter close time">\n' +
+    '                        <div ng-if="epc.editProfileForm.$submitted && epc.editProfileForm.close_time.$invalid" ng-messages="epc.editProfileForm.close_time.$error" class="alert alert-danger">\n' +
+    '                           <div ng-message="maxlength">Please enter a valid Contact Person</div>\n' +
+    '                           <div ng-message="required">Please enter close time</div>\n' +
+    '                        </div>\n' +
+    '                     </div>\n' +
+    '                     <div class="form-group">\n' +
+    '                        <label for="avg_waiting_time">Average Waiting Time</label>\n' +
+    '                        <input required type="text" name="avg_waiting_time" maxlength="50" ng-model="epc.profile.avg_waiting_time" class="form-control"  placeholder="Enter average waiting time">\n' +
+    '                        <div ng-if="epc.editProfileForm.$submitted && epc.editProfileForm.avg_waiting_time.$invalid" ng-messages="epc.editProfileForm.avg_waiting_time.$error" class="alert alert-danger">\n' +
+    '                           <div ng-message="maxlength">Avg waiting time should contain maximum 50 characters</div>\n' +
+    '                           <div ng-message="required">Please enter average waiting time</div>\n' +
+    '                        </div>\n' +
+    '                     </div>\n' +
+    '                     <div class="form-group">\n' +
+    '                        <label for="region">Region</label>\n' +
+    '                        <input type="hidden" name="region_id" ng-model="epc.profile.region_id">\n' +
+    '                        <input type="text" name="region" maxlength="50" ng-model="epc.profile.region" class="form-control"  placeholder="Enter region">\n' +
+    '                        <div ng-if="epc.editProfileForm.$submitted && epc.editProfileForm.region.$invalid" ng-messages="epc.editProfileForm.region.$error" class="alert alert-danger">\n' +
+    '                           <div ng-message="maxlength">Please enter a valid Contact Person</div>\n' +
+    '                        </div>\n' +
+    '                     </div>\n' +
+    '                     <div class="form-group">\n' +
+    '                        <input type="checkbox" name="is_active" ng-true-value="\'Y\'" ng-false-value="\'N\'" ng-model="epc.profile.is_active"><label for="is_active">Is Active</label>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="col-md-12">\n' +
+    '                     <button type="submit" class="btn btn-default pull-right">Submit</button>\n' +
+    '                     <button type="submit" ng-click="epc.cancel($event)" class="btn btn-default pull-right">Cancel</button>\n' +
+    '                     <div class="clearfix"></div>\n' +
+    '                  </div>\n' +
+    '               </form>\n' +
+    '            </div>\n' +
+    '         </div>\n' +
+    '      </div>\n' +
+    '   </div>\n' +
     '</div>');
 }]);
 })();
