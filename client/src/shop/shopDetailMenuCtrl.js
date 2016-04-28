@@ -15,7 +15,49 @@
 		vm.getMenuByMandC = getMenuByMandC;
 		vm.addToCart = addToCart;
 		vm.openCartModal = openCartModal;
+        vm.nest.rating = 0;
 		$scope.menu = {};
+
+        vm.openRatingModel = function() {
+            $scope.nest = vm.nest;
+            var modalInstance = $uibModal.open({
+                templateUrl: 'ratingModal.html',
+                backdrop: 'static',
+                size: 'lg',
+                windowClass: 'menu-modal',
+                keyboard: false,
+                scope: $scope,
+                bindToController: true,
+                controllerAs: 'ratingModal',
+                controller: function($scope, $uibModalInstance, RatingService, User) {
+                    var vm = this;
+                    vm.nest = $scope.nest;
+                    vm.close = close;
+                    vm.data = {
+                        user: User.username,
+                        merchant: vm.nest.merchantDetail.username,
+                        rating: vm.nest.rating,
+                        comment: ''
+                    };
+
+                    vm.addRating = addRating;
+
+                    function addRating() {
+                        RatingService.add(vm.data).then(function(response) {
+                            if (response.data.error) {
+                                $scope.nest.rating = $scope.nest.merchantDetail.rating;
+                            }
+                        });
+                        close();
+                    }
+
+                    function close() {
+                        $scope.nest.rating = $scope.nest.merchantDetail.rating;
+                        $uibModalInstance.close();
+                    }
+                }
+            });
+        };
 
 		function openCartModal(data) {
 			var menu = angular.copy(data);
@@ -76,6 +118,7 @@
 		function getMerchant(id) {
 			Merchant.get(id).then(function(response) {
 				vm.nest.merchantDetail = response.data.data;
+                vm.nest.rating = vm.nest.merchantDetail.rating;
 				vm.nest.merchantDetail.categories = [];
 				vm.nest.merchantId = vm.nest.merchantDetail.id;
 				return MenuService.getCategoryByMerchantId(vm.nest.merchantId);
@@ -101,13 +144,13 @@
 			var index = _.findIndex(vm.nest.merchantDetail.categories, {id: category_id+''});
 			if (index !== -1 && vm.nest.merchantDetail.categories[index].menu_items.length === 0) {
 				MenuService.getByMandC(data).then(function(res) {
-					
+
 					vm.nest.merchantDetail.categories[index].menu_items = res.data.data.menu_items || [];
 					CartService.process();
 				});
 			}
 			console.log(vm.nest);
-			
+
 		}
 
 		if (vm.nest.merchantId) {

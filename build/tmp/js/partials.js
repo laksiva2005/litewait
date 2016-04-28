@@ -5,239 +5,6 @@ try {
   module = angular.module('litewait.ui', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('admin/merchant-create.html',
-    '<div class="container edit-merchant">\n' +
-    '	<div class="col-md-12">            \n' +
-    '      <div id="edit-merchant" >\n' +
-    '         <h1>{{mcr.type}} merchant</h1>      \n' +
-    '         <div class="col-md-12 form-wrap">\n' +
-    '            <form novalidate name="mcr.merchantForm" ng-submit="mcr.updateMerchant(mcr.merchantForm.$valid, mcr.merchant)" role="form">\n' +
-    '               <div class="col-md-6">\n' +
-    '                  <div class="form-group">\n' +
-    '                     <label for="username">Username</label>\n' +
-    '                     <input required type="text" name="username" maxlength="50" ng-model="mcr.merchant.username" class="form-control"  placeholder="Enter username">\n' +
-    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.username.$invalid" ng-messages="mcr.merchantForm.username.$error" class="alert alert-danger">\n' +
-    '                        <div ng-message="maxlength">Please enter a valid Username</div>\n' +
-    '                        <div ng-message="required">Please enter username</div>\n' +
-    '                     </div>\n' +
-    '                  </div>\n' +
-    '                  <div class="form-group">\n' +
-    '                     <label for="password">Password</label>\n' +
-    '                     <input type="password" name="password" maxlength="50" ng-model="mcr.merchant.password" class="form-control"  placeholder="Enter Password">\n' +
-    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.password.$invalid" ng-messages="mcr.merchantForm.password.$error" class="alert alert-danger">\n' +
-    '                        <!--div ng-message="required">Password is required</div-->\n' +
-    '                     </div>\n' +
-    '                  </div>\n' +
-    '                  <div class="form-group">\n' +
-    '                     <label for="business_name">Bussiness Name</label>\n' +
-    '                     <input required type="text" name="business_name" maxlength="50" ng-model="mcr.merchant.business_name" class="form-control"  placeholder="Enter bussiness name">\n' +
-    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.business_name.$invalid" ng-messages="mcr.merchantForm.business_name.$error" class="alert alert-danger">\n' +
-    '                        <div ng-message="maxlength">Please enter a valid Business Name</div>\n' +
-    '                        <div ng-message="required">Please enter bussiness name</div>\n' +
-    '                     </div>\n' +
-    '                  </div>\n' +
-    '                  <div class="form-group">\n' +
-    '                     <label for="bussiness_type">Bussiness Type</label>\n' +
-    '                     <input required type="text" name="business_type" maxlength="50" ng-model="mcr.merchant.business_type" class="form-control"  placeholder="Enter business type">\n' +
-    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.business_type.$invalid" ng-messages="mcr.merchantForm.business_type.$error" class="alert alert-danger">\n' +
-    '                        <div ng-message="maxlength">Please enter a valid Business Type</div>\n' +
-    '                        <div ng-message="required">Please enter username</div>\n' +
-    '                     </div>\n' +
-    '                  </div>\n' +
-    '                  <div class="form-group">\n' +
-    '                     <label for="contact_person">Contact Person</label>\n' +
-    '                     <input required type="text" name="contact_person" maxlength="50" ng-model="mcr.merchant.contact_person" class="form-control"  placeholder="Enter contact person name">\n' +
-    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.contact_person.$invalid" ng-messages="mcr.merchantForm.contact_person.$error" class="alert alert-danger">\n' +
-    '                        <div ng-message="maxlength">Please enter a valid Contact Person</div>\n' +
-    '                        <div ng-message="required">Please enter contact person</div>\n' +
-    '                     </div>\n' +
-    '                  </div>\n' +
-    '                  <div class="form-group">\n' +
-    '                     <label for="mail_id">Email</label>\n' +
-    '                     <input required type="email" name="mail_id" ng-model="mcr.merchant.contact.mail_id" class="form-control" placeholder="Enter email">\n' +
-    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.mail_id.$invalid" ng-messages="mcr.merchantForm.mail_id.$error" class="alert alert-danger">\n' +
-    '                        <div ng-message="email">Please enter a valid Email Id</div>\n' +
-    '                        <div ng-message="required">Please enter email</div>\n' +
-    '                      </div>\n' +
-    '                  </div>\n' +
-    '                  <div class="form-group">\n' +
-    '                     <label for="phone">Phone</label>\n' +
-    '                     <input required type="text" name="phone" ng-model="mcr.merchant.contact.phone" class="form-control" placeholder="Enter phone">\n' +
-    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.phone.$invalid" ng-messages="mcr.merchantForm.phone.$error" class="alert alert-danger">\n' +
-    '                        <div ng-message="required">Please enter phone</div>\n' +
-    '                      </div>\n' +
-    '                  </div>\n' +
-    '                  <div class="form-group">\n' +
-    '                     <label for="website">Website</label>\n' +
-    '                     <input required type="text" name="website" maxlength="150" ng-model="mcr.merchant.website" class="form-control"  placeholder="Enter website">\n' +
-    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.website.$invalid" ng-messages="mcr.merchantForm.website.$error" class="alert alert-danger">\n' +
-    '                        <div ng-message="maxlength">Website should contain maximum 150 characters</div>\n' +
-    '                        <div ng-message="maxlength">Website is required</div>\n' +
-    '                     </div>\n' +
-    '                  </div>\n' +
-    '                  <div class="form-group">\n' +
-    '                     <label for="photo">Photo</label>\n' +
-    '                     <input type="text" name="photo" maxlength="50" ng-model="mcr.merchant.photo" class="form-control"  placeholder="Enter photo">\n' +
-    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.photo.$invalid" ng-messages="mcr.merchantForm.photo.$error" class="alert alert-danger">\n' +
-    '                        <div ng-message="maxlength">Please enter a valid photo url</div>\n' +
-    '                     </div>\n' +
-    '                  </div>\n' +
-    '               </div>\n' +
-    '               <div class="col-md-6">\n' +
-    '                  <div class="form-group">\n' +
-    '                     <label for="open_time">Open Time</label>\n' +
-    '                     <input required type="text" name="open_time" maxlength="50" ng-model="mcr.merchant.open_time" class="form-control"  placeholder="Enter open time">\n' +
-    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.open_time.$invalid" ng-messages="mcr.merchantForm.open_time.$error" class="alert alert-danger">\n' +
-    '                        <div ng-message="maxlength">Please enter a valid Contact Person</div>\n' +
-    '                        <div ng-message="required">Please enter open time</div>\n' +
-    '                     </div>\n' +
-    '                  </div>\n' +
-    '                  <div class="form-group">\n' +
-    '                     <label for="close_time">Close Time</label>\n' +
-    '                     <input required type="text" name="close_time" maxlength="50" ng-model="mcr.merchant.close_time" class="form-control"  placeholder="Enter close time">\n' +
-    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.close_time.$invalid" ng-messages="mcr.merchantForm.close_time.$error" class="alert alert-danger">\n' +
-    '                        <div ng-message="maxlength">Please enter a valid Contact Person</div>\n' +
-    '                        <div ng-message="required">Please enter close time</div>\n' +
-    '                     </div>\n' +
-    '                  </div>\n' +
-    '                  <div class="form-group">\n' +
-    '                     <label for="avg_waiting_time">Average Waiting Time</label>\n' +
-    '                     <input required type="text" name="avg_waiting_time" maxlength="50" ng-model="mcr.merchant.avg_waiting_time" class="form-control"  placeholder="Enter average waiting time">\n' +
-    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.avg_waiting_time.$invalid" ng-messages="mcr.merchantForm.avg_waiting_time.$error" class="alert alert-danger">\n' +
-    '                        <div ng-message="maxlength">Avg waiting time should contain maximum 50 characters</div>\n' +
-    '                        <div ng-message="required">Please enter average waiting time</div>\n' +
-    '                     </div>\n' +
-    '                  </div>\n' +
-    '                  <div class="form-group">\n' +
-    '                     <label for="address_1">Address 1</label>\n' +
-    '                     <textarea required name="address_1" ng-model="mcr.merchant.contact.address_1" class="form-control"  placeholder="Address"></textarea>\n' +
-    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.address_1.$invalid" ng-messages="mcr.merchantForm.address_1.$error" class="alert alert-danger">\n' +
-    '                        <div ng-message="maxlength">Address should contain maximum 50 characters</div>\n' +
-    '                        <div ng-message="required">Address field is required</div>\n' +
-    '                     </div>\n' +
-    '                  </div>\n' +
-    '                  <div class="form-group">\n' +
-    '                     <label for="country">Country</label>\n' +
-    '                     <input required autocomplete="off" type="text" name="country" ng-model="mcr.data.geo.country" class="form-control" placeholder="Enter country"  uib-typeahead="country as country.name for country in mcr.getCountries($viewValue)" typeahead-loading="loadingCountries" typeahead-no-results="noCountry" class="form-control" typeahead-on-select="mcr.onSelectCountry($item, $modal, $label, $event)">\n' +
-    '                     <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>\n' +
-    '                     <div ng-show="noCountry">\n' +
-    '                       <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
-    '                     </div>\n' +
-    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.country.$invalid" ng-messages="mcr.merchantForm.country.$error" class="alert alert-danger">\n' +
-    '                        <div ng-message="maxlength">Country should contain maximum 50 characters</div>\n' +
-    '                        <div ng-message="required">Address field is required</div>\n' +
-    '                     </div>\n' +
-    '                  </div>\n' +
-    '                  <div class="form-group">\n' +
-    '                     <label for="state">State</label>\n' +
-    '                     <input required autocomplete="off" type="text" name="state" ng-model="mcr.data.geo.state" class="form-control" placeholder="Enter state" uib-typeahead="state as state.name for state in mcr.getStates($viewValue)" typeahead-loading="loadingStates" typeahead-no-results="noState" class="form-control" typeahead-on-select="mcr.onSelectState($item, $modal, $label, $event)">\n' +
-    '                     <i ng-show="loadingStates" class="glyphicon glyphicon-refresh"></i>\n' +
-    '                     <div ng-show="noState">\n' +
-    '                       <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
-    '                     </div>\n' +
-    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.state.$invalid" ng-messages="mcr.merchantForm.state.$error" class="alert alert-danger">\n' +
-    '                        <div ng-message="maxlength">State should contain maximum 50 characters</div>\n' +
-    '                        <div ng-message="required">State field is required</div>\n' +
-    '                     </div>\n' +
-    '                  </div>\n' +
-    '                  <div class="form-group">\n' +
-    '                     <label for="city">City</label>\n' +
-    '                     <!--input type="hidden" name="city_id" ng-model="mcr.merchant.city_id"-->\n' +
-    '                     <input required autocomplete="off" type="text" name="city" maxlength="50" ng-model="mcr.data.geo.city" class="form-control"  placeholder="Enter city name" uib-typeahead="city as city.name for city in mcr.getCities($viewValue)" typeahead-loading="loadingCities" typeahead-no-results="noCity" class="form-control" typeahead-on-select="mcr.onSelectCity($item, $modal, $label, $event)">\n' +
-    '                     <i ng-show="loadingCities" class="glyphicon glyphicon-refresh"></i>\n' +
-    '                     <div ng-show="noCity">\n' +
-    '                       <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
-    '                     </div>\n' +
-    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.contact.city.$invalid" ng-messages="mcr.merchantForm.contact.city.$error" class="alert alert-danger">\n' +
-    '                        <div ng-message="maxlength">City should contain maximum 50 characters</div>\n' +
-    '                        <div ng-message="maxlength">City is required</div>\n' +
-    '                     </div>\n' +
-    '                  </div>\n' +
-    '                  <div class="form-group">\n' +
-    '                     <label for="zip_code">Zip code</label>\n' +
-    '                     <input required type="text" name="zip_code" ng-model="mcr.merchant.contact.zip_code" class="form-control" placeholder="Enter zipcode">\n' +
-    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.contact.zip_code.$invalid" ng-messages="mcr.merchantForm.contact.zip_code.$error" class="alert alert-danger">\n' +
-    '                        <div ng-message="maxlength">Zip code should contain maximum 50 characters</div>\n' +
-    '                        <div ng-message="maxlength">Zip code is required</div>\n' +
-    '                     </div>\n' +
-    '                  </div>\n' +
-    '                  <div class="form-group">\n' +
-    '                     <label for="region">Region</label>\n' +
-    '                     <input type="hidden" name="region_id" ng-model="mcr.merchant.region_id">\n' +
-    '                     <input type="text" name="region" maxlength="50" ng-model="mcr.merchant.region" class="form-control"  placeholder="Enter region">\n' +
-    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.region.$invalid" ng-messages="mcr.merchantForm.region.$error" class="alert alert-danger">\n' +
-    '                        <div ng-message="maxlength">Please enter a valid Contact Person</div>\n' +
-    '                     </div>\n' +
-    '                  </div>\n' +
-    '                  <div class="form-group">\n' +
-    '                     <input type="checkbox" name="is_active" ng-true-value="\'Y\'" ng-false-value="\'N\'" ng-model="mcr.merchant.is_active"><label for="is_active">Is Active</label>\n' +
-    '                  </div>\n' +
-    '               </div>\n' +
-    '               <div class="clearfix"></div>\n' +
-    '               <div class="col-md-12">\n' +
-    '                  <button type="submit" class="btn btn-default pull-right">Submit</button>\n' +
-    '                  <button type="submit" ng-click="mcr.cancel($event)" class="btn btn-default pull-right">Cancel</button>\n' +
-    '                  <div class="clearfix"></div>\n' +
-    '               </div>\n' +
-    '            </form>\n' +
-    '         </div>               \n' +
-    '      </div>\n' +
-    '   </div>\n' +
-    '</div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('admin/merchant-list.html',
-    '<div class="container merchant-list-wrap">\n' +
-    '	<h1>Merchant List</h1>\n' +
-    '	<div class="col-md-12 merchant-search">\n' +
-    '		<div class="col-sm-12 col-md-6 form-wrap">\n' +
-    '			<div class="form-group">\n' +
-    '				<input type="text" ng-model="ml.merchant.keyword" class="form-control"  placeholder="Search...">\n' +
-    '			</div>\n' +
-    '		</div>\n' +
-    '		<div class="col-sm-12 col-md-6">\n' +
-    '			<div class="form-group">\n' +
-    '				<a ng-click="ml.initializeMerchant()" class="btn btn-default">Search</a>\n' +
-    '				<a ng-click="nav.go(\'admin_merchant.new\')" class="btn btn-primary">Add New</a>\n' +
-    '			</div>\n' +
-    '		</div>\n' +
-    '	</div>\n' +
-    '	<div infinite-scroll="ml.nextPage()"\n' +
-    '      infinite-scroll-distance="0"\n' +
-    '      infinite-scroll-immediate-check="false"\n' +
-    '      infinite-scroll-use-document-bottom="true">\n' +
-    '		<div class="col-md-12 merchant-list" ng-repeat="(key, value) in ml.merchant.list">\n' +
-    '	        <div class="col-sm-3 col-md-2"><img class="img-responsive" src="{{value.photo}}"></div>\n' +
-    '	        <div class="col-sm-9 col-md-8">\n' +
-    '	           <h2>{{value.business_name}}</h2>\n' +
-    '	           <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>\n' +
-    '	           <p> {{value.addr_line_1}},<br>{{value.addr_line_2}} \n' +
-    '	           </p>\n' +
-    '	        </div>\n' +
-    '	        <a href="#/admin/merchant/edit/{{value.id}}" class="edit"><i class="fa fa-pencil"></i></a>\n' +
-    '	        <a href="#" ng-click="ml.deleteMerchant($event, value.id)" class="delete"><i class="fa fa-trash"></i></a>\n' +
-    '	        <div class="clearfix"></div>\n' +
-    '	    </div>\n' +
-    '    </div>\n' +
-    '</div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
   $templateCache.put('cart/cart.html',
     '<div class="container shopping-cart">\n' +
     '\n' +
@@ -572,49 +339,6 @@ module.run(['$templateCache', function($templateCache) {
     '	       uib-tab-content-transclude="tab">\n' +
     '	  </div>\n' +
     '	</div>\n' +
-    '</div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('navigation/navbar.html',
-    '');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('navigation/search-box.html',
-    '<div class="container search">\n' +
-    '  <h1>SEARCH FOR YOUR FAVORITE RETAILER</h1>\n' +
-    '  <div class="row">\n' +
-    '    <div class="col-md-5 less-padding">\n' +
-    '      <input ng-model="sbc.searchCriteria.location" type="text" placeholder="Location" uib-typeahead="address as address.city_region_name for address in sbc.getLocation($viewValue)" typeahead-loading="loadingLocations" typeahead-no-results="noLocations" class="form-control" typeahead-on-select="sbc.onSelectRegion($item, $modal, $label, $event)"/>\n' +
-    '      <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>\n' +
-    '      <div ng-show="noLocations">\n' +
-    '        <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
-    '      </div>\n' +
-    '    </div>\n' +
-    '    <div class="col-md-5 less-padding">\n' +
-    '      <input type="text" class="form-control" ng-disabled="!sbc.isLocation" ng-model="sbc.searchCriteria.keyword" placeholder="Keyword" uib-typeahead="keyword as keyword.category for keyword in sbc.getKeywords($viewValue)" typeahead-loading="loadingKeywords" typeahead-no-results="noKeywords" class="form-control" typeahead-on-select="sbc.onSelectKeyword($item, $modal, $label, $event)"/>\n' +
-    '      <i ng-show="loadingKeywords" class="glyphicon glyphicon-refresh"></i>\n' +
-    '      <div ng-show="noKeywords">\n' +
-    '        <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
-    '      </div>\n' +
-    '    </div>\n' +
-    '    <div class="col-md-2 less-padding"><a ng-disabled="!sbc.isLocation" class="btn btn-block" ng-click="sbc.searchFn($event)"><i class="fa fa-search"></i> Search</a></div>\n' +
-    '  </div>\n' +
     '</div>');
 }]);
 })();
@@ -973,51 +697,37 @@ try {
   module = angular.module('litewait.ui', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('search/search.html',
-    '<div class="container-fluid banner-wrap" ng-if="!user.isLoggedIn">\n' +
-    '	<div class="banner">\n' +
-    '    	<div class="col-md-10 cnt">\n' +
-    '    	<p class="title-1">SAVE YOUR TIME...INCREASE PRODUCTIVE TIME<br/>\n' +
-    'SAVE MONEY!!</p>\n' +
-    '		<p class="title-2">Tired of waiting in queue, come join us</p>\n' +
-    '        <a href="#" class="btn join"  ng-click="vm.openSignUpModal($event)">Join Now !!</a>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '</div>\n' +
-    '<div class="container-fluid search-wrap" ui-view="search-box">\n' +
-    '</div>\n' +
-    '<div class="container search-result">\n' +
-    '  <div class="col-md-12 best-bet">These retailers are your best bet for:<a href="#">{{sc.keyword}}</a></div>\n' +
-    '  <div class="row-fluid">\n' +
-    '    <div class="col-md-12">\n' +
-    '      <div class="list-wrap" infinite-scroll="sc.nextPage()"\n' +
-    '      infinite-scroll-distance="0"\n' +
-    '      infinite-scroll-immediate-check="false"\n' +
-    '      infinite-scroll-use-document-bottom="true">\n' +
-    '        <div class="list-item" ng-repeat="(key, value) in sc.merchant.list">\n' +
-    '          <div class="col-xs-12 col-sm-8 col-md-8" >\n' +
-    '            <h2><a href="shop-detail-menu.html">{{value.business_name}}</a></h2>\n' +
-    '            <img src="{{value.photo}}" class="pull-left" />\n' +
-    '            <div> <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>\n' +
-    '              <p>0.98 mi Distance from search location</p>\n' +
-    '              <p class="wait">{{value.avg_wait_time}} Wait Time</p>\n' +
-    '              <p>Open {{value.open_time}} to {{value.close_time}}</p>\n' +
-    '            </div>\n' +
-    '          </div>\n' +
-    '          <div class="col-xs-12 col-sm-4 col-md-4 menu">\n' +
-    '            <h2>Popular Items</h2>\n' +
-    '            <ul>\n' +
-    '              <li><a href="#">Chicken Parmesan Sub</a></li>\n' +
-    '              <li><a href="#">BBQ Chicken Sub</a></li>\n' +
-    '              <li><a href="#">Veggie Sub</a></li>\n' +
-    '              <li><a href="#">Chicken Ranch Hot Sandwich</a></li>\n' +
-    '              <li><a href="#">Cold Cut Hot Sandwich</a></li>\n' +
-    '            </ul>\n' +
-    '            <a ng-click="sc.viewMerchant(value.id)" class="btn btn-block">View Retailer</a></div>\n' +
-    '          <div class="clearfix"></div>\n' +
-    '        </div>\n' +
+  $templateCache.put('navigation/navbar.html',
+    '');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('navigation/search-box.html',
+    '<div class="container search">\n' +
+    '  <h1>SEARCH FOR YOUR FAVORITE RETAILER</h1>\n' +
+    '  <div class="row">\n' +
+    '    <div class="col-md-5 less-padding">\n' +
+    '      <input ng-model="sbc.searchCriteria.location" type="text" placeholder="Location" uib-typeahead="address as address.city_region_name for address in sbc.getLocation($viewValue)" typeahead-loading="loadingLocations" typeahead-no-results="noLocations" class="form-control" typeahead-on-select="sbc.onSelectRegion($item, $modal, $label, $event)"/>\n' +
+    '      <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>\n' +
+    '      <div ng-show="noLocations">\n' +
+    '        <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
     '      </div>\n' +
     '    </div>\n' +
+    '    <div class="col-md-5 less-padding">\n' +
+    '      <input type="text" class="form-control" ng-disabled="!sbc.isLocation" ng-model="sbc.searchCriteria.keyword" placeholder="Keyword" uib-typeahead="keyword as keyword.category for keyword in sbc.getKeywords($viewValue)" typeahead-loading="loadingKeywords" typeahead-no-results="noKeywords" class="form-control" typeahead-on-select="sbc.onSelectKeyword($item, $modal, $label, $event)"/>\n' +
+    '      <i ng-show="loadingKeywords" class="glyphicon glyphicon-refresh"></i>\n' +
+    '      <div ng-show="noKeywords">\n' +
+    '        <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
+    '      </div>\n' +
+    '    </div>\n' +
+    '    <div class="col-md-2 less-padding"><a ng-disabled="!sbc.isLocation" class="btn btn-block" ng-click="sbc.searchFn($event)"><i class="fa fa-search"></i> Search</a></div>\n' +
     '  </div>\n' +
     '</div>');
 }]);
@@ -1245,104 +955,200 @@ try {
   module = angular.module('litewait.ui', []);
 }
 module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('search/search.html',
+    '<div class="container-fluid banner-wrap" ng-if="!user.isLoggedIn">\n' +
+    '    <div class="banner">\n' +
+    '        <div class="col-md-10 cnt">\n' +
+    '            <p class="title-1">SAVE YOUR TIME...INCREASE PRODUCTIVE TIME<br/>SAVE MONEY!!</p>\n' +
+    '            <p class="title-2">Tired of waiting in queue, come join us</p>\n' +
+    '            <a href="#" class="btn join"  ng-click="vm.openSignUpModal($event)">Join Now !!</a>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '</div>\n' +
+    '<div class="container-fluid search-wrap" ui-view="search-box"></div>\n' +
+    '<div class="container search-result">\n' +
+    '    <div class="col-md-12 best-bet">These retailers are your best bet for:<a href="#">{{sc.keyword}}</a></div>\n' +
+    '    <div class="row-fluid">\n' +
+    '        <div class="col-md-12">\n' +
+    '            <div class="list-wrap" infinite-scroll="sc.nextPage()"\n' +
+    '                infinite-scroll-distance="0"\n' +
+    '                infinite-scroll-immediate-check="false"\n' +
+    '                infinite-scroll-use-document-bottom="true">\n' +
+    '                <div class="list-item" ng-repeat="(key, value) in sc.merchant.list">\n' +
+    '                    <div class="col-xs-12 col-sm-8 col-md-8" >\n' +
+    '                        <h2><a href="shop-detail-menu.html">{{value.business_name}}</a></h2>\n' +
+    '                        <img src="{{value.photo}}" class="pull-left" />\n' +
+    '                        <div>\n' +
+    '                            <span class="rating">\n' +
+    '                                <uib-rating ng-model="value.rating" read-only="true" aria-labelledby="default-rating"></uib-rating>\n' +
+    '                            </span>\n' +
+    '                            <p>0.98 mi Distance from search location</p>\n' +
+    '                            <p class="wait">{{value.avg_wait_time}} Wait Time</p>\n' +
+    '                            <p>Open {{value.open_time}} to {{value.close_time}}</p>\n' +
+    '                        </div>\n' +
+    '                    </div>\n' +
+    '                    <div class="col-xs-12 col-sm-4 col-md-4 menu">\n' +
+    '                        <h2>Popular Items</h2>\n' +
+    '                        <ul>\n' +
+    '                            <li><a href="#">Chicken Parmesan Sub</a></li>\n' +
+    '                            <li><a href="#">BBQ Chicken Sub</a></li>\n' +
+    '                            <li><a href="#">Veggie Sub</a></li>\n' +
+    '                            <li><a href="#">Chicken Ranch Hot Sandwich</a></li>\n' +
+    '                            <li><a href="#">Cold Cut Hot Sandwich</a></li>\n' +
+    '                        </ul>\n' +
+    '                        <a ng-click="sc.viewMerchant(value.id)" class="btn btn-block">View Retailer</a>\n' +
+    '                    </div>\n' +
+    '                    <div class="clearfix"></div>\n' +
+    '                </div>\n' +
+    '            </div>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '</div>\n' +
+    '');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
   $templateCache.put('shop/shop-detail-menu.html',
     '<div class="container shop-detail-wrap">\n' +
-    '  <div class="shop-detail" ng-if="sdm.nest.merchantId">\n' +
-    '    <div class="col-sm-6 col-md-4"> <img src="{{sdm.nest.merchantDetail.photo}}" class="img-responsive"/> </div>\n' +
-    '    <div class="col-sm-6 col-md-3 info">\n' +
-    '      <h2>{{sdm.nest.merchantDetail.business_name}}</h2>\n' +
-    '	    <p><a href="{{sdm.nest.merchantDetail.website}}" target="_blank">{{sdm.nest.merchantDetail.website}}</a></p>\n' +
-    '      <p> {{sdm.nest.merchantDetail.contact.address_1}} {{sdm.nest.merchantDetail.contact.city}}<br/>\n' +
-    '        {{sdm.nest.merchantDetail.contact.state}} {{sdm.nest.merchantDetail.contact.zip_code}} {{sdm.nest.merchantDetail.contact.country}} </p>\n' +
-    '      <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>\n' +
-    '      <p>0.98 mi Distance from search location</p>\n' +
-    '      <p>{{sdm.nest.merchantDetail.avg_waiting_time}} Wait Time</p>\n' +
-    '      <p>Open {{sdm.nest.merchantDetail.open_time}} to {{sdm.nest.merchantDetail.close_time}}</p>\n' +
-    '    </div>\n' +
-    '    <div class="col-sm-12 col-md-5 location"> <img src="img/shop-map.jpg" class="img-responsive"/> </div>\n' +
-    '    <div class="clearfix"></div>\n' +
-    '  </div>\n' +
-    '  <div ng-if="sdm.nest.merchantId">\n' +
-    '    <div class="menu-detail-wrap">\n' +
-    '        <div class="col-md-4 menu-items">\n' +
-    '          <h2>Category</h2>\n' +
+    '    <div class="shop-detail" ng-if="sdm.nest.merchantId">\n' +
+    '        <div class="col-sm-6 col-md-4"> <img src="{{sdm.nest.merchantDetail.photo}}" class="img-responsive"/> </div>\n' +
+    '        <div class="col-sm-6 col-md-3 info">\n' +
+    '            <h2>{{sdm.nest.merchantDetail.business_name}}</h2>\n' +
+    '            <p><a href="{{sdm.nest.merchantDetail.website}}" target="_blank">{{sdm.nest.merchantDetail.website}}</a></p>\n' +
+    '            <p> {{sdm.nest.merchantDetail.contact.address_1}} {{sdm.nest.merchantDetail.contact.city}}<br/>\n' +
+    '            {{sdm.nest.merchantDetail.contact.state}} {{sdm.nest.merchantDetail.contact.zip_code}} {{sdm.nest.merchantDetail.contact.country}} </p>\n' +
+    '            <span class="rating">\n' +
+    '                <uib-rating ng-click="sdm.openRatingModel()" ng-model="sdm.nest.rating" aria-labelledby="default-rating"></uib-rating>\n' +
+    '            </span>\n' +
+    '            <p>0.98 mi Distance from search location</p>\n' +
+    '            <p>{{sdm.nest.merchantDetail.avg_waiting_time}} Wait Time</p>\n' +
+    '            <p>Open {{sdm.nest.merchantDetail.open_time}} to {{sdm.nest.merchantDetail.close_time}}</p>\n' +
     '        </div>\n' +
-    '        <div class="col-md-8 popular-items">\n' +
-    '          <h2>Detailed Items</h2>\n' +
-    '        </div>\n' +
+    '        <div class="col-sm-12 col-md-5 location"> <img src="img/shop-map.jpg" class="img-responsive"/> </div>\n' +
+    '        <div class="clearfix"></div>\n' +
     '    </div>\n' +
-    '    <uib-tabset vertical="true" type="tabs" template-url="html/tabset-template-merchant.html">\n' +
-    '      <uib-tab select="sdm.getMenuByMandC(category.id)" ng-repeat="category in sdm.nest.merchantDetail.categories" active="$index == 0" template-url="html/tab-template-merchant.html">\n' +
-    '        <uib-tab-heading>\n' +
-    '            <img src="img/ic-menuitem.png" />{{category.category_name}}\n' +
-    '        </uib-tab-heading>\n' +
-    '        <div class="tab-pane">\n' +
-    '          <div class="row-fluid">\n' +
-    '            <div ng-repeat="menu in category.menu_items" class="col-sm-6 col-md-6 item-left">\n' +
-    '              <div class="row list">\n' +
-    '                <div class="col-xs-9 col-sm-8 col-md-9"> <img src="{{menu.picture}}" class="pull-left" />\n' +
-    '                  <div class="content">\n' +
-    '                    <h3><a ng-click="sdm.openCartModal(menu)">{{menu.item_name}}</a></h3>\n' +
-    '                    <p>{{menu.description}}</p>\n' +
-    '                  </div>\n' +
-    '                </div>\n' +
-    '                <div class="col-xs-3 col-sm-4 col-md-3"> <a title="Add to cart" ng-click="sdm.openCartModal(menu)"><i class="fa fa-shopping-cart fa-lg"><span ng-if="menu.isCart"> ({{menu.qty}})</span></i></a> <span class="price">${{menu.price}}</span> </div>\n' +
-    '              </div>\n' +
+    '    <div ng-if="sdm.nest.merchantId">\n' +
+    '        <div class="menu-detail-wrap">\n' +
+    '            <div class="col-md-4 menu-items">\n' +
+    '                <h2>Category</h2>\n' +
     '            </div>\n' +
-    '          </div>\n' +
+    '            <div class="col-md-8 popular-items">\n' +
+    '                <h2>Detailed Items</h2>\n' +
+    '            </div>\n' +
     '        </div>\n' +
-    '      </uib-tab>\n' +
-    '    </uib-tabset>\n' +
-    '  </div>\n' +
-    '  <div class="clearfix clear"></div>\n' +
+    '        <uib-tabset vertical="true" type="tabs" template-url="html/tabset-template-merchant.html">\n' +
+    '            <uib-tab select="sdm.getMenuByMandC(category.id)" ng-repeat="category in sdm.nest.merchantDetail.categories" active="$index == 0" template-url="html/tab-template-merchant.html">\n' +
+    '                <uib-tab-heading>\n' +
+    '                    <img src="img/ic-menuitem.png" />{{category.category_name}}\n' +
+    '                </uib-tab-heading>\n' +
+    '                <div class="tab-pane">\n' +
+    '                    <div class="row-fluid">\n' +
+    '                        <div ng-repeat="menu in category.menu_items" class="col-sm-6 col-md-6 item-left">\n' +
+    '                            <div class="row list">\n' +
+    '                                <div class="col-xs-9 col-sm-8 col-md-9"> <img src="{{menu.picture}}" class="pull-left" />\n' +
+    '                                    <div class="content">\n' +
+    '                                        <h3><a ng-click="sdm.openCartModal(menu)">{{menu.item_name}}</a></h3>\n' +
+    '                                        <p>{{menu.description}}</p>\n' +
+    '                                    </div>\n' +
+    '                                </div>\n' +
+    '                                <div class="col-xs-3 col-sm-4 col-md-3">\n' +
+    '                                    <a title="Add to cart" ng-click="sdm.openCartModal(menu)">\n' +
+    '                                        <i class="fa fa-shopping-cart fa-lg">\n' +
+    '                                            <span ng-if="menu.isCart"> ({{menu.qty}})</span>\n' +
+    '                                        </i>\n' +
+    '                                    </a>\n' +
+    '                                    <span class="price">${{menu.price}}</span> </div>\n' +
+    '                            </div>\n' +
+    '                        </div>\n' +
+    '                    </div>\n' +
+    '                </div>\n' +
+    '            </uib-tab>\n' +
+    '        </uib-tabset>\n' +
+    '    </div>\n' +
+    '    <div class="clearfix clear"></div>\n' +
     '</div>\n' +
     '<script type="text/ng-template" id="cartModal.html">\n' +
-    '<div id="menu-detail">\n' +
-    '    <button type="button" class="close" ng-click="cartModal.close()">&times;</button>\n' +
-    '      <h1>{{cartModal.menu.item_name}}</h1>\n' +
-    '      <div class="row">\n' +
-    '        <div class="col-sm-4"><img src="{{cartModal.menu.picture}}" class="img-responsive" /></div>\n' +
-    '        <div class="col-sm-8">\n' +
-    '          <h2>Description</h2>\n' +
-    '          <p>{{cartModal.menu.description}}</p>\n' +
+    '    <div id="menu-detail">\n' +
+    '        <button type="button" class="close" ng-click="cartModal.close()">&times;</button>\n' +
+    '        <h1>{{cartModal.menu.item_name}}</h1>\n' +
+    '        <div class="row">\n' +
+    '            <div class="col-sm-4"><img src="{{cartModal.menu.picture}}" class="img-responsive" /></div>\n' +
+    '            <div class="col-sm-8">\n' +
+    '                <h2>Description</h2>\n' +
+    '                <p>{{cartModal.menu.description}}</p>\n' +
+    '            </div>\n' +
     '        </div>\n' +
-    '      </div>\n' +
-    '      <div class="col-sm-12 item-spec">\n' +
-    '        <form class="form-inline" role="form">\n' +
-    '          <div class="form-group">\n' +
-    '            <label>Wait Time</label>\n' +
-    '            <label>{{cartModal.menu.waiting_time}}</label>\n' +
-    '          </div>\n' +
-    '          <div class="form-group">\n' +
-    '            <label>No of items:</label>\n' +
-    '            <input type="text" ng-model="cartModal.menu.qty" class="form-control" >\n' +
-    '          </div>\n' +
-    '          <div class="form-group">\n' +
-    '            <label> Price</label>\n' +
-    '            <label>${{cartModal.menu.price}}</label>\n' +
-    '          </div>\n' +
-    '          <button ng-click="cartModal.addToCart()" class="btn btn-default"><i class="fa fa-shopping-cart fa-lg"></i> Add to cart</button>\n' +
-    '          <div class=clearfix></div>\n' +
+    '        <div class="col-sm-12 item-spec">\n' +
+    '            <form class="form-inline" role="form">\n' +
+    '                <div class="form-group">\n' +
+    '                    <label>Wait Time</label>\n' +
+    '                    <label>{{cartModal.menu.waiting_time}}</label>\n' +
+    '                </div>\n' +
+    '                <div class="form-group">\n' +
+    '                    <label>No of items:</label>\n' +
+    '                    <input type="text" ng-model="cartModal.menu.qty" class="form-control" >\n' +
+    '                </div>\n' +
+    '                <div class="form-group">\n' +
+    '                    <label> Price</label>\n' +
+    '                    <label>${{cartModal.menu.price}}</label>\n' +
+    '                </div>\n' +
+    '                <button ng-click="cartModal.addToCart()" class="btn btn-default"><i class="fa fa-shopping-cart fa-lg"></i> Add to cart</button>\n' +
+    '                <div class=clearfix></div>\n' +
+    '            </form>\n' +
+    '        </div>\n' +
+    '        <div class="clearfix"></div>\n' +
+    '        <div class="build-order">\n' +
+    '            <h3>Build Your Order - Sides</h3>\n' +
+    '            <label class="checkbox-inline">\n' +
+    '                <input type="checkbox" value="">\n' +
+    '                Dumpling\n' +
+    '            </label>\n' +
+    '            <label class="checkbox-inline">\n' +
+    '                <input type="checkbox" value="">\n' +
+    '                Dumpling\n' +
+    '            </label>\n' +
+    '            <label class="checkbox-inline">\n' +
+    '                <input type="checkbox" value="">\n' +
+    '                Dumpling\n' +
+    '            </label>\n' +
+    '            <label class="checkbox-inline">\n' +
+    '                <input type="checkbox" value="">\n' +
+    '                Dumpling\n' +
+    '            </label>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '</script>\n' +
+    '<script type="text/ng-template" id="ratingModal.html">\n' +
+    '    <div id="menu-detail">\n' +
+    '        <button type="button" class="close" ng-click="ratingModal.close()">&times;</button>\n' +
+    '        <h1>Rating</h1>\n' +
+    '        <form name="ratingForm" novalidate role="form">\n' +
+    '            <div class="col-md-12">\n' +
+    '                <div class="form-group">\n' +
+    '                    <span class="rating">\n' +
+    '                        <uib-rating ng-model="ratingModal.data.rating" aria-labelledby="default-rating"></uib-rating>\n' +
+    '                    </span>\n' +
+    '                </div>\n' +
+    '                <div class="form-gruop">\n' +
+    '                    <textarea name="comment" ng-model="ratingModal.data.comment" class="form-control"  placeholder="Write a review here...!"></textarea>\n' +
+    '                </div>\n' +
+    '            </div>\n' +
+    '            <div class="col-md-12">\n' +
+    '                <button ng-click="ratingModal.addRating()" class="btn btn-default"><i class="fa fa-star fa-lg"></i> Add to cart</button>\n' +
+    '            </div>\n' +
+    '            <div class=clearfix></div>\n' +
     '        </form>\n' +
-    '      </div>\n' +
-    '      <div class="clearfix"></div>\n' +
-    '      <div class="build-order">\n' +
-    '        <h3>Build Your Order - Sides</h3>\n' +
-    '        <label class="checkbox-inline">\n' +
-    '          <input type="checkbox" value="">\n' +
-    '          Dumpling</label>\n' +
-    '        <label class="checkbox-inline">\n' +
-    '          <input type="checkbox" value="">\n' +
-    '          Dumpling</label>\n' +
-    '        <label class="checkbox-inline">\n' +
-    '          <input type="checkbox" value="">\n' +
-    '          Dumpling</label>\n' +
-    '        <label class="checkbox-inline">\n' +
-    '          <input type="checkbox" value="">\n' +
-    '          Dumpling</label>\n' +
-    '      </div>\n' +
-    '</div>\n' +
-    '</script>');
+    '        <div class="clearfix"></div>\n' +
+    '    </div>\n' +
+    '</script>\n' +
+    '');
 }]);
 })();
 
@@ -1662,6 +1468,239 @@ module.run(['$templateCache', function($templateCache) {
     '	<h1>Email Verification:</h1>\n' +
     '	<div class="alert" ng-class="{\'alert-success\': !vusr.data.error, \'alert-danger\': vusr.data.error}">{{vusr.data.message}}</div>\n' +
     '	<div class="text-center"><a ng-click="nav.go(\'home\')" class="btn btn-default">Goto Home</a></div>\n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('admin/merchant-create.html',
+    '<div class="container edit-merchant">\n' +
+    '	<div class="col-md-12">            \n' +
+    '      <div id="edit-merchant" >\n' +
+    '         <h1>{{mcr.type}} merchant</h1>      \n' +
+    '         <div class="col-md-12 form-wrap">\n' +
+    '            <form novalidate name="mcr.merchantForm" ng-submit="mcr.updateMerchant(mcr.merchantForm.$valid, mcr.merchant)" role="form">\n' +
+    '               <div class="col-md-6">\n' +
+    '                  <div class="form-group">\n' +
+    '                     <label for="username">Username</label>\n' +
+    '                     <input required type="text" name="username" maxlength="50" ng-model="mcr.merchant.username" class="form-control"  placeholder="Enter username">\n' +
+    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.username.$invalid" ng-messages="mcr.merchantForm.username.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="maxlength">Please enter a valid Username</div>\n' +
+    '                        <div ng-message="required">Please enter username</div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <label for="password">Password</label>\n' +
+    '                     <input type="password" name="password" maxlength="50" ng-model="mcr.merchant.password" class="form-control"  placeholder="Enter Password">\n' +
+    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.password.$invalid" ng-messages="mcr.merchantForm.password.$error" class="alert alert-danger">\n' +
+    '                        <!--div ng-message="required">Password is required</div-->\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <label for="business_name">Bussiness Name</label>\n' +
+    '                     <input required type="text" name="business_name" maxlength="50" ng-model="mcr.merchant.business_name" class="form-control"  placeholder="Enter bussiness name">\n' +
+    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.business_name.$invalid" ng-messages="mcr.merchantForm.business_name.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="maxlength">Please enter a valid Business Name</div>\n' +
+    '                        <div ng-message="required">Please enter bussiness name</div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <label for="bussiness_type">Bussiness Type</label>\n' +
+    '                     <input required type="text" name="business_type" maxlength="50" ng-model="mcr.merchant.business_type" class="form-control"  placeholder="Enter business type">\n' +
+    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.business_type.$invalid" ng-messages="mcr.merchantForm.business_type.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="maxlength">Please enter a valid Business Type</div>\n' +
+    '                        <div ng-message="required">Please enter username</div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <label for="contact_person">Contact Person</label>\n' +
+    '                     <input required type="text" name="contact_person" maxlength="50" ng-model="mcr.merchant.contact_person" class="form-control"  placeholder="Enter contact person name">\n' +
+    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.contact_person.$invalid" ng-messages="mcr.merchantForm.contact_person.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="maxlength">Please enter a valid Contact Person</div>\n' +
+    '                        <div ng-message="required">Please enter contact person</div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <label for="mail_id">Email</label>\n' +
+    '                     <input required type="email" name="mail_id" ng-model="mcr.merchant.contact.mail_id" class="form-control" placeholder="Enter email">\n' +
+    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.mail_id.$invalid" ng-messages="mcr.merchantForm.mail_id.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="email">Please enter a valid Email Id</div>\n' +
+    '                        <div ng-message="required">Please enter email</div>\n' +
+    '                      </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <label for="phone">Phone</label>\n' +
+    '                     <input required type="text" name="phone" ng-model="mcr.merchant.contact.phone" class="form-control" placeholder="Enter phone">\n' +
+    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.phone.$invalid" ng-messages="mcr.merchantForm.phone.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="required">Please enter phone</div>\n' +
+    '                      </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <label for="website">Website</label>\n' +
+    '                     <input required type="text" name="website" maxlength="150" ng-model="mcr.merchant.website" class="form-control"  placeholder="Enter website">\n' +
+    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.website.$invalid" ng-messages="mcr.merchantForm.website.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="maxlength">Website should contain maximum 150 characters</div>\n' +
+    '                        <div ng-message="maxlength">Website is required</div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <label for="photo">Photo</label>\n' +
+    '                     <input type="text" name="photo" maxlength="50" ng-model="mcr.merchant.photo" class="form-control"  placeholder="Enter photo">\n' +
+    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.photo.$invalid" ng-messages="mcr.merchantForm.photo.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="maxlength">Please enter a valid photo url</div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '               </div>\n' +
+    '               <div class="col-md-6">\n' +
+    '                  <div class="form-group">\n' +
+    '                     <label for="open_time">Open Time</label>\n' +
+    '                     <input required type="text" name="open_time" maxlength="50" ng-model="mcr.merchant.open_time" class="form-control"  placeholder="Enter open time">\n' +
+    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.open_time.$invalid" ng-messages="mcr.merchantForm.open_time.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="maxlength">Please enter a valid Contact Person</div>\n' +
+    '                        <div ng-message="required">Please enter open time</div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <label for="close_time">Close Time</label>\n' +
+    '                     <input required type="text" name="close_time" maxlength="50" ng-model="mcr.merchant.close_time" class="form-control"  placeholder="Enter close time">\n' +
+    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.close_time.$invalid" ng-messages="mcr.merchantForm.close_time.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="maxlength">Please enter a valid Contact Person</div>\n' +
+    '                        <div ng-message="required">Please enter close time</div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <label for="avg_waiting_time">Average Waiting Time</label>\n' +
+    '                     <input required type="text" name="avg_waiting_time" maxlength="50" ng-model="mcr.merchant.avg_waiting_time" class="form-control"  placeholder="Enter average waiting time">\n' +
+    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.avg_waiting_time.$invalid" ng-messages="mcr.merchantForm.avg_waiting_time.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="maxlength">Avg waiting time should contain maximum 50 characters</div>\n' +
+    '                        <div ng-message="required">Please enter average waiting time</div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <label for="address_1">Address 1</label>\n' +
+    '                     <textarea required name="address_1" ng-model="mcr.merchant.contact.address_1" class="form-control"  placeholder="Address"></textarea>\n' +
+    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.address_1.$invalid" ng-messages="mcr.merchantForm.address_1.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="maxlength">Address should contain maximum 50 characters</div>\n' +
+    '                        <div ng-message="required">Address field is required</div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <label for="country">Country</label>\n' +
+    '                     <input required autocomplete="off" type="text" name="country" ng-model="mcr.data.geo.country" class="form-control" placeholder="Enter country"  uib-typeahead="country as country.name for country in mcr.getCountries($viewValue)" typeahead-loading="loadingCountries" typeahead-no-results="noCountry" class="form-control" typeahead-on-select="mcr.onSelectCountry($item, $modal, $label, $event)">\n' +
+    '                     <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>\n' +
+    '                     <div ng-show="noCountry">\n' +
+    '                       <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
+    '                     </div>\n' +
+    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.country.$invalid" ng-messages="mcr.merchantForm.country.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="maxlength">Country should contain maximum 50 characters</div>\n' +
+    '                        <div ng-message="required">Address field is required</div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <label for="state">State</label>\n' +
+    '                     <input required autocomplete="off" type="text" name="state" ng-model="mcr.data.geo.state" class="form-control" placeholder="Enter state" uib-typeahead="state as state.name for state in mcr.getStates($viewValue)" typeahead-loading="loadingStates" typeahead-no-results="noState" class="form-control" typeahead-on-select="mcr.onSelectState($item, $modal, $label, $event)">\n' +
+    '                     <i ng-show="loadingStates" class="glyphicon glyphicon-refresh"></i>\n' +
+    '                     <div ng-show="noState">\n' +
+    '                       <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
+    '                     </div>\n' +
+    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.state.$invalid" ng-messages="mcr.merchantForm.state.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="maxlength">State should contain maximum 50 characters</div>\n' +
+    '                        <div ng-message="required">State field is required</div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <label for="city">City</label>\n' +
+    '                     <!--input type="hidden" name="city_id" ng-model="mcr.merchant.city_id"-->\n' +
+    '                     <input required autocomplete="off" type="text" name="city" maxlength="50" ng-model="mcr.data.geo.city" class="form-control"  placeholder="Enter city name" uib-typeahead="city as city.name for city in mcr.getCities($viewValue)" typeahead-loading="loadingCities" typeahead-no-results="noCity" class="form-control" typeahead-on-select="mcr.onSelectCity($item, $modal, $label, $event)">\n' +
+    '                     <i ng-show="loadingCities" class="glyphicon glyphicon-refresh"></i>\n' +
+    '                     <div ng-show="noCity">\n' +
+    '                       <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
+    '                     </div>\n' +
+    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.contact.city.$invalid" ng-messages="mcr.merchantForm.contact.city.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="maxlength">City should contain maximum 50 characters</div>\n' +
+    '                        <div ng-message="maxlength">City is required</div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <label for="zip_code">Zip code</label>\n' +
+    '                     <input required type="text" name="zip_code" ng-model="mcr.merchant.contact.zip_code" class="form-control" placeholder="Enter zipcode">\n' +
+    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.contact.zip_code.$invalid" ng-messages="mcr.merchantForm.contact.zip_code.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="maxlength">Zip code should contain maximum 50 characters</div>\n' +
+    '                        <div ng-message="maxlength">Zip code is required</div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <label for="region">Region</label>\n' +
+    '                     <input type="hidden" name="region_id" ng-model="mcr.merchant.region_id">\n' +
+    '                     <input type="text" name="region" maxlength="50" ng-model="mcr.merchant.region" class="form-control"  placeholder="Enter region">\n' +
+    '                     <div ng-if="mcr.merchantForm.$submitted && mcr.merchantForm.region.$invalid" ng-messages="mcr.merchantForm.region.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="maxlength">Please enter a valid Contact Person</div>\n' +
+    '                     </div>\n' +
+    '                  </div>\n' +
+    '                  <div class="form-group">\n' +
+    '                     <input type="checkbox" name="is_active" ng-true-value="\'Y\'" ng-false-value="\'N\'" ng-model="mcr.merchant.is_active"><label for="is_active">Is Active</label>\n' +
+    '                  </div>\n' +
+    '               </div>\n' +
+    '               <div class="clearfix"></div>\n' +
+    '               <div class="col-md-12">\n' +
+    '                  <button type="submit" class="btn btn-default pull-right">Submit</button>\n' +
+    '                  <button type="submit" ng-click="mcr.cancel($event)" class="btn btn-default pull-right">Cancel</button>\n' +
+    '                  <div class="clearfix"></div>\n' +
+    '               </div>\n' +
+    '            </form>\n' +
+    '         </div>               \n' +
+    '      </div>\n' +
+    '   </div>\n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('admin/merchant-list.html',
+    '<div class="container merchant-list-wrap">\n' +
+    '	<h1>Merchant List</h1>\n' +
+    '	<div class="col-md-12 merchant-search">\n' +
+    '		<div class="col-sm-12 col-md-6 form-wrap">\n' +
+    '			<div class="form-group">\n' +
+    '				<input type="text" ng-model="ml.merchant.keyword" class="form-control"  placeholder="Search...">\n' +
+    '			</div>\n' +
+    '		</div>\n' +
+    '		<div class="col-sm-12 col-md-6">\n' +
+    '			<div class="form-group">\n' +
+    '				<a ng-click="ml.initializeMerchant()" class="btn btn-default">Search</a>\n' +
+    '				<a ng-click="nav.go(\'admin_merchant.new\')" class="btn btn-primary">Add New</a>\n' +
+    '			</div>\n' +
+    '		</div>\n' +
+    '	</div>\n' +
+    '	<div infinite-scroll="ml.nextPage()"\n' +
+    '      infinite-scroll-distance="0"\n' +
+    '      infinite-scroll-immediate-check="false"\n' +
+    '      infinite-scroll-use-document-bottom="true">\n' +
+    '		<div class="col-md-12 merchant-list" ng-repeat="(key, value) in ml.merchant.list">\n' +
+    '	        <div class="col-sm-3 col-md-2"><img class="img-responsive" src="{{value.photo}}"></div>\n' +
+    '	        <div class="col-sm-9 col-md-8">\n' +
+    '	           <h2>{{value.business_name}}</h2>\n' +
+    '	           <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>\n' +
+    '	           <p> {{value.addr_line_1}},<br>{{value.addr_line_2}} \n' +
+    '	           </p>\n' +
+    '	        </div>\n' +
+    '	        <a href="#/admin/merchant/edit/{{value.id}}" class="edit"><i class="fa fa-pencil"></i></a>\n' +
+    '	        <a href="#" ng-click="ml.deleteMerchant($event, value.id)" class="delete"><i class="fa fa-trash"></i></a>\n' +
+    '	        <div class="clearfix"></div>\n' +
+    '	    </div>\n' +
+    '    </div>\n' +
     '</div>');
 }]);
 })();

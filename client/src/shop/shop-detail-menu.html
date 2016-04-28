@@ -1,97 +1,132 @@
 <div class="container shop-detail-wrap">
-  <div class="shop-detail" ng-if="sdm.nest.merchantId">
-    <div class="col-sm-6 col-md-4"> <img src="{{sdm.nest.merchantDetail.photo}}" class="img-responsive"/> </div>
-    <div class="col-sm-6 col-md-3 info">
-      <h2>{{sdm.nest.merchantDetail.business_name}}</h2>
-	    <p><a href="{{sdm.nest.merchantDetail.website}}" target="_blank">{{sdm.nest.merchantDetail.website}}</a></p>
-      <p> {{sdm.nest.merchantDetail.contact.address_1}} {{sdm.nest.merchantDetail.contact.city}}<br/>
-        {{sdm.nest.merchantDetail.contact.state}} {{sdm.nest.merchantDetail.contact.zip_code}} {{sdm.nest.merchantDetail.contact.country}} </p>
-      <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>
-      <p>0.98 mi Distance from search location</p>
-      <p>{{sdm.nest.merchantDetail.avg_waiting_time}} Wait Time</p>
-      <p>Open {{sdm.nest.merchantDetail.open_time}} to {{sdm.nest.merchantDetail.close_time}}</p>
-    </div>
-    <div class="col-sm-12 col-md-5 location"> <img src="img/shop-map.jpg" class="img-responsive"/> </div>
-    <div class="clearfix"></div>
-  </div>
-  <div ng-if="sdm.nest.merchantId">
-    <div class="menu-detail-wrap">
-        <div class="col-md-4 menu-items">
-          <h2>Category</h2>
+    <div class="shop-detail" ng-if="sdm.nest.merchantId">
+        <div class="col-sm-6 col-md-4"> <img src="{{sdm.nest.merchantDetail.photo}}" class="img-responsive"/> </div>
+        <div class="col-sm-6 col-md-3 info">
+            <h2>{{sdm.nest.merchantDetail.business_name}}</h2>
+            <p><a href="{{sdm.nest.merchantDetail.website}}" target="_blank">{{sdm.nest.merchantDetail.website}}</a></p>
+            <p> {{sdm.nest.merchantDetail.contact.address_1}} {{sdm.nest.merchantDetail.contact.city}}<br/>
+            {{sdm.nest.merchantDetail.contact.state}} {{sdm.nest.merchantDetail.contact.zip_code}} {{sdm.nest.merchantDetail.contact.country}} </p>
+            <span class="rating">
+                <uib-rating ng-click="sdm.openRatingModel()" ng-model="sdm.nest.rating" aria-labelledby="default-rating"></uib-rating>
+            </span>
+            <p>0.98 mi Distance from search location</p>
+            <p>{{sdm.nest.merchantDetail.avg_waiting_time}} Wait Time</p>
+            <p>Open {{sdm.nest.merchantDetail.open_time}} to {{sdm.nest.merchantDetail.close_time}}</p>
         </div>
-        <div class="col-md-8 popular-items">
-          <h2>Detailed Items</h2>
-        </div>
+        <div class="col-sm-12 col-md-5 location"> <img src="img/shop-map.jpg" class="img-responsive"/> </div>
+        <div class="clearfix"></div>
     </div>
-    <uib-tabset vertical="true" type="tabs" template-url="html/tabset-template-merchant.html">
-      <uib-tab select="sdm.getMenuByMandC(category.id)" ng-repeat="category in sdm.nest.merchantDetail.categories" active="$index == 0" template-url="html/tab-template-merchant.html">
-        <uib-tab-heading>
-            <img src="img/ic-menuitem.png" />{{category.category_name}}
-        </uib-tab-heading>
-        <div class="tab-pane">
-          <div class="row-fluid">
-            <div ng-repeat="menu in category.menu_items" class="col-sm-6 col-md-6 item-left">
-              <div class="row list">
-                <div class="col-xs-9 col-sm-8 col-md-9"> <img src="{{menu.picture}}" class="pull-left" />
-                  <div class="content">
-                    <h3><a ng-click="sdm.openCartModal(menu)">{{menu.item_name}}</a></h3>
-                    <p>{{menu.description}}</p>
-                  </div>
-                </div>
-                <div class="col-xs-3 col-sm-4 col-md-3"> <a title="Add to cart" ng-click="sdm.openCartModal(menu)"><i class="fa fa-shopping-cart fa-lg"><span ng-if="menu.isCart"> ({{menu.qty}})</span></i></a> <span class="price">${{menu.price}}</span> </div>
-              </div>
+    <div ng-if="sdm.nest.merchantId">
+        <div class="menu-detail-wrap">
+            <div class="col-md-4 menu-items">
+                <h2>Category</h2>
             </div>
-          </div>
+            <div class="col-md-8 popular-items">
+                <h2>Detailed Items</h2>
+            </div>
         </div>
-      </uib-tab>
-    </uib-tabset>
-  </div>
-  <div class="clearfix clear"></div>
+        <uib-tabset vertical="true" type="tabs" template-url="html/tabset-template-merchant.html">
+            <uib-tab select="sdm.getMenuByMandC(category.id)" ng-repeat="category in sdm.nest.merchantDetail.categories" active="$index == 0" template-url="html/tab-template-merchant.html">
+                <uib-tab-heading>
+                    <img src="img/ic-menuitem.png" />{{category.category_name}}
+                </uib-tab-heading>
+                <div class="tab-pane">
+                    <div class="row-fluid">
+                        <div ng-repeat="menu in category.menu_items" class="col-sm-6 col-md-6 item-left">
+                            <div class="row list">
+                                <div class="col-xs-9 col-sm-8 col-md-9"> <img src="{{menu.picture}}" class="pull-left" />
+                                    <div class="content">
+                                        <h3><a ng-click="sdm.openCartModal(menu)">{{menu.item_name}}</a></h3>
+                                        <p>{{menu.description}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-xs-3 col-sm-4 col-md-3">
+                                    <a title="Add to cart" ng-click="sdm.openCartModal(menu)">
+                                        <i class="fa fa-shopping-cart fa-lg">
+                                            <span ng-if="menu.isCart"> ({{menu.qty}})</span>
+                                        </i>
+                                    </a>
+                                    <span class="price">${{menu.price}}</span> </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </uib-tab>
+        </uib-tabset>
+    </div>
+    <div class="clearfix clear"></div>
 </div>
 <script type="text/ng-template" id="cartModal.html">
-<div id="menu-detail">
-    <button type="button" class="close" ng-click="cartModal.close()">&times;</button>
-      <h1>{{cartModal.menu.item_name}}</h1>
-      <div class="row">
-        <div class="col-sm-4"><img src="{{cartModal.menu.picture}}" class="img-responsive" /></div>
-        <div class="col-sm-8">
-          <h2>Description</h2>
-          <p>{{cartModal.menu.description}}</p>
+    <div id="menu-detail">
+        <button type="button" class="close" ng-click="cartModal.close()">&times;</button>
+        <h1>{{cartModal.menu.item_name}}</h1>
+        <div class="row">
+            <div class="col-sm-4"><img src="{{cartModal.menu.picture}}" class="img-responsive" /></div>
+            <div class="col-sm-8">
+                <h2>Description</h2>
+                <p>{{cartModal.menu.description}}</p>
+            </div>
         </div>
-      </div>
-      <div class="col-sm-12 item-spec">
-        <form class="form-inline" role="form">
-          <div class="form-group">
-            <label>Wait Time</label>
-            <label>{{cartModal.menu.waiting_time}}</label>
-          </div>
-          <div class="form-group">
-            <label>No of items:</label>
-            <input type="text" ng-model="cartModal.menu.qty" class="form-control" >
-          </div>
-          <div class="form-group">
-            <label> Price</label>
-            <label>${{cartModal.menu.price}}</label>
-          </div>
-          <button ng-click="cartModal.addToCart()" class="btn btn-default"><i class="fa fa-shopping-cart fa-lg"></i> Add to cart</button>
-          <div class=clearfix></div>
+        <div class="col-sm-12 item-spec">
+            <form class="form-inline" role="form">
+                <div class="form-group">
+                    <label>Wait Time</label>
+                    <label>{{cartModal.menu.waiting_time}}</label>
+                </div>
+                <div class="form-group">
+                    <label>No of items:</label>
+                    <input type="text" ng-model="cartModal.menu.qty" class="form-control" >
+                </div>
+                <div class="form-group">
+                    <label> Price</label>
+                    <label>${{cartModal.menu.price}}</label>
+                </div>
+                <button ng-click="cartModal.addToCart()" class="btn btn-default"><i class="fa fa-shopping-cart fa-lg"></i> Add to cart</button>
+                <div class=clearfix></div>
+            </form>
+        </div>
+        <div class="clearfix"></div>
+        <div class="build-order">
+            <h3>Build Your Order - Sides</h3>
+            <label class="checkbox-inline">
+                <input type="checkbox" value="">
+                Dumpling
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" value="">
+                Dumpling
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" value="">
+                Dumpling
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" value="">
+                Dumpling
+            </label>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="ratingModal.html">
+    <div id="menu-detail">
+        <button type="button" class="close" ng-click="ratingModal.close()">&times;</button>
+        <h1>Rating</h1>
+        <form name="ratingForm" novalidate role="form">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <span class="rating">
+                        <uib-rating ng-model="ratingModal.data.rating" aria-labelledby="default-rating"></uib-rating>
+                    </span>
+                </div>
+                <div class="form-gruop">
+                    <textarea name="comment" ng-model="ratingModal.data.comment" class="form-control"  placeholder="Write a review here...!"></textarea>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <button ng-click="ratingModal.addRating()" class="btn btn-default"><i class="fa fa-star fa-lg"></i> Add to cart</button>
+            </div>
+            <div class=clearfix></div>
         </form>
-      </div>
-      <div class="clearfix"></div>
-      <div class="build-order">
-        <h3>Build Your Order - Sides</h3>
-        <label class="checkbox-inline">
-          <input type="checkbox" value="">
-          Dumpling</label>
-        <label class="checkbox-inline">
-          <input type="checkbox" value="">
-          Dumpling</label>
-        <label class="checkbox-inline">
-          <input type="checkbox" value="">
-          Dumpling</label>
-        <label class="checkbox-inline">
-          <input type="checkbox" value="">
-          Dumpling</label>
-      </div>
-</div>
+        <div class="clearfix"></div>
+    </div>
 </script>

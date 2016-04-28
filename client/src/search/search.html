@@ -1,46 +1,48 @@
 <div class="container-fluid banner-wrap" ng-if="!user.isLoggedIn">
-	<div class="banner">
-    	<div class="col-md-10 cnt">
-    	<p class="title-1">SAVE YOUR TIME...INCREASE PRODUCTIVE TIME<br/>
-SAVE MONEY!!</p>
-		<p class="title-2">Tired of waiting in queue, come join us</p>
-        <a href="#" class="btn join"  ng-click="vm.openSignUpModal($event)">Join Now !!</a>
+    <div class="banner">
+        <div class="col-md-10 cnt">
+            <p class="title-1">SAVE YOUR TIME...INCREASE PRODUCTIVE TIME<br/>SAVE MONEY!!</p>
+            <p class="title-2">Tired of waiting in queue, come join us</p>
+            <a href="#" class="btn join"  ng-click="vm.openSignUpModal($event)">Join Now !!</a>
         </div>
     </div>
 </div>
-<div class="container-fluid search-wrap" ui-view="search-box">
-</div>
+<div class="container-fluid search-wrap" ui-view="search-box"></div>
 <div class="container search-result">
-  <div class="col-md-12 best-bet">These retailers are your best bet for:<a href="#">{{sc.keyword}}</a></div>
-  <div class="row-fluid">
-    <div class="col-md-12">
-      <div class="list-wrap" infinite-scroll="sc.nextPage()"
-      infinite-scroll-distance="0"
-      infinite-scroll-immediate-check="false"
-      infinite-scroll-use-document-bottom="true">
-        <div class="list-item" ng-repeat="(key, value) in sc.merchant.list">
-          <div class="col-xs-12 col-sm-8 col-md-8" >
-            <h2><a href="shop-detail-menu.html">{{value.business_name}}</a></h2>
-            <img src="{{value.photo}}" class="pull-left" />
-            <div> <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>
-              <p>0.98 mi Distance from search location</p>
-              <p class="wait">{{value.avg_wait_time}} Wait Time</p>
-              <p>Open {{value.open_time}} to {{value.close_time}}</p>
+    <div class="col-md-12 best-bet">These retailers are your best bet for:<a href="#">{{sc.keyword}}</a></div>
+    <div class="row-fluid">
+        <div class="col-md-12">
+            <div class="list-wrap" infinite-scroll="sc.nextPage()"
+                infinite-scroll-distance="0"
+                infinite-scroll-immediate-check="false"
+                infinite-scroll-use-document-bottom="true">
+                <div class="list-item" ng-repeat="(key, value) in sc.merchant.list">
+                    <div class="col-xs-12 col-sm-8 col-md-8" >
+                        <h2><a href="shop-detail-menu.html">{{value.business_name}}</a></h2>
+                        <img src="{{value.photo}}" class="pull-left" />
+                        <div>
+                            <span class="rating">
+                                <uib-rating ng-model="value.rating" read-only="true" aria-labelledby="default-rating"></uib-rating>
+                            </span>
+                            <p>0.98 mi Distance from search location</p>
+                            <p class="wait">{{value.avg_wait_time}} Wait Time</p>
+                            <p>Open {{value.open_time}} to {{value.close_time}}</p>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-4 menu">
+                        <h2>Popular Items</h2>
+                        <ul>
+                            <li><a href="#">Chicken Parmesan Sub</a></li>
+                            <li><a href="#">BBQ Chicken Sub</a></li>
+                            <li><a href="#">Veggie Sub</a></li>
+                            <li><a href="#">Chicken Ranch Hot Sandwich</a></li>
+                            <li><a href="#">Cold Cut Hot Sandwich</a></li>
+                        </ul>
+                        <a ng-click="sc.viewMerchant(value.id)" class="btn btn-block">View Retailer</a>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
             </div>
-          </div>
-          <div class="col-xs-12 col-sm-4 col-md-4 menu">
-            <h2>Popular Items</h2>
-            <ul>
-              <li><a href="#">Chicken Parmesan Sub</a></li>
-              <li><a href="#">BBQ Chicken Sub</a></li>
-              <li><a href="#">Veggie Sub</a></li>
-              <li><a href="#">Chicken Ranch Hot Sandwich</a></li>
-              <li><a href="#">Cold Cut Hot Sandwich</a></li>
-            </ul>
-            <a ng-click="sc.viewMerchant(value.id)" class="btn btn-block">View Retailer</a></div>
-          <div class="clearfix"></div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
