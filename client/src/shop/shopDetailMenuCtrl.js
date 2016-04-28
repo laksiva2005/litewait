@@ -45,7 +45,7 @@
                     function addRating() {
                         RatingService.add(vm.data).then(function(response) {
                             if (response.data.error) {
-                                $scope.nest.rating = $scope.nest.merchantDetail.rating;
+                                $scope.nest.rating = response.data.data.rating;
                             }
                         });
                         close();
