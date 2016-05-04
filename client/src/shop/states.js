@@ -20,7 +20,18 @@
                         controllerAs: "sdm"
                     }
                 },
-                params: {id: ''}
+                params: {id: ''},
+                resolve: {
+                    authentication: function (User, $state, $timeout) {
+                        if (!User.isLoggedIn) return true;
+                        if (User.isLoggedIn && User.role == 'm') {
+                            var handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('merchant');
+                            }, 0);
+                        }
+                    }
+                }
             });
     }
 })(angular);

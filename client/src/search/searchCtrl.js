@@ -5,9 +5,9 @@
 	'use strict';
 	angular.module('litewait.ui').controller('SearchCtrl', SearchCtrl);
 
-	SearchCtrl.$inject = ['$scope', '$state', 'PubSub', 'Location', 'Search', 'srch'];
+	SearchCtrl.$inject = ['$scope', '$state', 'PubSub', 'Location', 'Search', 'srch', 'authentication'];
 
-	function SearchCtrl($scope, $state, PubSub, Location, Search, srch) {
+	function SearchCtrl($scope, $state, PubSub, Location, Search, srch, authentication) {
 		var vm = this;
 		vm.merchant = {
 			list: [],

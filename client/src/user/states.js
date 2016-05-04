@@ -23,9 +23,9 @@
                 resolve: {
                     authentication: function (AuthService, $q, $timeout) {
                         var deferred = $q.defer();
-                        
+
                         var handler = $timeout(function() {
-                            var auth = true;//AuthService.isAuthenticated();
+                            var auth = AuthService.isAuthenticated();
                             if (auth) {
                                 deferred.resolve(true);
                             } else {
@@ -33,7 +33,7 @@
                             }
                             $timeout.cancel(handler);
                         }, 0);
-                        
+
                         return deferred.promise;
                     }
                 }
@@ -48,7 +48,7 @@
                 resolve: {
                     authentication: function (AuthService, $q, $timeout) {
                         var deferred = $q.defer();
-                        
+
                         var handler = $timeout(function() {
                             var auth = AuthService.isAuthenticated();
                             if (auth) {
@@ -58,7 +58,7 @@
                             }
                             $timeout.cancel(handler);
                         }, 0);
-                        
+
                         return deferred.promise;
                     }
                 }
@@ -81,14 +81,14 @@
                                     deferred.resolve(response.data);
                                 }, function (error) {
                                     deferred.resolve({
-                                        error: true, 
+                                        error: true,
                                         message: 'User verification failed'
                                     });
                                 });
 
                             } else {
                                 deferred.resolve({
-                                    error: true, 
+                                    error: true,
                                     message: 'Could not able to verify user without verification code'
                                 });
                             }

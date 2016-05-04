@@ -1,31 +1,48 @@
 <div class="container merchant-landing">
-   <div class="col-md-12 product-detail">
-      <div class="col-sm-3 col-md-2"><img class="img-responsive" src="{{mlc.data.merchant.photo}}"></div>
-      <div class="col-sm-9 col-md-8">
-         <h2>{{mlc.data.merchant.business_name}}</h2>
-         <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>
-         <p> {{mlc.data.merchant.contact.address_1}}, <br/>{{mlc.data.merchant.contact.city}},<br/>
-            {{mlc.data.merchant.region}} {{mlc.data.merchant.contact.zip_code}}, <br/>{{mlc.data.merchant.contact.country}} 
-         </p>
-      </div>
-      <a ng-click="nav.go('user.profile')" class="edit"><i class="fa fa-pencil"></i></a>
-      <div class="clearfix"></div>
-   </div>
-   <div class="col-md-12 merchant-detail">
-      <div class="row">
-         <div class="col-md-12 order-status">
-            <div class="table-responsive">
-               <ul class="nav nav-tabs">
-                  <li ng-class="{active: mlc.data.active == 'order'}"><a ng-click="mlc.go('merchant.order', 'order')">In-progress / Ready for pick up</a></li>
-                  <li ng-class="{active: mlc.data.active == 'pastorder'}"><a ng-click="mlc.go('merchant.pastorder', 'past')">Past orders</a></li>
-                  <li ng-class="{active: mlc.data.active == 'review'}"><a ng-click="mlc.go('merchant.review', 'review')">Reviews</a></li>
-                  <li ng-class="{active: mlc.data.active == 'menu'}"><a ng-click="mlc.go('merchant.menu', 'menu')">Merchant Menu</a></li>
-                  <li ng-class="{active: mlc.data.active == 'category'}"><a ng-click="mlc.go('merchant.category', 'category')">Merchant Category</a></li>
-               </ul>
-               <div ui-view="merchant-landing"></div> 
+    <div class="col-md-12 product-detail">
+        <div class="col-sm-3 col-md-2">
+            <img class="img-responsive" src="{{mlc.data.merchant.photo}}">
+        </div>
+        <div class="col-sm-9 col-md-8">
+            <h2>{{mlc.data.merchant.business_name}}</h2>
+            <span class="rating">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star-half-o"></i>
+            </span>
+            <p> {{mlc.data.merchant.contact.address_1}}, <br/>{{mlc.data.merchant.contact.city}},<br/>
+            {{mlc.data.merchant.region}} {{mlc.data.merchant.contact.zip_code}}, <br/>{{mlc.data.merchant.contact.country}}
+            </p>
+        </div>
+        <a ng-click="nav.go('user.profile')" class="edit"><i class="fa fa-pencil"></i></a>
+        <div class="clearfix"></div>
+    </div>
+    <div class="col-md-12 merchant-detail">
+        <div class="row">
+            <div class="col-md-12 order-status">
+                <div class="table-responsive">
+                    <ul class="nav nav-tabs">
+                        <li ng-class="{active: mlc.data.active == 'order'}">
+                            <a ng-click="mlc.go('merchant.order', 'order')">In-progress / Ready for pick up</a>
+                        </li>
+                        <li ng-class="{active: mlc.data.active == 'pastorder'}">
+                            <a ng-click="mlc.go('merchant.pastorder', 'past')">Past orders</a>
+                        </li>
+                        <li ng-class="{active: mlc.data.active == 'review'}">
+                            <a ng-click="mlc.go('merchant.review', 'review')">Reviews</a>
+                        </li>
+                        <li ng-class="{active: mlc.data.active == 'menu'}">
+                            <a ng-click="mlc.go('merchant.menu', 'menu')">Merchant Menu</a>
+                        </li>
+                        <li ng-class="{active: mlc.data.active == 'category'}">
+                            <a ng-click="mlc.go('merchant.category', 'category')">Merchant Category</a>
+                        </li>
+                    </ul>
+                    <div ui-view="merchant-landing"></div>
+                </div>
             </div>
-         </div>
-         <div class="clearfix"></div>
-      </div>
-   </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
 </div>

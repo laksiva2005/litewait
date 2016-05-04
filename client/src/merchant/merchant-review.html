@@ -1,23 +1,23 @@
 <div id="mer-review" infinite-scroll="mrc.nextPage()"
-      infinite-scroll-distance="0"
-      infinite-scroll-immediate-check="false"
-      infinite-scroll-use-document-bottom="true">
-   <table class="table">
-      <thead>
-         <tr>
-            <th>Name</th>
-            <th>Rating </th>
-         </tr>
-      </thead>
-      <tbody>
-         <tr ng-repeat="review in mrc.data.review">
-            <td>{{review.user}}</td>
-            <td>
-              <div class="rating">
-                <uib-rating ng-model="review.rating" read-only="true" aria-labelledby="default-rating"></uib-rating>
-              </div>
-            </td>
-         </tr>
+    infinite-scroll-distance="0"
+    infinite-scroll-immediate-check="false"
+    infinite-scroll-use-document-bottom="true">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Rating </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="review in mrc.data.review">
+                <td>{{review.user}}</td>
+                <td>
+                    <div class="rating">
+                        <uib-rating ng-model="review.rating" read-only="true" aria-labelledby="default-rating"></uib-rating>
+                    </div>
+                </td>
+            </tr>
       </tbody>
    </table>
 </div>

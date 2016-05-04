@@ -5,10 +5,10 @@
 	'use strict';
 	angular.module('litewait.ui').controller('HomeCtrl', HomeCtrl);
 
-	HomeCtrl.$inject = ['$scope'];
+	HomeCtrl.$inject = ['$scope', 'authentication'];
 
-	function HomeCtrl($scope) {
-		var vm = this;	
+	function HomeCtrl($scope, authentication) {
+		var vm = this;
 		vm.myInterval = 3000;
   		vm.noWrap = false;
   		vm.active = 0;
@@ -38,7 +38,7 @@
 				text: 'Los Angeles; California Dummy text for testing',
 				offerText: '25% Off'
 			}]
-			
+
 		},
 		{
 			active: false,
@@ -64,7 +64,7 @@
 				text: 'Los Angeles; California Dummy text for testing',
 				offerText: '25% Off'
 			}]
-			
+
 		},
 		{
 			active: false,
@@ -90,7 +90,7 @@
 				text: 'Los Angeles; California Dummy text for testing',
 				offerText: '25% Off'
 			}]
-			
+
 		}];
 	}
 })(angular);

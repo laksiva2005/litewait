@@ -1,30 +1,30 @@
 <div id="mer-in-progress" infinite-scroll="moc.nextPage()"
-      infinite-scroll-distance="0"
-      infinite-scroll-immediate-check="false"
-      infinite-scroll-use-document-bottom="true">
-   <table class="table">
-      <thead>
-         <tr>
-            <th>Order ID</th>
-            <th>Order</th>
-            <th>Time Remaining</th>
-            <th>Current Status</th>
-            <th>Change state</th>
-         </tr>
-      </thead>
-      <tbody>
-         <tr ng-repeat="order in moc.data.orders">
-            <td><a class="orderid" href="/order-summary/{{order.order_id}}">{{order.order_id}}</a></td>
-            <td>{{order.orderDetails[0].qty}} {{order.orderDetails[0].item_name}}</td>
-            <td>30 mnts</td>
-            <td>
-               <a 
-                  ng-class="{'ready-pick': order.order_status=='Ready to Pickup', 'in-progress': order.order_status =='In Progress', 'new-order': order.order_status == 'New', 'complete': order.order_status == 'Complete'}" >{{order.order_status}}</a>
-            </td>
-            <td>
-               <a ng-class="{'btn-ready-for-pick': order.order_status == 'In Progress', 'in-progress': order.order_status == 'New', 'btn-complete': order.order_status == 'Ready to Pickup'}" class="btn btn-block" ng-click="moc.changeStatus(moc.orderStatus.nextStatus[order.order_status], order.order_id)">{{moc.orderStatus.nextStatus[order.order_status].label}}</a>
-            </td>
-         </tr>
-      </tbody>
-   </table>
+    infinite-scroll-distance="0"
+    infinite-scroll-immediate-check="false"
+    infinite-scroll-use-document-bottom="true">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Order</th>
+                <th>Time Remaining</th>
+                <th>Current Status</th>
+                <th>Change state</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="order in moc.data.orders">
+                <td><a class="orderid" href="/order-summary/{{order.order_id}}">{{order.order_id}}</a></td>
+                <td>{{order.orderDetails[0].qty}} {{order.orderDetails[0].item_name}}</td>
+                <td>30 mnts</td>
+                <td>
+                    <a
+                      ng-class="{'ready-pick': order.order_status=='Ready to Pickup', 'in-progress': order.order_status =='In Progress', 'new-order': order.order_status == 'New', 'complete': order.order_status == 'Complete'}" >{{order.order_status}}</a>
+                </td>
+                <td>
+                    <a ng-class="{'btn-ready-for-pick': order.order_status == 'In Progress', 'in-progress': order.order_status == 'New', 'btn-complete': order.order_status == 'Ready to Pickup'}" class="btn btn-block" ng-click="moc.changeStatus(moc.orderStatus.nextStatus[order.order_status], order.order_id)">{{moc.orderStatus.nextStatus[order.order_status].label}}</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>

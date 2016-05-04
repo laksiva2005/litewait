@@ -2848,19 +2848,19 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                 resolve: {
                     srch: function ($q, $timeout) {
                         var deferred = $q.defer();
-                        
+
                         var handler = $timeout(function() {
                             deferred.resolve('home');
                             $timeout.cancel(handler);
                         }, 0);
-                        
+
                         return deferred.promise;
                     },
                     geolocation: function ($q, Search, $timeout, Location) {
                         var loc = {};
                         var deferred = $q.defer();
 
-                        var handler = $timeout(function() { 
+                        var handler = $timeout(function() {
                             Search.getRegionByGeo().then(function(response) {
                                 if (!response.data.error) {
                                     Location.status = loc.status = true;
@@ -2875,7 +2875,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
                             function getByIp() {
                                 Search.getRegionByIP().then(function(res) {
-                                    if (!res.data.error) {
+                                    if (res.length) {
                                         Location.status = loc.status = true;
                                         Location.data = loc.data = res.data.data;
                                         deferred.resolve(loc);
@@ -2894,6 +2894,423 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                             $timeout.cancel(handler);
                         }, 0);
                         return deferred.promise;
+                    },
+                    authentication: function (User, $state, $timeout) {
+                        if (!User.isLoggedIn) {
+                            return true;
+                        }
+                        if (User.isLoggedIn && User.role == 'm') {
+                            var handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('merchant');
+                            }, 0);
+                        }
+                    }
+                }
+            });
+    }
+})(angular);
+
+/*
+*
+*/
+;(function(angular) {
+	'use strict';
+	angular.module('litewait.ui').controller('MerchantCreateCtrl', MerchantCreateCtrl);
+
+	angular.$inject = ['$scope', 'Merchant', 'merchant', 'toaster', 'GeoService', 'MSG'];
+
+	function MerchantCreateCtrl($scope, Merchant, merchant, toaster, GeoService, MSG) {
+		var vm = this;
+		vm.type = merchant ? 'Edit' : 'Add';
+		vm.data = {
+			geo: {
+				country: {name: '', id: ''},
+				state: {name: '', id: ''},
+				city: {name: '', id: ''}
+			}
+		};
+		vm.merchant = {
+			id: '',
+			password: '',
+			business_name: '',
+			business_type: '',
+			contact_person: '',
+			username: '',
+			contact: {
+				address_1: '',
+				phone: '',
+				city: '',
+				state: '',
+				country: '',
+				cityId: '',
+				stateId: '',
+				countryId: '',
+				zip_code: '',
+				mail_id: ''
+			},
+			region: '',
+			region_id: '',
+			city: '',
+			city_id: '',
+			photo: '',
+			website: '',
+			open_time: '',
+			close_time: '',
+			avg_waiting_time: '',
+			is_active: 'N'
+		};
+
+		vm.updateMerchant = updateMerchant;
+		vm.assignMerchant = assignMerchant;
+		vm.cancel = cancel;
+		vm.getCountries = getCountries;
+		vm.getStates = getStates;
+		vm.getCities = getCities;
+		vm.onSelectCountry = onSelectCountry;
+		vm.onSelectState = onSelectState;
+		vm.onSelectCity = onSelectCity;
+
+		function onSelectCountry() {
+			vm.merchant.contact.country = vm.data.geo.country.name;
+			vm.merchant.contact.countryId = vm.data.geo.country.id;
+		}
+
+		function onSelectState() {
+			vm.merchant.contact.state = vm.data.geo.state.name;
+			vm.merchant.contact.stateId = vm.data.geo.state.id;
+		}
+
+		function onSelectCity() {
+			vm.merchant.contact.city = vm.data.geo.city.name;
+			vm.merchant.contact.cityId = vm.data.geo.city.id;
+		}
+
+		function getCountries(str) {
+			return GeoService.getCountries(str).then(function(res) {
+				var a = [];
+				if (!res.data.error && res.data.data !== null) {
+					for (var i=0;i<res.data.data.length;i++) {
+						a.push({
+							id: res.data.data[i].id,
+							name: res.data.data[i].name
+						});
+					}
+					return a;
+				}
+				return [];
+			});
+		}
+
+		function getStates(str) {
+			if (vm.merchant.contact.country) {
+				var params = {
+					search: str,
+					country: vm.data.geo.country.name
+				};
+
+				return GeoService.getStates(params).then(function(res) {
+					var a = [];
+					if (!res.data.error && res.data.data !== null) {
+						for (var i=0;i<res.data.data.length;i++) {
+							a.push({
+								id: res.data.data[i].id,
+								name: res.data.data[i].name
+							});
+						}
+						return a;
+					}
+					return [];
+				});
+			}
+			return [];
+		}
+
+		function getCities(str) {
+			if (vm.merchant.contact.state) {
+				var params = {
+					search: str,
+					country: vm.data.geo.country.name,
+					state: vm.data.geo.state.name
+				};
+
+				return GeoService.getCities(params).then(function(res) {
+					var a = [];
+					if (!res.data.error && res.data.data !== null) {
+						for (var i=0;i<res.data.data.length;i++) {
+							a.push({
+								id: res.data.data[i].city_name,
+								name: res.data.data[i].city_name
+							});
+						}
+						return a;
+					}
+					return [];
+				});
+			}
+			return [];
+		}
+
+		function updateMerchant(valid, data) {
+			if (valid) {
+				var params = angular.copy(data);
+				var action;
+				if (vm.merchant.id) {
+					action = Merchant.update;
+				} else {
+					action = Merchant.add;
+					delete params.id;
+				}
+				action(params).then(function(response) {
+					if (!(response.error)) {
+						toaster.pop({
+                            type: 'success', 
+                            title:'Success', 
+                            body: MSG.merchantUpdateSuccess, 
+                            toasterId: 1
+                        });
+					} else {
+						toaster.pop({
+                            type: 'error', 
+                            title:'Error', 
+                            body: MSG.merchantUpdateFailed, 
+                            toasterId: 1
+                        });
+					}
+				});
+			}
+		}
+
+		function assignMerchant() {
+			if (merchant) {
+				vm.merchant.id = merchant.data.id;
+				vm.merchant.password = '';
+				vm.merchant.username = merchant.data.username;
+				vm.merchant.business_name = merchant.data.business_name;
+				vm.merchant.business_type = merchant.data.business_type;
+				vm.merchant.contact_person = merchant.data.contact_person;
+								
+				if (merchant.data.contact !== null) {
+					vm.merchant.contact.address_1 = merchant.data.contact.address_1;
+					vm.merchant.contact.phone = merchant.data.contact.phone;
+					vm.data.geo.city.name = vm.merchant.contact.city = merchant.data.contact.city || '';
+					vm.data.geo.state.name = vm.merchant.contact.state = merchant.data.contact.state || '';
+					vm.data.geo.country.name = vm.merchant.contact.country = merchant.data.contact.country || '';
+					vm.data.geo.city.id = vm.merchant.contact.cityId = merchant.data.contact.cityId || '';
+					vm.data.geo.state.id = vm.merchant.contact.stateId = merchant.data.contact.stateId || '';
+					vm.data.geo.country.id = vm.merchant.contact.countryId = merchant.data.contact.countryId || '';
+					vm.merchant.contact.zip_code = merchant.data.contact.zip_code;
+					vm.merchant.contact.mail_id = merchant.data.contact.mail_id;
+				}
+
+				vm.merchant.region = merchant.data.region;
+				vm.merchant.region_id = merchant.data.region_id;
+				vm.merchant.city = merchant.data.city;
+				vm.merchant.city_id = merchant.data.city_id;
+				vm.merchant.open_time = merchant.data.open_time;
+				vm.merchant.close_time = merchant.data.close_time;
+				vm.merchant.avg_waiting_time = merchant.data.avg_waiting_time;
+				vm.merchant.photo = merchant.data.photo;
+				vm.merchant.website = merchant.data.website;
+				vm.merchant.is_active = merchant.data.is_active;
+			}
+		}
+
+		function cancel(event) {
+			event.preventDefault();
+			$state.go('home');
+		}
+
+		assignMerchant();
+	}
+})(angular);
+/*
+*
+*/
+;(function(angular) {
+	'use strict';
+	angular.module('litewait.ui').controller('MerchantListCtrl', MerchantListCtrl);
+
+	angular.$inject = ['$scope', 'Merchant', '$window', 'AUTH_MSG'];
+
+	function MerchantListCtrl($scope, Merchant, $window, AUTH_MSG) {
+		var vm = this;
+		vm.merchant = {
+			list: [],
+			busy: false,
+			offset: 0,
+			limit: 20,
+			totalRecords: 0,
+			keyword: ''
+		};
+		vm.initializeMerchant = initializeMerchant;
+		vm.nextPage = nextPage;
+		vm.deleteMerchant = deleteMerchant;
+
+		function deleteMerchant(event, id) {
+			event.preventDefault();
+			var confirm = $window.confirm('Are you sure to want to delete?');
+			if (confirm) {
+				Merchant.deleteMerchant(id).then(function(response) {
+					if (!response.error) {
+						toaster.pop({
+	                        type: 'success', 
+	                        title:'Success', 
+	                        body: AUTH_MSG.merchantDeleteSuccess, 
+	                        toasterId: 1
+	                    });
+					} else {
+						toaster.pop({
+	                        type: 'error', 
+	                        title:'Error', 
+	                        body: AUTH_MSG.merchantDeleteFailed, 
+	                        toasterId: 1
+	                    });
+					}
+				}, function(error) {
+					toaster.pop({
+	                    type: 'error', 
+	                    title:'Error', 
+	                    body: AUTH_MSG.merchantDeleteFailed, 
+	                    toasterId: 1
+	                });
+				});
+			}
+		}
+
+		function searchMerchant() {
+			var obj = getMerchantParams();
+			Merchant.getList(obj).then(function(response) {
+				assignMerchants(response.merchants);
+				vm.merchant.busy = false;
+			}, function() {
+				vm.merchant.busy = false;
+			});
+		}
+
+        function assignMerchants(items) {
+          for (var i = 0; i < items.length; i++) {
+            var index = _.findIndex(vm.merchant.list, {id: items[i].id});
+            if (-1 === index) {
+            	var data = items[i];
+            	var addrArr = [];
+            	var addrArr1 = [];
+            	if (data.contact !== null) {
+            		if (data.contact.address_1) {
+            			addrArr.push(data.contact.address_1);
+            		}
+            		if (data.region) {
+            			addrArr.push(data.region);
+            		}
+            		if (data.contact.city) {
+            			addrArr.push(data.contact.city);
+            		}
+            		if (data.contact.state) {
+            			addrArr1.push(data.contact.state);
+            		}
+            		if (data.contact.zip_code) {
+            			addrArr1.push(data.contact.zip_code);
+            		}
+            		if (data.contact.country) {
+            			addrArr1.push(data.contact.country);
+            		}
+            	}
+
+            	data.addr_line_1 = addrArr.join(', ');
+            	data.addr_line_2 = addrArr1.join(', ');
+              	vm.merchant.list.push(data);
+            }
+          }
+          vm.merchant.offset = vm.merchant.list.length;
+          vm.merchant.busy = false;
+        }
+
+        function getMerchantParams() {
+        	var page_no = parseInt(vm.merchant.offset/vm.merchant.limit) + 1;
+          	return {
+				page_no: page_no,
+				page_size: vm.merchant.limit,
+				search: vm.merchant.keyword
+			};
+        }
+
+        function initializeMerchant() {
+          vm.merchant.offset = 1;
+          vm.merchant.list.length = 0;
+          searchMerchant();
+        }
+
+        function nextPage() {
+          var params = getMerchantParams();
+
+          if ( ! vm.merchant.busy) {
+            vm.merchant.busy = true;
+            searchMerchant();
+          }
+        }
+
+        initializeMerchant();
+	}
+})(angular);
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('admin_merchant', {
+                abstract: true
+            })
+            .state('admin_merchant.list', {
+            	url: "/admin/merchant",
+                views: {
+                    "@": {
+                        templateUrl: "admin/merchant-list.html",
+                        controller: "MerchantListCtrl",
+                        controllerAs: "ml"
+                    }
+                }
+            }).state('admin_merchant.edit', {
+                url: "/admin/merchant/edit/:id",
+                views: {
+                    "@": {
+                        templateUrl: "admin/merchant-create.html",
+                        controller: "MerchantCreateCtrl",
+                        controllerAs: "mcr"
+                    }
+                },
+                resolve: {
+                    merchant: function($timeout, $q, Merchant, $stateParams) {
+                        if ($stateParams.id) {
+                            return Merchant.get($stateParams.id).then(function(response) {
+                                if (!response.data.error) {
+                                    return response.data;
+                                }
+                                return false;
+                            }).catch(function(error) {
+                                return false;
+                            });
+                        } else {
+                            return $q.when(false);
+                        }
+                    }
+                }
+            }).state('admin_merchant.new', {
+                url: "/admin/merchant/new",
+                views: {
+                    "@": {
+                        templateUrl: "admin/merchant-create.html",
+                        controller: "MerchantCreateCtrl",
+                        controllerAs: "mcr"
+                    }
+                },
+                resolve: {
+                    merchant: function($timeout, $q, Merchant, $stateParams) {
+                        return $q.when("");
                     }
                 }
             });
@@ -3024,7 +3441,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
     return {
       restrict: 'A',
       require: 'ngModel',
-      link: function(scope,elem,attrs,ngModelCtrl) {
+      link: function(scope, elem, attrs, ngModelCtrl) {
         ngModelCtrl.$parsers.push(function(value){
           if (value && value.getTime) {
             return value.getTime();
@@ -3037,8 +3454,9 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
   }
 
   angular.module('litewait.directives').directive("dateAsMs", dateAsMs);
-  
+
 })();
+
 /**
  *
  */
@@ -3089,10 +3507,10 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 	'use strict';
 	angular.module('litewait.ui').controller('HomeCtrl', HomeCtrl);
 
-	HomeCtrl.$inject = ['$scope'];
+	HomeCtrl.$inject = ['$scope', 'authentication'];
 
-	function HomeCtrl($scope) {
-		var vm = this;	
+	function HomeCtrl($scope, authentication) {
+		var vm = this;
 		vm.myInterval = 3000;
   		vm.noWrap = false;
   		vm.active = 0;
@@ -3122,7 +3540,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 				text: 'Los Angeles; California Dummy text for testing',
 				offerText: '25% Off'
 			}]
-			
+
 		},
 		{
 			active: false,
@@ -3148,7 +3566,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 				text: 'Los Angeles; California Dummy text for testing',
 				offerText: '25% Off'
 			}]
-			
+
 		},
 		{
 			active: false,
@@ -3174,10 +3592,11 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 				text: 'Los Angeles; California Dummy text for testing',
 				offerText: '25% Off'
 			}]
-			
+
 		}];
 	}
 })(angular);
+
 /*
 *
 */
@@ -3849,9 +4268,18 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                 },
                 params: { status: [1,2,3] },
                 resolve: {
-                    userrestriction: function(User, $state) {
-                        if (User.isLoggedIn && User.role !== 'm') {
-                            $state.go('home');
+                    userrestriction: function(User, $state, $timeout) {
+                        var handler;
+                        if (!User.isLoggedIn) {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
+                        } else if (User.isLoggedIn && User.role !== 'm') {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
                         } else {
                             return true;
                         }
@@ -3869,9 +4297,17 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                 },
                 params: { status: [1,2,3] },
                 resolve: {
-                    userrestriction: function(User, $state) {
-                        if (User.isLoggedIn && User.role !== 'm') {
-                            $state.go('home');
+                    userrestriction: function(User, $state, $timeout) {
+                        if (!User.isLoggedIn) {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
+                        } else if (User.isLoggedIn && User.role !== 'm') {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
                         } else {
                             return true;
                         }
@@ -3889,9 +4325,17 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                 },
                 params: {status: [4]},
                 resolve: {
-                    userrestriction: function(User, $state) {
-                        if (User.isLoggedIn && User.role !== 'm') {
-                            $state.go('home');
+                    userrestriction: function(User, $state, $timeout) {
+                        if (!User.isLoggedIn) {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
+                        } else if (User.isLoggedIn && User.role !== 'm') {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
                         } else {
                             return true;
                         }
@@ -3908,9 +4352,17 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     }
                 },
                 resolve: {
-                    userrestriction: function(User, $state) {
-                        if (User.isLoggedIn && User.role !== 'm') {
-                            $state.go('home');
+                    userrestriction: function(User, $state, $timeout) {
+                        if (!User.isLoggedIn) {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
+                        } else if (User.isLoggedIn && User.role !== 'm') {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
                         } else {
                             return true;
                         }
@@ -3927,9 +4379,17 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     }
                 },
                 resolve: {
-                    userrestriction: function(User, $state) {
-                        if (User.isLoggedIn && User.role !== 'm') {
-                            $state.go('home');
+                    userrestriction: function(User, $state, $timeout) {
+                        if (!User.isLoggedIn) {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
+                        } else if (User.isLoggedIn && User.role !== 'm') {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
                         } else {
                             return true;
                         }
@@ -3946,9 +4406,17 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     }
                 },
                 resolve: {
-                    userrestriction: function(User, $state) {
-                        if (User.isLoggedIn && User.role !== 'm') {
-                            $state.go('home');
+                    userrestriction: function(User, $state, $timeout) {
+                        if (!User.isLoggedIn) {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
+                        } else if (User.isLoggedIn && User.role !== 'm') {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
                         } else {
                             return true;
                         }
@@ -3968,9 +4436,17 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     }
                 },
                 resolve: {
-                    userrestriction: function(User, $state) {
-                        if (User.isLoggedIn && User.role !== 'm') {
-                            $state.go('home');
+                    userrestriction: function(User, $state, $timeout) {
+                        if (!User.isLoggedIn) {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
+                        } else if (User.isLoggedIn && User.role !== 'm') {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
                         } else {
                             return true;
                         }
@@ -4001,9 +4477,17 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     }
                 },
                 resolve: {
-                    userrestriction: function(User, $state) {
-                        if (User.isLoggedIn && User.role !== 'm') {
-                            $state.go('home');
+                    userrestriction: function(User, $state, $timeout) {
+                        if (!User.isLoggedIn) {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
+                        } else if (User.isLoggedIn && User.role !== 'm') {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
                         } else {
                             return true;
                         }
@@ -4020,9 +4504,17 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     }
                 },
                 resolve: {
-                    userrestriction: function(User, $state) {
-                        if (User.isLoggedIn && User.role !== 'm') {
-                            $state.go('home');
+                    userrestriction: function(User, $state, $timeout) {
+                        if (!User.isLoggedIn) {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
+                        } else if (User.isLoggedIn && User.role !== 'm') {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
                         } else {
                             return true;
                         }
@@ -4042,9 +4534,17 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     }
                 },
                 resolve: {
-                    userrestriction: function(User, $state) {
-                        if (User.isLoggedIn && User.role !== 'm') {
-                            $state.go('home');
+                    userrestriction: function(User, $state, $timeout) {
+                        if (!User.isLoggedIn) {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
+                        } else if (User.isLoggedIn && User.role !== 'm') {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
                         } else {
                             return true;
                         }
@@ -4071,6 +4571,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             });
     }
 })(angular);
+
 /*
  *
  */
@@ -4394,6 +4895,176 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 /*
  *
  */
+;(function() {
+	'use strict';
+	angular.module('litewait.ui').controller('SearchCtrl', SearchCtrl);
+
+	SearchCtrl.$inject = ['$scope', '$state', 'PubSub', 'Location', 'Search', 'srch', 'authentication'];
+
+	function SearchCtrl($scope, $state, PubSub, Location, Search, srch, authentication) {
+		var vm = this;
+		vm.merchant = {
+			list: [],
+			busy: false,
+			offset: 0,
+			limit: 10,
+			searchCriteria: {},
+			totalRecords: 0
+		};
+		vm.keyword = '';
+		vm.viewMerchant = viewMerchant;
+		vm.initializeMerchant = initializeMerchant;
+		vm.nextPage = nextPage;
+
+		function viewMerchant(id) {
+			$state.go('shop.detail', {id: id});
+		}
+
+		function searchMerchant() {
+			var obj = getMerchantParams();
+			Search.getMerchantList(obj).then(function(response) {
+				assignMerchants(response.merchants);
+				vm.merchant.busy = false;
+			}, function() {
+				vm.merchant.busy = false;
+			});
+		}
+
+        function assignMerchants(items) {
+          for (var i = 0; i < items.length; i++) {
+            var index = _.findIndex(vm.merchant.list, {id: items[i].id});
+            if (-1 === index) {
+              vm.merchant.list.push(items[i]);
+            }
+          }
+          vm.merchant.offset = vm.merchant.list.length;
+        }
+
+        function getMerchantParams() {
+        	vm.keyword = vm.merchant.searchCriteria.keyword.category;
+          	return {
+				region_id: vm.merchant.searchCriteria.location.region_id,
+				city_id: vm.merchant.searchCriteria.location.city_id,
+				search_text: vm.merchant.searchCriteria.keyword.category,
+				page_no: vm.merchant.offset,
+				page_size: vm.merchant.limit
+			};
+        }
+
+        function initializeMerchant() {
+          vm.merchant.offset = 1;
+          vm.merchant.list.length = 0;
+          searchMerchant();
+        }
+
+        function nextPage() {
+          var params = getMerchantParams();
+
+          if ( ! vm.merchant.busy) {
+            vm.merchant.busy = true;
+            searchMerchant();
+          }
+        }
+
+        PubSub.subscribe('search', function(event, obj) {
+			vm.merchant.searchCriteria = obj.args;
+			initializeMerchant();
+		});
+	}
+})();
+
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('search', {
+            	url: "/serach",
+                views: {
+                    "search-box@search": {
+                      templateUrl: 'navigation/search-box.html',
+                      controller: "SearchBoxCtrl",
+                      controllerAs: "sbc"
+                    },
+                    "@": {
+                        templateUrl: "search/search.html",
+                        controller: "SearchCtrl",
+                        controllerAs: "sc"
+                    }
+                },
+                params: {location: '', keyword: ''},
+                resolve: {
+                    srch: function ($q, $timeout) {
+                        var deferred = $q.defer();
+
+                        var handler = $timeout(function() {
+                            deferred.resolve('search');
+                            $timeout.cancel(handler);
+                        }, 0);
+
+                        return deferred.promise;
+                    },
+                    geolocation: function ($q, Search, $timeout, Location) {
+                        var loc = {};
+                        var deferred = $q.defer();
+
+                        var handler = $timeout(function() {
+                            Search.getRegionByGeo().then(function(response) {
+                                if (!response.data.error) {
+                                    Location.status = loc.status = true;
+                                    Location.data = loc.data = response.data.data;
+                                    deferred.resolve(loc);
+                                } else {
+                                    getByIp();
+                                }
+                            }, function(error) {
+                                getByIp();
+                            });
+
+                            function getByIp() {
+                                Search.getRegionByIP().then(function(res) {
+                                    if (!res.data.error) {
+                                        Location.status = loc.status = true;
+                                        Location.data = loc.data = res.data.data;
+                                        deferred.resolve(loc);
+                                    } else {
+                                        Location.status = loc.status = false;
+                                        Location.data = loc.data = null;
+                                        deferred.resolve(loc);
+                                    }
+                                }, function() {
+                                    Location.status = loc.status = false;
+                                    Location.data = loc.data = null;
+                                    deferred.resolve(loc);
+                                });
+                            }
+
+                            $timeout.cancel(handler);
+                        }, 0);
+                        return deferred.promise;
+                    },
+                    authentication: function (User, $state, $timeout) {
+                        if (!User.isLoggedIn) return true;
+                        if (User.isLoggedIn && User.role == 'm') {
+                            var handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('merchant');
+                            }, 0);
+                        }
+                    }
+                }
+            });
+    }
+})(angular);
+
+/*
+ *
+ */
 ;(function(angular) {
 	'use strict';
 
@@ -4576,165 +5247,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		}
 	}
 })();
-/*
- *
- */
-;(function() {
-	'use strict';
-	angular.module('litewait.ui').controller('SearchCtrl', SearchCtrl);
-
-	SearchCtrl.$inject = ['$scope', '$state', 'PubSub', 'Location', 'Search', 'srch'];
-
-	function SearchCtrl($scope, $state, PubSub, Location, Search, srch) {
-		var vm = this;
-		vm.merchant = {
-			list: [],
-			busy: false,
-			offset: 0,
-			limit: 10,
-			searchCriteria: {},
-			totalRecords: 0
-		};
-		vm.keyword = '';
-		vm.viewMerchant = viewMerchant;
-		vm.initializeMerchant = initializeMerchant;
-		vm.nextPage = nextPage;
-
-		function viewMerchant(id) {
-			$state.go('shop.detail', {id: id});
-		}
-
-		function searchMerchant() {
-			var obj = getMerchantParams();
-			Search.getMerchantList(obj).then(function(response) {
-				assignMerchants(response.merchants);
-				vm.merchant.busy = false;
-			}, function() {
-				vm.merchant.busy = false;
-			});
-		}
-
-        function assignMerchants(items) {
-          for (var i = 0; i < items.length; i++) {
-            var index = _.findIndex(vm.merchant.list, {id: items[i].id});
-            if (-1 === index) {
-              vm.merchant.list.push(items[i]);
-            }
-          }
-          vm.merchant.offset = vm.merchant.list.length;
-        }
-
-        function getMerchantParams() {
-        	vm.keyword = vm.merchant.searchCriteria.keyword.category;
-          	return {
-				region_id: vm.merchant.searchCriteria.location.region_id,
-				city_id: vm.merchant.searchCriteria.location.city_id,
-				search_text: vm.merchant.searchCriteria.keyword.category,
-				page_no: vm.merchant.offset,
-				page_size: vm.merchant.limit
-			};
-        }
-
-        function initializeMerchant() {
-          vm.merchant.offset = 1;
-          vm.merchant.list.length = 0;
-          searchMerchant();
-        }
-
-        function nextPage() {
-          var params = getMerchantParams();
-
-          if ( ! vm.merchant.busy) {
-            vm.merchant.busy = true;
-            searchMerchant();
-          }
-        }
-
-        PubSub.subscribe('search', function(event, obj) {
-			vm.merchant.searchCriteria = obj.args;
-			initializeMerchant();
-		});
-	}
-})();
-
-;(function(angular) {
-    'use strict';
-
-    angular.module('litewait').config(config);
-
-    config.$inject = ['$stateProvider'];
-
-    function config($stateProvider) {
-        $stateProvider
-            .state('search', {
-            	url: "/serach",
-                views: {
-                    "search-box@search": {
-                      templateUrl: 'navigation/search-box.html',
-                      controller: "SearchBoxCtrl",
-                      controllerAs: "sbc"
-                    },
-                    "@": {
-                        templateUrl: "search/search.html",
-                        controller: "SearchCtrl",
-                        controllerAs: "sc"
-                    }
-                },
-                params: {location: '', keyword: ''},
-                resolve: {
-                    srch: function ($q, $timeout) {
-                        var deferred = $q.defer();
-                        
-                        var handler = $timeout(function() {
-                            deferred.resolve('search');
-                            $timeout.cancel(handler);
-                        }, 0);
-                        
-                        return deferred.promise;
-                    },
-                    geolocation: function ($q, Search, $timeout, Location) {
-                        var loc = {};
-                        var deferred = $q.defer();
-
-                        var handler = $timeout(function() { 
-                            Search.getRegionByGeo().then(function(response) {
-                                if (!response.data.error) {
-                                    Location.status = loc.status = true;
-                                    Location.data = loc.data = response.data.data;
-                                    deferred.resolve(loc);
-                                } else {
-                                    getByIp();
-                                }
-                            }, function(error) {
-                                getByIp();
-                            });
-
-                            function getByIp() {
-                                Search.getRegionByIP().then(function(res) {
-                                    if (!res.data.error) {
-                                        Location.status = loc.status = true;
-                                        Location.data = loc.data = res.data.data;
-                                        deferred.resolve(loc);
-                                    } else {
-                                        Location.status = loc.status = false;
-                                        Location.data = loc.data = null;
-                                        deferred.resolve(loc);
-                                    }
-                                }, function() {
-                                    Location.status = loc.status = false;
-                                    Location.data = loc.data = null;
-                                    deferred.resolve(loc);
-                                });
-                            }
-
-                            $timeout.cancel(handler);
-                        }, 0);
-                        return deferred.promise;
-                    }
-                }
-            });
-    }
-})(angular);
 /*
 *
 */
@@ -6251,7 +6763,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                     function addRating() {
                         RatingService.add(vm.data).then(function(response) {
                             if (response.data.error) {
-                                $scope.nest.rating = $scope.nest.merchantDetail.rating;
+                                $scope.nest.rating = response.data.data.rating;
                             }
                         });
                         close();
@@ -6426,10 +6938,22 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                         controllerAs: "sdm"
                     }
                 },
-                params: {id: ''}
+                params: {id: ''},
+                resolve: {
+                    authentication: function (User, $state, $timeout) {
+                        if (!User.isLoggedIn) return true;
+                        if (User.isLoggedIn && User.role == 'm') {
+                            var handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('merchant');
+                            }, 0);
+                        }
+                    }
+                }
             });
     }
 })(angular);
+
 /*
  *
  */
@@ -6798,9 +7322,9 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                 resolve: {
                     authentication: function (AuthService, $q, $timeout) {
                         var deferred = $q.defer();
-                        
+
                         var handler = $timeout(function() {
-                            var auth = true;//AuthService.isAuthenticated();
+                            var auth = AuthService.isAuthenticated();
                             if (auth) {
                                 deferred.resolve(true);
                             } else {
@@ -6808,7 +7332,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                             }
                             $timeout.cancel(handler);
                         }, 0);
-                        
+
                         return deferred.promise;
                     }
                 }
@@ -6823,7 +7347,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                 resolve: {
                     authentication: function (AuthService, $q, $timeout) {
                         var deferred = $q.defer();
-                        
+
                         var handler = $timeout(function() {
                             var auth = AuthService.isAuthenticated();
                             if (auth) {
@@ -6833,7 +7357,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                             }
                             $timeout.cancel(handler);
                         }, 0);
-                        
+
                         return deferred.promise;
                     }
                 }
@@ -6856,14 +7380,14 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
                                     deferred.resolve(response.data);
                                 }, function (error) {
                                     deferred.resolve({
-                                        error: true, 
+                                        error: true,
                                         message: 'User verification failed'
                                     });
                                 });
 
                             } else {
                                 deferred.resolve({
-                                    error: true, 
+                                    error: true,
                                     message: 'Could not able to verify user without verification code'
                                 });
                             }
@@ -6877,6 +7401,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
             });
     }
 })(angular);
+
 /*
 *
 */
@@ -6892,409 +7417,4 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 		vm.data = verify;
 	}
-})(angular);
-/*
-*
-*/
-;(function(angular) {
-	'use strict';
-	angular.module('litewait.ui').controller('MerchantCreateCtrl', MerchantCreateCtrl);
-
-	angular.$inject = ['$scope', 'Merchant', 'merchant', 'toaster', 'GeoService', 'MSG'];
-
-	function MerchantCreateCtrl($scope, Merchant, merchant, toaster, GeoService, MSG) {
-		var vm = this;
-		vm.type = merchant ? 'Edit' : 'Add';
-		vm.data = {
-			geo: {
-				country: {name: '', id: ''},
-				state: {name: '', id: ''},
-				city: {name: '', id: ''}
-			}
-		};
-		vm.merchant = {
-			id: '',
-			password: '',
-			business_name: '',
-			business_type: '',
-			contact_person: '',
-			username: '',
-			contact: {
-				address_1: '',
-				phone: '',
-				city: '',
-				state: '',
-				country: '',
-				cityId: '',
-				stateId: '',
-				countryId: '',
-				zip_code: '',
-				mail_id: ''
-			},
-			region: '',
-			region_id: '',
-			city: '',
-			city_id: '',
-			photo: '',
-			website: '',
-			open_time: '',
-			close_time: '',
-			avg_waiting_time: '',
-			is_active: 'N'
-		};
-
-		vm.updateMerchant = updateMerchant;
-		vm.assignMerchant = assignMerchant;
-		vm.cancel = cancel;
-		vm.getCountries = getCountries;
-		vm.getStates = getStates;
-		vm.getCities = getCities;
-		vm.onSelectCountry = onSelectCountry;
-		vm.onSelectState = onSelectState;
-		vm.onSelectCity = onSelectCity;
-
-		function onSelectCountry() {
-			vm.merchant.contact.country = vm.data.geo.country.name;
-			vm.merchant.contact.countryId = vm.data.geo.country.id;
-		}
-
-		function onSelectState() {
-			vm.merchant.contact.state = vm.data.geo.state.name;
-			vm.merchant.contact.stateId = vm.data.geo.state.id;
-		}
-
-		function onSelectCity() {
-			vm.merchant.contact.city = vm.data.geo.city.name;
-			vm.merchant.contact.cityId = vm.data.geo.city.id;
-		}
-
-		function getCountries(str) {
-			return GeoService.getCountries(str).then(function(res) {
-				var a = [];
-				if (!res.data.error && res.data.data !== null) {
-					for (var i=0;i<res.data.data.length;i++) {
-						a.push({
-							id: res.data.data[i].id,
-							name: res.data.data[i].name
-						});
-					}
-					return a;
-				}
-				return [];
-			});
-		}
-
-		function getStates(str) {
-			if (vm.merchant.contact.country) {
-				var params = {
-					search: str,
-					country: vm.data.geo.country.name
-				};
-
-				return GeoService.getStates(params).then(function(res) {
-					var a = [];
-					if (!res.data.error && res.data.data !== null) {
-						for (var i=0;i<res.data.data.length;i++) {
-							a.push({
-								id: res.data.data[i].id,
-								name: res.data.data[i].name
-							});
-						}
-						return a;
-					}
-					return [];
-				});
-			}
-			return [];
-		}
-
-		function getCities(str) {
-			if (vm.merchant.contact.state) {
-				var params = {
-					search: str,
-					country: vm.data.geo.country.name,
-					state: vm.data.geo.state.name
-				};
-
-				return GeoService.getCities(params).then(function(res) {
-					var a = [];
-					if (!res.data.error && res.data.data !== null) {
-						for (var i=0;i<res.data.data.length;i++) {
-							a.push({
-								id: res.data.data[i].city_name,
-								name: res.data.data[i].city_name
-							});
-						}
-						return a;
-					}
-					return [];
-				});
-			}
-			return [];
-		}
-
-		function updateMerchant(valid, data) {
-			if (valid) {
-				var params = angular.copy(data);
-				var action;
-				if (vm.merchant.id) {
-					action = Merchant.update;
-				} else {
-					action = Merchant.add;
-					delete params.id;
-				}
-				action(params).then(function(response) {
-					if (!(response.error)) {
-						toaster.pop({
-                            type: 'success', 
-                            title:'Success', 
-                            body: MSG.merchantUpdateSuccess, 
-                            toasterId: 1
-                        });
-					} else {
-						toaster.pop({
-                            type: 'error', 
-                            title:'Error', 
-                            body: MSG.merchantUpdateFailed, 
-                            toasterId: 1
-                        });
-					}
-				});
-			}
-		}
-
-		function assignMerchant() {
-			if (merchant) {
-				vm.merchant.id = merchant.data.id;
-				vm.merchant.password = '';
-				vm.merchant.username = merchant.data.username;
-				vm.merchant.business_name = merchant.data.business_name;
-				vm.merchant.business_type = merchant.data.business_type;
-				vm.merchant.contact_person = merchant.data.contact_person;
-								
-				if (merchant.data.contact !== null) {
-					vm.merchant.contact.address_1 = merchant.data.contact.address_1;
-					vm.merchant.contact.phone = merchant.data.contact.phone;
-					vm.data.geo.city.name = vm.merchant.contact.city = merchant.data.contact.city || '';
-					vm.data.geo.state.name = vm.merchant.contact.state = merchant.data.contact.state || '';
-					vm.data.geo.country.name = vm.merchant.contact.country = merchant.data.contact.country || '';
-					vm.data.geo.city.id = vm.merchant.contact.cityId = merchant.data.contact.cityId || '';
-					vm.data.geo.state.id = vm.merchant.contact.stateId = merchant.data.contact.stateId || '';
-					vm.data.geo.country.id = vm.merchant.contact.countryId = merchant.data.contact.countryId || '';
-					vm.merchant.contact.zip_code = merchant.data.contact.zip_code;
-					vm.merchant.contact.mail_id = merchant.data.contact.mail_id;
-				}
-
-				vm.merchant.region = merchant.data.region;
-				vm.merchant.region_id = merchant.data.region_id;
-				vm.merchant.city = merchant.data.city;
-				vm.merchant.city_id = merchant.data.city_id;
-				vm.merchant.open_time = merchant.data.open_time;
-				vm.merchant.close_time = merchant.data.close_time;
-				vm.merchant.avg_waiting_time = merchant.data.avg_waiting_time;
-				vm.merchant.photo = merchant.data.photo;
-				vm.merchant.website = merchant.data.website;
-				vm.merchant.is_active = merchant.data.is_active;
-			}
-		}
-
-		function cancel(event) {
-			event.preventDefault();
-			$state.go('home');
-		}
-
-		assignMerchant();
-	}
-})(angular);
-/*
-*
-*/
-;(function(angular) {
-	'use strict';
-	angular.module('litewait.ui').controller('MerchantListCtrl', MerchantListCtrl);
-
-	angular.$inject = ['$scope', 'Merchant', '$window', 'AUTH_MSG'];
-
-	function MerchantListCtrl($scope, Merchant, $window, AUTH_MSG) {
-		var vm = this;
-		vm.merchant = {
-			list: [],
-			busy: false,
-			offset: 0,
-			limit: 20,
-			totalRecords: 0,
-			keyword: ''
-		};
-		vm.initializeMerchant = initializeMerchant;
-		vm.nextPage = nextPage;
-		vm.deleteMerchant = deleteMerchant;
-
-		function deleteMerchant(event, id) {
-			event.preventDefault();
-			var confirm = $window.confirm('Are you sure to want to delete?');
-			if (confirm) {
-				Merchant.deleteMerchant(id).then(function(response) {
-					if (!response.error) {
-						toaster.pop({
-	                        type: 'success', 
-	                        title:'Success', 
-	                        body: AUTH_MSG.merchantDeleteSuccess, 
-	                        toasterId: 1
-	                    });
-					} else {
-						toaster.pop({
-	                        type: 'error', 
-	                        title:'Error', 
-	                        body: AUTH_MSG.merchantDeleteFailed, 
-	                        toasterId: 1
-	                    });
-					}
-				}, function(error) {
-					toaster.pop({
-	                    type: 'error', 
-	                    title:'Error', 
-	                    body: AUTH_MSG.merchantDeleteFailed, 
-	                    toasterId: 1
-	                });
-				});
-			}
-		}
-
-		function searchMerchant() {
-			var obj = getMerchantParams();
-			Merchant.getList(obj).then(function(response) {
-				assignMerchants(response.merchants);
-				vm.merchant.busy = false;
-			}, function() {
-				vm.merchant.busy = false;
-			});
-		}
-
-        function assignMerchants(items) {
-          for (var i = 0; i < items.length; i++) {
-            var index = _.findIndex(vm.merchant.list, {id: items[i].id});
-            if (-1 === index) {
-            	var data = items[i];
-            	var addrArr = [];
-            	var addrArr1 = [];
-            	if (data.contact !== null) {
-            		if (data.contact.address_1) {
-            			addrArr.push(data.contact.address_1);
-            		}
-            		if (data.region) {
-            			addrArr.push(data.region);
-            		}
-            		if (data.contact.city) {
-            			addrArr.push(data.contact.city);
-            		}
-            		if (data.contact.state) {
-            			addrArr1.push(data.contact.state);
-            		}
-            		if (data.contact.zip_code) {
-            			addrArr1.push(data.contact.zip_code);
-            		}
-            		if (data.contact.country) {
-            			addrArr1.push(data.contact.country);
-            		}
-            	}
-
-            	data.addr_line_1 = addrArr.join(', ');
-            	data.addr_line_2 = addrArr1.join(', ');
-              	vm.merchant.list.push(data);
-            }
-          }
-          vm.merchant.offset = vm.merchant.list.length;
-          vm.merchant.busy = false;
-        }
-
-        function getMerchantParams() {
-        	var page_no = parseInt(vm.merchant.offset/vm.merchant.limit) + 1;
-          	return {
-				page_no: page_no,
-				page_size: vm.merchant.limit,
-				search: vm.merchant.keyword
-			};
-        }
-
-        function initializeMerchant() {
-          vm.merchant.offset = 1;
-          vm.merchant.list.length = 0;
-          searchMerchant();
-        }
-
-        function nextPage() {
-          var params = getMerchantParams();
-
-          if ( ! vm.merchant.busy) {
-            vm.merchant.busy = true;
-            searchMerchant();
-          }
-        }
-
-        initializeMerchant();
-	}
-})(angular);
-
-;(function(angular) {
-    'use strict';
-
-    angular.module('litewait').config(config);
-
-    config.$inject = ['$stateProvider'];
-
-    function config($stateProvider) {
-        $stateProvider
-            .state('admin_merchant', {
-                abstract: true
-            })
-            .state('admin_merchant.list', {
-            	url: "/admin/merchant",
-                views: {
-                    "@": {
-                        templateUrl: "admin/merchant-list.html",
-                        controller: "MerchantListCtrl",
-                        controllerAs: "ml"
-                    }
-                }
-            }).state('admin_merchant.edit', {
-                url: "/admin/merchant/edit/:id",
-                views: {
-                    "@": {
-                        templateUrl: "admin/merchant-create.html",
-                        controller: "MerchantCreateCtrl",
-                        controllerAs: "mcr"
-                    }
-                },
-                resolve: {
-                    merchant: function($timeout, $q, Merchant, $stateParams) {
-                        if ($stateParams.id) {
-                            return Merchant.get($stateParams.id).then(function(response) {
-                                if (!response.data.error) {
-                                    return response.data;
-                                }
-                                return false;
-                            }).catch(function(error) {
-                                return false;
-                            });
-                        } else {
-                            return $q.when(false);
-                        }
-                    }
-                }
-            }).state('admin_merchant.new', {
-                url: "/admin/merchant/new",
-                views: {
-                    "@": {
-                        templateUrl: "admin/merchant-create.html",
-                        controller: "MerchantCreateCtrl",
-                        controllerAs: "mcr"
-                    }
-                },
-                resolve: {
-                    merchant: function($timeout, $q, Merchant, $stateParams) {
-                        return $q.when("");
-                    }
-                }
-            });
-    }
 })(angular);

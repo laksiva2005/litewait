@@ -1,242 +1,272 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Litewait</title>
-    <!-- inject:css -->
-    <!-- any *.css files among your sources will go here as: <link rel="stylesheet" href="FILE"> -->
-    <!-- endinject -->
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Litewait</title>
+        <!-- inject:css -->
+        <!-- any *.css files among your sources will go here as: <link rel="stylesheet" href="FILE"> -->
+        <!-- endinject -->
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
 
-  <body ng-app="litewait" ng-cloak>
-    <div ng-controller="navbarCtrl as nav">
-    <div cg-busy="spinner.spinner" class="spinner-wrapper"></div>
-    <toaster-container toaster-options="{'position-class': 'toast-top-full-width', 'toaster-id': 1}"></toaster-container>
-    <div class="header-wrap">
-    <header class="container">
-      <div>
-        <div class="col-md-6"><a ng-click="nav.go('home')"><img src="img/logo.jpg" class="img-responsive pull-left" /></a></div>
-        <div class="col-md-6">
-          <nav class="navbar navbar-default">
-            <div class="container-fluid">
-              <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-              </div>
-              <div ng-if="!nav.user.isLoggedIn" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                   <li><a ng-click="nav.openUserModal()"><i class="fa fa-user fa-lg"></i></a></li>
-                </ul>
-              </div>
-              <div ng-if="nav.user.isLoggedIn" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                  <li>
-                    <a id="notify" ng-click="nav.notifyToggle=!nav.notifyToggle"><i class="fa fa-bell fa-lg"></i>(2)</a>
-                    <div class="notify-wrap" id="notify-block" data-slide-toggle="nav.notifyToggle" data-slide-toggle-duration="100" style="display:none;">
-                      <div class="col-md-12">
-                        <button type="button" class="close" ng-click="nav.notifyToggle=!nav.notifyToggle" data-dismiss="#notify-block">&times;</button>
-                        <form role="form" method="post">
-                          <div class="col-md-12">
-                              <h2>Notification (2)</h2>
-                              <div class="list">
-                                  <div class="col-md-9">
-                                      <h3>ID 456789</h3>
-                                      <p>Order <a ng-click="nav.go('cart.summary')">342342342</a> is ready for picked up.
-                                        Mark it as complete once you pick up.
-                                        Auto close order in 48 hours</p>
-                                  </div>
-                                  <div class="col-md-3"><a href="#" class="btn btn-default">complete</a></div>
-                                  <a href="#" class="list-close"><i class="fa fa-times"></i></a>
-                                  <div class="clearfix"></div>
-                              </div>
-                              <div class="list">
-                                  <div class="col-md-9">
-                                      <h3>ID 456789</h3>
-                                      <p>Order <a ng-click="nav.go('cart.summary')">342342342</a> is ready for picked up.
-                                        Mark it as complete once you pick up.
-                                        Auto close order in 48 hours</p>
-                                  </div>
-                                  <div class="col-md-3"><a href="#" class="btn btn-default">complete</a></div>
-                                  <a href="#" class="list-close"><i class="fa fa-times"></i></a>
-                                  <div class="clearfix"></div>
-                              </div>
-                          </div>
-                        </form>
-                      </div>
+    <body ng-app="litewait" ng-cloak>
+        <div ng-controller="navbarCtrl as nav">
+            <div cg-busy="spinner.spinner" class="spinner-wrapper"></div>
+            <toaster-container toaster-options="{'position-class': 'toast-top-full-width', 'toaster-id': 1}"></toaster-container>
+            <div class="header-wrap">
+                <header class="container">
+                    <div>
+                        <div class="col-md-6">
+                            <a ng-click="nav.go('home')">
+                                <img src="img/logo.jpg" class="img-responsive pull-left" />
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <nav class="navbar navbar-default">
+                                <div class="container-fluid">
+                                    <div class="navbar-header">
+                                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+                                    </div>
+                                    <div ng-if="!nav.user.isLoggedIn" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                        <ul class="nav navbar-nav navbar-right">
+                                        <li><a ng-click="nav.openUserModal()"><i class="fa fa-user fa-lg"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div ng-if="nav.user.isLoggedIn" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                        <ul class="nav navbar-nav navbar-right">
+                                            <li>
+                                                <a id="notify" ng-click="nav.notifyToggle=!nav.notifyToggle">
+                                                    <i class="fa fa-bell fa-lg"></i>(2)
+                                                </a>
+                                                <div class="notify-wrap" id="notify-block" data-slide-toggle="nav.notifyToggle" data-slide-toggle-duration="100" style="display:none;">
+                                                    <div class="col-md-12">
+                                                        <button type="button" class="close" ng-click="nav.notifyToggle=!nav.notifyToggle" data-dismiss="#notify-block">&times;</button>
+                                                        <form role="form" method="post">
+                                                            <div class="col-md-12">
+                                                                <h2>Notification (2)</h2>
+                                                                <div class="list">
+                                                                    <div class="col-md-9">
+                                                                    <h3>ID 456789</h3>
+                                                                    <p>Order <a ng-click="nav.go('cart.summary')">342342342</a> is ready for picked up.
+                                                                    Mark it as complete once you pick up.
+                                                                    Auto close order in 48 hours</p>
+                                                                    </div>
+                                                                    <div class="col-md-3">
+                                                                        <a href="#" class="btn btn-default">complete</a>
+                                                                    </div>
+                                                                    <a href="#" class="list-close">
+                                                                        <i class="fa fa-times"></i>
+                                                                    </a>
+                                                                    <div class="clearfix"></div>
+                                                                </div>
+                                                                <div class="list">
+                                                                    <div class="col-md-9">
+                                                                        <h3>ID 456789</h3>
+                                                                        <p>Order <a ng-click="nav.go('cart.summary')">342342342</a> is ready for picked up.
+                                                                        Mark it as complete once you pick up.
+                                                                        Auto close order in 48 hours</p>
+                                                                    </div>
+                                                                    <div class="col-md-3">
+                                                                        <a href="#" class="btn btn-default">complete</a>
+                                                                    </div>
+                                                                    <a href="#" class="list-close">
+                                                                        <i class="fa fa-times"></i>
+                                                                    </a>
+                                                                    <div class="clearfix"></div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <a ng-click="nav.go('cart.detail')">
+                                                    <i class="fa fa-shopping-cart fa-lg"></i>
+                                                    ({{nav.cart.total_quantity}})
+                                                </a>
+                                            </li>
+                                            <li class="dropdown" uib-dropdown>
+                                                <span class="user-prof">
+                                                <img src="img/user.jpg" />
+                                                </span>
+                                                <a href="#" uib-dropdown-toggle>
+                                                    Welcome {{nav.user.name}} <span class="caret"></span>
+                                                </a>
+                                                <ul uib-dropdown-menu>
+                                                    <li>
+                                                        <a ng-click="nav.go('user.profile')"><i class="fa fa-th-large fa-lg"></i>My Account</a>
+                                                    </li>
+                                                    <li>
+                                                        <a ng-click="nav.go('user.chpwd')"><i class="fa fa-key fa-lg"></i>Change Password</a>
+                                                    </li>
+                                                    <li ng-if="nav.user.role=='c'">
+                                                        <a ng-click="nav.go('order.myorder')"><i class="fa fa-sort-alpha-desc fa-lg"></i>My Orders</a>
+                                                    </li>
+                                                    <li ng-if="nav.user.role=='m'">
+                                                        <a ng-click="nav.go('merchant.order')"><i class="fa fa-sort-alpha-desc fa-lg"></i>My Orders</a>
+                                                    </li>
+                                                    <li>
+                                                        <a ng-click="nav.logout()"><i class="fa fa-sign-out fa-lg"></i>Logout</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </nav>
+                        </div>
                     </div>
-                  
-                  </li>
-                  <li><a ng-click="nav.go('cart.detail')"><i class="fa fa-shopping-cart fa-lg"></i>({{nav.cart.total_quantity}}) </a></li>
-                  <li class="dropdown" uib-dropdown>
-                    <span class="user-prof">
-                      <img src="img/user.jpg" />
-                    </span>
-                    <a href="#" uib-dropdown-toggle>
-                      Welcome {{nav.user.name}} <span class="caret"></span>
-                    </a>
-                    <ul uib-dropdown-menu>
-                        <li><a ng-click="nav.go('user.profile')"><i class="fa fa-th-large fa-lg"></i>My Account</a></li>
-                        <!--li><a href="edit-profile.html"><i class="fa fa-cog fa-lg"></i>Settings</a></li-->
-                        <li><a ng-click="nav.go('user.chpwd')"><i class="fa fa-key fa-lg"></i>Change Password</a></li>
-                        <li ng-if="nav.user.role=='c'"><a ng-click="nav.go('order.myorder')"><i class="fa fa-sort-alpha-desc fa-lg"></i>My Orders</a></li>
-                        <li ng-if="nav.user.role=='m'"><a ng-click="nav.go('merchant.order')"><i class="fa fa-sort-alpha-desc fa-lg"></i>My Orders</a></li>
-                        <li><a ng-click="nav.logout()"><i class="fa fa-sign-out fa-lg"></i>Logout</a></li>
-                    </ul>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </nav>
-        </div>
-      </div>
-      <div class="clearfix"></div>
-    </header>
-    </div>
-    <div class="content">
-      <div ui-view></div>
-    </div>
-    <footer class="container-fluid">
-      <div class="container">
-        <div class="row">
-          <div class="col-xs-6 col-sm-5 col-md-5"><a href="#">Terms and Conditions</a> | <a href="#">Privacy Policy</a></div>
-          <div class="col-xs-6 col-sm-3 col-md-3 social"> <a href="#"><i class="fa fa-facebook"></i></a> <a href="#"><i class="fa fa-google"></i></a> <a href="#"><i class="fa fa-google-plus"></i></a> <a href="#"><i class="fa fa-linkedin"></i></a> <a href="#"><i class="fa fa-youtube-square"></i></a> </div>
-          <div class="col-xs-12 col-sm-4 col-md-4 right">© Copyright 2015 Light Wait</div>
-        </div>
-      </div>
-    </footer>
-    <script type="text/ng-template" id="userModal.html">
-      <div id="signin-modal" ng-cloak>
-        <button type="button" class="close" ng-click="loginModal.modalProps.close()">&times;</button>
-        <uib-tabset justified="true" active="loginModal.modalProps.active" ng-class="{'forgot-password': loginModal.modalProps.isForgotPassword}">
-          <uib-tab index="loginModal.modalProps.signin">
-            <uib-tab-heading>
-              <a href="">Signin</a>
-            </uib-tab-heading>
-            <div id="signin" class="tab-pane fade in active">
-              <div class="form-wrap" ng-if="!loginModal.modalProps.isForgotPassword">
-                <div ng-if="loginModal.loginForm.$submitted && loginModal.loginForm.$invalid" class="alert alert-danger">
-                  <div ng-messages="loginModal.loginForm.username.$error">
-                    <div ng-message="required">Username is required</div>
-                  </div>
-                  <div ng-messages="loginModal.loginForm.password.$error">
-                    <div ng-message="required">Password is required</div>
-                  </div>
-                </div>
-                <toaster-container toaster-options="{'position-class': 'toast-top-full-width', 'toaster-id': 3}"></toaster-container>
-                <form novalidate name="loginModal.loginForm" ng-submit="loginModal.modalProps.login(loginModal.loginForm.$valid, 'litewait', loginModal.modalProps)">
-                  <div class="radio-wrap">
-                    <label class="name">Login as</label> 
-                    <label class="radio-inline"><input required type="radio" ng-model="loginModal.modalProps.user_type" value="c" name="user_type">Consumer</label>
-                    <label class="radio-inline"><input required type="radio" ng-model="loginModal.modalProps.user_type" value="m" name="user_type">Merchant</label>
-                  </div>
-                  <input class="form-control" required name="username" type="text" ng-model="loginModal.modalProps.username" placeholder="User Name"/>
-                  <input class="form-control" required name="password" type="password" ng-model="loginModal.modalProps.password" placeholder="Password" />
-                  <div class="sign-wrap"><button class="btn sign">signin</button></div>
-                </form>
-                <div class="clearfix"></div>
-                <div class="social-wrap" ng-if="loginModal.modalProps.user_type === 'c'">
-                  <p>OR</p>
-                  <div class="social">
-                    <a class="btn col-md-6 fb" ng-click="loginModal.modalProps.login(true, 'facebook', {})"><i class="fa fa-facebook"></i>Signin with facebook</a> 
-                    <a class="btn col-md-6 twit" ng-click="loginModal.modalProps.login(true, 'google', {})"><i class="fa fa-google"></i>Signin with gmail</a>
                     <div class="clearfix"></div>
-                  </div>
-                </div>
-                <div class="forgot-wrap">
-                  <div class="checkbox col-md-6">
-                    <label>
-                      <input type="checkbox" value="">
-                      Keep me logged in</label>
-                  </div>
-                  <div class="col-md-6 right"> <a class="forgot" ng-click="loginModal.modalProps.isForgotPassword=true">Forgot Password?</a> </div>
-                  <div class="clearfix"></div>
-                </div>
-              </div>
-              <div class="form-wrap" ng-if="loginModal.modalProps.isForgotPassword">
-                <h2>Forgot Password?</h2>
-                <div ng-if="loginModal.forgotForm.$submitted && loginModal.forgotForm.$invalid" class="alert alert-danger">
-                  <div ng-messages="loginModal.forgotForm.username.$error">
-                    <div ng-message="required">Username is required</div>
-                  </div>
-                </div>
-                <toaster-container toaster-options="{'position-class': 'toast-top-full-width', 'toaster-id': 4}"></toaster-container>
-                <form novalidate name="loginModal.forgotForm" ng-submit="loginModal.modalProps.resetPwd(loginModal.forgotForm.$valid, loginModal.resetProps)">
-                  <div class="radio-wrap">
-                    <label class="name">Choose as</label> 
-                    <label class="radio-inline"><input required type="radio" ng-model="loginModal.resetProps.user_type" value="c" name="user_type">Consumer</label>
-                    <label class="radio-inline"><input required type="radio" ng-model="loginModal.resetProps.user_type" value="m" name="user_type">Merchant</label>
-                  </div>
-
-                  <input class="form-control" required name="username" type="text" ng-model="loginModal.resetProps.user" placeholder="User Name"/>
-                  <div class="reset-wrap">
-                    <a ng-click="loginModal.modalProps.isForgotPassword=false" class="btn sign" style="margin-bottom:5px;">Cancel</a>
-                    <button class="btn sign" style="margin-bottom:5px;">Reset</button>
-                  </div>
-                </form>
-              </div>
-              <p class="joinus">New here ? <a ng-click="loginModal.modalProps.joinUs()">Join us</a></p>
+                </header>
             </div>
-          </uib-tab>
-          <uib-tab index="loginModal.modalProps.signup">
-            <uib-tab-heading>
-              <a href="">Signup</a>
-            </uib-tab-heading>
-            <div class="signup-form-wrap">
-              <toaster-container toaster-options="{'position-class': 'toast-top-full-width', 'toaster-id': 2}"></toaster-container>
-              
-              <div ng-if="loginModal.registerForm.$submitted && loginModal.registerForm.$invalid" class="alert alert-danger" >
-                <div ng-messages="loginModal.registerForm.user_email.$error">
-                  <div ng-message="required">Email field is required</div>
-                  <div ng-message="email">Please enter a valid Email Id</div>
-                </div>
-                <div ng-messages="loginModal.registerForm.user.$error">
-                  <div ng-message="required">Username is required</div>
-                  <div ng-message="minlength">Please enter a valid Username</div>
-                </div>
-                <div ng-messages="loginModal.registerForm.user_password.$error">
-                  <div ng-message="required">Password field is required</div>
-                  <div ng-message="pattern">Minimum 8 characters and must contain a numeric, uppercase, lowercase, as well as special character</div>
-                </div>
-                <div ng-messages="loginModal.registerForm.user_confirm_password.$error">
-                  <div ng-message="required">Confirm Password field is required</div>
-                  <div ng-message="compareTo">Confirm Password must be equal to Password</div>
-                </div>
-                <div ng-messages="loginModal.registerForm.user_type.$error">
-                  <div ng-message="required">Register as field is required</div>
-                </div>
-              </div>
-              <form novalidate name="loginModal.registerForm" ng-submit="loginModal.modalProps.register(loginModal.registerForm.$valid, loginModal.registerProps)">
-                <input class="form-control" required name="user_email" ng-model="loginModal.registerProps.user_mail" type="email" placeholder="Email Id"/>
-                <input class="form-control" required name="user" ng-model="loginModal.registerProps.user" type="text" placeholder="User Name" minlength="2"/>
-                <input class="form-control" required name="user_password" ng-model="loginModal.registerProps.user_password" type="password" placeholder="Password" pattern="{{loginModal.modalProps.passwordPattern}}" />
-                <input class="form-control" required name="user_confirm_password" ng-model="loginModal.registerProps.user_confirm_password" type="password" placeholder="Confirm Password" compare-to="loginModal.registerProps.user_password"/>
-                <div class="sign-wrap"><button class="btn sign">signup</button></div>
-              </form>
-              <div class="clearfix"></div>
+            <div class="content">
+                <div ui-view></div>
             </div>
-          </uib-tab>
-        </uib-tabset>
-      </div>
-    </script>
-    </div>
-  </body>
-  <!-- inject:js -->
-  <!-- any *.js files among your sources will go here as: <script src="FILE"></script> -->
-  <!-- endinject -->
-  <script>
-      $(function(){
-        //$('.carousel').carousel();
-      });
-      function activaTab(tab){
-        $('.nav-tabs li').removeClass('active');
-        $('#'+tab).tab('show');
-      }
-  </script>
+            <footer class="container-fluid">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-5 col-md-5">
+                            <a href="#">Terms and Conditions</a> | <a href="#">Privacy Policy</a>
+                        </div>
+                        <div class="col-xs-6 col-sm-3 col-md-3 social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-google"></i></a>
+                            <a href="#"><i class="fa fa-google-plus"></i></a>
+                            <a href="#"><i class="fa fa-linkedin"></i></a>
+                            <a href="#"><i class="fa fa-youtube-square"></i></a>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 col-md-4 right">© Copyright 2015 Light Wait</div>
+                    </div>
+                </div>
+            </footer>
+            <script type="text/ng-template" id="userModal.html">
+            <div id="signin-modal" ng-cloak>
+                <button type="button" class="close" ng-click="loginModal.modalProps.close()">&times;</button>
+                <uib-tabset justified="true" active="loginModal.modalProps.active" ng-class="{'forgot-password': loginModal.modalProps.isForgotPassword}">
+                    <uib-tab index="loginModal.modalProps.signin">
+                        <uib-tab-heading>
+                            <a href="">Signin</a>
+                        </uib-tab-heading>
+                        <div id="signin" class="tab-pane fade in active">
+                            <div class="form-wrap" ng-if="!loginModal.modalProps.isForgotPassword">
+                                <div ng-if="loginModal.loginForm.$submitted && loginModal.loginForm.$invalid" class="alert alert-danger">
+                                    <div ng-messages="loginModal.loginForm.username.$error">
+                                    <div ng-message="required">Username is required</div>
+                                    </div>
+                                    <div ng-messages="loginModal.loginForm.password.$error">
+                                    <div ng-message="required">Password is required</div>
+                                    </div>
+                                </div>
+                                <toaster-container toaster-options="{'position-class': 'toast-top-full-width', 'toaster-id': 3}"></toaster-container>
+                                <form novalidate name="loginModal.loginForm" ng-submit="loginModal.modalProps.login(loginModal.loginForm.$valid, 'litewait', loginModal.modalProps)">
+                                    <div class="radio-wrap">
+                                        <label class="name">Login as</label>
+                                        <label class="radio-inline"><input required type="radio" ng-model="loginModal.modalProps.user_type" value="c" name="user_type">Consumer</label>
+                                        <label class="radio-inline"><input required type="radio" ng-model="loginModal.modalProps.user_type" value="m" name="user_type">Merchant</label>
+                                    </div>
+                                    <input class="form-control" required name="username" type="text" ng-model="loginModal.modalProps.username" placeholder="User Name"/>
+                                    <input class="form-control" required name="password" type="password" ng-model="loginModal.modalProps.password" placeholder="Password" />
+                                    <div class="sign-wrap"><button class="btn sign">signin</button></div>
+                                </form>
+                                <div class="clearfix"></div>
+                                <div class="social-wrap" ng-if="loginModal.modalProps.user_type === 'c'">
+                                    <p>OR</p>
+                                    <div class="social">
+                                        <a class="btn col-md-6 fb" ng-click="loginModal.modalProps.login(true, 'facebook', {})">
+                                            <i class="fa fa-facebook"></i>Signin with facebook
+                                        </a>
+                                        <a class="btn col-md-6 twit" ng-click="loginModal.modalProps.login(true, 'google', {})">
+                                            <i class="fa fa-google"></i>Signin with gmail
+                                        </a>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                                <div class="forgot-wrap">
+                                    <div class="checkbox col-md-6">
+                                        <label>
+                                        <input type="checkbox" value="">
+                                        Keep me logged in</label>
+                                    </div>
+                                    <div class="col-md-6 right">
+                                        <a class="forgot" ng-click="loginModal.modalProps.isForgotPassword=true">Forgot Password?</a>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div class="form-wrap" ng-if="loginModal.modalProps.isForgotPassword">
+                                <h2>Forgot Password?</h2>
+                                <div ng-if="loginModal.forgotForm.$submitted && loginModal.forgotForm.$invalid" class="alert alert-danger">
+                                    <div ng-messages="loginModal.forgotForm.username.$error">
+                                        <div ng-message="required">Username is required</div>
+                                    </div>
+                                </div>
+                                <toaster-container toaster-options="{'position-class': 'toast-top-full-width', 'toaster-id': 4}"></toaster-container>
+                                <form novalidate name="loginModal.forgotForm" ng-submit="loginModal.modalProps.resetPwd(loginModal.forgotForm.$valid, loginModal.resetProps)">
+                                    <div class="radio-wrap">
+                                        <label class="name">Choose as</label>
+                                        <label class="radio-inline"><input required type="radio" ng-model="loginModal.resetProps.user_type" value="c" name="user_type">Consumer</label>
+                                        <label class="radio-inline"><input required type="radio" ng-model="loginModal.resetProps.user_type" value="m" name="user_type">Merchant</label>
+                                    </div>
+                                    <input class="form-control" required name="username" type="text" ng-model="loginModal.resetProps.user" placeholder="User Name"/>
+                                    <div class="reset-wrap">
+                                        <a ng-click="loginModal.modalProps.isForgotPassword=false" class="btn sign" style="margin-bottom:5px;">Cancel</a>
+                                        <button class="btn sign" style="margin-bottom:5px;">Reset</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <p class="joinus">New here ? <a ng-click="loginModal.modalProps.joinUs()">Join us</a></p>
+                        </div>
+                    </uib-tab>
+                    <uib-tab index="loginModal.modalProps.signup">
+                        <uib-tab-heading>
+                            <a href="">Signup</a>
+                        </uib-tab-heading>
+                        <div class="signup-form-wrap">
+                            <toaster-container toaster-options="{'position-class': 'toast-top-full-width', 'toaster-id': 2}"></toaster-container>
+                            <div ng-if="loginModal.registerForm.$submitted && loginModal.registerForm.$invalid" class="alert alert-danger" >
+                                <div ng-messages="loginModal.registerForm.user_email.$error">
+                                    <div ng-message="required">Email field is required</div>
+                                    <div ng-message="email">Please enter a valid Email Id</div>
+                                </div>
+                                <div ng-messages="loginModal.registerForm.user.$error">
+                                    <div ng-message="required">Username is required</div>
+                                    <div ng-message="minlength">Please enter a valid Username</div>
+                                </div>
+                                <div ng-messages="loginModal.registerForm.user_password.$error">
+                                    <div ng-message="required">Password field is required</div>
+                                    <div ng-message="pattern">Minimum 8 characters and must contain a numeric, uppercase, lowercase, as well as special character</div>
+                                </div>
+                                <div ng-messages="loginModal.registerForm.user_confirm_password.$error">
+                                    <div ng-message="required">Confirm Password field is required</div>
+                                    <div ng-message="compareTo">Confirm Password must be equal to Password</div>
+                                </div>
+                                <div ng-messages="loginModal.registerForm.user_type.$error">
+                                    <div ng-message="required">Register as field is required</div>
+                                </div>
+                            </div>
+                            <form novalidate name="loginModal.registerForm" ng-submit="loginModal.modalProps.register(loginModal.registerForm.$valid, loginModal.registerProps)">
+                                <input class="form-control" required name="user_email" ng-model="loginModal.registerProps.user_mail" type="email" placeholder="Email Id"/>
+                                <input class="form-control" required name="user" ng-model="loginModal.registerProps.user" type="text" placeholder="User Name" minlength="2"/>
+                                <input class="form-control" required name="user_password" ng-model="loginModal.registerProps.user_password" type="password" placeholder="Password" pattern="{{loginModal.modalProps.passwordPattern}}" />
+                                <input class="form-control" required name="user_confirm_password" ng-model="loginModal.registerProps.user_confirm_password" type="password" placeholder="Confirm Password" compare-to="loginModal.registerProps.user_password"/>
+                                <div class="sign-wrap"><button class="btn sign">signup</button></div>
+                            </form>
+                            <div class="clearfix"></div>
+                        </div>
+                    </uib-tab>
+                </uib-tabset>
+            </div>
+            </script>
+        </div>
+    </body>
+    <!-- inject:js -->
+    <!-- any *.js files among your sources will go here as: <script src="FILE"></script> -->
+    <!-- endinject -->
 </html>

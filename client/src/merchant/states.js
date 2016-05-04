@@ -24,9 +24,18 @@
                 },
                 params: { status: [1,2,3] },
                 resolve: {
-                    userrestriction: function(User, $state) {
-                        if (User.isLoggedIn && User.role !== 'm') {
-                            $state.go('home');
+                    userrestriction: function(User, $state, $timeout) {
+                        var handler;
+                        if (!User.isLoggedIn) {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
+                        } else if (User.isLoggedIn && User.role !== 'm') {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
                         } else {
                             return true;
                         }
@@ -44,9 +53,17 @@
                 },
                 params: { status: [1,2,3] },
                 resolve: {
-                    userrestriction: function(User, $state) {
-                        if (User.isLoggedIn && User.role !== 'm') {
-                            $state.go('home');
+                    userrestriction: function(User, $state, $timeout) {
+                        if (!User.isLoggedIn) {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
+                        } else if (User.isLoggedIn && User.role !== 'm') {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
                         } else {
                             return true;
                         }
@@ -64,9 +81,17 @@
                 },
                 params: {status: [4]},
                 resolve: {
-                    userrestriction: function(User, $state) {
-                        if (User.isLoggedIn && User.role !== 'm') {
-                            $state.go('home');
+                    userrestriction: function(User, $state, $timeout) {
+                        if (!User.isLoggedIn) {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
+                        } else if (User.isLoggedIn && User.role !== 'm') {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
                         } else {
                             return true;
                         }
@@ -83,9 +108,17 @@
                     }
                 },
                 resolve: {
-                    userrestriction: function(User, $state) {
-                        if (User.isLoggedIn && User.role !== 'm') {
-                            $state.go('home');
+                    userrestriction: function(User, $state, $timeout) {
+                        if (!User.isLoggedIn) {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
+                        } else if (User.isLoggedIn && User.role !== 'm') {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
                         } else {
                             return true;
                         }
@@ -102,9 +135,17 @@
                     }
                 },
                 resolve: {
-                    userrestriction: function(User, $state) {
-                        if (User.isLoggedIn && User.role !== 'm') {
-                            $state.go('home');
+                    userrestriction: function(User, $state, $timeout) {
+                        if (!User.isLoggedIn) {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
+                        } else if (User.isLoggedIn && User.role !== 'm') {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
                         } else {
                             return true;
                         }
@@ -121,9 +162,17 @@
                     }
                 },
                 resolve: {
-                    userrestriction: function(User, $state) {
-                        if (User.isLoggedIn && User.role !== 'm') {
-                            $state.go('home');
+                    userrestriction: function(User, $state, $timeout) {
+                        if (!User.isLoggedIn) {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
+                        } else if (User.isLoggedIn && User.role !== 'm') {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
                         } else {
                             return true;
                         }
@@ -143,9 +192,17 @@
                     }
                 },
                 resolve: {
-                    userrestriction: function(User, $state) {
-                        if (User.isLoggedIn && User.role !== 'm') {
-                            $state.go('home');
+                    userrestriction: function(User, $state, $timeout) {
+                        if (!User.isLoggedIn) {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
+                        } else if (User.isLoggedIn && User.role !== 'm') {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
                         } else {
                             return true;
                         }
@@ -176,9 +233,17 @@
                     }
                 },
                 resolve: {
-                    userrestriction: function(User, $state) {
-                        if (User.isLoggedIn && User.role !== 'm') {
-                            $state.go('home');
+                    userrestriction: function(User, $state, $timeout) {
+                        if (!User.isLoggedIn) {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
+                        } else if (User.isLoggedIn && User.role !== 'm') {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
                         } else {
                             return true;
                         }
@@ -195,9 +260,17 @@
                     }
                 },
                 resolve: {
-                    userrestriction: function(User, $state) {
-                        if (User.isLoggedIn && User.role !== 'm') {
-                            $state.go('home');
+                    userrestriction: function(User, $state, $timeout) {
+                        if (!User.isLoggedIn) {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
+                        } else if (User.isLoggedIn && User.role !== 'm') {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
                         } else {
                             return true;
                         }
@@ -217,9 +290,17 @@
                     }
                 },
                 resolve: {
-                    userrestriction: function(User, $state) {
-                        if (User.isLoggedIn && User.role !== 'm') {
-                            $state.go('home');
+                    userrestriction: function(User, $state, $timeout) {
+                        if (!User.isLoggedIn) {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
+                        } else if (User.isLoggedIn && User.role !== 'm') {
+                            handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('home');
+                            }, 0);
                         } else {
                             return true;
                         }

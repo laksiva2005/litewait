@@ -1,126 +1,141 @@
-	<div class="container-fluid banner-wrap" ng-if="!nav.user.isLoggedIn">
-    	<div class="banner">
-        	<div class="col-md-10 cnt">
-        	<p class="title-1">SAVE YOUR TIME...INCREASE PRODUCTIVE TIME<br/>
-    SAVE MONEY!!</p>
-    		<p class="title-2">Tired of waiting in queue, come join us</p>
+<div class="container-fluid banner-wrap" ng-if="!nav.user.isLoggedIn">
+    <div class="banner">
+        <div class="col-md-10 cnt">
+            <p class="title-1">SAVE YOUR TIME...INCREASE PRODUCTIVE TIME<br/>SAVE MONEY!!</p>
+            <p class="title-2">Tired of waiting in queue, come join us</p>
             <a href="#" class="btn join"  ng-click="nav.openSignUpModal($event)">Join Now !!</a>
+        </div>
+    </div>
+</div>
+<div class="container-fluid search-wrap" ui-view="search-box"></div>
+<div ng-if="nav.user.isLoggedIn" class="container most-visit">
+    <h1>Recently Viewed Locations</h1>
+    <div class="row">
+        <ul>
+            <li class="col-sm-6 col-md-3">
+                <img src="img/most-visit-1.jpg" class="img-responsive" />
+                <h3>Charlie's Sandwich</h3>
+                <p>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-half-o"></i>
+                </p>
+                <p>Los Angeles; California Dummy text for testing</p>
+                <p class="wait">20m Wait Time</p>
+                <p>Open 11:00 AM to 4:00 AM</p>
+            </li>
+            <li class="col-sm-6 col-md-3">
+                <img src="img/most-visit-1.jpg" class="img-responsive" />
+                <h3>Charlie's Sandwich</h3>
+                <p>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-half-o"></i>
+                </p>
+                <p>Los Angeles; California Dummy text for testing</p>
+                <p class="wait">20m Wait Time</p>
+                <p>Open 11:00 AM to 4:00 AM</p>
+            </li>
+            <li class="col-sm-6 col-md-3">
+                <img src="img/most-visit-1.jpg" class="img-responsive" />
+                <h3>Charlie's Sandwich</h3>
+                <p>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-half-o"></i>
+                </p>
+                <p>Los Angeles; California Dummy text for testing</p>
+                <p class="wait">20m Wait Time</p>
+                <p>Open 11:00 AM to 4:00 AM</p>
+            </li>
+            <li class="col-sm-6 col-md-3">
+                <img src="img/most-visit-1.jpg" class="img-responsive" />
+                <h3>Charlie's Sandwich</h3>
+                <p>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-half-o"></i>
+                </p>
+                <p>Los Angeles; California Dummy text for testing</p>
+                <p class="wait">20m Wait Time</p>
+                <p>Open 11:00 AM to 4:00 AM</p>
+            </li>
+            <div class="clearfix"></div>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid feature-location">
+    <div class="container">
+        <h1>featured locations</h1>
+        <uib-carousel interval="home.myInterval" no-wrap="home.noWrap" active="home.active" no-transition="home.noTransition" no-pause="home.noPause">
+            <uib-slide ng-repeat="slide in home.slides" active="slide.active" index="slide.id">
+            <ul>
+            	<li class="col-sm-6 col-md-3" ng-repeat="slideData in slide.data">
+                	<img src="{{slideData.image}}" class="img-responsive" />
+                    <p>{{slideData.text}}</p>
+                    <div>
+                    	<span class="pull-left">
+                    		<i class="fa fa-star"></i>
+                    		<i class="fa fa-star"></i>
+                    		<i class="fa fa-star"></i>
+                    		<i class="fa fa-star"></i>
+                    		<i class="fa fa-star-half-o"></i>
+                    	</span>
+                    	<span class="pull-right">
+                    		<a href="#" class="btn btn-default">{{slideData.offerText}}</a>
+                    	</span>
+                        <div class="clearfix"></div>
+                    </div>
+                </li>
+            </ul>
+            </uib-slide>
+        </uib-carousel>
+    </div>
+</div>
+<div class="container testimonial">
+    <h1>testimonials</h1>
+    <div class="carousel slide" id="testimonial">
+        <div class="carousel-inner">
+            <div class="col-md-12 item active">
+                <img src="img/user-testimonial.jpg" class="img-responsive profile" />
+                <h2>Louise S. Morgan</h2>
+                <h6>Treatment, storage, and disposal (TSD) worker</h6>
+                <p>
+                    “ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam PreviousLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam Previous ”
+                </p>
+            </div>
+            <div class="col-md-12 item">
+                <img src="img/user-testimonial.jpg" class="img-responsive profile" />
+                <h2>Louise S. </h2>
+                <h6>Treatment, storage,  worker</h6>
+                <p>
+                    “ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam PreviousLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam Previous ”
+                </p>
+            </div>
+            <div class="col-md-12 item">
+                <img src="img/user-testimonial.jpg" class="img-responsive profile" />
+                <h2> S. Morgan</h2>
+                <h6>Treatment worker</h6>
+                <p>
+                    “ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam PreviousLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam Previous ”
+                </p>
+            </div>
+            <div class="col-md-12 item">
+                <img src="img/user-testimonial.jpg" class="img-responsive profile" />
+                <h2>Lo S. Morgan</h2>
+                <h6> (TSD) worker</h6>
+                <p>
+                    “ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam PreviousLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam Previous ”
+                </p>
             </div>
         </div>
-    </div>
-    <div class="container-fluid search-wrap" ui-view="search-box">
-    </div>
-    <div ng-if="nav.user.isLoggedIn" class="container most-visit">
-	  <h1>Recently Viewed Locations</h1>
-	  <div class="row">
-	    <ul>
-	      <li class="col-sm-6 col-md-3"> <img src="img/most-visit-1.jpg" class="img-responsive" />
-	        <h3>Charlie's Sandwich</h3>
-	        <p> <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i> </p>
-	        <p>Los Angeles; California Dummy text for testing</p>
-	        <p class="wait">20m Wait Time</p>
-	        <p>Open 11:00 AM to 4:00 AM</p>
-	      </li>
-	      <li class="col-sm-6 col-md-3"> <img src="img/most-visit-1.jpg" class="img-responsive" />
-	        <h3>Charlie's Sandwich</h3>
-	        <p><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i> </p>
-	        <p>Los Angeles; California Dummy text for testing</p>
-	        <p class="wait">20 m Wait Time</p>
-	        <p>Open 11:00 AM to 4:00 AM</p>
-	      </li>
-	      <li class="col-sm-6 col-md-3"> <img src="img/most-visit-1.jpg" class="img-responsive" />
-	        <h3>Charlie's Sandwich</h3>
-	        <p><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i> </p>
-	        <p>Los Angeles; California Dummy text for testing</p>
-	        <p class="wait">20 m Wait Time</p>
-	        <p>Open 11:00 AM to 4:00 AM</p>
-	      </li>
-	      <li class="col-sm-6 col-md-3"> <img src="img/most-visit-1.jpg" class="img-responsive" />
-	        <h3>Charlie's Sandwich</h3>
-	        <p><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i> </p>
-	        <p>Los Angeles; California Dummy text for testing</p>
-	        <p class="wait">20 m Wait Time</p>
-	        <p>Open 11:00 AM to 4:00 AM</p>
-	      </li>
-	      <div class="clearfix"></div>
-	    </ul>
-	  </div>
-	</div>
-    <div class="container-fluid feature-location">
-        <div class="container">
-	        <h1>featured locations</h1>
-	        <uib-carousel interval="home.myInterval" no-wrap="home.noWrap" active="home.active" no-transition="home.noTransition" no-pause="home.noPause">
-		        <uib-slide ng-repeat="slide in home.slides" active="slide.active" index="slide.id">
-			      	<ul>
-				      	<li class="col-sm-6 col-md-3" ng-repeat="slideData in slide.data">
-				        	<img src="{{slideData.image}}" class="img-responsive" />
-				            <p>{{slideData.text}}</p>
-				            <div>
-				            	<span class="pull-left">
-				            		<i class="fa fa-star"></i>
-				            		<i class="fa fa-star"></i>
-				            		<i class="fa fa-star"></i>
-				            		<i class="fa fa-star"></i>
-				            		<i class="fa fa-star-half-o"></i>
-				            	</span>
-				            	<span class="pull-right">
-				            		<a href="#" class="btn btn-default">{{slideData.offerText}}</a>
-				            	</span>
-				                <div class="clearfix"></div>
-				            </div>
-			            </li>
-		            </ul>
-	        	</uib-slide>
-		    </uib-carousel>
+        <div class="next-prev-wrap">
+            <a data-slide="prev" href="#testimonial" class="carousel-control left">‹</a>
+            <a data-slide="next" href="#testimonial" class="carousel-control right">›</a>
         </div>
     </div>
-    <!--div ng-if="!nav.user.isLoggedIn" class="container browse-city">
-      <h1>Browse your city</h1>
-      <ul>
-        <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">New York City; New York</a></li>
-        <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">Los Angeles; California</a></li>
-        <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">Chicago; Illinois</a></li>
-        <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">Houston; Texas</a></li>
-        <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">Philadelphia; Pennsylvania</a></li>
-        <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">Phoenix; Arizona</a></li>
-        <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">San Antonio; Texas</a></li>
-        <li class="col-sm-6 col-md-4 col-lg-3"><a href="#">San Diego; California</a></li>
-        <div class="clear"></div>
-      </ul>
-      <div class="col-md-12">
-        <div class="col-md-2 hidden-xs"></div>
-        <div class="col-md-8 search">
-          <p>Not able to find your city?</p>
-          <input type="text" class="form-control col-md-9" />
-          <a href="#" class="btn col-md-3">Enter</a> </div>
-        <div class="col-md-2 hidden-xs"></div>
-      </div>
-    </div-->
-    <div class="container testimonial">
-      <h1>testimonials</h1>
-      <div class="carousel slide" id="testimonial">
-        <div class="carousel-inner">
-          <div class="col-md-12 item active"> <img src="img/user-testimonial.jpg" class="img-responsive profile" />
-            <h2>Louise S. Morgan</h2>
-            <h6>Treatment, storage, and disposal (TSD) worker</h6>
-            <p>“ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam PreviousLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam Previous ”</p>
-          </div>
-          <div class="col-md-12 item"> <img src="img/user-testimonial.jpg" class="img-responsive profile" />
-            <h2>Louise S. </h2>
-            <h6>Treatment, storage,  worker</h6>
-            <p>“ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam PreviousLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam Previous ”</p>
-          </div>
-          <div class="col-md-12 item"> <img src="img/user-testimonial.jpg" class="img-responsive profile" />
-            <h2> S. Morgan</h2>
-            <h6>Treatment worker</h6>
-            <p>“ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam PreviousLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam Previous ”</p>
-          </div>
-          <div class="col-md-12 item"> <img src="img/user-testimonial.jpg" class="img-responsive profile" />
-            <h2>Lo S. Morgan</h2>
-            <h6> (TSD) worker</h6>
-            <p>“ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam PreviousLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua. Ut enim ad minim veniam Previous ”</p>
-          </div>
-        </div>
-        <div class="next-prev-wrap"> <a data-slide="prev" href="#testimonial" class="carousel-control left">‹</a> <a data-slide="next" href="#testimonial" class="carousel-control right">›</a> </div>
-      </div>
-    </div>
+</div>

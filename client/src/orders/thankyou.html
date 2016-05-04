@@ -1,28 +1,30 @@
 <div class="container Thank-wrap">
-	<h1>Thank you...</h1>
-	<div class="col-md-12 thankyou">
-		<p class="welcome">
-			Thank you for placing order via LiteWait. Pleaese pick up your order when you get notification.<br/>
-		Your order id: 
-			<a href="#/order-summary/{{tuc.data.order_id}}">{{tuc.data.order_id}}</a>
-		</p>
-		<h2>Merchant Info</h2>
-		<div class="col-md-12">
-			<div class="row">
-				<div class="col-sm-5 col-md-4 col-lg-3 left">
-					<img src="{{tuc.data.merchant.photo}}" />
-				</div>
-				<div class="col-sm-7 col-md-8 col-lg-9 right">
-					<h3><a href="#/shop/{{tuc.data.merchant.id}}">{{tuc.data.merchant.business_name}}</a></h3>
-					<p>
-						{{tuc.data.merchant.contact.address_1}} {{tuc.data.merchant.contact.city}}<br/>
-        {{tuc.data.merchant.contact.state}} {{tuc.data.merchant.contact.zip_code}} {{tuc.data.merchant.contact.country}}</p>
-					<p class="time">
-						<span>Open {{tuc.data.merchant.open_time}} to {{tuc.data.merchant.close_time}}</span><br/>
-						Wait Time: {{tuc.data.merchant.avg_waiting_time}}
-					</p>
-				</div>
-			</div>
-		</div>
-	</div>
+    <h1>Thank you...</h1>
+    <div class="col-md-12 thankyou">
+        <p class="welcome">
+        Thank you for placing order via LiteWait. Pleaese pick up your order when you get notification.<br/>
+        Your order id:
+        <a href="#/order-summary/{{tuc.data.order_id}}">{{tuc.data.order_id}}</a>
+        </p>
+        <h2>Merchant Info</h2>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-sm-5 col-md-4 col-lg-3 left">
+                    <img src="{{tuc.data.merchant.photo}}" />
+                </div>
+                <div class="col-sm-7 col-md-8 col-lg-9 right">
+                    <h3><a href="#/shop/{{tuc.data.merchant.id}}">{{tuc.data.merchant.business_name}}</a></h3>
+                    <p>
+                        {{tuc.data.merchant.contact.address_1}} {{tuc.data.merchant.contact.city}}<br/>
+                        {{tuc.data.merchant.contact.state}} {{tuc.data.merchant.contact.zip_code}} {{tuc.data.merchant.contact.country}}
+                    </p>
+                    <p class="time">
+                        <span>
+                            Open {{tuc.data.merchant.open_time}} to {{tuc.data.merchant.close_time}}</span><br/>
+                            Wait Time: {{tuc.data.merchant.avg_waiting_time}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

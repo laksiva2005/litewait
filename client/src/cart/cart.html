@@ -1,142 +1,160 @@
 <div class="container shopping-cart">
-
-  <div class="row">
-    <div class="col-md-8 cart-left"> 
-    	 <h1>Shopping Cart</h1>
-         <div class="table-responsive">
-          <table class="table">
-          	<thead>
-              <tr>
-                <th>Item</th>
-                <th class="right">Price</th>
-                <th class="right">Quantity</th>
-              </tr>
-   			    </thead>
-            <tbody>
-              <tr ng-repeat="order in cc.cart.order_details">
-                <td>
-                	<table class="sub-table">
-                  	<tr>
-                      	<td><img src="{{order.original.picture}}" class="product img-responsive" /></td>
-                        <td>
-                          <h3>{{order.item_name}}</h3>
-                          <p>{{order.original.description}}</p>
-                        </td>
-                    </tr>
-                  </table>
-                </td>
-                <td class="">${{order.price}}</td>
-                <td class="">{{order.qty}}</td>
-              </tr>
-              <tfoot>
-                <tr>
-                  <td colspan="3">
-                    Subtotal ({{cc.cart.total_quantity}} items): 
-                    <span class="value">${{cc.cart.total_price}}</span>
-                  </td>
-                </tr>
- 			        </tfoot>
-            </tbody>
-          </table>
-        </div>
-    </div>
-    <div class="col-md-4 cart-right">
-      <h2>Check out</h2>
-      <a ng-click="cc.cart.placeOrder()" class="btn place-order btn-block">Place your Order</a>
-      <p class="place-order-notify">By placing your order, you agree to litewait’s <a href="#">privacy notice</a> and <a href="#">conditions of use</a></p>
-      <div class="order-summary">
-        <h2>Order summary</h2>
-        <div class="col-md-12 table-wrap">
-          <table class="table">
-            <tbody>
-              <tr>
-                <td class="sub">Subtotal ({{cc.cart.total_quantity}} items) :</td>
-                <td class="value right">${{cc.cart.total_price}}</td>
-              </tr>
-              <tr>
-                <td>Convenience Fee : </td>
-                <td class="sub-total-end right">$0.00</td>
-              </tr>
-              <tr>
-                <td>Total before Tax : </td>
-                <td class="right">${{cc.cart.total_price}}</td>
-              </tr>
-              <tr>
-                <td>Estimated tax to be collected : </td>
-                <td class="right">$0.00</td>
-              </tr>
-              <tr class="total">
-                <td class="sub">Order total: </td>
-                <td class="value right">${{cc.cart.total_price}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="clearfix"></div>
-      </div>
-      <div class="payment-method">
-        <h2>Payment method</h2>
-        <p><img src="img/ic-visa.gif" /><span>Visa</span><span>ending in 7519</span></p>
-      </div>
-      <div class="billing-address">
-      	<h3>Biling Address:</h3>
-        <p>{{cc.user.contact.address_1}}<br/>
-{{cc.user.contact.city}} <br/>
-{{cc.user.contact.state}} {{cc.user.contact.zip_code}} {{cc.user.contact.country}} </p>
-      </div>
-      <div class="product-widget">
-            <h2><a href="#/shop/{{cc.cart.merchantDetails.id}}">{{cc.cart.merchantDetails.business_name}}</a></h2>
-            <img src="{{cc.cart.merchantDetails.photo}}" />
-            
-            <div class="cnt"> <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span>
-              <p>0.98 mi Distance from search location</p>
-              <p class="wait">{{cc.cart.merchantDetails.avg_waiting_time}} Wait Time</p>
-              <p>Open {{cc.cart.merchantDetails.open_time}} to {{cc.cart.merchantDetails.close_time}}</p>
+    <div class="row">
+        <div class="col-md-8 cart-left">
+            <h1>Shopping Cart</h1>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th class="right">Price</th>
+                            <th class="right">Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="order in cc.cart.order_details">
+                            <td>
+                                <table class="sub-table">
+                                    <tr>
+                                    	<td><img src="{{order.original.picture}}" class="product img-responsive" /></td>
+                                        <td>
+                                            <h3>{{order.item_name}}</h3>
+                                            <p>{{order.original.description}}</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td class="">${{order.price}}</td>
+                            <td class="">{{order.qty}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3">
+                                Subtotal ({{cc.cart.total_quantity}} items):
+                                <span class="value">${{cc.cart.total_price}}</span>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
-   
-      
-      
-      </div>
-    </div>
-  </div>
-  <div class="row">
-  	<div class="cart-recent-view">
-    	<h1>Your Favorite Orders</h1>
-        <div class="row">
-        	<div class="col-md-4 list">
-            
-            	<img src="img/recent-view-7.jpg" class="left" />
-                <div class="right">
-                <h3>Tom Kha Sou</h3>
-            	<p class="order">Order Id : <a href="shopping-cart-summary.html">4269-2215</a> </p>
-            	<p>Lorem ipsum dolor sit amet  </p>
-<p class="price"><span class="pull-left">$59.00</span><span class="pull-right">Copy to cart<a href="#"><i class="fa fa-shopping-cart fa-lg"></i></a></span></p>
-</div>
-<div class="clearfix"></div>
-             </div>
-             <div class="col-md-4 list">
-            
-            	<img src="img/recent-view-7.jpg" class="left" />
-                <div class="right">
-                <h3>Tom Kha Sou</h3>
-            	<p class="order">Order Id : <a href="shopping-cart-summary.html">4269-2215</a> </p>
-            	<p>Lorem ipsum dolor sit amet  </p>
-<p class="price"><span class="pull-left">$59.00</span><span class="pull-right">Copy to cart<a href="#"><i class="fa fa-shopping-cart fa-lg"></i></a></span></p>
-</div>
-<div class="clearfix"></div>
-             </div>
-             <div class="col-md-4 list">
-            	<img src="img/recent-view-7.jpg" class="left" />
-                <div class="right">
-                <h3>Tom Kha Sou</h3>
-            	<p class="order">Order Id : <a href="shopping-cart-summary.html">4269-2215</a> </p>
-            	<p>Lorem ipsum dolor sit amet  </p>
-<p class="price"><span class="pull-left">$59.00</span><span class="pull-right">Copy to cart<a href="#"><i class="fa fa-shopping-cart fa-lg"></i></a></span></p>
-</div>
-<div class="clearfix"></div>
-             </div>
-             <div class="clearfix"></div>
+        </div>
+        <div class="col-md-4 cart-right">
+            <h2>Check out</h2>
+            <a ng-click="cc.cart.placeOrder()" class="btn place-order btn-block">Place your Order</a>
+            <p class="place-order-notify">
+                By placing your order, you agree to litewait’s
+                <a href="#">privacy notice</a> and
+                <a href="#">conditions of use</a>
+            </p>
+            <div class="order-summary">
+                <h2>Order summary</h2>
+                <div class="col-md-12 table-wrap">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td class="sub">Subtotal ({{cc.cart.total_quantity}} items) :</td>
+                                <td class="value right">${{cc.cart.total_price}}</td>
+                            </tr>
+                            <tr>
+                                <td>Convenience Fee : </td>
+                                <td class="sub-total-end right">$0.00</td>
+                            </tr>
+                            <tr>
+                                <td>Total before Tax : </td>
+                                <td class="right">${{cc.cart.total_price}}</td>
+                            </tr>
+                            <tr>
+                                <td>Estimated tax to be collected : </td>
+                                <td class="right">$0.00</td>
+                            </tr>
+                            <tr class="total">
+                                <td class="sub">Order total: </td>
+                                <td class="value right">${{cc.cart.total_price}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="payment-method">
+                <h2>Payment method</h2>
+                <p><img src="img/ic-visa.gif" /><span>Visa</span><span>ending in 7519</span></p>
+            </div>
+            <div class="billing-address">
+                <h3>Biling Address:</h3>
+                <p>{{cc.user.contact.address_1}}<br/>
+                {{cc.user.contact.city}} <br/>
+                {{cc.user.contact.state}} {{cc.user.contact.zip_code}} {{cc.user.contact.country}} </p>
+            </div>
+            <div class="product-widget">
+                <h2><a href="#/shop/{{cc.cart.merchantDetails.id}}">{{cc.cart.merchantDetails.business_name}}</a></h2>
+                <img src="{{cc.cart.merchantDetails.photo}}" />
+                <div class="cnt">
+                    <span class="rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-half-o"></i>
+                    </span>
+                    <p>0.98 mi Distance from search location</p>
+                    <p class="wait">{{cc.cart.merchantDetails.avg_waiting_time}} Wait Time</p>
+                    <p>Open {{cc.cart.merchantDetails.open_time}} to {{cc.cart.merchantDetails.close_time}}</p>
+                </div>
+            </div>
         </div>
     </div>
-  </div>
+    <div class="row">
+        <div class="cart-recent-view">
+            <h1>Your Favorite Orders</h1>
+            <div class="row">
+                <div class="col-md-4 list">
+                    <img src="img/recent-view-7.jpg" class="left" />
+                    <div class="right">
+                        <h3>Tom Kha Sou</h3>
+                        <p class="order">Order Id : <a href="shopping-cart-summary.html">4269-2215</a> </p>
+                        <p>Lorem ipsum dolor sit amet  </p>
+                        <p class="price">
+                            <span class="pull-left">$59.00</span>
+                            <span class="pull-right">
+                                Copy to cart<a href="#"><i class="fa fa-shopping-cart fa-lg"></i></a>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="col-md-4 list">
+                    <img src="img/recent-view-7.jpg" class="left" />
+                    <div class="right">
+                        <h3>Tom Kha Sou</h3>
+                        <p class="order">Order Id : <a href="shopping-cart-summary.html">4269-2215</a> </p>
+                        <p>Lorem ipsum dolor sit amet  </p>
+                        <p class="price">
+                            <span class="pull-left">$59.00</span>
+                            <span class="pull-right">
+                                Copy to cart<a href="#"><i class="fa fa-shopping-cart fa-lg"></i></a>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="col-md-4 list">
+                    <img src="img/recent-view-7.jpg" class="left" />
+                    <div class="right">
+                        <h3>Tom Kha Sou</h3>
+                        <p class="order">Order Id : <a href="shopping-cart-summary.html">4269-2215</a> </p>
+                        <p>Lorem ipsum dolor sit amet  </p>
+                        <p class="price">
+                            <span class="pull-left">$59.00</span>
+                            <span class="pull-right">
+                                Copy to cart<a href="#"><i class="fa fa-shopping-cart fa-lg"></i></a>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
 </div>

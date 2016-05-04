@@ -1,66 +1,64 @@
 <div class="container my-order-wrap">
-         
-   <div class="col-md-12 my-order">
-   	<h1>My Orders</h1>
-      <div class="row">
-         <div class="col-md-3">
-            <div class="filter">
-               <ul>
-                  <li>
-                     <label>Filters</label>
-                  </li>
-                  <li>
-                     <label>Status</label>
-                     <div class="form-group">
-                        <div class="checkbox">
-                           <label>
-                           <input type="checkbox" value="">
-                           In-progress</label>
-                        </div>
-                        <div class="checkbox">
-                           <label>
-                           <input type="checkbox" value="">
-                           Ready for pick-up</label>
-                        </div>
-                        <div class="checkbox">
-                           <label>
-                           <input type="checkbox" value="">
-                           Complete</label>
-                        </div>
-                        
-                     </div>
-                  </li>
-               </ul>
+    <div class="col-md-12 my-order">
+        <h1>My Orders</h1>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="filter">
+                    <ul>
+                        <li>
+                            <label>Filters</label>
+                        </li>
+                        <li>
+                            <label>Status</label>
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label>
+                                    <input type="checkbox" value="">
+                                    In-progress</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                    <input type="checkbox" value="">
+                                    Ready for pick-up</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                    <input type="checkbox" value="">
+                                    Complete</label>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
-         </div>
-         <div class="col-md-9 order-status" infinite-scroll="mlc.nextPage()"
-      infinite-scroll-distance="0"
-      infinite-scroll-immediate-check="false"
-      infinite-scroll-use-document-bottom="true">
-            <div class="table-responsive">
-               <table class="table">
-                  <thead>
-                     <tr>
-                        <th>Date / Time</th>
-                        <th>Order ID</th>
-                        <th>Merchant</th>
-                        <th>Order Status</th>
-                        <th>&nbsp;</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <tr ng-repeat="order in moc.data.orders">
-                        <td>{{order.order_date_string}}</td>
-                        <td><a class="orderid" href="/order-summary/order.order_id">{{order.order_id}}</a></td>
-                        <td><a ng-click="vm.go('shop.detail')" class="merchant">Charlie's Sandwich Shoppe</a></td>
-                        <td class="inprogress">{{order.order_status}}</td>
-                        <td>&nbsp;</td>
-                     </tr>
-                  </tbody>
-               </table>
+            <div class="col-md-9 order-status" infinite-scroll="mlc.nextPage()"
+                infinite-scroll-distance="0"
+                infinite-scroll-immediate-check="false"
+                infinite-scroll-use-document-bottom="true">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date / Time</th>
+                                <th>Order ID</th>
+                                <th>Merchant</th>
+                                <th>Order Status</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="order in moc.data.orders">
+                                <td>{{order.order_date_string}}</td>
+                                <td><a class="orderid" href="/order-summary/order.order_id">{{order.order_id}}</a></td>
+                                <td><a ng-click="vm.go('shop.detail')" class="merchant">Charlie's Sandwich Shoppe</a></td>
+                                <td class="inprogress">{{order.order_status}}</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-         </div>
-         <div class="clearfix"></div>
-      </div>
-   </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
 </div>

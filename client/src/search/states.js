@@ -26,19 +26,19 @@
                 resolve: {
                     srch: function ($q, $timeout) {
                         var deferred = $q.defer();
-                        
+
                         var handler = $timeout(function() {
                             deferred.resolve('search');
                             $timeout.cancel(handler);
                         }, 0);
-                        
+
                         return deferred.promise;
                     },
                     geolocation: function ($q, Search, $timeout, Location) {
                         var loc = {};
                         var deferred = $q.defer();
 
-                        var handler = $timeout(function() { 
+                        var handler = $timeout(function() {
                             Search.getRegionByGeo().then(function(response) {
                                 if (!response.data.error) {
                                     Location.status = loc.status = true;
@@ -72,6 +72,15 @@
                             $timeout.cancel(handler);
                         }, 0);
                         return deferred.promise;
+                    },
+                    authentication: function (User, $state, $timeout) {
+                        if (!User.isLoggedIn) return true;
+                        if (User.isLoggedIn && User.role == 'm') {
+                            var handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('merchant');
+                            }, 0);
+                        }
                     }
                 }
             });

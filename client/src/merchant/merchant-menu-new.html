@@ -1,63 +1,68 @@
 <div class="container edit-menu">
-	<div>
-		<a href="#/merchant/menu" class="btn btn-primary"><i class="fa fa-plus"></i>Menu</a>
-		<form novalidate name="nmc.editMenuForm" ng-submit="nmc.addMenu(nmc.editMenuForm.$valid, nmc.menu)" role="form">
-        	<div class="col-md-12 col-sm-6">
-        		<h1>{{nmc.data.action}} Menu</h1>
-	            <div class="form-group">
-	            	<input type="hidden" name="id" ng-model="nmc.menu.id">
-	            	<input type="hidden" name="category_id" ng-model="nmc.menu.category.category_id">
-	            	<input type="text" name="category" ng-model="nmc.menu.category" autocomplete="off" uib-typeahead="category as category.category_name for category in nmc.getCategory($viewValue)" typeahead-loading="loadingCategories" typeahead-no-results="noCategory" class="form-control" typeahead-on-select="nmc.onSelectCategory($item, $modal, $label, $event)">
-	            	<i ng-show="loadingCategories" class="glyphicon glyphicon-refresh"></i>
-				    <div ng-show="noCategory">
-				      <i class="glyphicon glyphicon-remove"></i> No Results Found
-				    </div>
-	            	<div ng-if="nmc.editMenuForm.$submitted && nmc.editMenuForm.category_id.$invalid" ng-messages="nmc.editMenuForm.category_id.$error" class="alert alert-danger">
-	                  <div ng-message="maxlength">Please enter a valid category name</div>
-	                  <div ng-message="required">The category is required</div>
-	                </div>
-	            </div>
-	            <div class="form-group">
-	                <input check-menu-exists menu-data="nmc.menu" ng-model-options="{debounce: {default: 500, blur: 0}}" type="text" name="item_name" maxlength="50" ng-model="nmc.menu.item_name" class="form-control"  placeholder="Name">
-	                <div ng-if="nmc.editMenuForm.$submitted && nmc.editMenuForm.item_name.$invalid" ng-messages="nmc.editMenuForm.item_name.$error" class="alert alert-danger">
-	                  <div ng-message="maxlength">Please enter a valid menu name</div>
-	                  <div ng-message="checkCategoryExists">The menu name already exists</div>
-	                </div>
-	            </div>
-	            <div class="form-group">
-	            	<textarea name="description" ng-model="nmc.menu.description" class="form-control" required placeholder="Description"></textarea>
-	                <div ng-if="nmc.editMenuForm.$submitted && nmc.editMenuForm.description.$invalid" ng-messages="nmc.editMenuForm.description.$error" class="alert alert-danger">
-	                  <div ng-message="required">Menu description is required</div>
-	                </div>
-	            </div>
-	            <div class="form-group">
-	                <input required type="number" name="price" maxlength="50" ng-model="nmc.menu.price" class="form-control"  placeholder="Price">
-	                <div ng-if="nmc.editMenuForm.$submitted && nmc.editMenuForm.price.$invalid" ng-messages="nmc.editMenuForm.price.$error" class="alert alert-danger">
-	                  <div ng-message="maxlength">Please enter a valid price</div>
-	                  <div ng-message="required">Menu price is required</div>
-	                </div>
-	            </div>
-	            <div class="form-group">
-	            	<input type="text" name="picture" ng-model="nmc.menu.picture" class="form-control" Placeholder="Picture">
-	            </div>
-	            <div class="form-group">
-	            	<!--input type="text" name="addons" ng-model="nmc.menu.addons" class="form-control" Placeholder="Addons"-->
-	            	<tags-input ng-model="nmc.menu.addons"
-			                    display-property="name"
-			                    key-property="name"
-			                    add-from-autocomplete-only="true">
-			            <auto-complete source="nmc.searchAddons($query)"></auto-complete>
-			        </tags-input>
-	            </div>
-	            <div class="form-group">
-	            	<input type="checkbox" name="featured" ng-true-value="1" ng-false-value="0" ng-model="nmc.menu.featured"><label for="is_active">Featured</label>
-	            </div>
-	            <div class="col-md-12">
-		            <button type="submit" class="btn btn-default pull-right">{{nmc.data.action}}</button>
-		            <button ng-click="nmc.cancel($event)" class="btn btn-default pull-right">Cancel</button>
-		            <div class="clearfix"></div>
-		        </div>
+    <div>
+        <a href="#/merchant/menu" class="btn btn-primary"><i class="fa fa-plus"></i>Menu</a>
+        <form novalidate name="nmc.editMenuForm" ng-submit="nmc.addMenu(nmc.editMenuForm.$valid, nmc.menu)" role="form">
+            <div class="col-md-12 col-sm-6">
+                <h1>{{nmc.data.action}} Menu</h1>
+                <div class="form-group">
+                    <input type="hidden" name="id" ng-model="nmc.menu.id">
+                    <input type="hidden" name="category_id" ng-model="nmc.menu.category.category_id">
+                    <input type="text"
+                        name="category" ng-model="nmc.menu.category"
+                        autocomplete="off"
+                        uib-typeahead="category as category.category_name for category in nmc.getCategory($viewValue)" typeahead-loading="loadingCategories"
+                        typeahead-no-results="noCategory" class="form-control"
+                        typeahead-on-select="nmc.onSelectCategory($item, $modal, $label, $event)">
+                    <i ng-show="loadingCategories" class="glyphicon glyphicon-refresh"></i>
+                    <div ng-show="noCategory">
+                        <i class="glyphicon glyphicon-remove"></i> No Results Found
+                    </div>
+                    <div ng-if="nmc.editMenuForm.$submitted && nmc.editMenuForm.category_id.$invalid" ng-messages="nmc.editMenuForm.category_id.$error" class="alert alert-danger">
+                        <div ng-message="maxlength">Please enter a valid category name</div>
+                        <div ng-message="required">The category is required</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input check-menu-exists menu-data="nmc.menu" ng-model-options="{debounce: {default: 500, blur: 0}}" type="text" name="item_name" maxlength="50" ng-model="nmc.menu.item_name" class="form-control"  placeholder="Name">
+                    <div ng-if="nmc.editMenuForm.$submitted && nmc.editMenuForm.item_name.$invalid" ng-messages="nmc.editMenuForm.item_name.$error" class="alert alert-danger">
+                        <div ng-message="maxlength">Please enter a valid menu name</div>
+                        <div ng-message="checkCategoryExists">The menu name already exists</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <textarea name="description" ng-model="nmc.menu.description" class="form-control" required placeholder="Description"></textarea>
+                    <div ng-if="nmc.editMenuForm.$submitted && nmc.editMenuForm.description.$invalid" ng-messages="nmc.editMenuForm.description.$error" class="alert alert-danger">
+                        <div ng-message="required">Menu description is required</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input required type="number" name="price" maxlength="50" ng-model="nmc.menu.price" class="form-control"  placeholder="Price">
+                    <div ng-if="nmc.editMenuForm.$submitted && nmc.editMenuForm.price.$invalid" ng-messages="nmc.editMenuForm.price.$error" class="alert alert-danger">
+                        <div ng-message="maxlength">Please enter a valid price</div>
+                        <div ng-message="required">Menu price is required</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="picture" ng-model="nmc.menu.picture" class="form-control" Placeholder="Picture">
+                </div>
+                <div class="form-group">
+                    <!--input type="text" name="addons" ng-model="nmc.menu.addons" class="form-control" Placeholder="Addons"-->
+                    <tags-input ng-model="nmc.menu.addons"
+                                display-property="name"
+                                key-property="name"
+                                add-from-autocomplete-only="true">
+                        <auto-complete source="nmc.searchAddons($query)"></auto-complete>
+                    </tags-input>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" name="featured" ng-true-value="1" ng-false-value="0" ng-model="nmc.menu.featured"><label for="is_active">Featured</label>
+                </div>
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-default pull-right">{{nmc.data.action}}</button>
+                    <button ng-click="nmc.cancel($event)" class="btn btn-default pull-right">Cancel</button>
+                    <div class="clearfix"></div>
+                </div>
             </div>
         </form>
-	</div>
+    </div>
 </div>
