@@ -9,6 +9,10 @@
 
 	function ProfileCtrl(Merchant, $scope, User, $state, toaster, AUTH_MSG, MSG, AUTH_PROPS, GeoService, authentication) {
 		var vm = this;
+        vm.dateOptions = {
+            minMode: 'month',
+            datepickerMode: 'month'
+        };
 		vm.AUTH_PROPS = AUTH_PROPS;
 		vm.user = User;
 		vm.geo = {
@@ -154,16 +158,16 @@
 					Merchant.update(vm.profile).then(function(response) {
 						if (!(response.error)) {
 							toaster.pop({
-	                            type: 'success', 
-	                            title:'Success', 
-	                            body: MSG.merchantUpdateSuccess, 
+	                            type: 'success',
+	                            title:'Success',
+	                            body: MSG.merchantUpdateSuccess,
 	                            toasterId: 1
 	                        });
 						} else {
 							toaster.pop({
-	                            type: 'error', 
-	                            title:'Error', 
-	                            body: MSG.merchantUpdateFailed, 
+	                            type: 'error',
+	                            title:'Error',
+	                            body: MSG.merchantUpdateFailed,
 	                            toasterId: 1
 	                        });
 						}
@@ -172,16 +176,16 @@
 					vm.user.updateProfile(vm.profile).then(function(response) {
 						if (!(response.data.error || response.error)) {
 							toaster.pop({
-	                            type: 'success', 
-	                            title:'Success', 
-	                            body: AUTH_MSG.profileUpdateSuccess, 
+	                            type: 'success',
+	                            title:'Success',
+	                            body: AUTH_MSG.profileUpdateSuccess,
 	                            toasterId: 1
 	                        });
 						} else {
 							toaster.pop({
-	                            type: 'error', 
-	                            title:'Error', 
-	                            body: AUTH_MSG.profileUpdateFailed, 
+	                            type: 'error',
+	                            title:'Error',
+	                            body: AUTH_MSG.profileUpdateFailed,
 	                            toasterId: 1
 	                        });
 						}
@@ -243,16 +247,16 @@
 				vm.user.updatePayment(data).then(function(response) {
 					if (!(response.data.error || response.error)) {
 						toaster.pop({
-                            type: 'success', 
-                            title:'Success', 
-                            body: AUTH_MSG.paymentUpdateSuccess, 
+                            type: 'success',
+                            title:'Success',
+                            body: AUTH_MSG.paymentUpdateSuccess,
                             toasterId: 1
                         });
 					} else {
 						toaster.pop({
-                            type: 'error', 
-                            title:'Error', 
-                            body: AUTH_MSG.paymentUpdateFailed, 
+                            type: 'error',
+                            title:'Error',
+                            body: AUTH_MSG.paymentUpdateFailed,
                             toasterId: 1
                         });
 					}

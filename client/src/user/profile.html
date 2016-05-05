@@ -97,10 +97,12 @@
                         </div>
                      </div>
                      <div class="form-group">
-                        <input date-as-ms required uib-datepicker-popup="MM/yyyy" min-mode="month" type="text" class="form-control" placeholder="Expiry date" name="card_expiry" ng-model="epc.payment.card_expiry" is-open="epc.pay.opened" on-open-focus="epc.pay.onOpenFocus">
+                        <p class="input-group">
+                        <input date-as-ms required uib-datepicker-popup="MM/yyyy" datepicker-options="epc.dateOptions" type="text" class="form-control" placeholder="Expiry date" name="card_expiry" ng-model="epc.payment.card_expiry" is-open="epc.pay.opened" on-open-focus="epc.pay.onOpenFocus">
                         <span class="input-group-btn">
                            <button type="button" class="btn btn-default" ng-click="epc.open1()"><i class="glyphicon glyphicon-calendar"></i></button>
                         </span>
+                        </p>
                         <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.card_expiry.$invalid" ng-messages="epc.editPaymentForm.card_expiry.$error" class="alert alert-danger">
                            <div ng-message="required">Card Expiry is required</div>
                         </div>

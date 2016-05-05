@@ -770,8 +770,10 @@ module.run(['$templateCache', function($templateCache) {
     '                <h1>{{nmc.data.action}} Menu</h1>\n' +
     '                <div class="form-group">\n' +
     '                    <input type="hidden" name="id" ng-model="nmc.menu.id">\n' +
-    '                    <input type="hidden" name="category_id" ng-model="nmc.menu.category.category_id">\n' +
+    '                    <input required type="hidden" name="category_id" ng-model="nmc.menu.category.category_id">\n' +
     '                    <input type="text"\n' +
+    '                        required\n' +
+    '                        placeholder="Select Category"\n' +
     '                        name="category" ng-model="nmc.menu.category"\n' +
     '                        autocomplete="off"\n' +
     '                        uib-typeahead="category as category.category_name for category in nmc.getCategory($viewValue)" typeahead-loading="loadingCategories"\n' +
@@ -787,8 +789,9 @@ module.run(['$templateCache', function($templateCache) {
     '                    </div>\n' +
     '                </div>\n' +
     '                <div class="form-group">\n' +
-    '                    <input check-menu-exists menu-data="nmc.menu" ng-model-options="{debounce: {default: 500, blur: 0}}" type="text" name="item_name" maxlength="50" ng-model="nmc.menu.item_name" class="form-control"  placeholder="Name">\n' +
+    '                    <input required check-menu-exists menu-data="nmc.menu" ng-model-options="{debounce: {default: 500, blur: 0}}" type="text" name="item_name" maxlength="50" ng-model="nmc.menu.item_name" class="form-control"  placeholder="Name">\n' +
     '                    <div ng-if="nmc.editMenuForm.$submitted && nmc.editMenuForm.item_name.$invalid" ng-messages="nmc.editMenuForm.item_name.$error" class="alert alert-danger">\n' +
+    '                        <div ng-message="required">Menu name is required</div>\n' +
     '                        <div ng-message="maxlength">Please enter a valid menu name</div>\n' +
     '                        <div ng-message="checkCategoryExists">The menu name already exists</div>\n' +
     '                    </div>\n' +
@@ -811,7 +814,7 @@ module.run(['$templateCache', function($templateCache) {
     '                </div>\n' +
     '                <div class="form-group">\n' +
     '                    <!--input type="text" name="addons" ng-model="nmc.menu.addons" class="form-control" Placeholder="Addons"-->\n' +
-    '                    <tags-input ng-model="nmc.menu.addons"\n' +
+    '                    <tags-input placeholder="Select Addons" ng-model="nmc.menu.addons"\n' +
     '                                display-property="name"\n' +
     '                                key-property="name"\n' +
     '                                add-from-autocomplete-only="true">\n' +
@@ -867,7 +870,7 @@ module.run(['$templateCache', function($templateCache) {
     '                <td>{{menu.description}}</td>\n' +
     '                <td>Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet</td>\n' +
     '                <td>{{menu.category_name}}</td>\n' +
-    '                <td>Lorem ipsum </td>\n' +
+    '                <td><p ng-repeat="addon in menu.addons">{{addon.name}},</p></td>\n' +
     '                <td>{{menu.price}}</td>\n' +
     '                <td><a href="#/merchant/menu/add">Lorem ipsum.jpg</a> </td>\n' +
     '                <td>\n' +
@@ -1039,66 +1042,6 @@ module.run(['$templateCache', function($templateCache) {
     '            <a ng-disabled="!sbc.isLocation" class="btn btn-block" ng-click="sbc.searchFn($event)">\n' +
     '                <i class="fa fa-search"></i> Search\n' +
     '            </a>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '</div>\n' +
-    '');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('litewait.ui');
-} catch (e) {
-  module = angular.module('litewait.ui', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('search/search.html',
-    '<div class="container-fluid banner-wrap" ng-if="!user.isLoggedIn">\n' +
-    '    <div class="banner">\n' +
-    '        <div class="col-md-10 cnt">\n' +
-    '            <p class="title-1">SAVE YOUR TIME...INCREASE PRODUCTIVE TIME<br/>SAVE MONEY!!</p>\n' +
-    '            <p class="title-2">Tired of waiting in queue, come join us</p>\n' +
-    '            <a href="#" class="btn join"  ng-click="vm.openSignUpModal($event)">Join Now !!</a>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '</div>\n' +
-    '<div class="container-fluid search-wrap" ui-view="search-box"></div>\n' +
-    '<div class="container search-result">\n' +
-    '    <div class="col-md-12 best-bet">These retailers are your best bet for:<a href="#">{{sc.keyword}}</a></div>\n' +
-    '    <div class="row-fluid">\n' +
-    '        <div class="col-md-12">\n' +
-    '            <div class="list-wrap" infinite-scroll="sc.nextPage()"\n' +
-    '                infinite-scroll-distance="0"\n' +
-    '                infinite-scroll-immediate-check="false"\n' +
-    '                infinite-scroll-use-document-bottom="true">\n' +
-    '                <div class="list-item" ng-repeat="(key, value) in sc.merchant.list">\n' +
-    '                    <div class="col-xs-12 col-sm-8 col-md-8" >\n' +
-    '                        <h2><a href="shop-detail-menu.html">{{value.business_name}}</a></h2>\n' +
-    '                        <img src="{{value.photo}}" class="pull-left" />\n' +
-    '                        <div>\n' +
-    '                            <span class="rating">\n' +
-    '                                <uib-rating ng-model="value.rating" read-only="true" aria-labelledby="default-rating"></uib-rating>\n' +
-    '                            </span>\n' +
-    '                            <p>0.98 mi Distance from search location</p>\n' +
-    '                            <p class="wait">{{value.avg_wait_time}} Wait Time</p>\n' +
-    '                            <p>Open {{value.open_time}} to {{value.close_time}}</p>\n' +
-    '                        </div>\n' +
-    '                    </div>\n' +
-    '                    <div class="col-xs-12 col-sm-4 col-md-4 menu">\n' +
-    '                        <h2>Popular Items</h2>\n' +
-    '                        <ul>\n' +
-    '                            <li><a href="#">Chicken Parmesan Sub</a></li>\n' +
-    '                            <li><a href="#">BBQ Chicken Sub</a></li>\n' +
-    '                            <li><a href="#">Veggie Sub</a></li>\n' +
-    '                            <li><a href="#">Chicken Ranch Hot Sandwich</a></li>\n' +
-    '                            <li><a href="#">Cold Cut Hot Sandwich</a></li>\n' +
-    '                        </ul>\n' +
-    '                        <a ng-click="sc.viewMerchant(value.id)" class="btn btn-block">View Retailer</a>\n' +
-    '                    </div>\n' +
-    '                    <div class="clearfix"></div>\n' +
-    '                </div>\n' +
-    '            </div>\n' +
     '        </div>\n' +
     '    </div>\n' +
     '</div>\n' +
@@ -1319,6 +1262,66 @@ module.run(['$templateCache', function($templateCache) {
     '                            Open {{tuc.data.merchant.open_time}} to {{tuc.data.merchant.close_time}}</span><br/>\n' +
     '                            Wait Time: {{tuc.data.merchant.avg_waiting_time}}\n' +
     '                    </p>\n' +
+    '                </div>\n' +
+    '            </div>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '</div>\n' +
+    '');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('litewait.ui');
+} catch (e) {
+  module = angular.module('litewait.ui', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('search/search.html',
+    '<div class="container-fluid banner-wrap" ng-if="!user.isLoggedIn">\n' +
+    '    <div class="banner">\n' +
+    '        <div class="col-md-10 cnt">\n' +
+    '            <p class="title-1">SAVE YOUR TIME...INCREASE PRODUCTIVE TIME<br/>SAVE MONEY!!</p>\n' +
+    '            <p class="title-2">Tired of waiting in queue, come join us</p>\n' +
+    '            <a href="#" class="btn join"  ng-click="vm.openSignUpModal($event)">Join Now !!</a>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '</div>\n' +
+    '<div class="container-fluid search-wrap" ui-view="search-box"></div>\n' +
+    '<div class="container search-result">\n' +
+    '    <div class="col-md-12 best-bet">These retailers are your best bet for:<a href="#">{{sc.keyword}}</a></div>\n' +
+    '    <div class="row-fluid">\n' +
+    '        <div class="col-md-12">\n' +
+    '            <div class="list-wrap" infinite-scroll="sc.nextPage()"\n' +
+    '                infinite-scroll-distance="0"\n' +
+    '                infinite-scroll-immediate-check="false"\n' +
+    '                infinite-scroll-use-document-bottom="true">\n' +
+    '                <div class="list-item" ng-repeat="(key, value) in sc.merchant.list">\n' +
+    '                    <div class="col-xs-12 col-sm-8 col-md-8" >\n' +
+    '                        <h2><a href="shop-detail-menu.html">{{value.business_name}}</a></h2>\n' +
+    '                        <img src="{{value.photo}}" class="pull-left" />\n' +
+    '                        <div>\n' +
+    '                            <span class="rating">\n' +
+    '                                <uib-rating ng-model="value.rating" read-only="true" aria-labelledby="default-rating"></uib-rating>\n' +
+    '                            </span>\n' +
+    '                            <p>0.98 mi Distance from search location</p>\n' +
+    '                            <p class="wait">{{value.avg_wait_time}} Wait Time</p>\n' +
+    '                            <p>Open {{value.open_time}} to {{value.close_time}}</p>\n' +
+    '                        </div>\n' +
+    '                    </div>\n' +
+    '                    <div class="col-xs-12 col-sm-4 col-md-4 menu">\n' +
+    '                        <h2>Popular Items</h2>\n' +
+    '                        <ul>\n' +
+    '                            <li><a href="#">Chicken Parmesan Sub</a></li>\n' +
+    '                            <li><a href="#">BBQ Chicken Sub</a></li>\n' +
+    '                            <li><a href="#">Veggie Sub</a></li>\n' +
+    '                            <li><a href="#">Chicken Ranch Hot Sandwich</a></li>\n' +
+    '                            <li><a href="#">Cold Cut Hot Sandwich</a></li>\n' +
+    '                        </ul>\n' +
+    '                        <a ng-click="sc.viewMerchant(value.id)" class="btn btn-block">View Retailer</a>\n' +
+    '                    </div>\n' +
+    '                    <div class="clearfix"></div>\n' +
     '                </div>\n' +
     '            </div>\n' +
     '        </div>\n' +
@@ -1622,10 +1625,12 @@ module.run(['$templateCache', function($templateCache) {
     '                        </div>\n' +
     '                     </div>\n' +
     '                     <div class="form-group">\n' +
-    '                        <input date-as-ms required uib-datepicker-popup="MM/yyyy" min-mode="month" type="text" class="form-control" placeholder="Expiry date" name="card_expiry" ng-model="epc.payment.card_expiry" is-open="epc.pay.opened" on-open-focus="epc.pay.onOpenFocus">\n' +
+    '                        <p class="input-group">\n' +
+    '                        <input date-as-ms required uib-datepicker-popup="MM/yyyy" datepicker-options="epc.dateOptions" type="text" class="form-control" placeholder="Expiry date" name="card_expiry" ng-model="epc.payment.card_expiry" is-open="epc.pay.opened" on-open-focus="epc.pay.onOpenFocus">\n' +
     '                        <span class="input-group-btn">\n' +
     '                           <button type="button" class="btn btn-default" ng-click="epc.open1()"><i class="glyphicon glyphicon-calendar"></i></button>\n' +
     '                        </span>\n' +
+    '                        </p>\n' +
     '                        <div ng-if="epc.editPaymentForm.$submitted && epc.editPaymentForm.card_expiry.$invalid" ng-messages="epc.editPaymentForm.card_expiry.$error" class="alert alert-danger">\n' +
     '                           <div ng-message="required">Card Expiry is required</div>\n' +
     '                        </div>\n' +
@@ -1772,7 +1777,8 @@ module.run(['$templateCache', function($templateCache) {
     '         </div>\n' +
     '      </div>\n' +
     '   </div>\n' +
-    '</div>');
+    '</div>\n' +
+    '');
 }]);
 })();
 

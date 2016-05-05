@@ -160,6 +160,7 @@
 			for (var i = 0; i < data.menu_items.length; i++) {
 				var menu_item = data.menu_items[i];
 				var obj = {
+                    addons: menu_item.addons,
 					item_id: menu_item.item_id,
 					item_name: menu_item.item_name,
 					description: menu_item.description,
@@ -186,7 +187,7 @@
 					params: {
 						merchant_id: id
 					}
-				};	
+				};
 			} else {
 				data = {
 					params: id

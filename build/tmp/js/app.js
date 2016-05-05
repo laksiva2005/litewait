@@ -4895,176 +4895,6 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 /*
  *
  */
-;(function() {
-	'use strict';
-	angular.module('litewait.ui').controller('SearchCtrl', SearchCtrl);
-
-	SearchCtrl.$inject = ['$scope', '$state', 'PubSub', 'Location', 'Search', 'srch', 'authentication'];
-
-	function SearchCtrl($scope, $state, PubSub, Location, Search, srch, authentication) {
-		var vm = this;
-		vm.merchant = {
-			list: [],
-			busy: false,
-			offset: 0,
-			limit: 10,
-			searchCriteria: {},
-			totalRecords: 0
-		};
-		vm.keyword = '';
-		vm.viewMerchant = viewMerchant;
-		vm.initializeMerchant = initializeMerchant;
-		vm.nextPage = nextPage;
-
-		function viewMerchant(id) {
-			$state.go('shop.detail', {id: id});
-		}
-
-		function searchMerchant() {
-			var obj = getMerchantParams();
-			Search.getMerchantList(obj).then(function(response) {
-				assignMerchants(response.merchants);
-				vm.merchant.busy = false;
-			}, function() {
-				vm.merchant.busy = false;
-			});
-		}
-
-        function assignMerchants(items) {
-          for (var i = 0; i < items.length; i++) {
-            var index = _.findIndex(vm.merchant.list, {id: items[i].id});
-            if (-1 === index) {
-              vm.merchant.list.push(items[i]);
-            }
-          }
-          vm.merchant.offset = vm.merchant.list.length;
-        }
-
-        function getMerchantParams() {
-        	vm.keyword = vm.merchant.searchCriteria.keyword.category;
-          	return {
-				region_id: vm.merchant.searchCriteria.location.region_id,
-				city_id: vm.merchant.searchCriteria.location.city_id,
-				search_text: vm.merchant.searchCriteria.keyword.category,
-				page_no: vm.merchant.offset,
-				page_size: vm.merchant.limit
-			};
-        }
-
-        function initializeMerchant() {
-          vm.merchant.offset = 1;
-          vm.merchant.list.length = 0;
-          searchMerchant();
-        }
-
-        function nextPage() {
-          var params = getMerchantParams();
-
-          if ( ! vm.merchant.busy) {
-            vm.merchant.busy = true;
-            searchMerchant();
-          }
-        }
-
-        PubSub.subscribe('search', function(event, obj) {
-			vm.merchant.searchCriteria = obj.args;
-			initializeMerchant();
-		});
-	}
-})();
-
-
-;(function(angular) {
-    'use strict';
-
-    angular.module('litewait').config(config);
-
-    config.$inject = ['$stateProvider'];
-
-    function config($stateProvider) {
-        $stateProvider
-            .state('search', {
-            	url: "/serach",
-                views: {
-                    "search-box@search": {
-                      templateUrl: 'navigation/search-box.html',
-                      controller: "SearchBoxCtrl",
-                      controllerAs: "sbc"
-                    },
-                    "@": {
-                        templateUrl: "search/search.html",
-                        controller: "SearchCtrl",
-                        controllerAs: "sc"
-                    }
-                },
-                params: {location: '', keyword: ''},
-                resolve: {
-                    srch: function ($q, $timeout) {
-                        var deferred = $q.defer();
-
-                        var handler = $timeout(function() {
-                            deferred.resolve('search');
-                            $timeout.cancel(handler);
-                        }, 0);
-
-                        return deferred.promise;
-                    },
-                    geolocation: function ($q, Search, $timeout, Location) {
-                        var loc = {};
-                        var deferred = $q.defer();
-
-                        var handler = $timeout(function() {
-                            Search.getRegionByGeo().then(function(response) {
-                                if (!response.data.error) {
-                                    Location.status = loc.status = true;
-                                    Location.data = loc.data = response.data.data;
-                                    deferred.resolve(loc);
-                                } else {
-                                    getByIp();
-                                }
-                            }, function(error) {
-                                getByIp();
-                            });
-
-                            function getByIp() {
-                                Search.getRegionByIP().then(function(res) {
-                                    if (!res.data.error) {
-                                        Location.status = loc.status = true;
-                                        Location.data = loc.data = res.data.data;
-                                        deferred.resolve(loc);
-                                    } else {
-                                        Location.status = loc.status = false;
-                                        Location.data = loc.data = null;
-                                        deferred.resolve(loc);
-                                    }
-                                }, function() {
-                                    Location.status = loc.status = false;
-                                    Location.data = loc.data = null;
-                                    deferred.resolve(loc);
-                                });
-                            }
-
-                            $timeout.cancel(handler);
-                        }, 0);
-                        return deferred.promise;
-                    },
-                    authentication: function (User, $state, $timeout) {
-                        if (!User.isLoggedIn) return true;
-                        if (User.isLoggedIn && User.role == 'm') {
-                            var handler = $timeout(function() {
-                                $timeout.cancel(handler);
-                                $state.go('merchant');
-                            }, 0);
-                        }
-                    }
-                }
-            });
-    }
-})(angular);
-
-/*
- *
- */
 ;(function(angular) {
 	'use strict';
 
@@ -5247,6 +5077,176 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		}
 	}
 })();
+/*
+ *
+ */
+;(function() {
+	'use strict';
+	angular.module('litewait.ui').controller('SearchCtrl', SearchCtrl);
+
+	SearchCtrl.$inject = ['$scope', '$state', 'PubSub', 'Location', 'Search', 'srch', 'authentication'];
+
+	function SearchCtrl($scope, $state, PubSub, Location, Search, srch, authentication) {
+		var vm = this;
+		vm.merchant = {
+			list: [],
+			busy: false,
+			offset: 0,
+			limit: 10,
+			searchCriteria: {},
+			totalRecords: 0
+		};
+		vm.keyword = '';
+		vm.viewMerchant = viewMerchant;
+		vm.initializeMerchant = initializeMerchant;
+		vm.nextPage = nextPage;
+
+		function viewMerchant(id) {
+			$state.go('shop.detail', {id: id});
+		}
+
+		function searchMerchant() {
+			var obj = getMerchantParams();
+			Search.getMerchantList(obj).then(function(response) {
+				assignMerchants(response.merchants);
+				vm.merchant.busy = false;
+			}, function() {
+				vm.merchant.busy = false;
+			});
+		}
+
+        function assignMerchants(items) {
+          for (var i = 0; i < items.length; i++) {
+            var index = _.findIndex(vm.merchant.list, {id: items[i].id});
+            if (-1 === index) {
+              vm.merchant.list.push(items[i]);
+            }
+          }
+          vm.merchant.offset = vm.merchant.list.length;
+        }
+
+        function getMerchantParams() {
+        	vm.keyword = vm.merchant.searchCriteria.keyword.category;
+          	return {
+				region_id: vm.merchant.searchCriteria.location.region_id,
+				city_id: vm.merchant.searchCriteria.location.city_id,
+				search_text: vm.merchant.searchCriteria.keyword.category,
+				page_no: vm.merchant.offset,
+				page_size: vm.merchant.limit
+			};
+        }
+
+        function initializeMerchant() {
+          vm.merchant.offset = 1;
+          vm.merchant.list.length = 0;
+          searchMerchant();
+        }
+
+        function nextPage() {
+          var params = getMerchantParams();
+
+          if ( ! vm.merchant.busy) {
+            vm.merchant.busy = true;
+            searchMerchant();
+          }
+        }
+
+        PubSub.subscribe('search', function(event, obj) {
+			vm.merchant.searchCriteria = obj.args;
+			initializeMerchant();
+		});
+	}
+})();
+
+
+;(function(angular) {
+    'use strict';
+
+    angular.module('litewait').config(config);
+
+    config.$inject = ['$stateProvider'];
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('search', {
+            	url: "/serach",
+                views: {
+                    "search-box@search": {
+                      templateUrl: 'navigation/search-box.html',
+                      controller: "SearchBoxCtrl",
+                      controllerAs: "sbc"
+                    },
+                    "@": {
+                        templateUrl: "search/search.html",
+                        controller: "SearchCtrl",
+                        controllerAs: "sc"
+                    }
+                },
+                params: {location: '', keyword: ''},
+                resolve: {
+                    srch: function ($q, $timeout) {
+                        var deferred = $q.defer();
+
+                        var handler = $timeout(function() {
+                            deferred.resolve('search');
+                            $timeout.cancel(handler);
+                        }, 0);
+
+                        return deferred.promise;
+                    },
+                    geolocation: function ($q, Search, $timeout, Location) {
+                        var loc = {};
+                        var deferred = $q.defer();
+
+                        var handler = $timeout(function() {
+                            Search.getRegionByGeo().then(function(response) {
+                                if (!response.data.error) {
+                                    Location.status = loc.status = true;
+                                    Location.data = loc.data = response.data.data;
+                                    deferred.resolve(loc);
+                                } else {
+                                    getByIp();
+                                }
+                            }, function(error) {
+                                getByIp();
+                            });
+
+                            function getByIp() {
+                                Search.getRegionByIP().then(function(res) {
+                                    if (!res.data.error) {
+                                        Location.status = loc.status = true;
+                                        Location.data = loc.data = res.data.data;
+                                        deferred.resolve(loc);
+                                    } else {
+                                        Location.status = loc.status = false;
+                                        Location.data = loc.data = null;
+                                        deferred.resolve(loc);
+                                    }
+                                }, function() {
+                                    Location.status = loc.status = false;
+                                    Location.data = loc.data = null;
+                                    deferred.resolve(loc);
+                                });
+                            }
+
+                            $timeout.cancel(handler);
+                        }, 0);
+                        return deferred.promise;
+                    },
+                    authentication: function (User, $state, $timeout) {
+                        if (!User.isLoggedIn) return true;
+                        if (User.isLoggedIn && User.role == 'm') {
+                            var handler = $timeout(function() {
+                                $timeout.cancel(handler);
+                                $state.go('merchant');
+                            }, 0);
+                        }
+                    }
+                }
+            });
+    }
+})(angular);
+
 /*
 *
 */
@@ -6161,6 +6161,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 			for (var i = 0; i < data.menu_items.length; i++) {
 				var menu_item = data.menu_items[i];
 				var obj = {
+                    addons: menu_item.addons,
 					item_id: menu_item.item_id,
 					item_name: menu_item.item_name,
 					description: menu_item.description,
@@ -6187,7 +6188,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 					params: {
 						merchant_id: id
 					}
-				};	
+				};
 			} else {
 				data = {
 					params: id
@@ -6212,6 +6213,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		return service;
 	}
 })();
+
 /*
 *
 */
@@ -7025,6 +7027,10 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 	function ProfileCtrl(Merchant, $scope, User, $state, toaster, AUTH_MSG, MSG, AUTH_PROPS, GeoService, authentication) {
 		var vm = this;
+        vm.dateOptions = {
+            minMode: 'month',
+            datepickerMode: 'month'
+        };
 		vm.AUTH_PROPS = AUTH_PROPS;
 		vm.user = User;
 		vm.geo = {
@@ -7170,16 +7176,16 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 					Merchant.update(vm.profile).then(function(response) {
 						if (!(response.error)) {
 							toaster.pop({
-	                            type: 'success', 
-	                            title:'Success', 
-	                            body: MSG.merchantUpdateSuccess, 
+	                            type: 'success',
+	                            title:'Success',
+	                            body: MSG.merchantUpdateSuccess,
 	                            toasterId: 1
 	                        });
 						} else {
 							toaster.pop({
-	                            type: 'error', 
-	                            title:'Error', 
-	                            body: MSG.merchantUpdateFailed, 
+	                            type: 'error',
+	                            title:'Error',
+	                            body: MSG.merchantUpdateFailed,
 	                            toasterId: 1
 	                        });
 						}
@@ -7188,16 +7194,16 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 					vm.user.updateProfile(vm.profile).then(function(response) {
 						if (!(response.data.error || response.error)) {
 							toaster.pop({
-	                            type: 'success', 
-	                            title:'Success', 
-	                            body: AUTH_MSG.profileUpdateSuccess, 
+	                            type: 'success',
+	                            title:'Success',
+	                            body: AUTH_MSG.profileUpdateSuccess,
 	                            toasterId: 1
 	                        });
 						} else {
 							toaster.pop({
-	                            type: 'error', 
-	                            title:'Error', 
-	                            body: AUTH_MSG.profileUpdateFailed, 
+	                            type: 'error',
+	                            title:'Error',
+	                            body: AUTH_MSG.profileUpdateFailed,
 	                            toasterId: 1
 	                        });
 						}
@@ -7259,16 +7265,16 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 				vm.user.updatePayment(data).then(function(response) {
 					if (!(response.data.error || response.error)) {
 						toaster.pop({
-                            type: 'success', 
-                            title:'Success', 
-                            body: AUTH_MSG.paymentUpdateSuccess, 
+                            type: 'success',
+                            title:'Success',
+                            body: AUTH_MSG.paymentUpdateSuccess,
                             toasterId: 1
                         });
 					} else {
 						toaster.pop({
-                            type: 'error', 
-                            title:'Error', 
-                            body: AUTH_MSG.paymentUpdateFailed, 
+                            type: 'error',
+                            title:'Error',
+                            body: AUTH_MSG.paymentUpdateFailed,
                             toasterId: 1
                         });
 					}
@@ -7297,6 +7303,7 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 		}
 	}
 })(angular);
+
 
 ;(function(angular) {
     'use strict';

@@ -6,8 +6,10 @@
                 <h1>{{nmc.data.action}} Menu</h1>
                 <div class="form-group">
                     <input type="hidden" name="id" ng-model="nmc.menu.id">
-                    <input type="hidden" name="category_id" ng-model="nmc.menu.category.category_id">
+                    <input required type="hidden" name="category_id" ng-model="nmc.menu.category.category_id">
                     <input type="text"
+                        required
+                        placeholder="Select Category"
                         name="category" ng-model="nmc.menu.category"
                         autocomplete="off"
                         uib-typeahead="category as category.category_name for category in nmc.getCategory($viewValue)" typeahead-loading="loadingCategories"
@@ -23,8 +25,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <input check-menu-exists menu-data="nmc.menu" ng-model-options="{debounce: {default: 500, blur: 0}}" type="text" name="item_name" maxlength="50" ng-model="nmc.menu.item_name" class="form-control"  placeholder="Name">
+                    <input required check-menu-exists menu-data="nmc.menu" ng-model-options="{debounce: {default: 500, blur: 0}}" type="text" name="item_name" maxlength="50" ng-model="nmc.menu.item_name" class="form-control"  placeholder="Name">
                     <div ng-if="nmc.editMenuForm.$submitted && nmc.editMenuForm.item_name.$invalid" ng-messages="nmc.editMenuForm.item_name.$error" class="alert alert-danger">
+                        <div ng-message="required">Menu name is required</div>
                         <div ng-message="maxlength">Please enter a valid menu name</div>
                         <div ng-message="checkCategoryExists">The menu name already exists</div>
                     </div>
@@ -47,7 +50,7 @@
                 </div>
                 <div class="form-group">
                     <!--input type="text" name="addons" ng-model="nmc.menu.addons" class="form-control" Placeholder="Addons"-->
-                    <tags-input ng-model="nmc.menu.addons"
+                    <tags-input placeholder="Select Addons" ng-model="nmc.menu.addons"
                                 display-property="name"
                                 key-property="name"
                                 add-from-autocomplete-only="true">
